@@ -1,0 +1,7 @@
+<svg width="120" height="40" viewBox="0 0 120 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M15.5 12C12.5 12 10 14.5 10 17.5C10 20.5 12.5 23 15.5 23C18.5 23 21 20.5 21 17.5" stroke="#E00800" stroke-width="3" stroke-linecap="round"/>
+  <path d="M10 17.5H21" stroke="#E00800" stroke-width="3" stroke-linecap="round"/>
+  <path d="M30 10L35 30M40 10L35 30" stroke="#E00800" stroke-width="3" stroke-linecap="round"/>
+  <path d="M32.5 20H37.5" stroke="#E00800" stroke-width="2" stroke-linecap="round"/>
+  <text x="50" y="28" fill="#E00800" style="font-family: Arial, sans-serif; font-weight: 800; font-size: 24px;">e&amp;</text>
+</svg>
