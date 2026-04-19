@@ -1,6 +1,8 @@
 -- ============================================================
 -- TELECOM BILLING SCHEMA
 -- ============================================================
+DROP TABLE IF EXISTS cdr,file,customer,rateplan,service_package,contract,contract_consumption,ror_contract,bill,invoice,rateplan_service_package;
+DROP TYPE IF EXISTS service_type,contract_status,bill_status;
 
 -- ------------------------------------------------------------
 -- FILE (raw CDR file ingestion tracker)
@@ -211,6 +213,40 @@ $$ LANGUAGE plpgsql;
 -- ============================================================
 
 -- ------------------------------------------------------------
+-- SET PARSED FLAG IN FILE
+-- ------------------------------------------------------------
+   CREATE OR REPLACE FUNCTION set_file_parsed(p_file_id INTEGER)
+RETURNS VOID AS $$
+BEGIN
+    UPDATE file
+    SET parsed_flag = TRUE
+    WHERE id = p_file_id;
+EXCEPTION
+    WHEN OTHERS THEN
+        RAISE EXCEPTION 'set_file_parsed failed for file id %: %', p_file_id, SQLERRM;
+END;
+$$ LANGUAGE plpgsql;
+
+
+-- ------------------------------------------------------------
+-- CREATE FILE RECORD
+-- ------------------------------------------------------------
+
+   CREATE OR REPLACE FUNCTION create_file_record(p_file_path TEXT)
+          RETURNS INTEGER AS $$
+          DECLARE v_new_id INTEGER;
+                  BEGIN
+                  INSERT INTO file (file_path) VALUES (p_file_path)
+                  RETURNING id INTO v_new_id;
+RETURN v_new_id;
+EXCEPTION
+    WHEN OTHERS THEN
+RAISE EXCEPTION 'create_file_record failed for file path %: %', p_file_path, SQLERRM;
+END;
+$$ LANGUAGE plpgsql;
+
+
+-- ------------------------------------------------------------
 -- INSERT CDR
 -- ------------------------------------------------------------
 CREATE OR REPLACE FUNCTION insert_cdr(
@@ -385,7 +421,7 @@ WHERE contract_id        = v_contract.id
 END LOOP;
 
     -- Handle overage: anything remaining after all bundles exhausted
-    IF v_remaining > 0 THEN
+    IF v_remaining > 0 AND v_service_type != 'free_units' THEN
 SELECT CASE v_service_type
            WHEN 'voice' THEN ror_voice
            WHEN 'data'  THEN ror_data
@@ -469,27 +505,389 @@ END;
 $$ LANGUAGE plpgsql;
 
 
+-- ------------------------------------------------------------
+-- GENERATE BILL
+-- Aggregates consumption + overage into a bill row.
+-- Marks consumption rows and ror_contract row as billed.
+-- ------------------------------------------------------------
+CREATE OR REPLACE FUNCTION generate_bill(p_contract_id INTEGER, p_billing_period_start DATE)
+       RETURNS VOID AS $$
+       DECLARE v_billing_period_end DATE;
+               v_recurring_fees NUMERIC(12,2);
+               v_one_time_fees NUMERIC(12,2);
+               v_voice_usage INTEGER;
+               v_data_usage INTEGER;
+               v_sms_usage INTEGER;
+               v_ROR_charge NUMERIC(12,2);
+               v_taxes NUMERIC(12,2);
+               v_total_amount NUMERIC(12,2);
+               v_rateplan_id INTEGER;
+               v_bill_id INTEGER;
+               BEGIN
+               v_billing_period_end := (DATE_TRUNC('month', p_billing_period_start) + INTERVAL '1 month - 1 day')::DATE;
+                -- Load rateplan_id for convenience
+SELECT rateplan_id INTO v_rateplan_id
+FROM contract
+WHERE id = p_contract_id;
+
+    -- Calculate recurring fees from rateplan price
+SELECT price INTO v_recurring_fees
+FROM rateplan
+WHERE id = v_rateplan_id;
+
+    -- Calculate usage fees from consumption and ROR
+        SELECT SUM(CASE WHEN sp.type = 'voice' THEN cc.consumed ELSE 0 END),
+               SUM(CASE WHEN sp.type = 'data' THEN cc.consumed ELSE 0 END),
+               SUM(CASE WHEN sp.type = 'sms' THEN cc.consumed ELSE 0 END)
+
+INTO v_voice_usage, v_data_usage, v_sms_usage
+FROM contract_consumption cc
+        JOIN service_package sp ON sp.id = cc.service_package_id
+        WHERE cc.contract_id = p_contract_id
+          AND cc.starting_date = p_billing_period_start
+          AND cc.ending_date = v_billing_period_end
+          AND cc.is_billed = FALSE;
+SELECT COALESCE(
+    (rc.data * rp.ror_data) + (rc.voice * rp.ror_voice) + (rc.sms * rp.ror_sms),0) INTO v_ROR_charge
+FROM ror_contract rc
+JOIN rateplan rp ON rp.id = rc.rateplan_id
+WHERE contract_id = p_contract_id
+  AND rateplan_id = v_rateplan_id
+  AND bill_id IS NULL;  -- only consider unbilled ROR
+
+    -- For simplicity, let's say taxes are 15% of (recurring + ROR)
+v_one_time_fees := 0.69;  -- could include one-time charges here
+v_taxes := 0.15 * (v_recurring_fees + v_ROR_charge);
+v_total_amount := v_recurring_fees + v_one_time_fees + v_ROR_charge + v_taxes;
+
+    -- Insert bill
+INSERT INTO bill (
+    contract_id,
+    billing_period_start,
+    billing_period_end,
+    billing_date,
+    recurring_fees,
+    one_time_fees,
+    voice_usage,
+    data_usage,
+    sms_usage,
+    ROR_charge,
+    taxes,
+    total_amount,
+    status,
+    is_paid
+)VALUES (
+           p_contract_id,
+           p_billing_period_start,
+           v_billing_period_end,
+           CURRENT_DATE,
+           v_recurring_fees,
+           v_one_time_fees,
+           v_voice_usage,
+           v_data_usage,
+           v_sms_usage,
+           v_ROR_charge,
+           v_taxes,
+           v_total_amount,
+           'issued',
+           FALSE
+       )RETURNING id INTO v_bill_id;
+    -- Mark consumption and ROR rows as billed
+UPDATE contract_consumption
+SET is_billed = TRUE, bill_id = v_bill_id
+WHERE contract_id = p_contract_id
+  AND starting_date = p_billing_period_start
+  AND ending_date = v_billing_period_end;
+UPDATE ror_contract
+SET bill_id = v_bill_id
+WHERE contract_id = p_contract_id  AND rateplan_id = v_rateplan_id;
+EXCEPTION
+    WHEN OTHERS THEN
+        RAISE EXCEPTION 'generate_bill failed for contract id % and period %: %', p_contract_id, p_billing_period_start, SQLERRM;
+END;
+$$ LANGUAGE plpgsql;
+
+-- ------------------------------------------------------------
+-- GENERATE BILLS FOR ALL CONTRACTS
+-- Convenience wrapper that calls generate_bill() for every
+-- active contract. This is what your scheduler calls
+-- at the end of each billing period.
+-- ------------------------------------------------------------
+CREATE OR REPLACE FUNCTION generate_all_bills(p_period_start DATE)
+RETURNS VOID AS $$
+DECLARE
+v_contract RECORD;
+    v_success  INTEGER := 0;
+    v_failed   INTEGER := 0;
+BEGIN
+FOR v_contract IN
+SELECT id FROM contract WHERE status = 'active'
+    LOOP
+BEGIN
+            PERFORM generate_bill(v_contract.id, p_period_start);
+            v_success := v_success + 1;
+EXCEPTION
+            WHEN OTHERS THEN
+                -- Log failure but continue processing remaining contracts
+                RAISE WARNING 'generate_bill failed for contract %: %', v_contract.id, SQLERRM;
+                v_failed := v_failed + 1;
+END;
+END LOOP;
+
+    RAISE NOTICE 'generate_all_bills complete: % succeeded, % failed', v_success, v_failed;
+END;
+$$ LANGUAGE plpgsql;
+
+-- ------------------------------------------------------------
+-- CREATE CONTRACT
+-- Creates a new contract and immediately initializes
+-- consumption rows for the current billing period.
+-- ------------------------------------------------------------
+CREATE OR REPLACE FUNCTION create_contract(
+    p_customer_id    INTEGER,
+    p_rateplan_id    INTEGER,
+    p_msisdn         VARCHAR(20),
+    p_credit_limit   NUMERIC(12,2)
+)
+RETURNS INTEGER AS $$
+DECLARE
+v_contract_id  INTEGER;
+    v_period_start DATE;
+    v_period_end   DATE;
+BEGIN
+    -- Validate customer exists
+    IF NOT EXISTS (SELECT 1 FROM customer WHERE id = p_customer_id) THEN
+        RAISE EXCEPTION 'Customer with id % does not exist', p_customer_id;
+END IF;
+
+    -- Validate rateplan exists
+    IF NOT EXISTS (SELECT 1 FROM rateplan WHERE id = p_rateplan_id) THEN
+        RAISE EXCEPTION 'Rateplan with id % does not exist', p_rateplan_id;
+END IF;
+
+    -- Validate MSISDN is not already taken
+    IF EXISTS (SELECT 1 FROM contract WHERE msisdn = p_msisdn) THEN
+        RAISE EXCEPTION 'MSISDN % is already assigned to another contract', p_msisdn;
+END IF;
+
+    -- Insert contract
+INSERT INTO contract (
+    customer_id,
+    rateplan_id,
+    msisdn,
+    status,
+    credit_limit,
+    available_credit
+) VALUES (
+             p_customer_id,
+             p_rateplan_id,
+             p_msisdn,
+             'active',
+             p_credit_limit,
+             p_credit_limit   -- available starts equal to limit
+         )
+    RETURNING id INTO v_contract_id;
+
+-- Initialize an empty ror_contract row for this contract
+INSERT INTO ror_contract (contract_id, rateplan_id, voice, data, sms)
+VALUES (v_contract_id, p_rateplan_id, 0, 0, 0);
+
+-- Initialize consumption rows for the current billing period
+v_period_start := DATE_TRUNC('month', CURRENT_DATE)::DATE;
+    v_period_end   := (DATE_TRUNC('month', CURRENT_DATE) + INTERVAL '1 month - 1 day')::DATE;
+
+INSERT INTO contract_consumption (
+    contract_id,
+    service_package_id,
+    rateplan_id,
+    starting_date,
+    ending_date,
+    consumed,
+    is_billed
+)
+SELECT
+    v_contract_id,
+    rsp.service_package_id,
+    p_rateplan_id,
+    v_period_start,
+    v_period_end,
+    0,
+    FALSE
+FROM rateplan_service_package rsp
+WHERE rsp.rateplan_id = p_rateplan_id
+    ON CONFLICT DO NOTHING;
+
+RETURN v_contract_id;
+
+EXCEPTION
+    WHEN OTHERS THEN
+        RAISE EXCEPTION 'create_contract failed: %', SQLERRM;
+END;
+$$ LANGUAGE plpgsql;
+
 -- ============================================================
--- DUMMY DATA
+-- TRIGGERS
 -- ============================================================
 
+-- Block CDR insert if contract is not active
+CREATE OR REPLACE FUNCTION validate_cdr_contract()
+       RETURNS TRIGGER AS $$
+       DECLARE v_contract contract;
+               BEGIN
+               SELECT c.* INTO v_contract
+               FROM contract c WHERE c.msisdn = NEW.dial_a;
+IF NOT FOUND THEN
+   RAISE EXCEPTION 'No contract found for MSISDN %', NEW.dial_a;
+   END IF ;
+   IF v_contract.status <> 'active' THEN
+      RAISE EXCEPTION 'contract for MSISDN % is not active it is %', NEW.dial_a, v_contract.status;
+      END IF;
+      RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+--trigger on cdr before insert to validate contract status
+   CREATE TRIGGER trg_cdr_validate_contract
+    BEFORE INSERT ON cdr
+    FOR EACH ROW
+    EXECUTE FUNCTION validate_cdr_contract();
+
+-- Automatically rate CDR after insert
+    CREATE OR REPLACE FUNCTION auto_rate_cdr()
+           RETURNS TRIGGER AS $$
+           BEGIN
+           IF NEW.service_id IS NOT NULL THEN
+              PERFORM rate_cdr(NEW.id);
+              END IF;
+              RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER trg_auto_rate_cdr
+    AFTER INSERT ON cdr
+    FOR EACH ROW
+    EXECUTE FUNCTION auto_rate_cdr();
+
+-- AUTOMATICALLY INITIALIZE CONSUMPTION PERIOD ON FIRST CDR OF THE MONTH
+    CREATE OR REPLACE FUNCTION auto_initialize_consumption()
+           RETURNS TRIGGER AS $$
+           DECLARE v_period_start DATE;
+                   BEGIN
+                   v_period_start := DATE_TRUNC('month', New.start_time )::DATE;
+                                  PERFORM initialize_consumption_period(v_period_start);
+                                          RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER trg_auto_initialize_consumption
+    BEFORE INSERT ON cdr
+    FOR EACH ROW
+    EXECUTE FUNCTION auto_initialize_consumption();
+-- =========================================================
+-- DUMMY DATA
+-- For testing and demonstration purposes
+-- =========================================================
+
+------------------------------------------------------------
+-- FILES
+------------------------------------------------------------
+INSERT INTO file (parsed_flag, file_path)
+VALUES
+    (FALSE, '/tmp/test_cdr_april_1.csv'),
+    (FALSE, '/tmp/test_cdr_april_2.csv');
+
+------------------------------------------------------------
+-- CUSTOMERS
+------------------------------------------------------------
+INSERT INTO customer (name, address, birthdate)
+VALUES
+    ('Ahmed Ali', 'Beni Suef', '1998-05-10'),
+    ('Mohamed Hassan', 'Cairo', '1995-09-22');
+
+------------------------------------------------------------
+-- RATEPLANS
+------------------------------------------------------------
 INSERT INTO rateplan (name, ror_data, ror_voice, ror_sms, price)
 VALUES
     ('Basic',   0.10, 0.20, 0.05, 50),
     ('Premium', 0.05, 0.10, 0.02, 120);
 
+------------------------------------------------------------
+-- SERVICE PACKAGES
+------------------------------------------------------------
 INSERT INTO service_package (name, type, amount, priority)
 VALUES
-    ('Voice Pack', 'voice', 1000, 1),
-    ('Data Pack',  'data',  5000, 1),
-    ('SMS Pack',   'sms',   200,  1);
+    ('Voice Pack',   'voice', 1000, 1),
+    ('Data Pack',    'data',  5000, 1),
+    ('SMS Pack',     'sms',    200, 1),
+    ('Welcome Bonus','free_units', 50, 2);
 
-INSERT INTO customer (name, address, birthdate)
+------------------------------------------------------------
+-- RATEPLAN → PACKAGES
+------------------------------------------------------------
+INSERT INTO rateplan_service_package (rateplan_id, service_package_id)
 VALUES
-    ('Ahmed Ali',      'Beni Suef', '1998-05-10'),
-    ('Mohamed Hassan', 'Cairo',     '1995-09-22');
+    (1, 1), (1, 3),
+    (2, 1), (2, 2), (2, 3), (2, 4);
 
-INSERT INTO contract (customer_id, rateplan_id, msisdn, credit_limit, available_credit, status)
+------------------------------------------------------------
+-- CONTRACTS
+------------------------------------------------------------
+INSERT INTO contract (customer_id, rateplan_id, msisdn, status, credit_limit, available_credit)
 VALUES
-    (1, 1, '201000000001', 200, 200, 'active'),
-    (2, 2, '201000000002', 500, 500, 'active');
+    (1, 1, '201000000001', 'active', 200, 200),
+    (2, 2, '201000000002', 'active', 500, 500);
+
+------------------------------------------------------------
+-- ROR_CONTRACT
+------------------------------------------------------------
+INSERT INTO ror_contract (contract_id, rateplan_id, data, voice, sms)
+VALUES
+    (1, 1, 10, 20, 5),
+    (2, 2,  5, 10, 2);
+
+------------------------------------------------------------
+-- CONTRACT_CONSUMPTION (CURRENT PERIOD = APRIL 2026)
+------------------------------------------------------------
+INSERT INTO contract_consumption (
+    contract_id, service_package_id, rateplan_id,
+    starting_date, ending_date, consumed, is_billed
+) VALUES
+      -- Contract 1 (Basic)
+      (1, 1, 1, '2026-04-01', '2026-04-30', 120, FALSE),
+      (1, 3, 1, '2026-04-01', '2026-04-30', 15,  FALSE),
+
+      -- Contract 2 (Premium)
+      (2, 1, 2, '2026-04-01', '2026-04-30', 300, FALSE),
+      (2, 2, 2, '2026-04-01', '2026-04-30', 800, FALSE),
+      (2, 3, 2, '2026-04-01', '2026-04-30', 40,  FALSE),
+      (2, 4, 2, '2026-04-01', '2026-04-30', 10,  FALSE);
+
+------------------------------------------------------------
+-- BILL (PREVIOUS PERIOD = MARCH 2026)
+------------------------------------------------------------
+INSERT INTO bill (
+    contract_id, billing_period_start, billing_period_end, billing_date,
+    recurring_fees, one_time_fees,
+    voice_usage, data_usage, sms_usage,
+    ROR_charge, taxes, total_amount, status, is_paid
+)
+VALUES
+    (1, '2026-03-01', '2026-03-31', '2026-04-01',
+     50, 0,
+     200, 0, 20,
+     12.0, 5.0, 67.0, 'issued', FALSE),
+
+    (2, '2026-03-01', '2026-03-31', '2026-04-01',
+     120, 0,
+     400, 1200, 60,
+     25.0, 10.0, 155.0, 'issued', FALSE);
+
+------------------------------------------------------------
+-- INVOICES
+------------------------------------------------------------
+INSERT INTO invoice (bill_id, pdf_path)
+VALUES
+    (1, '/tmp/invoice_march_1.pdf'),
+    (2, '/tmp/invoice_march_2.pdf');
+
