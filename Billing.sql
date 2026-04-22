@@ -1,9 +1,8 @@
 -- ============================================================
 -- TELECOM BILLING SCHEMA
 -- ============================================================
-DROP TABLE IF EXISTS cdr,file,customer,rateplan,service_package,contract,contract_consumption,ror_contract,bill,invoice,rateplan_service_package;
-DROP TYPE IF EXISTS service_type,contract_status,bill_status;
-
+DROP TABLE IF EXISTS cdr,invoice,bill,ror_contract,contract_consumption,contract,rateplan_service_package,service_package,rateplan,customer,user_account,file CASCADE;
+DROP TYPE IF EXISTS service_type,contract_status,bill_status,user_role CASCADE;
 -- ------------------------------------------------------------
 -- FILE (raw CDR file ingestion tracker)
 -- ------------------------------------------------------------
@@ -11,6 +10,17 @@ CREATE TABLE file (
                       id          SERIAL PRIMARY KEY,
                       parsed_flag BOOLEAN NOT NULL DEFAULT FALSE,
                       file_path   TEXT NOT NULL
+);
+
+-- ------------------------------------------------------------
+-- USER
+-- ------------------------------------------------------------
+CREATE TYPE user_role AS ENUM ('admin', 'customer');
+CREATE TABLE user_account (
+                          id       SERIAL PRIMARY KEY,
+                          username VARCHAR(255) NOT NULL UNIQUE,
+                          password VARCHAR(30) NOT NULL,
+                          role     user_role NOT NULL
 );
 
 -- ------------------------------------------------------------
@@ -22,6 +32,8 @@ CREATE TABLE customer (
                           address   TEXT,
                           birthdate DATE
 );
+ALTER TABLE customer
+    ADD COLUMN user_account_id INTEGER REFERENCES user_account(id);
 
 -- ------------------------------------------------------------
 -- RATEPLAN
@@ -725,6 +737,456 @@ EXCEPTION
 END;
 $$ LANGUAGE plpgsql;
 
+
+-- ------------------------------------------------------------
+-- Retrieve BILL DATA
+-- In a real system, you'd likely have a separate service that queries the bill data
+-- ------------------------------------------------------------
+
+   CREATE OR REPLACE FUNCTION get_bill(p_bill_id INTEGER)
+RETURNS TABLE (
+    contract_id INTEGER,
+    billing_period_start DATE,
+    billing_period_end DATE,
+    billing_date DATE,
+    recurring_fees NUMERIC(12,2),
+    one_time_fees NUMERIC(12,2),
+    voice_usage INTEGER,
+    data_usage INTEGER,
+    sms_usage INTEGER,
+    ROR_charge NUMERIC(12,2),
+    taxes NUMERIC(12,2),
+    total_amount NUMERIC(12,2),
+    status bill_status,
+    is_paid BOOLEAN
+) AS $$
+BEGIN
+RETURN QUERY
+SELECT
+    contract_id,
+    billing_period_start,
+    billing_period_end,
+    billing_date,
+    recurring_fees,
+    one_time_fees,
+    voice_usage,
+    data_usage,
+    sms_usage,
+    ROR_charge,
+    taxes,
+    total_amount,
+    status,
+    is_paid
+FROM bill
+WHERE id = p_bill_id;
+END;
+$$ LANGUAGE plpgsql;
+
+-- ------------------------------------------------------------
+-- MARK BILL AS PAID
+-- ------------------------------------------------------------
+CREATE OR REPLACE FUNCTION mark_bill_paid(p_bill_id INTEGER)
+RETURNS VOID AS $$
+BEGIN
+UPDATE bill
+SET is_paid = TRUE, status = 'paid'
+WHERE id = p_bill_id;
+EXCEPTION
+    WHEN OTHERS THEN
+        RAISE EXCEPTION 'mark_bill_paid failed for bill id %: %', p_bill_id, SQLERRM;
+END;
+$$ LANGUAGE plpgsql;
+
+-- ------------------------------------------------------------
+-- GENERATE INVOICE AND SAVE ITS PATH
+-- ------------------------------------------------------------
+CREATE OR REPLACE FUNCTION generate_invoice(p_bill_id INTEGER, p_pdf_path TEXT)
+       RETURNS VOID AS $$
+       BEGIN
+       INSERT INTO invoice (bill_id, pdf_path)
+       VALUES (p_bill_id, p_pdf_path);
+EXCEPTION
+    WHEN OTHERS THEN
+        RAISE EXCEPTION 'generate_invoice failed for bill id %: %', p_bill_id, SQLERRM;
+END;
+$$ LANGUAGE plpgsql;
+
+-- ------------------------------------------------------------
+-- PAY BILL
+-- ------------------------------------------------------------
+CREATE OR REPLACE FUNCTION pay_bill(p_bill_id INTEGER, p_pdf_path TEXT)
+         RETURNS VOID AS $$
+         BEGIN
+         -- Mark bill as paid
+         PERFORM mark_bill_paid(p_bill_id);
+         -- Generate invoice PDF
+         PERFORM generate_invoice(p_bill_id, p_pdf_path);
+EXCEPTION
+    WHEN OTHERS THEN
+        RAISE EXCEPTION 'pay_bill failed for bill id %: %', p_bill_id, SQLERRM;
+END;
+$$ LANGUAGE plpgsql;
+
+-- ------------------------------------------------------------
+-- CHANGE CONTRACT STATUS
+-- ------------------------------------------------------------
+    CREATE OR REPLACE FUNCTION change_contract_status(p_contract_id INTEGER, p_status contract_status)
+           RETURNS VOID AS $$
+           BEGIN
+           UPDATE contract SET status = p_status WHERE id = p_contract_id;
+EXCEPTION
+    WHEN OTHERS THEN
+        RAISE EXCEPTION 'terminate_contract failed for contract id %: %', p_contract_id, SQLERRM;
+END;
+$$ LANGUAGE plpgsql;
+
+-- ------------------------------------------------------------
+-- GET CONTRACT CONSUMPTION
+-- ------------------------------------------------------------
+CREATE OR REPLACE FUNCTION get_contract_consumption(p_contract_id INTEGER, p_period_start DATE)
+       RETURNS TABLE (
+    service_package_id INTEGER,
+    consumed INTEGER
+) AS $$
+BEGIN
+RETURN QUERY
+SELECT service_package_id, consumed
+FROM contract_consumption
+WHERE contract_id = p_contract_id
+  AND starting_date = p_period_start
+  AND is_billed = FALSE;
+END;
+$$ LANGUAGE plpgsql;
+
+-- ------------------------------------------------------------
+-- GET BILLS BY CONTRACT
+-- ------------------------------------------------------------
+CREATE OR REPLACE FUNCTION get_bills_by_contract(p_contract_id INTEGER)
+       RETURNS TABLE (
+    id INTEGER,
+    billing_period_start DATE,
+    billing_period_end DATE,
+    billing_date DATE,
+    total_amount NUMERIC(12,2),
+    status bill_status
+) AS $$
+BEGIN
+RETURN QUERY
+SELECT b.id, b.billing_period_start, billing_period_end, billing_date, total_amount, status
+FROM bill b WHERE b.contract_id = p_contract_id
+ORDER BY billing_period_start DESC;
+END;
+$$ LANGUAGE plpgsql;
+
+
+-- ------------------------------------------------------------
+-- CREATE USER ACCOUNT
+-- ------------------------------------------------------------
+
+CREATE OR REPLACE FUNCTION create_user_account(
+    p_username VARCHAR(255),
+    p_password VARCHAR(30),
+    p_role user_role
+) RETURNS INTEGER
+AS $$
+DECLARE v_new_id INTEGER;
+BEGIN
+    INSERT INTO user_account (username, password, role)
+    VALUES (p_username, p_assword, p_role)
+    RETURNING id INTO v_new_id;
+RETURN v_new_id;
+EXCEPTION
+    WHEN OTHERS THEN
+        RAISE EXCEPTION 'create_user_account failed for username %: %', p_username, SQLERRM;
+END;
+$$ LANGUAGE plpgsql;
+
+-- ------------------------------------------------------------
+-- CREATE CUSTOMER
+-- ------------------------------------------------------------
+CREATE OR REPLACE FUNCTION create_customer(
+    p_name VARCHAR(255),
+    p_address TEXT,
+    p_birthdate DATE,
+    p_user_account_id INTEGER
+) RETURNS INTEGER
+AS $$
+DECLARE v_new_id INTEGER;
+BEGIN
+    -- Validate user account exists
+    IF NOT EXISTS (SELECT 1 FROM user_account WHERE id = p_user_account_id) THEN
+        RAISE EXCEPTION 'User account with id % does not exist', p_user_account_id;
+END IF;
+INSERT INTO customer (name, address, birthdate, user_account_id)VALUES (p_name, p_address, p_birthdate, p_user_account_id)
+RETURNING id INTO v_new_id;
+RETURN v_new_id;
+EXCEPTION
+    WHEN OTHERS THEN
+        RAISE EXCEPTION 'create_customer failed for name %: %', p_name, SQLERRM;
+END;
+$$ LANGUAGE plpgsql;
+
+
+-- ---------------------------------------------------------
+-- CHANGE CONTRACT RATEPLAN
+-- ---------------------------------------------------------
+
+CREATE OR REPLACE FUNCTION change_contract_rateplan(
+    p_contract_id     INTEGER,
+    p_new_rateplan_id INTEGER
+)
+RETURNS VOID AS $$
+DECLARE
+v_contract          contract;
+    v_old_rateplan_id   INTEGER;
+    v_period_start      DATE;
+    v_period_end        DATE;
+    v_change_day        INTEGER;
+    v_days_in_month     INTEGER;
+    v_days_used         INTEGER;
+    v_days_remaining    INTEGER;
+    v_usage_ratio       NUMERIC;  -- how far through the month (0.0 → 1.0)
+    v_should_prorate    BOOLEAN := FALSE;
+    v_bundle            RECORD;
+    v_voice_overage     NUMERIC := 0;
+    v_data_overage      NUMERIC := 0;
+    v_sms_overage       NUMERIC := 0;
+    v_old_ror_voice     NUMERIC;
+    v_old_ror_data      NUMERIC;
+    v_old_ror_sms       NUMERIC;
+    v_prorated_charge   NUMERIC := 0;
+    v_recurring_fees    NUMERIC;
+    v_prorated_recurring NUMERIC;
+    v_taxes             NUMERIC;
+    v_total             NUMERIC;
+    v_bill_id           INTEGER;
+BEGIN
+    -- Load contract
+SELECT * INTO v_contract FROM contract WHERE id = p_contract_id;
+IF NOT FOUND THEN
+        RAISE EXCEPTION 'Contract with id % does not exist', p_contract_id;
+END IF;
+
+    IF v_contract.status != 'active' THEN
+        RAISE EXCEPTION 'Contract % is not active, cannot change rateplan', p_contract_id;
+END IF;
+
+    IF NOT EXISTS (SELECT 1 FROM rateplan WHERE id = p_new_rateplan_id) THEN
+        RAISE EXCEPTION 'Rateplan with id % does not exist', p_new_rateplan_id;
+END IF;
+
+    IF v_contract.rateplan_id = p_new_rateplan_id THEN
+        RAISE EXCEPTION 'Contract % is already on rateplan %', p_contract_id, p_new_rateplan_id;
+END IF;
+
+    v_old_rateplan_id := v_contract.rateplan_id;
+
+    -- --------------------------------------------------------
+    -- DAY CALCULATIONS
+    -- v_days_used      = how many days the old plan was active
+    -- v_days_in_month  = total days in the current month
+    -- v_days_remaining = days left for the new plan
+    -- v_usage_ratio    = days_used / days_in_month (e.g. 0.5 on day 15 of 30)
+    -- --------------------------------------------------------
+    v_period_start   := DATE_TRUNC('month', CURRENT_DATE)::DATE;
+    v_period_end     := (DATE_TRUNC('month', CURRENT_DATE) + INTERVAL '1 month - 1 day')::DATE;
+    v_change_day     := EXTRACT(DAY FROM CURRENT_DATE);
+    v_days_in_month  := EXTRACT(DAY FROM v_period_end);
+    v_days_used      := v_change_day - 1;   -- days 1 through yesterday were fully used
+    v_days_remaining := v_days_in_month - v_days_used;
+    v_usage_ratio    := v_days_used::NUMERIC / v_days_in_month::NUMERIC;
+
+    -- --------------------------------------------------------
+    -- PRORATION CHECK
+    -- Only prorate if changed on day 15 or later
+    -- AND at least one bundle exceeded its prorated fair share
+    -- Fair share = bundle_amount × usage_ratio
+    -- e.g. on day 15 of 30 → fair share = 50% of bundle
+    --      on day 20 of 30 → fair share = 66.7% of bundle
+    -- --------------------------------------------------------
+    IF v_change_day >= 15 THEN
+        FOR v_bundle IN
+SELECT
+    cc.consumed,
+    sp.amount,
+    sp.type
+FROM contract_consumption cc
+         JOIN service_package sp ON sp.id = cc.service_package_id
+WHERE cc.contract_id   = p_contract_id
+  AND cc.rateplan_id   = v_old_rateplan_id
+  AND cc.starting_date = v_period_start
+  AND cc.ending_date   = v_period_end
+  AND cc.is_billed     = FALSE
+  AND sp.type         != 'free_units'
+        LOOP
+            -- consumed more than their proportional fair share for the days used
+            IF v_bundle.amount > 0 AND
+               v_bundle.consumed::NUMERIC > (v_bundle.amount * v_usage_ratio) THEN
+                v_should_prorate := TRUE;
+EXIT;
+END IF;
+END LOOP;
+END IF;
+
+    -- --------------------------------------------------------
+    -- PRORATED BILLING
+    -- Charge for:
+    --   1. Recurring fee prorated to days used
+    --   2. Excess usage above the day-proportional fair share,
+    --      rated at old rateplan ROR
+    -- --------------------------------------------------------
+    IF v_should_prorate THEN
+
+SELECT ror_voice, ror_data, ror_sms, price
+INTO v_old_ror_voice, v_old_ror_data, v_old_ror_sms, v_recurring_fees
+FROM rateplan
+WHERE id = v_old_rateplan_id;
+
+-- Recurring fee = full price × (days used / days in month)
+v_prorated_recurring := ROUND(v_recurring_fees * v_usage_ratio, 2);
+
+        -- Calculate excess per service type
+FOR v_bundle IN
+SELECT
+    cc.consumed,
+    sp.amount,
+    sp.type
+FROM contract_consumption cc
+         JOIN service_package sp ON sp.id = cc.service_package_id
+WHERE cc.contract_id   = p_contract_id
+  AND cc.rateplan_id   = v_old_rateplan_id
+  AND cc.starting_date = v_period_start
+  AND cc.ending_date   = v_period_end
+  AND cc.is_billed     = FALSE
+  AND sp.type         != 'free_units'
+        LOOP
+DECLARE
+v_fair_share  NUMERIC;
+                v_excess      NUMERIC;
+BEGIN
+                -- Fair share = what they should have used by this day
+                v_fair_share := v_bundle.amount * v_usage_ratio;
+                v_excess     := GREATEST(v_bundle.consumed - v_fair_share, 0);
+
+CASE v_bundle.type
+                    WHEN 'voice' THEN v_voice_overage := v_voice_overage + v_excess;
+WHEN 'data'  THEN v_data_overage  := v_data_overage  + v_excess;
+WHEN 'sms'   THEN v_sms_overage   := v_sms_overage   + v_excess;
+ELSE NULL;
+END CASE;
+END;
+END LOOP;
+
+        -- Excess units × old ROR rates
+        v_prorated_charge :=
+            (v_voice_overage * COALESCE(v_old_ror_voice, 0)) +
+            (v_data_overage  * COALESCE(v_old_ror_data,  0)) +
+            (v_sms_overage   * COALESCE(v_old_ror_sms,   0));
+
+        v_taxes := ROUND(0.15 * (v_prorated_recurring + v_prorated_charge), 2);
+        v_total := v_prorated_recurring + v_prorated_charge + v_taxes;
+
+        -- Insert prorated bill
+INSERT INTO bill (
+    contract_id,
+    billing_period_start,
+    billing_period_end,
+    billing_date,
+    recurring_fees,
+    one_time_fees,
+    voice_usage,
+    data_usage,
+    sms_usage,
+    ror_charge,
+    taxes,
+    total_amount,
+    status,
+    is_paid
+) VALUES (
+             p_contract_id,
+             v_period_start,
+             CURRENT_DATE,
+             CURRENT_DATE,
+             v_prorated_recurring,
+             0,
+             v_voice_overage,
+             v_data_overage,
+             v_sms_overage,
+             v_prorated_charge,
+             v_taxes,
+             v_total,
+             'issued',
+             FALSE
+         )
+    RETURNING id INTO v_bill_id;
+
+-- Mark old consumption rows as billed
+UPDATE contract_consumption
+SET is_billed = TRUE,
+    bill_id   = v_bill_id
+WHERE contract_id   = p_contract_id
+  AND rateplan_id   = v_old_rateplan_id
+  AND starting_date = v_period_start
+  AND ending_date   = v_period_end;
+
+-- Link old ror_contract row to this bill
+UPDATE ror_contract
+SET bill_id = v_bill_id
+WHERE contract_id = p_contract_id
+  AND rateplan_id = v_old_rateplan_id
+  AND bill_id IS NULL;
+
+ELSE
+        -- No proration: close old consumption silently
+UPDATE contract_consumption
+SET is_billed = TRUE
+WHERE contract_id   = p_contract_id
+  AND rateplan_id   = v_old_rateplan_id
+  AND starting_date = v_period_start
+  AND ending_date   = v_period_end
+  AND is_billed     = FALSE;
+END IF;
+
+    -- --------------------------------------------------------
+    -- SWITCH TO NEW RATEPLAN
+    -- --------------------------------------------------------
+UPDATE contract
+SET rateplan_id = p_new_rateplan_id
+WHERE id = p_contract_id;
+
+-- Fresh ror_contract row for new rateplan
+INSERT INTO ror_contract (contract_id, rateplan_id, voice, data, sms)
+VALUES (p_contract_id, p_new_rateplan_id, 0, 0, 0)
+    ON CONFLICT DO NOTHING;
+
+-- Fresh consumption rows for new rateplan starting today
+INSERT INTO contract_consumption (
+    contract_id,
+    service_package_id,
+    rateplan_id,
+    starting_date,
+    ending_date,
+    consumed,
+    is_billed
+)
+SELECT
+    p_contract_id,
+    rsp.service_package_id,
+    p_new_rateplan_id,
+    CURRENT_DATE,
+    v_period_end,
+    0,
+    FALSE
+FROM rateplan_service_package rsp
+WHERE rsp.rateplan_id = p_new_rateplan_id
+    ON CONFLICT DO NOTHING;
+
+EXCEPTION
+    WHEN OTHERS THEN
+        RAISE EXCEPTION 'change_contract_rateplan failed for contract %: %',
+                        p_contract_id, SQLERRM;
+END;
+$$ LANGUAGE plpgsql;
 -- ============================================================
 -- TRIGGERS
 -- ============================================================
@@ -783,6 +1245,24 @@ CREATE TRIGGER trg_auto_initialize_consumption
     BEFORE INSERT ON cdr
     FOR EACH ROW
     EXECUTE FUNCTION auto_initialize_consumption();
+
+-- Restore available credit after a bill is paid
+CREATE OR REPLACE FUNCTION trg_restore_credit_on_payment()
+RETURNS TRIGGER AS $$
+BEGIN
+    IF NEW.is_paid = TRUE AND OLD.is_paid = FALSE THEN
+UPDATE contract
+SET available_credit = credit_limit
+WHERE id = NEW.contract_id;
+END IF;
+RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER trg_bill_payment
+    AFTER UPDATE ON bill
+    FOR EACH ROW
+    EXECUTE FUNCTION trg_restore_credit_on_payment();
 -- =========================================================
 -- DUMMY DATA
 -- For testing and demonstration purposes
