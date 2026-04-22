@@ -39,11 +39,17 @@ public class CDRParser {
         Connection conn = DB.getConnection();
         conn.setAutoCommit(false);
 
-        long fileId = -1;
+        Integer fileId = -1;
 
         try {
 
-            fileId = createFile(conn, file.getName());
+            String createFile ="{ ? = call create_file_record(?)}" ;
+                try (CallableStatement cs = conn.prepareCall(createFile)) {
+                    cs.registerOutParameter(1, Types.INTEGER);
+                    cs.setString(2, file.getPath());
+                    cs.execute();
+                    fileId = cs.getInt(1);
+                }
 
             String sql = "{ ? = call insert_cdr(?,?,?,?,?,?,?,?,?) }";
 
@@ -91,7 +97,11 @@ public class CDRParser {
                 }
             }
 
-            markFileParsed(conn, fileId);
+            String markParsed = "{ call set_file_parsed(?) }";
+            try (CallableStatement cs = conn.prepareCall(markParsed)) {
+                cs.setInt(1, fileId);
+                cs.execute();
+            }
 
             conn.commit();
 
@@ -102,28 +112,7 @@ public class CDRParser {
             conn.close();
         }
     }
-    private static long createFile(Connection conn, String filename) throws SQLException {
 
-        String sql = "INSERT INTO file(filename,parsed_flag) VALUES (?, false) RETURNING id";
-
-        try (PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setString(1, filename);
-
-            try (ResultSet rs = ps.executeQuery()) {
-                rs.next();
-                return rs.getLong(1);
-            }
-        }
-    }
-    private static void markFileParsed(Connection conn, long fileId) throws SQLException {
-
-        try (PreparedStatement ps = conn.prepareStatement(
-                "UPDATE file SET parsed_flag = true WHERE id = ?"
-        )) {
-            ps.setLong(1, fileId);
-            ps.executeUpdate();
-        }
-    }
         private static void moveFile(File file, File destPath) throws IOException {
                 Path sourcePath = file.toPath();
                 Path target = destPath.toPath().resolve(file.getName());
