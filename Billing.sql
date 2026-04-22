@@ -892,7 +892,7 @@ AS $$
 DECLARE v_new_id INTEGER;
 BEGIN
     INSERT INTO user_account (username, password, role)
-    VALUES (p_username, p_assword, p_role)
+    VALUES (p_username, p_password, p_role)
     RETURNING id INTO v_new_id;
 RETURN v_new_id;
 EXCEPTION
@@ -998,14 +998,15 @@ END IF;
 
     -- --------------------------------------------------------
     -- PRORATION CHECK
-    -- Only prorate if changed on day 15 or later
-    -- AND at least one bundle exceeded its prorated fair share
-    -- Fair share = bundle_amount × usage_ratio
-    -- e.g. on day 15 of 30 → fair share = 50% of bundle
-    --      on day 20 of 30 → fair share = 66.7% of bundle
+    -- Prorate if ANY bundle consumption percentage exceeds
+    -- the day-based fair share percentage
+    --
+    -- fair_share_pct = (days_used / days_in_month) * 100
+    -- consumed_pct   = (consumed / bundle_amount)  * 100
+    --
+    -- if consumed_pct > fair_share_pct → prorate
     -- --------------------------------------------------------
-    IF v_change_day >= 15 THEN
-        FOR v_bundle IN
+FOR v_bundle IN
 SELECT
     cc.consumed,
     sp.amount,
@@ -1018,15 +1019,14 @@ WHERE cc.contract_id   = p_contract_id
   AND cc.ending_date   = v_period_end
   AND cc.is_billed     = FALSE
   AND sp.type         != 'free_units'
-        LOOP
-            -- consumed more than their proportional fair share for the days used
-            IF v_bundle.amount > 0 AND
-               v_bundle.consumed::NUMERIC > (v_bundle.amount * v_usage_ratio) THEN
-                v_should_prorate := TRUE;
+          AND sp.amount        > 0
+    LOOP
+        -- consumed% exceeds what is proportionally fair for the days elapsed
+        IF (v_bundle.consumed::NUMERIC / v_bundle.amount::NUMERIC) > v_usage_ratio THEN
+            v_should_prorate := TRUE;
 EXIT;
 END IF;
 END LOOP;
-END IF;
 
     -- --------------------------------------------------------
     -- PRORATED BILLING
