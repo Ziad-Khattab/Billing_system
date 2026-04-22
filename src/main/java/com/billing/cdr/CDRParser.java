@@ -64,7 +64,7 @@ public class CDRParser {
 
                     String[] p = line.split(",", -1);
 
-                    if (p.length < 7) {
+                    if (p.length < 9) {
                         throw new IllegalArgumentException("Invalid CSV row: " + line);
                     }
 
@@ -72,21 +72,21 @@ public class CDRParser {
                     cs.registerOutParameter(1, Types.INTEGER);
 
                     cs.setInt(2, (int) fileId);
-                    cs.setString(3, p[0]);
-                    cs.setString(4, p[1]);
-                    cs.setTimestamp(5, Timestamp.valueOf(p[2]));
-                    cs.setInt(6, Integer.parseInt(p[3]));
+                    cs.setString(3, p[1]);
+                    cs.setString(4, p[2]);
+                    cs.setTimestamp(5, Timestamp.valueOf(p[3]));
+                    cs.setInt(6, Integer.parseInt(p[4]));
 
-                    if (p[4].trim().isEmpty())
+                    if (p[5].trim().isEmpty())
                         cs.setNull(7, Types.INTEGER);
                     else
-                        cs.setInt(7, Integer.parseInt(p[4]));
+                        cs.setInt(7, Integer.parseInt(p[5]));
 
-                    cs.setString(8, p[5]);
-                    cs.setString(9, p[6]);
+                    cs.setString(8, p[6]);
+                    cs.setString(9, p[7]);
 
-                    if (p.length > 7 && !p[7].trim().isEmpty())
-                        cs.setBigDecimal(10, new BigDecimal(p[7]));
+                    if (p.length > 8 && !p[8].trim().isEmpty())
+                        cs.setBigDecimal(10, new BigDecimal(p[8]));
                     else
                         cs.setBigDecimal(10, BigDecimal.ZERO);
 
