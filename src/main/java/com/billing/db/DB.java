@@ -1,36 +1,48 @@
 package com.billing.db;
-import java.sql.*;
+
+import java.io.InputStream;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.util.Properties;
 
 public class DB {
-    private static final String db_url = "jdbc:postgresql://ep-snowy-dawn-algt9iaq-pooler.c-3.eu-central-1.aws.neon.tech/neondb?sslmode=require&channelBinding=require";
-    private static final String db_user = "neondb_owner";
-    private static final String db_password = "npg_eZDj1hp4uUMT";
+    private static final Properties props = new Properties();
 
-    static Connection conn;
-
-    public static Connection getConnection() throws SQLException {
-        if (conn == null || conn.isClosed()) {
-            try {
+    static {
+        try (InputStream input = DB.class.getClassLoader().getResourceAsStream("db.properties")) {
+            if (input == null) {
+                System.err.println("CRITICAL: db.properties not found in classpath!");
+            } else {
+                props.load(input);
+                // Load the PostgreSQL JDBC driver class. 
+                // This tells Java "I'm going to use Postgres as my DB".
                 Class.forName("org.postgresql.Driver");
-                conn = DriverManager.getConnection(db_url, db_user, db_password);
-                System.out.println("Connected to PostgreSQL database!");
-            } catch (ClassNotFoundException e) {
-                throw new SQLException("PostgreSQL Driver not found.", e);
             }
+        } catch (Exception e) {
+            // If the driver isn't found or properties file is missing, the app cannot start.
+            System.err.println("CRITICAL: Failed to initialize Database Driver");
+            e.printStackTrace();
         }
-        return conn;
     }
 
-    public static void close() {
-        if (conn != null) {
-            try {
-                conn.close();
-                System.out.println("Database connection closed.");
-            } catch (SQLException e) {
-                System.err.println("Error closing connection: " + e.getMessage());
-            }
+    /**
+     * getConnection() is the most important method here.
+     * It uses the properties we loaded above to open a real network connection to Postgres.
+     * 
+     * LEARNING TIP: We call this every time we need the DB. 
+     * The caller MUST close it (usually using try-with-resources in the DAO).
+     */
+    public static Connection getConnection() throws SQLException {
+        String url = props.getProperty("db.url");
+        String user = props.getProperty("db.user");
+        String pass = props.getProperty("db.password");
+        
+        if (url == null || user == null) {
+            throw new SQLException("Database credentials missing in db.properties");
         }
+        // pass can be empty string for local peer-auth PostgreSQL
+        
+        return DriverManager.getConnection(url, user, pass);
     }
 }
-
-
