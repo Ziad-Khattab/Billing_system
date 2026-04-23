@@ -1,36 +1,38 @@
 package com.billing.model;
 
-import java.math.BigDecimal;
-
-// Maps to "contract" table — ties a customer to a rateplan with a phone number.
-// This is the core business entity: a customer subscribes to a plan via a contract.
-//
-// Table: contract (id, customer_id, rateplan_id, msisdn, status, credit_limit, available_credit)
-// status is a PostgreSQL ENUM: 'active', 'suspended', 'terminated'
+/**
+ * SOTA CONTRACT MODEL
+ */
 public class Contract {
-
     private int id;
-    private int customerId;
-    private int rateplanId;
-    private String msisdn;            // phone number (Mobile Station International Subscriber Directory Number)
-    private String status;            // "active", "suspended", "terminated"
-    private BigDecimal creditLimit;
-    private BigDecimal availableCredit;
-
-    // Extra fields for display — populated via JOIN, not stored in contract table
-    private String customerName;
-    private String rateplanName;
+    private int userAccountId; // Linked to user_account.id
+    private int ratePlanId;    // Linked to rateplan.id
+    private String msisdn;
+    private String status;     // "active", "suspended", etc.
+    private double creditLimit;
+    private double availableCredit;
 
     public Contract() {}
 
+    public Contract(int id, int userAccountId, int ratePlanId, String msisdn, String status, double creditLimit, double availableCredit) {
+        this.id = id;
+        this.userAccountId = userAccountId;
+        this.ratePlanId = ratePlanId;
+        this.msisdn = msisdn;
+        this.status = status;
+        this.creditLimit = creditLimit;
+        this.availableCredit = availableCredit;
+    }
+
+    // Getters & Setters
     public int getId() { return id; }
     public void setId(int id) { this.id = id; }
 
-    public int getCustomerId() { return customerId; }
-    public void setCustomerId(int customerId) { this.customerId = customerId; }
+    public int getUserAccountId() { return userAccountId; }
+    public void setUserAccountId(int userAccountId) { this.userAccountId = userAccountId; }
 
-    public int getRateplanId() { return rateplanId; }
-    public void setRateplanId(int rateplanId) { this.rateplanId = rateplanId; }
+    public int getRatePlanId() { return ratePlanId; }
+    public void setRatePlanId(int ratePlanId) { this.ratePlanId = ratePlanId; }
 
     public String getMsisdn() { return msisdn; }
     public void setMsisdn(String msisdn) { this.msisdn = msisdn; }
@@ -38,15 +40,9 @@ public class Contract {
     public String getStatus() { return status; }
     public void setStatus(String status) { this.status = status; }
 
-    public BigDecimal getCreditLimit() { return creditLimit; }
-    public void setCreditLimit(BigDecimal creditLimit) { this.creditLimit = creditLimit; }
+    public double getCreditLimit() { return creditLimit; }
+    public void setCreditLimit(double creditLimit) { this.creditLimit = creditLimit; }
 
-    public BigDecimal getAvailableCredit() { return availableCredit; }
-    public void setAvailableCredit(BigDecimal availableCredit) { this.availableCredit = availableCredit; }
-
-    public String getCustomerName() { return customerName; }
-    public void setCustomerName(String customerName) { this.customerName = customerName; }
-
-    public String getRateplanName() { return rateplanName; }
-    public void setRateplanName(String rateplanName) { this.rateplanName = rateplanName; }
+    public double getAvailableCredit() { return availableCredit; }
+    public void setAvailableCredit(double availableCredit) { this.availableCredit = availableCredit; }
 }

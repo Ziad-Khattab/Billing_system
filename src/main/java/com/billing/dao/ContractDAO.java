@@ -8,29 +8,23 @@ import java.util.List;
 
 public class ContractDAO {
 
-    // ─── SQL WITH JOINS ──────────────────────────────────────
-    // A JOIN query combines data from multiple tables.
-    // Here we get the Contract data + Customer Name + Rate Plan Name.
-    // This is much faster than running 3 separate queries.
-    private static final String SELECT_WITH_JOINS =
-        "SELECT c.*, cu.name AS customer_name, r.name AS rateplan_name " +
+    private static final String SELECT_WITH_JOINS = 
+        "SELECT c.*, u.name AS user_name, r.name AS rateplan_name " +
         "FROM contract c " +
-        "JOIN customer cu ON c.customer_id = cu.id " +
+        "JOIN user_account u ON c.user_account_id = u.id " +
         "JOIN rateplan r ON c.rateplan_id = r.id";
 
-    // Returns all contracts in the system
-    public List<Contract> findAll() {
-        String sql = SELECT_WITH_JOINS + " ORDER BY c.id";
+    public List<Contract> findAll() throws SQLException {
         List<Contract> list = new ArrayList<>();
         try (Connection conn = DB.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql);
-             ResultSet rs = ps.executeQuery()) {
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(SELECT_WITH_JOINS)) {
             while (rs.next()) list.add(mapRow(rs));
-        } catch (SQLException e) { e.printStackTrace(); }
+        }
         return list;
     }
 
-    public Contract findById(int id) {
+    public Contract findById(int id) throws SQLException {
         String sql = SELECT_WITH_JOINS + " WHERE c.id = ?";
         try (Connection conn = DB.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -38,55 +32,47 @@ public class ContractDAO {
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) return mapRow(rs);
             }
-        } catch (SQLException e) { e.printStackTrace(); }
+        }
         return null;
     }
 
-    public List<Contract> findByCustomerId(int customerId) {
-        String sql = SELECT_WITH_JOINS + " WHERE c.customer_id = ? ORDER BY c.id";
-        List<Contract> list = new ArrayList<>();
+    public void create(Contract c) throws SQLException {
+        String sql = "INSERT INTO contract (user_account_id, rateplan_id, msisdn, status, credit_limit, available_credit) " +
+                     "VALUES (?, ?, ?, ?::contract_status, ?, ?)";
         try (Connection conn = DB.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setInt(1, customerId);
+            ps.setInt(1, c.getUserAccountId());
+            ps.setInt(2, c.getRatePlanId());
+            ps.setString(3, c.getMsisdn());
+            ps.setString(4, c.getStatus());
+            ps.setDouble(5, c.getCreditLimit());
+            ps.setDouble(6, c.getAvailableCredit());
+            ps.executeUpdate();
+        }
+    }
+
+    public List<Contract> findByUserId(int userId) throws SQLException {
+        List<Contract> list = new ArrayList<>();
+        String sql = SELECT_WITH_JOINS + " WHERE c.user_account_id = ? ORDER BY c.id";
+        try (Connection conn = DB.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, userId);
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) list.add(mapRow(rs));
             }
-        } catch (SQLException e) { e.printStackTrace(); }
+        }
         return list;
-    }
-
-    public Contract create(Contract c) {
-        String sql = "INSERT INTO contract (customer_id, rateplan_id, msisdn, status, credit_limit, available_credit) " +
-                     "VALUES (?, ?, ?, ?::contract_status, ?, ?) RETURNING id";
-        try (Connection conn = DB.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setInt(1, c.getCustomerId());
-            ps.setInt(2, c.getRateplanId());
-            ps.setString(3, c.getMsisdn());
-            ps.setString(4, c.getStatus() != null ? c.getStatus() : "active");
-            ps.setBigDecimal(5, c.getCreditLimit());
-            ps.setBigDecimal(6, c.getAvailableCredit());
-            try (ResultSet rs = ps.executeQuery()) {
-                if (rs.next()) c.setId(rs.getInt("id"));
-            }
-        } catch (SQLException e) { e.printStackTrace(); }
-        return c;
     }
 
     private Contract mapRow(ResultSet rs) throws SQLException {
         Contract c = new Contract();
         c.setId(rs.getInt("id"));
-        c.setCustomerId(rs.getInt("customer_id"));
-        c.setRateplanId(rs.getInt("rateplan_id"));
+        c.setUserAccountId(rs.getInt("user_account_id"));
+        c.setRatePlanId(rs.getInt("rateplan_id"));
         c.setMsisdn(rs.getString("msisdn"));
         c.setStatus(rs.getString("status"));
-        c.setCreditLimit(rs.getBigDecimal("credit_limit"));
-        c.setAvailableCredit(rs.getBigDecimal("available_credit"));
-        // JOIN fields — may not exist in every query
-        try {
-            c.setCustomerName(rs.getString("customer_name"));
-            c.setRateplanName(rs.getString("rateplan_name"));
-        } catch (SQLException ignored) {} // column not in result set
+        c.setCreditLimit(rs.getDouble("credit_limit"));
+        c.setAvailableCredit(rs.getDouble("available_credit"));
         return c;
     }
 }
