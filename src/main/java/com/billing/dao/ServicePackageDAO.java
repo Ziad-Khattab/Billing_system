@@ -8,18 +8,18 @@ import java.util.List;
 
 public class ServicePackageDAO {
 
-    public List<ServicePackage> findAll() {
+    public List<ServicePackage> findAll() throws SQLException {
         String sql = "SELECT * FROM service_package ORDER BY id";
         List<ServicePackage> list = new ArrayList<>();
         try (Connection conn = DB.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql);
              ResultSet rs = ps.executeQuery()) {
             while (rs.next()) list.add(mapRow(rs));
-        } catch (SQLException e) { e.printStackTrace(); }
+        }
         return list;
     }
 
-    public ServicePackage findById(int id) {
+    public ServicePackage findById(int id) throws SQLException {
         String sql = "SELECT * FROM service_package WHERE id = ?";
         try (Connection conn = DB.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -27,14 +27,13 @@ public class ServicePackageDAO {
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) return mapRow(rs);
             }
-        } catch (SQLException e) { e.printStackTrace(); }
+        }
         return null;
     }
 
-    public ServicePackage create(ServicePackage sp) {
+    public ServicePackage create(ServicePackage sp) throws SQLException {
         String sql = "INSERT INTO service_package (name, type, amount, priority) " +
                      "VALUES (?, ?::service_type, ?, ?) RETURNING id";
-        // ?::service_type — PostgreSQL cast. Tells PG to treat the string as the ENUM type.
         try (Connection conn = DB.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, sp.getName());
@@ -42,9 +41,9 @@ public class ServicePackageDAO {
             ps.setBigDecimal(3, sp.getAmount());
             ps.setInt(4, sp.getPriority());
             try (ResultSet rs = ps.executeQuery()) {
-                if (rs.next()) sp.setId(rs.getInt("id"));
+                if (rs.next()) sp.setId(rs.getInt(1));
             }
-        } catch (SQLException e) { e.printStackTrace(); }
+        }
         return sp;
     }
 

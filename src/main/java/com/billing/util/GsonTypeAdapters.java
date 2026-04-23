@@ -8,11 +8,13 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
+/**
  * Implementation Details:
  * 
  * Java 17+ introduced strict module boundaries that prevent Gson from using reflection 
  * on internal Java classes like LocalDate. Providing these custom adapters ensures 
  * that JSON serialization works correctly without InaccessibleObjectException errors.
+ */
 public class GsonTypeAdapters {
     
     // We create ONE pre-configured GSON instance here. 

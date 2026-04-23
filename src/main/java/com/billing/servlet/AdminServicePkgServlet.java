@@ -16,20 +16,26 @@ public class AdminServicePkgServlet extends BaseServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse res) throws IOException {
         String pathParam = getPathParam(req);
         if (pathParam == null) {
-            sendJson(res, dao.findAll());
+            try { sendJson(res, dao.findAll()); }
+            catch (Exception e) { sendError(res, 500, e.getMessage()); }
         } else {
             try {
                 ServicePackage sp = dao.findById(Integer.parseInt(pathParam));
                 if (sp == null) sendError(res, 404, "Service package not found");
                 else sendJson(res, sp);
             } catch (NumberFormatException e) { sendError(res, 400, "Invalid ID"); }
+            catch (Exception e) { sendError(res, 500, e.getMessage()); }
         }
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse res) throws IOException {
-        ServicePackage sp = readJson(req, ServicePackage.class);
-        res.setStatus(201);
-        sendJson(res, dao.create(sp));
+        try {
+            ServicePackage sp = readJson(req, ServicePackage.class);
+            res.setStatus(201);
+            sendJson(res, dao.create(sp));
+        } catch (Exception e) {
+            sendError(res, 500, e.getMessage());
+        }
     }
 }

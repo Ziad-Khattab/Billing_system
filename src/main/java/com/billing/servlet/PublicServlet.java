@@ -22,7 +22,8 @@ public class PublicServlet extends BaseServlet {
             // GET /api/public/rateplans
             String sub = path != null ? path.replace("/rateplans", "") : "";
             if (sub.isEmpty() || "/".equals(sub)) {
-                sendJson(res, ratePlanDAO.findAll());
+                try { sendJson(res, ratePlanDAO.findAll()); }
+                catch (Exception e) { sendError(res, 500, e.getMessage()); }
             } else {
                 // GET /api/public/rateplans/3
                 try {
@@ -32,11 +33,14 @@ public class PublicServlet extends BaseServlet {
                     else sendJson(res, plan);
                 } catch (NumberFormatException e) {
                     sendError(res, 400, "Invalid ID");
+                } catch (Exception e) {
+                    sendError(res, 500, e.getMessage());
                 }
             }
         } else if (path.startsWith("/service-packages")) {
             // GET /api/public/service-packages
-            sendJson(res, servicePkgDAO.findAll());
+            try { sendJson(res, servicePkgDAO.findAll()); }
+            catch (Exception e) { sendError(res, 500, e.getMessage()); }
         } else {
             sendError(res, 404, "Not found");
         }
