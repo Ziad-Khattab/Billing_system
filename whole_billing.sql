@@ -218,7 +218,7 @@ RETURN CASE p_service_type
            WHEN 'voice' THEN CEIL(p_duration / 60.0)  -- convert seconds to minutes, round up
            WHEN 'data'  THEN p_duration
            WHEN 'sms'   THEN 1
-           WHEN 'free_units' THEN 1
+           WHEN 'free_units' THEN p_duration
     END;
 END;
 $$ LANGUAGE plpgsql;

@@ -1002,3 +1002,23 @@ EXCEPTION
                         p_contract_id, SQLERRM;
 END;
 $$ LANGUAGE plpgsql;
+
+-- ------------------------------------------------------------
+-- GET USER DATA
+-- ------------------------------------------------------------
+   CREATE OR REPLACE FUNCTION get_user_data(p_user_account_id INTEGER)
+          RETURNS TABLE (
+          username VARCHAR(255),
+          role VARCHAR(20),
+          name VARCHAR(255),
+          email VARCHAR(255),
+          address TEXT,
+          birthdate DATE
+          ) AS $$
+          BEGIN
+          RETURN QUERY
+          SELECT username, role, name, email, address, birthdate
+          FROM user_account
+          WHERE id = p_user_account_id;
+END;
+$$ LANGUAGE plpgsql;
