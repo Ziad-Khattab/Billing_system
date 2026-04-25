@@ -29,7 +29,7 @@ declare module "$app/types" {
 	type MatcherParam<M> = M extends (param : string) => param is (infer U extends string) ? U : string;
 
 	export interface AppTypes {
-		RouteId(): "/" | "/admin" | "/admin/billing" | "/admin/contracts" | "/admin/customers" | "/dashboard" | "/dashboard/contracts" | "/dashboard/invoices" | "/dashboard/profile" | "/login" | "/packages" | "/register";
+		RouteId(): "/" | "/admin" | "/admin/billing" | "/admin/cdr" | "/admin/contracts" | "/admin/customers" | "/login" | "/packages" | "/profile" | "/profile/edit" | "/profile/invoices" | "/register";
 		RouteParams(): {
 			
 		};
@@ -37,17 +37,17 @@ declare module "$app/types" {
 			"/": Record<string, never>;
 			"/admin": Record<string, never>;
 			"/admin/billing": Record<string, never>;
+			"/admin/cdr": Record<string, never>;
 			"/admin/contracts": Record<string, never>;
 			"/admin/customers": Record<string, never>;
-			"/dashboard": Record<string, never>;
-			"/dashboard/contracts": Record<string, never>;
-			"/dashboard/invoices": Record<string, never>;
-			"/dashboard/profile": Record<string, never>;
 			"/login": Record<string, never>;
 			"/packages": Record<string, never>;
+			"/profile": Record<string, never>;
+			"/profile/edit": Record<string, never>;
+			"/profile/invoices": Record<string, never>;
 			"/register": Record<string, never>
 		};
-		Pathname(): "/" | "/admin" | "/admin/billing" | "/admin/contracts" | "/admin/customers" | "/dashboard" | "/dashboard/invoices" | "/dashboard/profile" | "/login" | "/packages" | "/register";
+		Pathname(): "/" | "/admin/" | "/admin/billing/" | "/admin/cdr/" | "/admin/contracts/" | "/admin/customers/" | "/login/" | "/packages/" | "/profile/" | "/profile/edit/" | "/profile/invoices/" | "/register/";
 		ResolvedPathname(): `${"" | `/${string}`}${ReturnType<AppTypes['Pathname']>}`;
 		Asset(): "/eand_logo.svg" | string & {};
 	}

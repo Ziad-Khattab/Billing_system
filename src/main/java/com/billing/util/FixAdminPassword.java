@@ -1,32 +1,28 @@
 package com.billing.util;
 
 import com.billing.db.DB;
-import org.mindrot.jbcrypt.BCrypt;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 
 public class FixAdminPassword {
     public static void main(String[] args) {
-        String newHash = BCrypt.hashpw("admin", BCrypt.gensalt());
-        System.out.println("Generated Hash: " + newHash);
-        
-        String sql = "UPDATE app_user SET password_hash = ? WHERE username = 'admin'";
-        
-        try (Connection conn = DB.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (Connection conn = DB.getConnection()) {
+            System.out.println("--- CREATING PLAIN TEXT ADMIN ACCOUNT ---");
             
-            ps.setString(1, newHash);
-            int rows = ps.executeUpdate();
+            // Create/Update Admin Account with lowercase role 'admin'
+            String insert = "INSERT INTO user_account (username, password, role, name, email) " +
+                            "VALUES ('admin', 'admin123', 'admin'::user_role, 'System Admin', 'admin@fmrz.com') " +
+                            "ON CONFLICT (username) DO UPDATE SET password = EXCLUDED.password, role = 'admin'::user_role";
             
-            if (rows > 0) {
-                System.out.println("SUCCESS: Admin password updated successfully!");
-            } else {
-                System.out.println("FAILED: User 'admin' not found in database.");
+            try (PreparedStatement ps = conn.prepareStatement(insert)) {
+                ps.executeUpdate();
+                System.out.println("✅ SUCCESS: Admin account ready!");
+                System.out.println("   Username: admin");
+                System.out.println("   Password: admin123");
             }
             
         } catch (Exception e) {
-            System.err.println("ERROR: Could not connect to database. Did you update db.properties?");
-            e.printStackTrace();
+            System.err.println("❌ Database Error: " + e.getMessage());
         }
     }
 }

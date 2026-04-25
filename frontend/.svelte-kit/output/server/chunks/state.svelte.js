@@ -1,6 +1,6 @@
 import "clsx";
 import { n as noop } from "./renderer.js";
-import "./exports.js";
+import "./url.js";
 import "@sveltejs/kit/internal/server";
 import "./root.js";
 const is_legacy = noop.toString().includes("$$") || /function \w+\(\) \{\}/.test(noop.toString());

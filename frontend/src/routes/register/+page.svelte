@@ -1,4 +1,5 @@
 <script>
+  import { base } from '$app/paths';
   import { onMount } from 'svelte';
 
   let username = $state('');
@@ -12,7 +13,7 @@
       const res = await fetch('/api/auth/me', { credentials: 'include' });
       if (res.ok) {
         const user = await res.json();
-        window.location.href = user.role === 'admin' ? '/admin' : '/dashboard';
+        window.location.assign(user.role === 'admin' ? '/admin' : '/profile');
       }
     } catch {}
   });
@@ -26,16 +27,19 @@
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',
-        body: JSON.stringify({ username, password, msisdn })
+        body: JSON.stringify({ username, password, msisdn, name, email, address, birthdate })
       });
       if (res.ok) {
-        window.location.href = '/dashboard';
+        window.location.assign('/profile');
       } else {
         const data = await res.json();
         error = data.error || 'Registration failed';
+        loading = false;
       }
-    } catch { error = 'Cannot connect to server'; }
-    loading = false;
+    } catch { 
+      error = 'Cannot connect to server'; 
+      loading = false;
+    }
   }
 </script>
 

@@ -43,6 +43,9 @@ logs/
 *.log
 catalina.out
 
+# Local Artifacts
+.m2/
+
 # Keep Reference Solutions (Locally preserved but hidden from team repo)
 frontend_reference/
 backend_reference/

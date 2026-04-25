@@ -64,11 +64,11 @@
         Customer management, CDR processing, automated billing, and invoice generation.
       </p>
       <div class="hero-actions">
-        <a href="/packages" class="btn btn-primary btn-lg">View Packages</a>
+        <a href="packages" class="btn btn-primary btn-lg">View Packages</a>
         {#if loggedIn}
           <a href={dashboardUrl} class="btn btn-secondary btn-lg">Go to Dashboard</a>
         {:else}
-          <a href="/register" class="btn btn-secondary btn-lg">Get Started</a>
+          <a href="register" class="btn btn-secondary btn-lg">Get Started</a>
         {/if}
       </div>
     </div>
@@ -124,11 +124,11 @@
       <h2>Ready to get started?</h2>
       <p>Browse our packages or register for your own billing dashboard.</p>
       <div class="cta-actions">
-        <a href="/packages" class="btn btn-primary">Browse Packages</a>
+        <a href="packages" class="btn btn-primary">Browse Packages</a>
         {#if loggedIn}
           <a href={dashboardUrl} class="btn btn-secondary">Go to Dashboard</a>
         {:else}
-          <a href="/login" class="btn btn-secondary">Login</a>
+          <a href="login" class="btn btn-secondary">Login</a>
         {/if}
       </div>
     </div>

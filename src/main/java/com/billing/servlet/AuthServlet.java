@@ -1,18 +1,16 @@
 package com.billing.servlet;
 
-import com.billing.dao.UserAccountDAO;
-import com.billing.model.UserAccount;
+import com.billing.db.DB;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 
 @WebServlet("/api/auth/*")
 public class AuthServlet extends BaseServlet {
-
-    private final UserAccountDAO userDAO = new UserAccountDAO();
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse res) throws IOException {
@@ -39,33 +37,54 @@ public class AuthServlet extends BaseServlet {
         String password = (String) body.get("password");
 
         try {
-            UserAccount user = userDAO.login(username, password);
-            if (user == null) {
+            List<Map<String, Object>> users = DB.executeSelect(
+                "SELECT * FROM login(?,?)",
+                username, password
+            );
+
+            if (users.isEmpty()) {
                 sendError(res, 401, "Invalid credentials");
                 return;
             }
 
+            Map<String, Object> user = users.get(0);
             HttpSession session = req.getSession(true);
-            user.setPassword(null); // Security
             session.setAttribute("user", user);
             sendJson(res, user);
         } catch (Exception e) {
-            sendError(res, 500, e.getMessage());
+            e.printStackTrace();  // Log to server console
+            System.err.println("Login error for user: " + username);
+            System.err.println("Error details: " + e.getMessage());
+            sendError(res, 500, "Authentication error: " + e.getMessage());
         }
     }
 
     private void handleRegister(HttpServletRequest req, HttpServletResponse res) throws IOException {
         Map body = readJson(req, Map.class);
-        UserAccount user = new UserAccount();
-        user.setUsername((String) body.get("username"));
-        user.setPassword((String) body.get("password"));
-        user.setName((String) body.get("name"));
-        user.setEmail((String) body.get("email"));
-        user.setRole("customer");
+        String username = (String) body.get("username");
+        String password = (String) body.get("password");
+        String name = (String) body.get("name");
+        String email = (String) body.get("email");
+        String address = (String) body.get("address");
+        String birthdate = (String) body.get("birthdate");
 
         try {
-            userDAO.register(user);
-            user.setPassword(null);
+            // Use Fouad's stored procedure directly via the helper
+            List<Map<String, Object>> result = DB.executeSelect(
+                "SELECT create_customer(?, ?, ?, ?, ?, ?::DATE) as id",
+                username, password, name, email, address, birthdate
+            );
+
+            int newId = ((Number) result.get(0).get("id")).intValue();
+            
+            Map<String, Object> user = Map.of(
+                "id", newId,
+                "username", username,
+                "name", name,
+                "email", email,
+                "role", "customer"
+            );
+
             HttpSession session = req.getSession(true);
             session.setAttribute("user", user);
             res.setStatus(201);

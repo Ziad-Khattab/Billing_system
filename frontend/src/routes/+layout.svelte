@@ -1,5 +1,4 @@
 <script>
-	import './layout.css';
 	import '../app.css';
 	import { page } from '$app/stores';
 
@@ -11,7 +10,7 @@
 
 	async function checkAuth() {
 		try {
-			const res = await fetch('/api/auth/me', { credentials: 'include' });
+			const res = await fetch(`/api/auth/me`, { credentials: 'include' });
 
 			if (res.ok) user = await res.json(); else user = null;
 		} catch {
@@ -20,9 +19,9 @@
 	}
 
 	async function logout() {
-		await fetch('/api/auth/logout', { method: 'POST', credentials: 'include' });
+		await fetch(`/api/auth/logout`, { method: 'POST', credentials: 'include' });
 		user = null;
-		window.location.href = '/';
+		window.location.href = `/`;
 	}
 
 	$effect(() => {
@@ -33,11 +32,15 @@
 <div class="app">
 	<nav class="navbar">
 		<div class="nav-inner container">
-			<a href="/" class="nav-brand"><img src="/eand_logo.svg" alt="e&" class="nav-logo" style="height: 40px;" /></a>
+			<a href="/" class="nav-brand" aria-label="Home">
+				<img src="/eand_logo.svg" alt="e&" class="nav-logo" style="height: 40px;" />
+			</a>
 
 			<button
 				class="nav-toggle"
 				onclick={() => navOpen = !navOpen}
+				aria-label={navOpen ? 'Close navigation' : 'Open navigation'}
+				aria-expanded={navOpen}
 			><span></span><span></span><span></span></button>
 
 			<div class="nav-links" class:open={navOpen}>
@@ -50,7 +53,7 @@
 				<a
 					href="/packages"
 					class="nav-link"
-					class:active={$page.url.pathname === '/packages'}
+					class:active={$page.url.pathname.startsWith('/packages')}
 				>Packages</a>
 
 				{#if user && user.role === 'admin'}
@@ -58,7 +61,7 @@
 						href="/admin"
 						class="nav-link"
 						class:active={$page.url.pathname === '/admin'}
-					>Dashboard</a>
+					>Admin Panel</a>
 
 					<a
 						href="/admin/customers"
@@ -79,30 +82,30 @@
 					>Billing</a>
 				{:else if user && user.role === 'customer'}
 					<a
-						href="/dashboard"
+						href="/profile"
 						class="nav-link"
-						class:active={$page.url.pathname === '/dashboard'}
-					>Dashboard</a>
+						class:active={$page.url.pathname === '/profile'}
+					>Profile</a>
 
 					<a
-						href="/dashboard/invoices"
+						href="/profile/invoices"
 						class="nav-link"
-						class:active={$page.url.pathname.startsWith('/dashboard/invoices')}
-					>Invoices</a>
+						class:active={$page.url.pathname.startsWith('/profile/invoices')}
+					>My Invoices</a>
 				{/if}
 
 				<div class="nav-spacer"></div>
 
 				{#if user}
+					<button class="btn btn-ghost" onclick={logout} style="margin-right: 0.5rem;">Logout</button>
+					
 					<span class="nav-user">
 						<span
 							class="badge {user.role === 'admin' ? 'badge-admin' : 'badge-customer'}"
 						>{user.role}</span>
 
-						{user.fullName}
+						{user.name || user.username}
 					</span>
-
-					<button class="btn btn-ghost" onclick={logout}>Logout</button>
 				{:else}
 					<a href="/login" class="btn btn-ghost">Login</a>
 					<a href="/register" class="btn btn-primary">Register</a>
@@ -173,8 +176,8 @@
 	}
 
 	.nav-link.active {
-		color: var(--red-light);
-		background: rgba(224, 8, 0, 0.12);
+		color: #f59e0b; /* Premium Gold */
+		background: rgba(245, 158, 11, 0.12);
 	}
 
 	.nav-spacer {

@@ -1,4 +1,5 @@
 <script>
+  import { base } from '$app/paths';
   import { onMount } from 'svelte';
 
   let username = $state('');
@@ -11,7 +12,7 @@
       const res = await fetch('/api/auth/me', { credentials: 'include' });
       if (res.ok) {
         const user = await res.json();
-        window.location.href = user.role === 'admin' ? '/admin' : '/dashboard';
+        window.location.assign(user.role === 'admin' ? '/admin' : '/profile');
       }
     } catch {}
   });
@@ -20,14 +21,6 @@
     e.preventDefault();
     error = '';
     loading = true;
-    try {
-      const authCheck = await fetch('/api/auth/me', { credentials: 'include' });
-      if (authCheck.ok) {
-        const user = await authCheck.json();
-        window.location.href = user.role === 'admin' ? '/admin' : '/dashboard';
-        return;
-      }
-    } catch {}
 
     try {
       const res = await fetch('/api/auth/login', {
@@ -39,15 +32,17 @@
 
       if (res.ok) {
         const user = await res.json();
-        window.location.href = user.role === 'admin' ? '/admin' : '/dashboard';
+        // Redirect to Profile/Admin instantly
+        window.location.assign(user.role === 'admin' ? '/admin' : '/profile');
       } else {
         const data = await res.json();
         error = data.error || 'Login failed';
+        loading = false;
       }
     } catch {
       error = 'Cannot connect to server';
+      loading = false;
     }
-    loading = false;
   }
 </script>
 

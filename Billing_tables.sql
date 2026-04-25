@@ -7,9 +7,24 @@ DROP TYPE IF EXISTS service_type,contract_status,bill_status,user_role CASCADE;
 -- FILE (raw CDR file ingestion tracker)
 -- ------------------------------------------------------------
 CREATE TABLE file (
-    id          SERIAL PRIMARY KEY,
-    filename    TEXT,
-    parsed_flag BOOLEAN NOT NULL DEFAULT FALSE
+                      id          SERIAL PRIMARY KEY,
+                      parsed_flag BOOLEAN NOT NULL DEFAULT FALSE,
+                      file_path   TEXT NOT NULL
+);
+
+-- ------------------------------------------------------------
+-- USER
+-- ------------------------------------------------------------
+CREATE TYPE user_role AS ENUM ('admin', 'customer');
+CREATE TABLE user_account (
+                              id       SERIAL PRIMARY KEY,
+                              username VARCHAR(255) NOT NULL UNIQUE,
+                              password VARCHAR(30) NOT NULL,
+                              role     user_role NOT NULL,
+                              name     VARCHAR(255) NOT NULL,
+                              email    VARCHAR(255) NOT NULL UNIQUE,
+                              address  TEXT,
+                              birthdate DATE
 );
 
 -- ------------------------------------------------------------
@@ -47,8 +62,9 @@ CREATE TABLE service_package (
                                  type     service_type  NOT NULL,  -- 'voice', 'data', 'sms', etc.
                                  amount   NUMERIC(12,4) NOT NULL, -- quota amount (minutes / MB / count)
                                  priority INTEGER NOT NULL DEFAULT 1, -- for consumption order (lower = consumed first)
-                                 is_roaming BOOLEAN NOT NULL DEFAULT FALSE -- true = roaming-only bundle
-
+                                 price    NUMERIC(12,2),
+                                 is_roaming BOOLEAN NOT NULL DEFAULT FALSE,
+                                 description TEXT
 );
 -- ------------------------------------------------------------
 -- RATEPLAN SERVICE PACKAGES
@@ -182,116 +198,3 @@ CREATE INDEX idx_contract_user_account  ON contract(user_account_id);
 CREATE INDEX idx_bill_contract      ON bill(contract_id);
 CREATE INDEX idx_bill_billing_date  ON bill(billing_date);
 CREATE INDEX idx_invoice_bill       ON invoice(bill_id);
-
--- ============================================================
--- FUNCTIONS (for billing calculations, etc.)
--- ============================================================
-
-
-CREATE OR REPLACE FUNCTION insert_cdr(
-    p_file_id          INTEGER,
-    p_dial_a           VARCHAR(20),
-    p_dial_b           VARCHAR(20),
-    p_start_time       TIMESTAMP,
-    p_duration         INTEGER,
-    p_service_id       INTEGER,
-    p_hplmn            VARCHAR(20),
-    p_vplmn            VARCHAR(20),
-    p_external_charges NUMERIC(12,2)
-)
-RETURNS INTEGER  -- returns the new CDR id
-LANGUAGE plpgsql
-AS $$
-DECLARE
-v_new_id INTEGER;
-BEGIN
-    -- Validate file exists
-    IF NOT EXISTS (SELECT 1 FROM file WHERE id = p_file_id) THEN
-        RAISE EXCEPTION 'File with id % does not exist', p_file_id;
-END IF;
-
-    -- Validate service_package exists if provided
-    IF p_service_id IS NOT NULL AND NOT EXISTS (
-        SELECT 1 FROM service_package WHERE id = p_service_id
-    ) THEN
-        RAISE EXCEPTION 'Service package with id % does not exist', p_service_id;
-END IF;
-
-    -- Validate dial_a is not empty
-    IF p_dial_a IS NULL OR TRIM(p_dial_a) = '' THEN
-        RAISE EXCEPTION 'dial_a (calling party MSISDN) cannot be empty';
-END IF;
-
-    -- Validate duration is non-negative
-    IF p_duration < 0 THEN
-        RAISE EXCEPTION 'Duration cannot be negative';
-END IF;
-
-INSERT INTO cdr (
-    file_id,
-    dial_a,
-    dial_b,
-    start_time,
-    duration,
-    service_id,
-    hplmn,
-    vplmn,
-    external_charges,
-    rated_flag          -- always starts as false, rating engine handles this
-)
-VALUES (
-           p_file_id,
-           p_dial_a,
-           p_dial_b,
-           p_start_time,
-           p_duration,
-           p_service_id,
-           p_hplmn,
-           p_vplmn,
-           COALESCE(p_external_charges, 0),
-           FALSE
-       )
-    RETURNING id INTO v_new_id;
-
-RETURN v_new_id;
-
-EXCEPTION
-    WHEN OTHERS THEN
-        RAISE EXCEPTION 'insert_cdr failed: %', SQLERRM;
-END;
-$$;
-
-
--- ============================================================
--- dummy data for testing
--- ============================================================
-
-INSERT INTO rateplan (name, ror_data, ror_voice, ror_sms, price)
-VALUES
-    ('Basic', 0.10, 0.20, 0.05, 50),
-    ('Premium', 0.05, 0.10, 0.02, 120);
-
--- ------------------------------------------------------------
--- SERVICE PACKAGES
--- ------------------------------------------------------------
-INSERT INTO service_package (name, type, amount, priority)
-VALUES
-    ('Voice Pack', 'voice', 1000, 1),
-    ('Data Pack', 'data', 5000, 1),
-    ('SMS Pack', 'sms', 200, 1);
-
--- ------------------------------------------------------------
--- CUSTOMERS
--- ------------------------------------------------------------
-INSERT INTO customer (name, address, birthdate)
-VALUES
-    ('Ahmed Ali', 'Beni Suef', '1998-05-10'),
-    ('Mohamed Hassan', 'Cairo', '1995-09-22');
-
--- ------------------------------------------------------------
--- CONTRACTS
--- ------------------------------------------------------------
-INSERT INTO contract (customer_id, rateplan_id, msisdn, credit_limit, available_credit, status)
-VALUES
-    (1, 1, '201000000001', 200, 200, 'active'),
-    (2, 2, '201000000002', 500, 500, 'active');

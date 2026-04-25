@@ -1,4 +1,4 @@
-import { h as head, c as ensure_array_like, a as attr_class, d as attr_style, e as escape_html, f as stringify } from "../../chunks/renderer.js";
+import { h as head, d as ensure_array_like, b as attr_class, f as attr_style, e as escape_html, i as stringify } from "../../chunks/renderer.js";
 function html(value) {
   var html2 = String(value ?? "");
   var open = "<!---->";
@@ -36,10 +36,10 @@ function _page($$renderer, $$props) {
       $$renderer3.push(`<meta name="description" content="FMRZ Telecom Billing Operations Platform — Manage customers, rate plans, contracts, and invoices."/>`);
     });
     $$renderer2.push(`<section class="hero svelte-1uha8ag"><div class="hero-bg svelte-1uha8ag"><div class="hero-glow svelte-1uha8ag"></div> <div class="hero-grid svelte-1uha8ag"></div></div> <div class="container hero-content svelte-1uha8ag"><div class="hero-text animate-fade svelte-1uha8ag"><span class="hero-badge svelte-1uha8ag">Telecom Billing Platform</span> <h1 class="svelte-1uha8ag">Powering Your<br/><span class="text-gradient svelte-1uha8ag">Telecom Operations</span></h1> <p class="hero-desc svelte-1uha8ag">Complete billing management system for telecom operators.
-        Customer management, CDR processing, automated billing, and invoice generation.</p> <div class="hero-actions svelte-1uha8ag"><a href="/packages" class="btn btn-primary btn-lg svelte-1uha8ag">View Packages</a> `);
+        Customer management, CDR processing, automated billing, and invoice generation.</p> <div class="hero-actions svelte-1uha8ag"><a href="packages" class="btn btn-primary btn-lg svelte-1uha8ag">View Packages</a> `);
     {
       $$renderer2.push("<!--[-1-->");
-      $$renderer2.push(`<a href="/register" class="btn btn-secondary btn-lg svelte-1uha8ag">Get Started</a>`);
+      $$renderer2.push(`<a href="register" class="btn btn-secondary btn-lg svelte-1uha8ag">Get Started</a>`);
     }
     $$renderer2.push(`<!--]--></div></div> <div class="hero-visual animate-fade svelte-1uha8ag" style="animation-delay: 0.2s;"><div class="hero-card-stack svelte-1uha8ag"><!--[-->`);
     const each_array = ensure_array_like([0, 1, 2]);
@@ -64,10 +64,10 @@ function _page($$renderer, $$props) {
       let feature = each_array_1[i];
       $$renderer2.push(`<div class="card feature-card animate-fade svelte-1uha8ag"${attr_style(`animation-delay: ${stringify(i * 0.1)}s`)}><span class="feature-icon svelte-1uha8ag">${html(feature.icon)}</span> <h3 class="svelte-1uha8ag">${escape_html(feature.title)}</h3> <p class="svelte-1uha8ag">${escape_html(feature.desc)}</p></div>`);
     }
-    $$renderer2.push(`<!--]--></div></section> <section class="cta-section svelte-1uha8ag"><div class="container"><div class="cta-card card-glass svelte-1uha8ag"><h2 class="svelte-1uha8ag">Ready to get started?</h2> <p class="svelte-1uha8ag">Browse our packages or register for your own billing dashboard.</p> <div class="cta-actions svelte-1uha8ag"><a href="/packages" class="btn btn-primary">Browse Packages</a> `);
+    $$renderer2.push(`<!--]--></div></section> <section class="cta-section svelte-1uha8ag"><div class="container"><div class="cta-card card-glass svelte-1uha8ag"><h2 class="svelte-1uha8ag">Ready to get started?</h2> <p class="svelte-1uha8ag">Browse our packages or register for your own billing dashboard.</p> <div class="cta-actions svelte-1uha8ag"><a href="packages" class="btn btn-primary">Browse Packages</a> `);
     {
       $$renderer2.push("<!--[-1-->");
-      $$renderer2.push(`<a href="/login" class="btn btn-secondary">Login</a>`);
+      $$renderer2.push(`<a href="login" class="btn btn-secondary">Login</a>`);
     }
     $$renderer2.push(`<!--]--></div></div></div></section>`);
   });

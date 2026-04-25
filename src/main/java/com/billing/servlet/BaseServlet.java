@@ -31,14 +31,33 @@ public abstract class BaseServlet extends HttpServlet {
     }
 
     /**
-     * Helper method to read an incoming JSON request body (from a POST/PUT request)
-     * and automatically convert it into a Java object.
-     * @param req The incoming HttpServletRequest containing the JSON body.
-     * @param clazz The Java class you want the JSON mapped to (e.g., User.class).
-     * @return An instance of 'clazz' populated with the incoming data.
+     * Helper method to read an incoming JSON request body and convert it into a Map.
+     * Useful for dynamic or one-off JSON payloads.
+     */
+    protected Map<String, Object> readJson(HttpServletRequest req) throws IOException {
+        return gson.fromJson(req.getReader(), Map.class);
+    }
+
+    /**
+     * Helper method to read an incoming JSON request body and map it to a specific class.
      */
     protected <T> T readJson(HttpServletRequest req, Class<T> clazz) throws IOException {
         return gson.fromJson(req.getReader(), clazz);
+    }
+
+    // --- Functional Helpers for Lean Code ---
+
+    @FunctionalInterface
+    public interface Logic<T> { T execute() throws Exception; }
+
+    protected <T> void handle(HttpServletResponse res, Logic<T> logic) {
+        try {
+            T result = logic.execute();
+            sendJson(res, result);
+        } catch (Exception e) {
+            e.printStackTrace();
+            try { sendError(res, 500, e.getMessage()); } catch (IOException ignored) {}
+        }
     }
 
     protected void sendError(HttpServletResponse res, int status, String message) throws IOException {

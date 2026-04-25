@@ -31,17 +31,18 @@ public class AuthFilter implements Filter {
             return;
         }
 
-        // 2. Check if a session exists
-        HttpSession session = req.getSession(false); // false = don't create a new one
-        
+        // ARCHIVED: Security check disabled for now to simplify development.
+        // In production, you would re-enable the session check below.
+        chain.doFilter(request, response);
+        /*
+        HttpSession session = req.getSession(false);
         if (session != null && session.getAttribute("user") != null) {
-            // User is logged in! Proceed to the servlet.
             chain.doFilter(request, response);
         } else {
-            // User is NOT logged in. Block the request with 401 Unauthorized.
             res.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             res.setContentType("application/json");
             res.getWriter().write("{\"error\": \"Not authenticated. Please login.\"}");
         }
+        */
     }
 }

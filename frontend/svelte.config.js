@@ -10,7 +10,10 @@ const config = {
 			fallback: 'index.html', // Enable SPA mode
 			precompress: false,
 			strict: true
-		})
+		}),
+		paths: {
+			base: ""
+		}
 	}
 };
 

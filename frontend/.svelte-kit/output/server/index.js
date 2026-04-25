@@ -5,11 +5,12 @@ import { Redirect, SvelteKitError, ActionFailure, HttpError } from "@sveltejs/ki
 import { with_request_store, merge_tracing, try_get_request_store } from "@sveltejs/kit/internal/server";
 import { a as assets, b as base, c as app_dir, r as relative, o as override, d as reset } from "./chunks/environment.js";
 import * as devalue from "devalue";
-import { m as make_trackable, d as disable_search, a as decode_params, S as SCHEME, v as validate_layout_server_exports, b as validate_layout_exports, c as validate_page_server_exports, e as validate_page_exports, n as normalize_path, r as resolve, f as decode_pathname, g as validate_server_exports } from "./chunks/exports.js";
+import { m as make_trackable, d as disable_search, a as decode_params, S as SCHEME, n as normalize_path, r as resolve, b as decode_pathname } from "./chunks/url.js";
 import { b as base64_encode, t as text_decoder, a as text_encoder, g as get_relative_path } from "./chunks/utils.js";
 import "clsx";
 import { w as writable, r as readable } from "./chunks/index.js";
 import { p as public_env, r as read_implementation, o as options, s as set_private_env, a as set_public_env, g as get_hooks, b as set_read_implementation } from "./chunks/internal.js";
+import { v as validate_layout_server_exports, a as validate_layout_exports, b as validate_page_server_exports, c as validate_page_exports, d as validate_server_exports } from "./chunks/exports.js";
 import { parse, serialize } from "cookie";
 import * as set_cookie_parser from "set-cookie-parser";
 function with_resolvers() {
@@ -1635,22 +1636,22 @@ async function render_response({
     } finally {
       reset();
     }
-    for (const { node } of branch) {
-      for (const url of node.imports) modulepreloads.add(url);
-      for (const url of node.stylesheets) stylesheets.add(url);
-      for (const url of node.fonts) fonts.add(url);
-      if (node.inline_styles && !client.inline) {
-        Object.entries(await node.inline_styles()).forEach(([filename, css]) => {
-          if (typeof css === "string") {
-            inline_styles.set(filename, css);
-            return;
-          }
-          inline_styles.set(filename, css(`${assets$1}/${app_dir}/immutable/assets`, assets$1));
-        });
-      }
-    }
   } else {
     rendered = { head: "", html: "", css: { code: "", map: null }, hashes: { script: [] } };
+  }
+  for (const { node } of branch) {
+    for (const url of node.imports) modulepreloads.add(url);
+    for (const url of node.stylesheets) stylesheets.add(url);
+    for (const url of node.fonts) fonts.add(url);
+    if (node.inline_styles && !client.inline) {
+      Object.entries(await node.inline_styles()).forEach(([filename, css]) => {
+        if (typeof css === "string") {
+          inline_styles.set(filename, css);
+          return;
+        }
+        inline_styles.set(filename, css(`${assets$1}/${app_dir}/immutable/assets`, assets$1));
+      });
+    }
   }
   const head = new Head(rendered.head, !!state.prerendering);
   let body2 = rendered.html;
@@ -2047,6 +2048,7 @@ class Head {
   }
 }
 class PageNodes {
+  /** All layout nodes and the page node, if any */
   data;
   /**
    * @param {Array<import('types').SSRNode | undefined>} nodes
@@ -2499,7 +2501,7 @@ async function render_page(event, event_state, page, options2, manifest, state, 
   }
   try {
     const leaf_node = (
-      /** @type {import('types').SSRNode} */
+      /** @type {SSRNode} */
       nodes.page()
     );
     let status = 200;
@@ -2541,7 +2543,15 @@ async function render_page(event, event_state, page, options2, manifest, state, 
     if (ssr === false && !(state.prerendering && should_prerender_data)) {
       if (BROWSER && action_result && !event.request.headers.has("x-sveltekit-action")) ;
       return await render_response({
-        branch: [],
+        // provide nodes without running load functions so that the styles and
+        // fonts are linked in the head before CSR takes over
+        branch: compact(nodes.data).map((node) => {
+          return {
+            node,
+            data: null,
+            server_data: null
+          };
+        }),
         fetched,
         page_config: {
           ssr: false,
@@ -2725,7 +2735,7 @@ async function render_page(event, event_state, page, options2, manifest, state, 
       },
       status,
       error: null,
-      branch: !ssr ? [] : compact(branch),
+      branch: compact(branch),
       action_result,
       fetched,
       data_serializer: !ssr ? server_data_serializer(event, event_state, options2) : data_serializer,
@@ -3276,12 +3286,7 @@ async function internal_respond(request, options2, manifest, state) {
       /** A map of remote function key to corresponding single-flight-mutation promise */
       refreshes: null,
       /** A map of remote function ID to payloads requested for refreshing by the client */
-      requested: null,
-      /**
-       * A map of remote function ID to objects that have passed validation;
-       * used to prevent revalidating parameters returned from `requested`
-       */
-      validated: null
+      requested: null
     },
     is_in_remote_function: false,
     is_in_render: false,
@@ -3293,7 +3298,7 @@ async function internal_respond(request, options2, manifest, state) {
     fetch: null,
     getClientAddress: state.getClientAddress || (() => {
       throw new Error(
-        `${"@sveltejs/adapter-auto"} does not specify getClientAddress. Please raise an issue`
+        `${"@sveltejs/adapter-static"} does not specify getClientAddress. Please raise an issue`
       );
     }),
     locals: {},
@@ -3598,7 +3603,17 @@ async function internal_respond(request, options2, manifest, state) {
           page_config: { ssr: false, csr: true },
           status: 200,
           error: null,
-          branch: [],
+          branch: [
+            // include the root layout because it applies to every page
+            {
+              node: (
+                /** @type {SSRNode} */
+                await manifest._.nodes[0]()
+              ),
+              data: null,
+              server_data: null
+            }
+          ],
           fetched: [],
           resolve_opts,
           data_serializer: server_data_serializer(event2, event_state, options2)

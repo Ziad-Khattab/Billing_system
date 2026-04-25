@@ -18,6 +18,13 @@ import com.billing.db.DB;
 
 public class CDRParser {
 
+    public static void main(String[] args) {
+        String input = args.length > 0 ? args[0] : "input";
+        String processed = args.length > 1 ? args[1] : "processed";
+        System.out.println("DEBUG START: " + input + " -> " + processed);
+        processAll(input, processed);
+    }
+
     public static void processAll(String sourceDir, String destDir) {
         File source = new File(sourceDir);
         File dest = new File(destDir);

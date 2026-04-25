@@ -6,22 +6,17 @@
   
   // Create an empty array to store the billing data retrieved from the server
   let bills = $state([]);
+  let loading = $state(false);
 
-  // async function allows us to use 'await' when making HTTP requests to the backend
   async function loadBills() {
-    // Prevent the function from running if the user hasn't typed a contract ID
     if (!contractId) return;
-    
+    loading = true;
     try {
-      // fetch() makes an HTTP GET request to the Tomcat Java backend on port 8080.
-      // 'credentials: include' ensures session cookies (for authentication) are sent with the request.
       const res = await fetch(`/api/admin/bills?contract_id=${contractId}`, { credentials: 'include' });
-      
-      // If the backend returns a 200 OK status, parse the JSON response and update our 'bills' array.
-      // Because 'bills' uses $state(), updating it here triggers Svelte to re-render the HTML table below.
       if (res.ok) bills = await res.json();
     } catch {
-      // If the server is down or network fails, ignore the error silently for now
+    } finally {
+      loading = false;
     }
   }
 </script>
@@ -32,20 +27,24 @@
 <!-- The main wrapper using the .container class defined in app.css -->
 <div class="container">
   <!-- Page title -->
-  <div class="page-header"><h1>Billing & Invoices</h1></div>
-  
-  <!-- Search bar area: Flexbox is used to put the input and button side-by-side -->
-  <div style="display:flex;gap:1rem;margin-bottom:2rem">
-    <!-- bind:value={contractId} implements two-way binding. 
-         Typing in the box updates the variable, and changing the variable updates the box. -->
-    <input class="input" style="width:200px" placeholder="Contract ID" bind:value={contractId} type="number" />
-    
-    <!-- onclick={loadBills} attaches the click event directly to our async function -->
-    <button class="btn btn-primary" onclick={loadBills}>Load Bills</button>
+  <div class="page-header">
+    <h1>Billing & <span class="text-gradient">Invoices</span></h1>
+    <p class="text-muted">Track and audit historical billing records across the network</p>
   </div>
   
-  <!-- Svelte {#if} logic block: Only show the table if the bills array is not empty -->
-  {#if bills.length > 0}
+  <div class="search-bar animate-fade">
+    <div style="display:flex;gap:1rem;margin-bottom:2rem">
+      <input class="input" style="width:200px" placeholder="Enter Contract ID..." bind:value={contractId} type="number" />
+      <button class="btn btn-primary" onclick={loadBills}>Load Bills</button>
+    </div>
+  </div>
+  
+  {#if loading}
+    <div class="card" style="text-align:center;padding:4rem;">
+      <div class="spinner" style="margin: 0 auto 1rem;"></div>
+      <p style="color:var(--text-muted)">Fetching Billing Records...</p>
+    </div>
+  {:else if bills.length > 0}
   <div class="table-wrapper">
     <table>
       <thead>
@@ -58,15 +57,14 @@
         <!-- Svelte {#each} loop: Iterates over the 'bills' array. 'b' represents each bill object -->
         {#each bills as b}
         <tr>
-          <!-- Use curly braces {} to render the Javascript properties into the HTML -->
-          <td>#{b.id}</td>
-          <td>{b.billingDate}</td>
-          <td>{b.recurringFees} EGP</td>
-          <td>{b.oneTimeFees} EGP</td>
-          <td>{b.voiceUsage}s</td>
-          <td>{b.dataUsage} MB</td>
-          <td>{b.smsUsage}</td>
-          <td>{b.taxes} EGP</td>
+          <td><span class="id-badge">#{b.id}</span></td>
+          <td class="text-muted">{b.billingDate}</td>
+          <td><span class="amount-num">{b.recurringFees} EGP</span></td>
+          <td><span class="amount-num">{b.oneTimeFees} EGP</span></td>
+          <td><span class="duration-num">{b.voiceUsage}s</span></td>
+          <td><span class="duration-num">{b.dataUsage} MB</span></td>
+          <td><span class="duration-num">{b.smsUsage}</span></td>
+          <td><span class="amount-num">{b.taxes} EGP</span></td>
         </tr>
         {/each}
       </tbody>
