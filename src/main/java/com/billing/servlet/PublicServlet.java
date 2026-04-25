@@ -22,9 +22,7 @@ public class PublicServlet extends BaseServlet {
             if (sub.isEmpty() || "/".equals(sub)) {
                 try {
                     sendJson(res, DB.executeSelect(
-                        "SELECT id, name, price, ror_voice AS rorVoice, ror_data AS rorData, ror_sms AS rorSms " +
-                        "FROM rateplan WHERE name IN ('Prepaid Standard', 'Premium Gold', 'Elite Enterprise') " +
-                        "ORDER BY price ASC"
+                        "SELECT * FROM get_all_rateplans()"
                     ));
                 } catch (Exception e) {
                     sendError(res, 500, e.getMessage());
@@ -46,9 +44,7 @@ public class PublicServlet extends BaseServlet {
             // GET /api/public/service-packages
             try {
                 sendJson(res, DB.executeSelect(
-                    "SELECT id, name, description, price, is_roaming AS isRoaming, type, amount, " +
-                    "voice_amount AS voiceAmount, data_amount AS dataAmount, sms_amount AS smsAmount " +
-                    "FROM service_package ORDER BY price ASC"
+                    "SELECT * FROM get_all_service_packages()"
                 ));
             } catch (Exception e) {
                 sendError(res, 500, e.getMessage());

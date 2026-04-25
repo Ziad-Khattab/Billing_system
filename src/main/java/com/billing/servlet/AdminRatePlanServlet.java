@@ -39,11 +39,11 @@ public class AdminRatePlanServlet extends BaseServlet {
         try {
             Map body = readJson(req, Map.class);
             String name = (String) body.get("name");
-            Number basicFee = (Number) body.get("basic_fee");
+            Number price = (Number) body.get("price");
 
             List<Map<String, Object>> result = DB.executeSelect(
-                "INSERT INTO rateplan (name, basic_fee) VALUES (?, ?) RETURNING *",
-                name, basicFee
+                "INSERT INTO rateplan (name, price) VALUES (?, ?) RETURNING *",
+                name, price
             );
 
             res.setStatus(201);

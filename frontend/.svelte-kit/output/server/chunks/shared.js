@@ -2,7 +2,7 @@ import { json, text } from "@sveltejs/kit";
 import { SvelteKitError, HttpError } from "@sveltejs/kit/internal";
 import { with_request_store } from "@sveltejs/kit/internal/server";
 import * as devalue from "devalue";
-import { t as text_decoder, c as base64_decode, b as base64_encode } from "./utils.js";
+import { t as text_decoder, c as base64_decode, a as text_encoder, b as base64_encode } from "./utils.js";
 import { e as experimental_async_required, g as get_render_context, h as hydratable_serialization_failed } from "./render-context.js";
 import "clsx";
 function noop() {
@@ -328,8 +328,8 @@ function deep_set(object, keys, value) {
     const key = keys[i];
     check_prototype_pollution(key);
     const is_array = /^\d+$/.test(keys[i + 1]);
-    const exists = Object.hasOwn(current, key);
-    const inner = current[key];
+    const inner = Object.hasOwn(current, key) ? current[key] : void 0;
+    const exists = inner != null;
     if (exists && is_array !== Array.isArray(inner)) {
       throw new Error(`Invalid array key ${keys[i + 1]}`);
     }
@@ -932,7 +932,7 @@ function stringify_remote_arg(value, transport, sort = true) {
     value,
     create_remote_arg_reducers(transport, sort, /* @__PURE__ */ new Map())
   );
-  const bytes = new TextEncoder().encode(json_string);
+  const bytes = text_encoder.encode(json_string);
   return base64_encode(bytes).replaceAll("=", "").replaceAll("+", "-").replaceAll("/", "_");
 }
 function parse_remote_arg(string, transport) {
@@ -963,10 +963,10 @@ function unfriendly_hydratable(key, fn) {
   return hydratable(key, fn);
 }
 export {
-  normalize_issue as A,
-  set_nested_value as B,
-  flatten_issues as C,
-  deep_set as D,
+  set_nested_value as A,
+  flatten_issues as B,
+  deep_set as C,
+  stringify_remote_arg as D,
   ENDPOINT_METHODS as E,
   INVALIDATED_PARAM as I,
   MUTATIVE_METHODS as M,
@@ -996,7 +996,7 @@ export {
   has_prerendered_path as u,
   handle_fatal_error as v,
   format_server_error as w,
-  stringify_remote_arg as x,
-  unfriendly_hydratable as y,
-  create_field_proxy as z
+  unfriendly_hydratable as x,
+  create_field_proxy as y,
+  normalize_issue as z
 };

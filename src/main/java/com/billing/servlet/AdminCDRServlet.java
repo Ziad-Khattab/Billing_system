@@ -18,10 +18,7 @@ public class AdminCDRServlet extends BaseServlet {
             int limit = req.getParameter("limit") != null ? Integer.parseInt(req.getParameter("limit")) : 50;
             int offset = req.getParameter("offset") != null ? Integer.parseInt(req.getParameter("offset")) : 0;
 
-            String sql = "SELECT c.id, c.dial_a as msisdn, c.dial_b as destination, c.duration, " +
-                         "c.start_time as timestamp, c.service_id as type, c.rated_flag as rated " +
-                         "FROM cdr c " +
-                         "ORDER BY c.start_time DESC LIMIT ? OFFSET ?";
+            String sql = "SELECT * from get_cdrs(?,?)";
             
             return DB.executeSelect(sql, limit, offset);
         });

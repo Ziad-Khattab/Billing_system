@@ -26,23 +26,18 @@ public class CustomerProfileServlet extends BaseServlet {
         try {
             if ("/profile".equals(path)) {
                 List<Map<String, Object>> profile = DB.executeSelect(
-                    "SELECT id, username, name, email, address FROM user_account WHERE id = ?", userId);
+                    "SELECT * FROM get_user_data(?)", userId);
                 if (profile.isEmpty()) sendError(res, 404, "User not found");
                 else sendJson(res, profile.get(0));
             } 
-            else if ("/contracts".equals(path)) {
-                List<Map<String, Object>> list = DB.executeSelect(
-                    "SELECT c.msisdn, c.status, c.available_credit as \"availableCredit\", r.name as \"rateplanName\" " +
-                    "FROM contract c " +
-                    "LEFT JOIN rateplan r ON c.rateplan_id = r.id " +
-                    "WHERE c.user_account_id = ?", userId);
-                sendJson(res, list);
+             else if ("/contracts".equals(path)) {
+                 List<Map<String, Object>> list = DB.executeSelect(
+                     "SELECT * FROM get_user_contracts(?)", userId);
+                 sendJson(res, list);
             }
             else if ("/invoices".equals(path)) {
                 List<Map<String, Object>> list = DB.executeSelect(
-                    "SELECT b.* FROM bill b " +
-                    "JOIN contract c ON b.contract_id = c.id " +
-                    "WHERE c.user_account_id = ? ORDER BY b.billing_date DESC", userId);
+                    "SELECT * FROM get_user_invoices(?)", userId);
                 sendJson(res, list);
             }
             else {

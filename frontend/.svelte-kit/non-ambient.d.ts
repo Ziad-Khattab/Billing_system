@@ -29,7 +29,7 @@ declare module "$app/types" {
 	type MatcherParam<M> = M extends (param : string) => param is (infer U extends string) ? U : string;
 
 	export interface AppTypes {
-		RouteId(): "/" | "/admin" | "/admin/billing" | "/admin/cdr" | "/admin/contracts" | "/admin/customers" | "/login" | "/packages" | "/profile" | "/profile/contracts" | "/profile/edit" | "/profile/invoices" | "/register";
+		RouteId(): "/" | "/admin" | "/admin/billing" | "/admin/cdr" | "/admin/contracts" | "/admin/customers" | "/login" | "/packages" | "/profile" | "/profile/edit" | "/profile/invoices" | "/register";
 		RouteParams(): {
 			
 		};
@@ -43,7 +43,6 @@ declare module "$app/types" {
 			"/login": Record<string, never>;
 			"/packages": Record<string, never>;
 			"/profile": Record<string, never>;
-			"/profile/contracts": Record<string, never>;
 			"/profile/edit": Record<string, never>;
 			"/profile/invoices": Record<string, never>;
 			"/register": Record<string, never>

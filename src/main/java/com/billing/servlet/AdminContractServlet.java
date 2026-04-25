@@ -16,21 +16,11 @@ public class AdminContractServlet extends BaseServlet {
         String path = req.getPathInfo();
         try {
             if (path == null || "/".equals(path)) {
-                String sql = "SELECT c.id, c.msisdn, c.status, c.available_credit as \"availableCredit\", " +
-                             "u.name as \"customerName\", r.name as \"rateplanName\" " +
-                             "FROM contract c " +
-                             "JOIN user_account u ON c.user_account_id = u.id " +
-                             "LEFT JOIN rateplan r ON c.rateplan_id = r.id " +
-                             "ORDER BY c.id DESC";
+                String sql = "SELECT * FROM get_all_contracts()";
                 sendJson(res, DB.executeSelect(sql));
             } else {
                 int id = Integer.parseInt(path.substring(1));
-                String sql = "SELECT c.*, u.name as \"customerName\", r.name as \"rateplanName\", " +
-                             "c.available_credit as \"availableCredit\" " +
-                             "FROM contract c " +
-                             "JOIN user_account u ON c.user_account_id = u.id " +
-                             "LEFT JOIN rateplan r ON c.rateplan_id = r.id " +
-                             "WHERE c.id = ?";
+                String sql = "SELECT * FROM get_contract_by_id(?)";
                 List<Map<String, Object>> list = DB.executeSelect(sql, id);
                 if (list.isEmpty()) sendError(res, 404, "Contract not found");
                 else sendJson(res, list.get(0));
@@ -45,8 +35,11 @@ public class AdminContractServlet extends BaseServlet {
         try {
             Map body = readJson(req, Map.class);
             List<Map<String, Object>> result = DB.executeSelect(
-                "INSERT INTO contract (customer_id, rateplan_id, status) VALUES (?, ?, ?) RETURNING *",
-                body.get("customerId"), body.get("ratePlanId"), body.get("status")
+                    "SELECT create_contract(?, ?, ?, ?) AS id",
+                    body.get("userId"),
+                    body.get("ratePlanId"),
+                    body.get("msisdn"),
+                    body.get("creditLimit")
             );
             res.setStatus(201);
             sendJson(res, result.get(0));

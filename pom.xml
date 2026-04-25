@@ -109,11 +109,19 @@
                 <configuration>
                     <container>
                         <containerId>tomcat11x</containerId>
-                        <home>/home/zkhattab/portable/tomcat11</home>
+                        <artifactInstaller>
+                            <groupId>org.apache.tomcat</groupId>
+                            <artifactId>tomcat</artifactId>
+                            <version>11.0.0</version>
+                            <type>zip</type>
+                        </artifactInstaller>
                     </container>
                     <configuration>
-                        <type>existing</type>
-                        <home>/home/zkhattab/portable/tomcat11</home>
+                        <type>standalone</type>
+                        <home>${project.build.directory}/tomcat11</home>
+                        <properties>
+                            <cargo.servlet.port>8080</cargo.servlet.port>
+                        </properties>
                     </configuration>
                 </configuration>
             </plugin>

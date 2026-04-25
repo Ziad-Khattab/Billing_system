@@ -39,8 +39,7 @@ public class AdminServicePkgServlet extends BaseServlet {
         try {
             Map body = readJson(req, Map.class);
             List<Map<String, Object>> result = DB.executeSelect(
-                "INSERT INTO service_package (name, type, amount, priority, price, description, is_roaming) " +
-                "VALUES (?, ?::service_type, ?, ?, ?, ?, ?) RETURNING *",
+                "SELECT * FROM create_service_package(?, ?::service_type, ?, ?, ?, ?, ?)",
                 body.get("name"), body.get("type"), body.get("amount"), 
                 body.get("priority"), body.get("price"), body.get("description"), body.get("is_roaming")
             );

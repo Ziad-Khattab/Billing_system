@@ -1303,7 +1303,7 @@ function mark_reactions(signal, status, updated_during_traversal) {
       );
       batch_values?.delete(derived2);
       if ((flags & WAS_MARKED) === 0) {
-        if (flags & CONNECTED) {
+        if (flags & CONNECTED && (active_effect === null || (active_effect.f & REACTION_IS_UPDATING) === 0)) {
           reaction.f |= WAS_MARKED;
         }
         mark_reactions(derived2, MAYBE_DIRTY, updated_during_traversal);
