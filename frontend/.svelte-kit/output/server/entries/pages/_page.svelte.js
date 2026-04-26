@@ -35,7 +35,7 @@ function _page($$renderer, $$props) {
       });
       $$renderer3.push(`<meta name="description" content="FMRZ Telecom Billing Operations Platform — Manage customers, rate plans, contracts, and invoices."/>`);
     });
-    $$renderer2.push(`<section class="hero svelte-1uha8ag"><div class="hero-bg svelte-1uha8ag"><div class="hero-glow svelte-1uha8ag"></div> <div class="hero-grid svelte-1uha8ag"></div></div> <div class="container hero-content svelte-1uha8ag"><div class="hero-text animate-fade svelte-1uha8ag"><span class="hero-badge svelte-1uha8ag">Telecom Billing Platform</span> <h1 class="svelte-1uha8ag">Powering Your<br/><span class="text-gradient svelte-1uha8ag">Telecom Operations</span></h1> <p class="hero-desc svelte-1uha8ag">Complete billing management system for telecom operators.
+    $$renderer2.push(`<section class="hero svelte-1uha8ag"><div class="container hero-content svelte-1uha8ag"><div class="hero-text animate-fade svelte-1uha8ag"><span class="hero-badge svelte-1uha8ag">Telecom Billing Platform</span> <h1 class="svelte-1uha8ag">Powering Your<br/><span class="text-gradient svelte-1uha8ag">Telecom Operations</span></h1> <p class="hero-desc svelte-1uha8ag">Complete billing management system for telecom operators.
         Customer management, CDR processing, automated billing, and invoice generation.</p> <div class="hero-actions svelte-1uha8ag"><a href="packages" class="btn btn-primary btn-lg svelte-1uha8ag">View Packages</a> `);
     {
       $$renderer2.push("<!--[-1-->");
@@ -45,7 +45,7 @@ function _page($$renderer, $$props) {
     const each_array = ensure_array_like([0, 1, 2]);
     for (let $$index = 0, $$length = each_array.length; $$index < $$length; $$index++) {
       let i = each_array[$$index];
-      $$renderer2.push(`<div${attr_class("hero-card svelte-1uha8ag", void 0, { "active": currentSlide === i })}${attr_style(`--offset: ${stringify((i - currentSlide + 3) % 3)}`)}><div class="hero-card-header svelte-1uha8ag"><div class="hero-avatar svelte-1uha8ag">`);
+      $$renderer2.push(`<div${attr_class("hero-card card svelte-1uha8ag", void 0, { "active": currentSlide === i })}${attr_style(`--offset: ${stringify((i - currentSlide + 3) % 3)}`)}><div class="hero-card-header svelte-1uha8ag"><div class="hero-avatar svelte-1uha8ag">`);
       if (i === 0) {
         $$renderer2.push("<!--[0-->");
         $$renderer2.push(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:20px;height:20px;"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>`);

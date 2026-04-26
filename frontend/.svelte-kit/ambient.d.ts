@@ -44,10 +44,8 @@ declare module '$env/static/private' {
 	export const HYPRLAND_CMD: string;
 	export const npm_config_cache: string;
 	export const PYTHONUNBUFFERED: string;
-	export const XDG_MENU_PREFIX: string;
 	export const MAVEN_PROJECTBASEDIR: string;
 	export const XDG_BACKEND: string;
-	export const QT_IM_MODULES: string;
 	export const TERMINAL_EMULATOR: string;
 	export const MAVEN_CMD_LINE_ARGS: string;
 	export const NODE: string;
@@ -58,7 +56,6 @@ declare module '$env/static/private' {
 	export const TERM_SESSION_ID: string;
 	export const COLOR: string;
 	export const npm_config_local_prefix: string;
-	export const XMODIFIERS: string;
 	export const DESKTOP_SESSION: string;
 	export const LC_MONETARY: string;
 	export const HL_INITIAL_WORKSPACE_TOKEN: string;
@@ -99,7 +96,6 @@ declare module '$env/static/private' {
 	export const SHLVL: string;
 	export const MOZ_ENABLE_WAYLAND: string;
 	export const LC_TELEPHONE: string;
-	export const QT_IM_MODULE: string;
 	export const LC_MEASUREMENT: string;
 	export const XDG_VTNR: string;
 	export const XDG_SESSION_ID: string;
@@ -218,10 +214,8 @@ declare module '$env/dynamic/private' {
 		HYPRLAND_CMD: string;
 		npm_config_cache: string;
 		PYTHONUNBUFFERED: string;
-		XDG_MENU_PREFIX: string;
 		MAVEN_PROJECTBASEDIR: string;
 		XDG_BACKEND: string;
-		QT_IM_MODULES: string;
 		TERMINAL_EMULATOR: string;
 		MAVEN_CMD_LINE_ARGS: string;
 		NODE: string;
@@ -232,7 +226,6 @@ declare module '$env/dynamic/private' {
 		TERM_SESSION_ID: string;
 		COLOR: string;
 		npm_config_local_prefix: string;
-		XMODIFIERS: string;
 		DESKTOP_SESSION: string;
 		LC_MONETARY: string;
 		HL_INITIAL_WORKSPACE_TOKEN: string;
@@ -273,7 +266,6 @@ declare module '$env/dynamic/private' {
 		SHLVL: string;
 		MOZ_ENABLE_WAYLAND: string;
 		LC_TELEPHONE: string;
-		QT_IM_MODULE: string;
 		LC_MEASUREMENT: string;
 		XDG_VTNR: string;
 		XDG_SESSION_ID: string;

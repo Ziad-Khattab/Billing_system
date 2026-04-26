@@ -1,92 +1,96 @@
+
 -- =========================================================
--- DUMMY DATA
--- For testing and demonstration purposes
+-- BILLING SYSTEM DUMMY DATA (FULL TEST SET)
+-- Restored with all 18 users, addresses, and credentials
 -- =========================================================
 
 ------------------------------------------------------------
--- RESET (make script re-runnable)
--- Ensures IDs start from 1 so FK references match.
+-- RESET
 ------------------------------------------------------------
 TRUNCATE TABLE
-    invoice,
-    bill,
-    cdr,
-    contract_consumption,
-    ror_contract,
-    contract,
-    rateplan_service_package,
-    service_package,
-    rateplan,
-    user_account,
-    file
+    invoice, bill, cdr, contract_consumption, ror_contract, 
+    contract, rateplan_service_package, service_package, 
+    rateplan, user_account, customer, file
 RESTART IDENTITY CASCADE;
 
 ------------------------------------------------------------
--- FILES
+-- 1. CUSTOMERS (Full 18 Profiles)
 ------------------------------------------------------------
-INSERT INTO file (parsed_flag, file_path)
+INSERT INTO customer (name, email, address, birthdate)
 VALUES
-    (FALSE, '/tmp/test_cdr_april_1.csv'),
-    (FALSE, '/tmp/test_cdr_april_2.csv');
+    ('Alice Smith',    'alice@gmail.com',   '123 Main St',    '1990-01-01'),
+    ('Bob Johnson',    'bob@gmail.com',     '456 Elm St',     '1985-05-15'),
+    ('Carol White',    'carol@gmail.com',   '789 Oak Ave',    '1992-03-10'),
+    ('David Brown',    'david@gmail.com',   '321 Pine Rd',    '1988-07-22'),
+    ('Eva Green',      'eva@gmail.com',     '654 Maple Dr',   '1995-11-05'),
+    ('Frank Miller',   'frank@gmail.com',   '987 Cedar Ln',   '1983-02-18'),
+    ('Grace Lee',      'grace@gmail.com',   '147 Birch Blvd', '1991-09-30'),
+    ('Henry Wilson',   'henry@gmail.com',   '258 Walnut St',  '1987-04-14'),
+    ('Iris Taylor',    'iris@gmail.com',    '369 Spruce Ave', '1993-06-25'),
+    ('Jack Davis',     'jack@gmail.com',    '741 Ash Ct',     '1986-12-03'),
+    ('Karen Martinez', 'karen@gmail.com',   '852 Elm Pl',     '1994-08-17'),
+    ('Leo Anderson',   'leo@gmail.com',     '963 Oak St',     '1989-01-29'),
+    ('Mia Thomas',     'mia@gmail.com',     '159 Pine Ave',   '1996-05-08'),
+    ('Noah Jackson',   'noah@gmail.com',    '267 Maple Rd',   '1984-10-21'),
+    ('Olivia Harris',  'olivia@gmail.com',  '348 Cedar Dr',   '1997-03-15'),
+    ('Paul Clark',     'paul@gmail.com',    '426 Birch Ln',   '1982-07-04'),
+    ('Quinn Lewis',    'quinn@gmail.com',   '537 Walnut Blvd','1998-11-19'),
+    ('Rachel Walker',  'rachel@gmail.com',  '648 Spruce St',  '1981-02-27');
 
 ------------------------------------------------------------
--- USER ACCOUNTS (18 users to match contracts)
+-- 2. USER ACCOUNTS (Linked Credentials)
 ------------------------------------------------------------
-INSERT INTO user_account (name, address, birthdate, role, username, password, email)
+INSERT INTO user_account (username, password, role, customer_id)
 VALUES
-    ('Alice Smith',    '123 Main St',    '1990-01-01', 'customer', 'alice',   'password1', 'alice@gmail.com'),
-    ('Bob Johnson',    '456 Elm St',     '1985-05-15', 'customer', 'bob',     'password2', 'bob@gmail.com'),
-    ('Carol White',    '789 Oak Ave',    '1992-03-10', 'customer', 'carol',   'password3', 'carol@gmail.com'),
-    ('David Brown',    '321 Pine Rd',    '1988-07-22', 'customer', 'david',   'password4', 'david@gmail.com'),
-    ('Eva Green',      '654 Maple Dr',   '1995-11-05', 'customer', 'eva',     'password5', 'eva@gmail.com'),
-    ('Frank Miller',   '987 Cedar Ln',   '1983-02-18', 'customer', 'frank',   'password6', 'frank@gmail.com'),
-    ('Grace Lee',      '147 Birch Blvd', '1991-09-30', 'customer', 'grace',   'password7', 'grace@gmail.com'),
-    ('Henry Wilson',   '258 Walnut St',  '1987-04-14', 'customer', 'henry',   'password8', 'henry@gmail.com'),
-    ('Iris Taylor',    '369 Spruce Ave', '1993-06-25', 'customer', 'iris',    'password9', 'iris@gmail.com'),
-    ('Jack Davis',     '741 Ash Ct',     '1986-12-03', 'customer', 'jack',    'password10','jack@gmail.com'),
-    ('Karen Martinez', '852 Elm Pl',     '1994-08-17', 'customer', 'karen',   'password11','karen@gmail.com'),
-    ('Leo Anderson',   '963 Oak St',     '1989-01-29', 'customer', 'leo',     'password12','leo@gmail.com'),
-    ('Mia Thomas',     '159 Pine Ave',   '1996-05-08', 'customer', 'mia',     'password13','mia@gmail.com'),
-    ('Noah Jackson',   '267 Maple Rd',   '1984-10-21', 'customer', 'noah',    'password14','noah@gmail.com'),
-    ('Olivia Harris',  '348 Cedar Dr',   '1997-03-15', 'customer', 'olivia',  'password15','olivia@gmail.com'),
-    ('Paul Clark',     '426 Birch Ln',   '1982-07-04', 'customer', 'paul',    'password16','paul@gmail.com'),
-    ('Quinn Lewis',    '537 Walnut Blvd','1998-11-19', 'customer', 'quinn',   'password17','quinn@gmail.com'),
-    ('Rachel Walker',  '648 Spruce St',  '1981-02-27', 'customer', 'rachel',  'password18','rachel@gmail.com');
+    ('alice',  'password1',  'customer', 1),
+    ('bob',    'password2',  'customer', 2),
+    ('carol',  'password3',  'customer', 3),
+    ('david',  'password4',  'customer', 4),
+    ('eva',    'password5',  'customer', 5),
+    ('frank',  'password6',  'customer', 6),
+    ('grace',  'password7',  'customer', 7),
+    ('henry',  'password8',  'customer', 8),
+    ('iris',   'password9',  'customer', 9),
+    ('jack',   'password10', 'customer', 10),
+    ('karen',  'password11', 'customer', 11),
+    ('leo',    'password12', 'customer', 12),
+    ('mia',    'password13', 'customer', 13),
+    ('noah',   'password14', 'customer', 14),
+    ('olivia', 'password15', 'customer', 15),
+    ('paul',   'password16', 'customer', 16),
+    ('quinn',  'password17', 'customer', 17),
+    ('rachel', 'password18', 'customer', 18),
+    ('admin',  'admin123',  'admin',    NULL);
 
 ------------------------------------------------------------
--- RATEPLANS
+-- 3. RATE PLANS
 ------------------------------------------------------------
-INSERT INTO rateplan (name, ror_data, ror_voice, ror_sms, price)
+INSERT INTO rateplan (name, ror_data, ror_voice, ror_sms, price, description)
 VALUES
-    ('Basic',   0.10, 0.20, 0.05, 50),
-    ('Premium', 0.05, 0.10, 0.02, 120);
+    ('Prepaid Standard',  0.10, 0.20, 0.05,  50, 'Perfect for light usage and essential connectivity.'),
+    ('Premium Gold',      0.05, 0.10, 0.02, 120, 'Our most popular plan with high-speed data and roaming.'),
+    ('Elite Enterprise',  0.02, 0.05, 0.01, 349, 'Ultimate performance with unlimited potential for power users.');
 
 ------------------------------------------------------------
--- SERVICE PACKAGES
+-- 4. SERVICE PACKAGES
 ------------------------------------------------------------
-INSERT INTO service_package (name, type, amount, priority, is_roaming)
+INSERT INTO service_package (name, type, amount, priority, is_roaming, price, description)
 VALUES
-    ('Voice Pack',         'voice',      1000, 1, FALSE),
-    ('Data Pack',          'data',       5000, 1, FALSE),
-    ('SMS Pack',           'sms',         200, 1, FALSE),
-    ('Welcome Bonus',      'free_units',   50, 2, FALSE),
-    ('Roaming Voice Pack', 'voice',        200, 1, TRUE),
-    ('Roaming Data Pack',  'data',        1000, 1, TRUE),
-    ('Roaming SMS Pack',   'sms',           50, 1, TRUE);
+    ('Voice Pack', 'voice', 1000, 1, FALSE, 15.00, '1000 mins local'),
+    ('Data Pack', 'data', 5000, 1, FALSE, 25.00, '5 GB local'),
+    ('SMS Pack', 'sms', 200, 1, FALSE, 5.00, '200 SMS messages'),
+    ('Welcome Bonus', 'free_units', 50, 2, FALSE, 0.00, 'Free 50 bonus units'),
+    ('Roaming Voice', 'voice', 200, 1, TRUE, 30.00, '200 mins roaming'),
+    ('Roaming Data', 'data', 1000, 1, TRUE, 45.00, '1 GB roaming'),
+    ('Roaming SMS', 'sms', 50, 1, TRUE, 10.00, '50 roaming SMS');
 
-------------------------------------------------------------
--- RATEPLAN → PACKAGES
-------------------------------------------------------------
 INSERT INTO rateplan_service_package (rateplan_id, service_package_id)
-VALUES
-    (1, 1), (1, 3),
-    (2, 1), (2, 2), (2, 3), (2, 4),
-    (2, 5), (2, 6), (2, 7);
+VALUES (1,1), (1,3), (2,1), (2,2), (2,3), (2,4), (2,5), (2,6), (2,7), (3,1), (3,2), (3,3), (3,4), (3,5), (3,6), (3,7);
 
 ------------------------------------------------------------
--- CONTRACTS
+-- 5. CONTRACTS (All 18 Lines Provisioned)
 ------------------------------------------------------------
-INSERT INTO contract (user_account_id, rateplan_id, msisdn, status, credit_limit, available_credit)
+INSERT INTO contract (customer_id, rateplan_id, msisdn, status, credit_limit, available_credit)
 VALUES
     (1,  1, '201000000001', 'active', 200, 200),
     (2,  2, '201000000002', 'active', 500, 500),
@@ -102,68 +106,18 @@ VALUES
     (12, 2, '201000000012', 'active', 500, 500),
     (13, 1, '201000000013', 'active', 200, 200),
     (14, 2, '201000000014', 'active', 500, 500),
-    (15, 1, '201000000015', 'active', 200, 200),
-    (16, 2, '201000000016', 'active', 500, 500),
-    (17, 1, '201000000017', 'active', 200, 200),
-    (18, 2, '201000000018', 'active', 500, 500);
+    (15, 3, '201000000015', 'active', 1000, 1000),
+    (16, 3, '201000000016', 'active', 1000, 1000),
+    (17, 3, '201000000017', 'active', 1000, 1000),
+    (18, 3, '201000000018', 'active', 1000, 1000);
 
 ------------------------------------------------------------
--- ROR_CONTRACT (only columns that exist in schema)
+-- 6. USAGE TRACKERS (All 18 Initialized)
 ------------------------------------------------------------
-INSERT INTO ror_contract (contract_id, rateplan_id, data, voice, sms, roam_data, roam_voice, roam_sms)
-VALUES
-    (1, 1, 10, 20, 5, 0, 0, 0),
-    (2, 2,  5, 10, 2, 0, 0, 0),
-    (3,  1, 0, 0, 0, 0, 0, 0),
-    (4,  2, 0, 0, 0, 0, 0, 0),
-    (5,  1, 0, 0, 0, 0, 0, 0),
-    (6,  2, 0, 0, 0, 0, 0, 0),
-    (7,  1, 0, 0, 0, 0, 0, 0),
-    (8,  2, 0, 0, 0, 0, 0, 0),
-    (9,  1, 0, 0, 0, 0, 0, 0),
-    (10, 2, 0, 0, 0, 0, 0, 0),
-    (11, 1, 0, 0, 0, 0, 0, 0),
-    (12, 2, 0, 0, 0, 0, 0, 0),
-    (13, 1, 0, 0, 0, 0, 0, 0),
-    (14, 2, 0, 0, 0, 0, 0, 0),
-    (15, 1, 0, 0, 0, 0, 0, 0),
-    (16, 2, 0, 0, 0, 0, 0, 0),
-    (17, 1, 0, 0, 0, 0, 0, 0),
-    (18, 2, 0, 0, 0, 0, 0, 0);
+INSERT INTO ror_contract (contract_id, rateplan_id)
+SELECT id, rateplan_id FROM contract;
 
-------------------------------------------------------------
--- CONTRACT_CONSUMPTION (APRIL 2026)
-------------------------------------------------------------
-INSERT INTO contract_consumption (
-    contract_id, service_package_id, rateplan_id,
-    starting_date, ending_date, consumed, is_billed
-) VALUES
-      (1, 1, 1, '2026-04-01', '2026-04-30', 120, FALSE),
-      (1, 3, 1, '2026-04-01', '2026-04-30', 15,  FALSE),
-      (2, 1, 2, '2026-04-01', '2026-04-30', 300, FALSE),
-      (2, 2, 2, '2026-04-01', '2026-04-30', 800, FALSE),
-      (2, 3, 2, '2026-04-01', '2026-04-30', 40,  FALSE),
-      (2, 4, 2, '2026-04-01', '2026-04-30', 10,  FALSE);
-
-------------------------------------------------------------
--- BILLS (MARCH 2026)
-------------------------------------------------------------
-INSERT INTO bill (
-    contract_id, billing_period_start, billing_period_end, billing_date,
-    recurring_fees, one_time_fees,
-    voice_usage, data_usage, sms_usage,
-    ROR_charge, taxes, total_amount, status, is_paid
-)
-VALUES
-    (1, '2026-03-01', '2026-03-31', '2026-04-01',
-     50, 0, 200, 0, 20, 12.0, 5.0, 67.0, 'issued', FALSE),
-    (2, '2026-03-01', '2026-03-31', '2026-04-01',
-     120, 0, 400, 1200, 60, 25.0, 10.0, 155.0, 'issued', FALSE);
-
-------------------------------------------------------------
--- INVOICES
-------------------------------------------------------------
-INSERT INTO invoice (bill_id, pdf_path)
-VALUES
-    (1, '/tmp/invoice_march_1.pdf'),
-    (2, '/tmp/invoice_march_2.pdf');
+INSERT INTO contract_consumption (contract_id, service_package_id, rateplan_id, starting_date, ending_date)
+SELECT c.id, rsp.service_package_id, c.rateplan_id, '2026-04-01', '2026-04-30'
+FROM contract c 
+JOIN rateplan_service_package rsp ON rsp.rateplan_id = c.rateplan_id;

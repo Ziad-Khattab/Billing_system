@@ -14,24 +14,16 @@ public class AdminServicePkgServlet extends BaseServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse res) throws IOException {
         String pathParam = getPathParam(req);
-        if (pathParam == null) {
-            try {
-                sendJson(res, DB.executeSelect("SELECT * FROM service_package ORDER BY id"));
-            } catch (Exception e) {
-                sendError(res, 500, e.getMessage());
-            }
-        } else {
-            try {
+        handle(res, () -> {
+            if (pathParam == null) {
+                return DB.executeSelect("SELECT * FROM get_all_service_packages()");
+            } else {
                 int id = Integer.parseInt(pathParam);
-                List<Map<String, Object>> list = DB.executeSelect("SELECT * FROM service_package WHERE id = ?", id);
-                if (list.isEmpty()) sendError(res, 404, "Service package not found");
-                else sendJson(res, list.get(0));
-            } catch (NumberFormatException e) {
-                sendError(res, 400, "Invalid ID");
-            } catch (Exception e) {
-                sendError(res, 500, e.getMessage());
+                List<Map<String, Object>> list = DB.executeSelect("SELECT * FROM get_service_package_by_id(?)", id);
+                if (list.isEmpty()) throw new RuntimeException("Service package not found");
+                return list.get(0);
             }
-        }
+        });
     }
 
     @Override

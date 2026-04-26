@@ -1,5 +1,6 @@
 <script>
   let plans = $state([]);
+  let currentPlan = $state(0);
   let servicePkgs = $state([]);
   let loading = $state(true);
 
@@ -12,16 +13,21 @@
       if (plansRes.ok) plans = await plansRes.json();
       if (pkgsRes.ok) servicePkgs = await pkgsRes.json();
     } catch (e) {
-      plans = [
-        { id: 1, name: 'Prepaid Standard', rorVoice: 0.25, rorData: 0.15, rorSms: 0.05, price: 0 },
-        { id: 2, name: 'Postpaid Premium', rorVoice: 0.15, rorData: 0.10, rorSms: 0.03, price: 149 },
-        { id: 3, name: 'Elite Enterprise', rorVoice: 0.10, rorData: 0.05, rorSms: 0.01, price: 499 }
-      ];
+      plans = [];
+      servicePkgs = [];
     }
     loading = false;
   }
 
-  $effect(() => { loadData(); });
+  $effect(() => { 
+    loadData(); 
+    const interval = setInterval(() => {
+      if (plans.length > 0) {
+        currentPlan = (currentPlan + 1) % plans.length;
+      }
+    }, 5000);
+    return () => clearInterval(interval);
+  });
 </script>
 
 <svelte:head>
@@ -40,95 +46,129 @@
     <div class="loading">Loading...</div>
   {:else}
     <h2 class="section-title">Standard Rate Plans</h2>
-    <div class="plans-grid">
-      {#each plans as plan, i}
-        <div class="plan-card animate-fade" style="animation-delay: {i * 0.1}s" class:featured={i === 1}>
-          {#if i === 1}
-            <div class="plan-badge">Most Popular</div>
-          {/if}
-          <div class="plan-header">
-            <h3>{plan.name}</h3>
-            <div class="plan-price">
-              <span class="currency">EGP</span>
-              <span class="amount">{plan.price}</span>
-              <span class="period">/mo</span>
-            </div>
-          </div>
-          <div class="plan-features">
-            <div class="feature-row">
-              <span class="feature-label">Voice</span>
-              <span class="feature-value">{plan.rorVoice} EGP/min</span>
-            </div>
-            <div class="feature-row">
-              <span class="feature-label">Data</span>
-              <span class="feature-value">{plan.rorData} EGP/MB</span>
-            </div>
-            <div class="feature-row">
-              <span class="feature-label">SMS</span>
-              <span class="feature-value">{plan.rorSms} EGP/msg</span>
-            </div>
-          </div>
-          <button 
-            onclick={() => window.location.href = document.querySelector('.user-menu') ? '/dashboard' : '/register'}
-            class="btn {i === 1 ? 'btn-primary' : 'btn-secondary'}" 
-            style="width: 100%;"
+    
+    <div class="plan-stack-wrapper">
+      <div class="plan-stack">
+        {#each plans as plan, i}
+          {@const offset = (i - currentPlan + plans.length) % plans.length}
+          <div 
+            class="plan-card stack-card card" 
+            class:active={offset === 0}
+            style="--offset: {offset}"
           >
-            Choose Plan
-          </button>
-        </div>
-      {/each}
-    </div>
-
-    {#if servicePkgs.length > 0}
-      <h2 class="section-title" style="margin-top: 4rem;">Bundled Service Packages</h2>
-      <div class="plans-grid">
-        {#each servicePkgs as pkg, i}
-          <div class="plan-card animate-fade" style="animation-delay: {i * 0.1}s">
-            {#if pkg.is_roaming}
-              <div class="plan-badge roaming">🌍 Roaming Ready</div>
-            {:else if i % 3 === 0}
-              <div class="plan-badge promo">Exclusive Deal</div>
+            {#if plan.id === 2}
+              <div class="plan-badge">Most Popular</div>
             {/if}
-            
             <div class="plan-header">
-              <h3>{pkg.name}</h3>
-              <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: -0.5rem; margin-bottom: 1rem;">{pkg.description}</p>
+              <h3>{plan.name}</h3>
               <div class="plan-price">
                 <span class="currency">EGP</span>
-                <span class="amount">{pkg.price}</span>
+                <span class="amount">{plan.price}</span>
                 <span class="period">/mo</span>
               </div>
             </div>
-            <div class="plan-features">
-              {#if pkg.type === 'voice' || pkg.voiceAmount > 0}
-                <div class="feature-row">
-                  <span class="feature-label">Voice Allowance</span>
-                  <span class="feature-value">{pkg.amount || pkg.voiceAmount} Minutes</span>
-                </div>
-              {/if}
-              {#if pkg.type === 'data' || pkg.dataAmount > 0}
-                <div class="feature-row">
-                  <span class="feature-label">Data Allowance</span>
-                  <span class="feature-value">{pkg.amount || pkg.dataAmount} MB</span>
-                </div>
-              {/if}
-              {#if pkg.type === 'sms' || pkg.smsAmount > 0}
-                <div class="feature-row">
-                  <span class="feature-label">SMS Allowance</span>
-                  <span class="feature-value">{pkg.amount || pkg.smsAmount} SMS</span>
-                </div>
-              {/if}
-              <div class="feature-row" style="margin-top: 0.5rem; padding-top: 0.5rem; border-top: 1px dashed var(--border);">
-                <span class="feature-label">Support</span>
-                <span class="feature-value" style="color: {pkg.is_roaming ? 'var(--red)' : 'inherit'}">
-                  {pkg.is_roaming ? 'International' : 'Local Only'}
+            <div class="plan-details">
+              <div class="detail-row">
+                <span class="detail-label">Voice Allowance</span>
+                <span class="detail-value">
+                  {plan.name === 'Elite Enterprise' ? 'Unlimited' : (plan.name === 'Premium Gold' ? '2000' : '500')} 
+                  <small>Minutes</small>
+                </span>
+              </div>
+              <div class="detail-row">
+                <span class="detail-label">Data Allowance</span>
+                <span class="detail-value">
+                  {plan.name === 'Elite Enterprise' ? '50' : (plan.name === 'Premium Gold' ? '10' : '2')} 
+                  <small>GB</small>
+                </span>
+              </div>
+              <div class="detail-row">
+                <span class="detail-label">SMS Allowance</span>
+                <span class="detail-value">
+                  {plan.name === 'Elite Enterprise' ? 'Unlimited' : (plan.name === 'Premium Gold' ? '500' : '100')} 
+                  <small>Messages</small>
                 </span>
               </div>
             </div>
             <button 
-              onclick={() => window.location.href = document.querySelector('.user-menu') ? '/dashboard' : '/register'}
-              class="btn btn-secondary" 
+              onclick={() => window.location.href = '/register?plan=' + plan.id}
+              class="btn {offset === 0 ? 'btn-primary' : 'btn-secondary'}" 
               style="width: 100%;"
+            >
+              Choose {plan.name}
+            </button>
+          </div>
+        {/each}
+      </div>
+
+      <div class="dots-nav">
+        {#each plans as _, i}
+          <button 
+            class="dot-btn" 
+            class:active={currentPlan === i}
+            onclick={() => currentPlan = i}
+            aria-label="Go to plan {i + 1}"
+          ></button>
+        {/each}
+      </div>
+    </div>
+
+    {#if servicePkgs.length > 0}
+      <h2 class="section-title" style="margin-top: 5rem;">Bundled Service Packages</h2>
+      <div class="bundles-grid">
+        {#each servicePkgs as pkg, i}
+          <div class="bundle-card card animate-fade" style="animation-delay: {i * 0.1}s">
+            {#if pkg.is_roaming}
+              <div class="plan-badge roaming">🌍 Roaming Ready</div>
+            {:else if pkg.price === 0}
+              <div class="plan-badge promo">🎁 Exclusive Deal</div>
+            {:else if i === 0}
+              <div class="plan-badge trend">🔥 Trending</div>
+            {/if}
+            
+            <div class="plan-header">
+              <h3>{pkg.name}</h3>
+              <p class="pkg-subtitle">{pkg.description}</p>
+              <div class="plan-price">
+                <span class="currency">EGP</span>
+                <span class="amount">{pkg.price}</span>
+                <span class="period">per month</span>
+              </div>
+            </div>
+
+            <div class="plan-features">
+              {#if pkg.voiceAmount > 0}
+                <div class="feature-row">
+                  <div class="feature-label-group">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="color: #3B82F6"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                    <span>Voice</span>
+                  </div>
+                  <span class="feature-value">{pkg.voiceAmount} Min</span>
+                </div>
+              {/if}
+              {#if pkg.dataAmount > 0}
+                <div class="feature-row">
+                  <div class="feature-label-group">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="color: #A855F7"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/></svg>
+                    <span>Data</span>
+                  </div>
+                  <span class="feature-value">{pkg.dataAmount} MB</span>
+                </div>
+              {/if}
+              {#if pkg.smsAmount > 0}
+                <div class="feature-row">
+                  <div class="feature-label-group">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="color: #F59E0B"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+                    <span>SMS</span>
+                  </div>
+                  <span class="feature-value">{pkg.smsAmount} Msg</span>
+                </div>
+              {/if}
+            </div>
+            <button 
+              onclick={() => window.location.href = '/register?pkg=' + pkg.id}
+              class="btn btn-secondary" 
+              style="width: 100%; margin-top: 1.5rem;"
             >
               Choose Package
             </button>
@@ -140,58 +180,167 @@
 </div>
 
 <style>
-  .section-title { font-size: 1.5rem; margin-bottom: 2rem; color: var(--text-secondary); text-align: center; }
+  .plan-stack-wrapper {
+    position: relative;
+    max-width: 1000px;
+    margin: 0 auto 4rem;
+    padding: 2rem 0;
+  }
+  .plan-stack {
+    position: relative;
+    height: 450px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    perspective: 1200px;
+  }
+  .stack-card {
+    position: absolute;
+    width: 340px;
+    height: 480px;
+    padding: 2.5rem 2rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    opacity: 0;
+    pointer-events: none;
+    transform: translateX(100px) scale(0.85) rotateY(-15deg);
+    z-index: 1;
+    border-radius: var(--radius-lg);
+  }
+  .stack-card[style*="--offset: 0"] {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateX(0) scale(1.05) rotateY(0);
+    z-index: 10;
+    border-color: rgba(224, 8, 0, 0.4);
+    box-shadow: 0 40px 100px rgba(0,0,0,0.9), 0 0 40px rgba(224, 8, 0, 0.2);
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0.02) 100%);
+  }
+  /* Next Card */
+  .stack-card[style*="--offset: 1"] {
+    opacity: 0.6;
+    transform: translateX(280px) scale(0.9) rotateY(-30deg);
+    z-index: 5;
+  }
+  /* Previous Card */
+  .stack-card[style*="--offset: 2"], 
+  .stack-card[style*="--offset: -1"] {
+    opacity: 0.6;
+    transform: translateX(-280px) scale(0.9) rotateY(30deg);
+    z-index: 5;
+  }
+
+  .dots-nav {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 2rem;
+  }
+  .dot-btn {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--border);
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+  .dot-btn.active {
+    background: var(--red);
+    transform: scale(1.3);
+    box-shadow: 0 0 10px rgba(224, 8, 0, 0.5);
+  }
+  .dot-btn:hover:not(.active) { background: rgba(255,255,255,0.2); }
+
+  .section-title {
+    text-align: center;
+    font-size: 2.25rem;
+    font-weight: 800;
+    margin-bottom: 3.5rem;
+    color: white;
+    letter-spacing: -0.02em;
+  }
   .page-subtitle { color: var(--text-secondary); margin-top: 0.5rem; }
+  .packages-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2.5rem;
+    margin-top: 3rem; /* Extra space for badges */
+    overflow: visible;
+  }
+  .packages-section {
+    padding: 6rem 0;
+    overflow: visible;
+  }
   .plans-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 1.5rem;
-    max-width: 900px;
+    gap: 2.5rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    background: transparent;
+    padding: 2rem 0;
+  }
+  .bundles-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+    max-width: 1100px;
     margin: 0 auto;
   }
-  .plan-card {
-    position: relative;
-    background: var(--bg-card);
-    border: 1px solid var(--border);
-    border-radius: var(--radius-lg);
+  .bundle-card {
     padding: 2rem;
     display: flex;
     flex-direction: column;
-    gap: 1.5rem;
-    transition: all 0.3s ease;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: visible;
   }
-  .plan-card:hover {
-    transform: translateY(-4px);
-    box-shadow: var(--shadow-lg);
-  }
-  .plan-card.featured {
+  .bundle-card:hover {
+    transform: translateY(-8px);
     border-color: var(--red);
-    box-shadow: var(--shadow-red);
-    transform: scale(1.05);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.4), 0 0 20px rgba(224, 8, 0, 0.15);
   }
-  .plan-card.featured:hover { transform: scale(1.05) translateY(-4px); }
+  .pkg-subtitle { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1.5rem; height: 2.5rem; overflow: hidden; }
+  
+  .feature-label-group {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    color: var(--text-secondary);
+    font-weight: 500;
+  }
+  .support-row { margin-top: 0.5rem; padding-top: 1rem; border-top: 1px dashed var(--border); }
+
   .plan-badge {
     position: absolute;
     top: -12px;
-    left: 50%;
-    transform: translateX(-50%);
-    background: var(--red);
-    color: white;
-    padding: 0.25rem 1rem;
-    border-radius: 100px;
+    right: 20px;
+    padding: 6px 16px;
+    border-radius: 50px;
     font-size: 0.75rem;
-    font-weight: 600;
-    white-space: nowrap;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: white;
     z-index: 10;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
   }
-  .plan-badge.roaming { background: #3B82F6; box-shadow: 0 0 10px rgba(59, 130, 246, 0.5); }
-  .plan-badge.promo { background: #F59E0B; }
-  .plan-header { text-align: center; }
+
+  .plan-badge.trend { background: linear-gradient(135deg, #FF4B2B, #FF416C); box-shadow: 0 4px 15px rgba(255, 65, 108, 0.4); }
+  .plan-badge.promo { background: linear-gradient(135deg, #F59E0B, #D97706); box-shadow: 0 4px 15px rgba(245, 158, 11, 0.4); }
+  .plan-badge.roaming { background: linear-gradient(135deg, #3B82F6, #2563EB); box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4); }
+
   .plan-header h3 {
     font-size: 1.25rem;
-    font-weight: 600;
-    margin-bottom: 0.75rem;
-    color: var(--text-secondary);
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    background: linear-gradient(135deg, #ffffff 0%, #a5b4fc 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
   }
   .plan-price { display: flex; align-items: baseline; justify-content: center; gap: 0.25rem; }
   .currency { font-size: 1rem; color: var(--text-muted); font-weight: 500; }

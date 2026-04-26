@@ -50,11 +50,6 @@
 </svelte:head>
 
 <section class="hero">
-  <div class="hero-bg">
-    <div class="hero-glow"></div>
-    <div class="hero-grid"></div>
-  </div>
-
   <div class="container hero-content">
     <div class="hero-text animate-fade">
       <span class="hero-badge">Telecom Billing Platform</span>
@@ -75,7 +70,7 @@
     <div class="hero-visual animate-fade" style="animation-delay: 0.2s;">
       <div class="hero-card-stack">
         {#each [0, 1, 2] as i}
-          <div class="hero-card" 
+          <div class="hero-card card" 
                class:active={currentSlide === i} 
                style="--offset: {(i - currentSlide + 3) % 3}">
             <div class="hero-card-header">
@@ -219,7 +214,7 @@
     background: rgba(15, 15, 21, 0.8);
     backdrop-filter: blur(20px);
     border: 1px solid rgba(255, 255, 255, 0.08);
-    border-radius: var(--radius);
+    border-radius: var(--radius-lg);
     padding: 1.5rem;
     transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
     opacity: calc(1 - var(--offset) * 0.35);
@@ -231,11 +226,11 @@
   }
   .hero-card.active {
     opacity: 1;
-    background: rgba(20, 20, 28, 0.9);
-    border-color: rgba(224, 8, 0, 0.5);
-    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8), 0 0 30px rgba(224, 8, 0, 0.15);
+    border-color: rgba(224, 8, 0, 0.4);
+    box-shadow: 0 40px 100px rgba(0, 0, 0, 0.9), 0 0 30px rgba(224, 8, 0, 0.15);
     transform: translateX(0) translateY(0) scale(1.1);
     z-index: 20;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0.02) 100%);
   }
   .hero-card-header {
     display: flex;
@@ -246,13 +241,14 @@
   .hero-avatar {
     width: 44px;
     height: 44px;
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 14px;
     display: flex;
     align-items: center;
     justify-content: center;
-    color: var(--red);
+    color: var(--red-light);
+    box-shadow: inset 0 0 10px rgba(224, 8, 0, 0.1);
   }
   .hero-header-lines { flex: 1; }
   .hero-card-line {

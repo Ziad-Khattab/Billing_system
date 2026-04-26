@@ -5,7 +5,7 @@ target/
 *.ear
 *.jar
 .mvn/wrapper/maven-wrapper.jar
-
+.m2
 # SvelteKit / Node
 node_modules/
 .svelte-kit/
@@ -52,3 +52,4 @@ backend_reference/
 frontend_backup_src/
 backend_backup_src/
 docs/
+.m2/

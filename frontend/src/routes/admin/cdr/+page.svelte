@@ -77,7 +77,7 @@
     </div>
   </div>
 
-  <div class="table-card card animate-fade" style="animation-delay: 0.1s">
+  <div class="table-card card card-static animate-fade" style="animation-delay: 0.1s">
     <div class="table-wrapper">
       {#if loading}
         <div class="loading-state">
@@ -153,7 +153,18 @@
   .input-group input { width: 100%; padding: 0.8rem 1rem 0.8rem 3rem; background: rgba(255, 255, 255, 0.05); border: 1px solid var(--border); border-radius: 12px; color: white; transition: all 0.3s; }
   .input-group input:focus { outline: none; border-color: var(--red); box-shadow: 0 0 15px rgba(224, 8, 0, 0.2); background: rgba(255, 255, 255, 0.08); }
 
-  .table-card { padding: 0; overflow: hidden; border-radius: 20px; }
+  .table-card { 
+    padding: 0; 
+    overflow: hidden; 
+    border-radius: 20px; 
+    border: 1px solid var(--border);
+    background: var(--bg-card);
+  }
+  .table-card .table-wrapper {
+    border: none;
+    background: transparent;
+    margin-top: 0;
+  }
   .id-badge { background: rgba(255, 255, 255, 0.05); padding: 0.2rem 0.5rem; border-radius: 6px; font-size: 0.8rem; color: var(--text-muted); }
   .phone-num { font-family: 'JetBrains Mono', monospace; font-weight: 600; color: #3B82F6; }
   .duration { font-weight: 700; color: #F59E0B; }

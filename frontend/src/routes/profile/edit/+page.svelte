@@ -25,10 +25,10 @@
       credentials: 'include'
     });
     if (res.ok) {
-      message = 'Profile updated successfully! ✅';
+      message = 'Profile updated successfully!';
       setTimeout(() => message = '', 3000);
     } else {
-      message = 'Failed to update profile. ❌';
+      message = 'Failed to update profile.';
     }
     saving = false;
   }

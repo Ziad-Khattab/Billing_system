@@ -29,17 +29,34 @@ public class AdminCDRServlet extends BaseServlet {
         try {
             System.out.println("[CDR-IMPORT] Triggered via Admin Panel");
             
-            // The most reliable way to find project folders during dev
-            String projectRoot = System.getProperty("user.dir");
-            File inputDir = new File(projectRoot, "input");
-            File processedDir = new File(projectRoot, "processed");
+            // Best Practice: Use configured paths, with a smart fallback for local dev
+            String configInput = DB.getProperty("cdr.input.path");
+            String configProcessed = DB.getProperty("cdr.processed.path");
+
+            File inputDir;
+            File processedDir;
+
+            if (configInput != null && !configInput.isEmpty()) {
+                inputDir = new File(configInput);
+                processedDir = new File(configProcessed);
+            } else {
+                // Fallback: Try to find the root if we are in target/tomcat11
+                String currentDir = System.getProperty("user.dir");
+                if (currentDir.contains("target")) {
+                    currentDir = currentDir.substring(0, currentDir.indexOf("target") - 1);
+                }
+                inputDir = new File(currentDir, "input");
+                processedDir = new File(currentDir, "processed");
+            }
 
             System.out.println("[CDR-IMPORT] Scanning: " + inputDir.getAbsolutePath());
 
             if (!inputDir.exists()) {
                 throw new IOException("Input directory not found at: " + inputDir.getAbsolutePath());
             }
-            
+
+            if (!processedDir.exists()) processedDir.mkdirs();
+
 
             // Capture file count before processing
             File[] files = inputDir.listFiles((dir, name) -> name.toLowerCase().endsWith(".csv"));

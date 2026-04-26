@@ -86,6 +86,12 @@ public class AppFilter implements Filter {
             throws IOException, ServletException {
         
         String cssTag = getCssTag(req.getServletContext());
+        
+        // Anti-Latency: Force browser to re-validate HTML on every request
+        res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+        res.setHeader("Pragma", "no-cache");
+        res.setHeader("Expires", "0");
+
         CharResponseWrapper wrapper = new CharResponseWrapper(res);
         chain.doFilter(req, wrapper);
 
@@ -104,8 +110,17 @@ public class AppFilter implements Filter {
     }
 
     private synchronized String getCssTag(ServletContext context) {
-        if (cachedCssTag != null && lastBuildTime > (System.currentTimeMillis() - 60000)) return cachedCssTag;
+        String assetPath = context.getRealPath("/_app/immutable/assets/");
+        if (assetPath == null) return "";
+        
+        File assetDir = new File(assetPath);
+        long currentDiskTime = assetDir.lastModified();
 
+        // Smart Sync: Only re-scan if the disk has actually changed
+        if (cachedCssTag != null && lastBuildTime >= currentDiskTime) {
+            return cachedCssTag;
+        }
+        // If we reach here, we need a fresh scan
         java.util.Set<String> assets = context.getResourcePaths("/_app/immutable/assets/");
         if (assets == null || assets.isEmpty()) return "";
 
@@ -117,7 +132,7 @@ public class AppFilter implements Filter {
 
         if (cssFile.isPresent()) {
             cachedCssTag = "<link rel=\"stylesheet\" href=\"/_app/immutable/assets/" + cssFile.get() + "\">";
-            lastBuildTime = System.currentTimeMillis();
+            lastBuildTime = currentDiskTime; // Lock to current disk state
         }
         
         return cachedCssTag != null ? cachedCssTag : "";

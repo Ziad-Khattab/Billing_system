@@ -492,8 +492,9 @@ $$ LANGUAGE plpgsql;
 -- Creates a new contract and immediately initializes
 -- consumption rows for the current billing period.
 -- ------------------------------------------------------------
+DROP FUNCTION IF EXISTS create_contract(INTEGER, INTEGER, VARCHAR, NUMERIC);
 CREATE OR REPLACE FUNCTION create_contract(
-    p_user_account_id    INTEGER,
+    p_customer_id    INTEGER,
     p_rateplan_id    INTEGER,
     p_msisdn         VARCHAR(20),
     p_credit_limit   NUMERIC(12,2)
@@ -505,8 +506,8 @@ v_contract_id  INTEGER;
     v_period_end   DATE;
 BEGIN
     -- Validate customer exists
-    IF NOT EXISTS (SELECT 1 FROM user_account WHERE id = p_user_account_id) THEN
-        RAISE EXCEPTION 'Customer with id % does not exist', p_user_account_id;
+    IF NOT EXISTS (SELECT 1 FROM customer WHERE id = p_customer_id) THEN
+        RAISE EXCEPTION 'Customer with id % does not exist', p_customer_id;
 END IF;
 
     -- Validate rateplan exists
@@ -521,14 +522,14 @@ END IF;
 
     -- Insert contract
 INSERT INTO contract (
-    user_account_id,
+    customer_id,
     rateplan_id,
     msisdn,
     status,
     credit_limit,
     available_credit
 ) VALUES (
-             p_user_account_id,
+             p_customer_id,
              p_rateplan_id,
              p_msisdn,
              'active',
@@ -1044,17 +1045,24 @@ CREATE OR REPLACE FUNCTION create_customer(
 )
 RETURNS INTEGER AS $$
 DECLARE
-v_new_id INTEGER;
+    v_customer_id INTEGER;
+    v_user_id     INTEGER;
 BEGIN
-INSERT INTO user_account (username, password, role, name, email, address, birthdate)
-VALUES (p_username, p_password, 'customer', p_name, p_email, p_address, p_birthdate)
-    RETURNING id INTO v_new_id;
+    -- 1. Create Customer Profile
+    INSERT INTO customer (name, email, address, birthdate)
+    VALUES (p_name, p_email, p_address, p_birthdate)
+    RETURNING id INTO v_customer_id;
 
-RETURN v_new_id;
+    -- 2. Create User Account linked to Customer
+    INSERT INTO user_account (username, password, role, customer_id)
+    VALUES (p_username, p_password, 'customer', v_customer_id)
+    RETURNING id INTO v_user_id;
+
+    RETURN v_user_id;
 
 EXCEPTION
     WHEN OTHERS THEN
-        RAISE EXCEPTION 'create_customer failed for username %: %', p_username, SQLERRM;
+        RAISE EXCEPTION 'create_customer failed: %', SQLERRM;
 END;
 $$ LANGUAGE plpgsql;
 
@@ -1065,23 +1073,23 @@ CREATE OR REPLACE FUNCTION create_admin(
     p_username  VARCHAR(255),
     p_password  VARCHAR(30),
     p_name      VARCHAR(255),
-    p_email     VARCHAR(255),
-    p_address   TEXT,
-    p_birthdate DATE
+    p_email     VARCHAR(255)
 )
 RETURNS INTEGER AS $$
 DECLARE
-v_new_id INTEGER;
+    v_new_id INTEGER;
 BEGIN
-INSERT INTO user_account (username, password, role, name, email, address, birthdate)
-VALUES (p_username, p_password, 'admin', p_name, p_email, p_address, p_birthdate)
+    -- Admins don't strictly need a customer profile in the teammate logic, 
+    -- but they need a record in user_account.
+    INSERT INTO user_account (username, password, role, customer_id)
+    VALUES (p_username, p_password, 'admin', NULL)
     RETURNING id INTO v_new_id;
 
-RETURN v_new_id;
+    RETURN v_new_id;
 
 EXCEPTION
     WHEN OTHERS THEN
-        RAISE EXCEPTION 'create_admin failed for username %: %', p_username, SQLERRM;
+        RAISE EXCEPTION 'create_admin failed: %', SQLERRM;
 END;
 $$ LANGUAGE plpgsql;
 -- ---------------------------------------------------------
@@ -1344,126 +1352,203 @@ EXCEPTION
                         p_contract_id, SQLERRM;
 END;
 $$ LANGUAGE plpgsql;
-
--- ============================================================
--- ADDITIONAL HELPER FUNCTIONS
--- ============================================================
-
+-- ADMIN GETTERS
 -- ------------------------------------------------------------
--- GET ALL SERVICE PACKAGES
--- Returns all available service packages
--- ------------------------------------------------------------
+
+DROP FUNCTION IF EXISTS get_all_service_packages();
 CREATE OR REPLACE FUNCTION get_all_service_packages()
-    RETURNS TABLE (
-        id          INTEGER,
-        name        VARCHAR(255),
-        type        service_type,
-        amount      NUMERIC(12,4),
-        priority    INTEGER,
-        price       NUMERIC(10,2),
-        description TEXT,
-        is_roaming  BOOLEAN
-    ) AS $$
+RETURNS TABLE (
+    id INTEGER,
+    name VARCHAR(255),
+    type service_type,
+    amount NUMERIC,
+    price NUMERIC(12,2),
+    priority INTEGER,
+    is_roaming BOOLEAN,
+    description TEXT,
+    "voiceAmount" NUMERIC,
+    "dataAmount" NUMERIC,
+    "smsAmount" NUMERIC
+) AS $$
 BEGIN
-RETURN QUERY
-SELECT
-    sp.id,
-    sp.name,
-    sp.type,
-    sp.amount,
-    sp.priority,
-    sp.price,
-    sp.description,
-    sp.is_roaming
-FROM service_package sp
-ORDER BY sp.type, sp.priority ASC;
+    RETURN QUERY SELECT 
+        sp.id, sp.name, sp.type, sp.amount, sp.price, sp.priority, sp.is_roaming, sp.description,
+        CASE WHEN sp.type = 'voice' THEN sp.amount ELSE 0 END as "voiceAmount",
+        CASE WHEN sp.type = 'data' THEN sp.amount ELSE 0 END as "dataAmount",
+        CASE WHEN sp.type = 'sms' THEN sp.amount ELSE 0 END as "smsAmount"
+    FROM service_package sp
+    ORDER BY sp.priority ASC, sp.name ASC;
 END;
 $$ LANGUAGE plpgsql;
 
--- ------------------------------------------------------------
--- GET SERVICE PACKAGE BY ID
--- Returns a single service package detail
--- ------------------------------------------------------------
+DROP FUNCTION IF EXISTS get_service_package_by_id(p_id INTEGER);
 CREATE OR REPLACE FUNCTION get_service_package_by_id(p_id INTEGER)
-    RETURNS TABLE (
-        id          INTEGER,
-        name        VARCHAR(255),
-        type        service_type,
-        amount      NUMERIC(12,4),
-        priority    INTEGER,
-        price       NUMERIC(10,2),
-        description TEXT,
-        is_roaming  BOOLEAN
-    ) AS $$
+RETURNS TABLE (
+    id INTEGER,
+    name VARCHAR(255),
+    type service_type,
+    amount NUMERIC,
+    price NUMERIC(12,2),
+    priority INTEGER,
+    is_roaming BOOLEAN,
+    description TEXT,
+    "voiceAmount" NUMERIC,
+    "dataAmount" NUMERIC,
+    "smsAmount" NUMERIC
+) AS $$
 BEGIN
-RETURN QUERY
-SELECT
-    sp.id,
-    sp.name,
-    sp.type,
-    sp.amount,
-    sp.priority,
-    sp.price,
-    sp.description,
-    sp.is_roaming
-FROM service_package sp
-WHERE sp.id = p_id;
+    RETURN QUERY SELECT 
+        sp.id, sp.name, sp.type, sp.amount, sp.price, sp.priority, sp.is_roaming, sp.description,
+        CASE WHEN sp.type = 'voice' THEN sp.amount ELSE 0 END as "voiceAmount",
+        CASE WHEN sp.type = 'data' THEN sp.amount ELSE 0 END as "dataAmount",
+        CASE WHEN sp.type = 'sms' THEN sp.amount ELSE 0 END as "smsAmount"
+    FROM service_package sp
+    WHERE sp.id = p_id;
 END;
 $$ LANGUAGE plpgsql;
 
--- ------------------------------------------------------------
--- GET RATEPLAN BY ID
--- Returns rateplan detail with all fields
--- ------------------------------------------------------------
+CREATE OR REPLACE FUNCTION get_all_rateplans()
+RETURNS TABLE (
+    id INTEGER,
+    name VARCHAR(255),
+    ror_data NUMERIC,
+    ror_voice NUMERIC,
+    ror_sms NUMERIC,
+    price NUMERIC(12,2),
+    description TEXT
+) AS $$
+BEGIN
+    RETURN QUERY SELECT 
+        rp.id, rp.name, rp.ror_data, rp.ror_voice, rp.ror_sms, rp.price, rp.description 
+    FROM rateplan rp
+    ORDER BY rp.price ASC;
+END;
+$$ LANGUAGE plpgsql;
+
+DROP FUNCTION IF EXISTS get_rateplan_by_id(INTEGER);
 CREATE OR REPLACE FUNCTION get_rateplan_by_id(p_id INTEGER)
-    RETURNS TABLE (
-        id        INTEGER,
-        name      VARCHAR(255),
-        ror_voice NUMERIC(10,2),
-        ror_data  NUMERIC(10,2),
-        ror_sms   NUMERIC(10,2),
-        price     NUMERIC(10,2)
-    ) AS $$
+RETURNS TABLE (
+    id INTEGER,
+    name VARCHAR(255),
+    ror_data NUMERIC,
+    ror_voice NUMERIC,
+    ror_sms NUMERIC,
+    price NUMERIC(12,2),
+    description TEXT
+) AS $$
 BEGIN
-RETURN QUERY
-SELECT
-    r.id,
-    r.name,
-    r.ror_voice,
-    r.ror_data,
-    r.ror_sms,
-    r.price
-FROM rateplan r
-WHERE r.id = p_id;
+    RETURN QUERY SELECT 
+        rp.id, rp.name, rp.ror_data, rp.ror_voice, rp.ror_sms, rp.price, rp.description 
+    FROM rateplan rp
+    WHERE rp.id = p_id;
 END;
 $$ LANGUAGE plpgsql;
 
--- ------------------------------------------------------------
--- GET CUSTOMER BY ID
--- Returns customer details by ID
--- ------------------------------------------------------------
+DROP FUNCTION IF EXISTS get_all_customers();
+CREATE OR REPLACE FUNCTION get_all_customers()
+RETURNS TABLE (
+    id INTEGER,
+    msisdn VARCHAR(255),
+    name VARCHAR(255),
+    email VARCHAR(255),
+    role user_role,
+    address TEXT,
+    birthdate DATE
+) AS $$
+BEGIN
+    RETURN QUERY SELECT 
+        c.id, u.username as msisdn, c.name, c.email, u.role, c.address, c.birthdate 
+    FROM user_account u
+    JOIN customer c ON u.customer_id = c.id
+    WHERE u.role = 'customer'
+    ORDER BY c.name ASC;
+END;
+$$ LANGUAGE plpgsql;
+
+DROP FUNCTION IF EXISTS get_customer_by_id(INTEGER);
 CREATE OR REPLACE FUNCTION get_customer_by_id(p_id INTEGER)
-    RETURNS TABLE (
-        id        INTEGER,
-        username  VARCHAR(255),
-        name      VARCHAR(255),
-        email     VARCHAR(255),
-        role      user_role,
-        address   TEXT,
-        birthdate DATE
-    ) AS $$
+RETURNS TABLE (
+    id INTEGER,
+    msisdn VARCHAR(255),
+    name VARCHAR(255),
+    email VARCHAR(255),
+    role user_role,
+    address TEXT,
+    birthdate DATE
+) AS $$
 BEGIN
-RETURN QUERY
-SELECT
-    ua.id,
-    ua.username,
-    ua.name,
-    ua.email,
-    ua.role,
-    ua.address,
-    ua.birthdate
-FROM user_account ua
-WHERE ua.id = p_id AND ua.role = 'customer';
+    RETURN QUERY SELECT 
+        c.id, u.username as msisdn, c.name, c.email, u.role, c.address, c.birthdate 
+    FROM user_account u
+    JOIN customer c ON u.customer_id = c.id
+    WHERE c.id = p_id;
 END;
 $$ LANGUAGE plpgsql;
 
+DROP FUNCTION IF EXISTS login(VARCHAR, VARCHAR);
+CREATE OR REPLACE FUNCTION login(p_username VARCHAR, p_password VARCHAR)
+RETURNS TABLE (
+    id INTEGER, 
+    username VARCHAR, 
+    role user_role, 
+    name VARCHAR, 
+    email VARCHAR,
+    customer_id INTEGER
+) AS $$
+BEGIN
+    RETURN QUERY SELECT 
+        u.id, u.username, u.role, c.name, c.email, u.customer_id as customer_id
+    FROM user_account u 
+    LEFT JOIN customer c ON c.id = u.customer_id
+    WHERE u.username = p_username AND u.password = p_password;
+END;
+$$ LANGUAGE plpgsql;
+
+-- Statistics
+DROP FUNCTION IF EXISTS get_admin_stats();
+CREATE OR REPLACE FUNCTION get_admin_stats()
+RETURNS TABLE (
+    customers BIGINT, 
+    contracts BIGINT, 
+    cdrs BIGINT,
+    revenue NUMERIC(12,2),
+    pending_bills BIGINT
+) AS $$ 
+BEGIN 
+    RETURN QUERY SELECT 
+        (SELECT COUNT(*) FROM customer) AS customers, 
+        (SELECT COUNT(*) FROM contract) AS contracts, 
+        (SELECT COUNT(*) FROM cdr) AS cdrs,
+        (SELECT COALESCE(SUM(total_amount), 0) FROM bill WHERE is_paid = TRUE) AS revenue,
+        (SELECT COUNT(*) FROM bill WHERE is_paid = FALSE) AS pending_bills; 
+END; 
+$$ LANGUAGE plpgsql;
+
+-- ------------------------------------------------------------
+-- MISSING BILLS AUDIT
+-- Returns contracts that are active but have no bill for the current month.
+-- ------------------------------------------------------------
+CREATE OR REPLACE FUNCTION get_missing_bills()
+RETURNS TABLE (
+    id INTEGER,
+    msisdn VARCHAR(20),
+    customer_name VARCHAR(255),
+    last_bill_date DATE
+) AS $$
+BEGIN
+    RETURN QUERY
+    SELECT 
+        c.id, 
+        c.msisdn, 
+        cust.name as customer_name,
+        (SELECT MAX(billing_date) FROM bill WHERE contract_id = c.id) as last_bill_date
+    FROM contract c
+    JOIN customer cust ON c.customer_id = cust.id
+    WHERE c.status = 'active'
+      AND NOT EXISTS (
+          SELECT 1 FROM bill b 
+          WHERE b.contract_id = c.id 
+            AND b.billing_period_start = DATE_TRUNC('month', CURRENT_DATE)::DATE
+      );
+END;
+$$ LANGUAGE plpgsql;

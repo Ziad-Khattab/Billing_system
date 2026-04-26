@@ -92,23 +92,24 @@
   .login-card {
     width: 100%;
     max-width: 400px;
-    padding: 2.5rem;
+    padding: 3rem 2.5rem;
+    border-top: 3px solid var(--red);
   }
   .login-header {
     text-align: center;
-    margin-bottom: 2rem;
+    margin-bottom: 3rem;
   }
-  .login-logo { height: 180px; display: block; margin: 0 auto 0.75rem auto; }
-  .login-header h1 { font-size: 1.5rem; font-weight: 700; margin-bottom: 0.25rem; }
-  .login-header p { color: var(--text-muted); font-size: 0.875rem; }
+  .login-logo { height: 80px; width: auto; display: block; margin: 0 auto 1.5rem auto; }
+  .login-header h1 { font-size: 1.75rem; font-weight: 800; margin-bottom: 0.5rem; letter-spacing: -0.02em; }
+  .login-header p { color: var(--text-muted); font-size: 0.9375rem; }
   .error-msg {
     background: rgba(239, 68, 68, 0.1);
     border: 1px solid rgba(239, 68, 68, 0.2);
     color: #EF4444;
-    padding: 0.75rem 1rem;
+    padding: 1rem;
     border-radius: var(--radius-sm);
-    font-size: 0.85rem;
-    margin-bottom: 1rem;
+    font-size: 0.875rem;
+    margin-bottom: 1.5rem;
   }
   .login-footer {
     text-align: center;

@@ -15,10 +15,10 @@ import java.util.Properties;
  * ready to use, significantly reducing latency.
  */
 public class DB {
+    private static final Properties props = new Properties();
     private static final HikariDataSource dataSource;
 
     static {
-        Properties props = new Properties();
         try (InputStream input = DB.class.getClassLoader().getResourceAsStream("db.properties")) {
             if (input == null) {
                 throw new RuntimeException("CRITICAL: db.properties not found!");
@@ -57,6 +57,10 @@ public class DB {
      */
     public static Connection getConnection() throws SQLException {
         return dataSource.getConnection();
+    }
+
+    public static String getProperty(String key) {
+        return props.getProperty(key);
     }
 
     /**

@@ -26,18 +26,29 @@ public class CustomerProfileServlet extends BaseServlet {
         try {
             if ("/profile".equals(path)) {
                 List<Map<String, Object>> profile = DB.executeSelect(
-                    "SELECT * FROM get_user_data(?)", userId);
+                    "SELECT u.id, u.username, c.name, c.email, c.address " +
+                    "FROM user_account u " +
+                    "LEFT JOIN customer c ON u.customer_id = c.id " +
+                    "WHERE u.id = ?", userId);
                 if (profile.isEmpty()) sendError(res, 404, "User not found");
                 else sendJson(res, profile.get(0));
             } 
-             else if ("/contracts".equals(path)) {
-                 List<Map<String, Object>> list = DB.executeSelect(
-                     "SELECT * FROM get_user_contracts(?)", userId);
-                 sendJson(res, list);
+            else if ("/contracts".equals(path)) {
+                List<Map<String, Object>> list = DB.executeSelect(
+                    "SELECT c.msisdn, c.status, c.available_credit as \"availableCredit\", r.name as \"rateplanName\" " +
+                    "FROM contract c " +
+                    "LEFT JOIN rateplan r ON c.rateplan_id = r.id " +
+                    "JOIN user_account u ON c.customer_id = u.customer_id " +
+                    "WHERE u.id = ?", userId);
+                sendJson(res, list);
             }
             else if ("/invoices".equals(path)) {
                 List<Map<String, Object>> list = DB.executeSelect(
-                    "SELECT * FROM get_user_invoices(?)", userId);
+                    "SELECT b.id, b.billing_date as \"billingDate\", b.taxes, b.recurring_fees as \"recurringFees\", b.one_time_fees as \"oneTimeFees\" " +
+                    "FROM bill b " +
+                    "JOIN contract c ON b.contract_id = c.id " +
+                    "JOIN user_account u ON c.customer_id = u.customer_id " +
+                    "WHERE u.id = ? ORDER BY b.billing_date DESC", userId);
                 sendJson(res, list);
             }
             else {

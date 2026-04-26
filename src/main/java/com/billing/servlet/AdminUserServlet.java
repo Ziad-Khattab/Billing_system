@@ -30,23 +30,20 @@ public class AdminUserServlet extends BaseServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse res) throws IOException {
         handle(res, () -> {
             Map<String, Object> data = readJson(req);
-            String username = (String) data.get("username");
+            String msisdn = (String) data.get("msisdn");
             String name = (String) data.get("name");
             String email = (String) data.get("email");
             String address = (String) data.get("address");
             String birthdate = (String) data.get("birthdate");
-
-            List<Map<String, Object>> result = DB.executeSelect(
+            if (birthdate != null && birthdate.trim().isEmpty()) birthdate = null;
+            
+            // Using our fixed stored function to handle 2-table insertion
+            DB.executeSelect(
                 "SELECT create_customer(?, ?, ?, ?, ?, ?::DATE) as id",
-                username,
-                "customer123",
-                name,
-                email,
-                address,
-                birthdate
+                msisdn, "customer123", name, email, address, birthdate
             );
-            int newId = ((Number) result.get(0).get("id")).intValue();
-            return Map.of("success", true, "message", "Customer created successfully", "id", newId);
+            
+            return Map.of("success", true, "message", "Customer created successfully");
         });
     }
 }
