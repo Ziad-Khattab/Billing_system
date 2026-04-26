@@ -1,6 +1,6 @@
 <script>
   /** @type {import('./$types').PageData} */
-  export let data;
+  let { data } = $props();
 
   let contract = $state(null);
   let activeAddons = $state([]);
