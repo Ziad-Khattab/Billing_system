@@ -1,0 +1,356 @@
+<!-- Created with Jaspersoft Studio version 7.0.6.final using JasperReports Library version 7.0.6-5d2a603fdc6b3db8f842a83383e594f41891534d  -->
+<jasperReport name="Bill" language="java" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" whenResourceMissingType="Empty" uuid="56d42005-9abf-49e8-9c09-ecbc70b77d9b">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="Neon_Billing_DB"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="29"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="960"/>
+	<style name="Table_TH" mode="Opaque" forecolor="#FC130F" backcolor="#E32E2B">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="Table_CH" mode="Opaque" backcolor="#E32E2B">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="Table_TD" mode="Opaque" backcolor="#FFEDED">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+		<conditionalStyle backcolor="#FBFDFF">
+			<conditionExpression><![CDATA[new Boolean($V{REPORT_COUNT}.intValue()%2==0)]]></conditionExpression>
+		</conditionalStyle>
+	</style>
+	<style name="Table 1_TH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="Table 1_CH" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="Table 1_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<parameter name="BILL_ID" evaluationTime="Early" forPrompting="false" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[new Integer(2)]]></defaultValueExpression>
+	</parameter>
+	<query language="SQL"><![CDATA[SELECT 
+    u.name, u.email, u.address,
+    b.billing_period_start, b.billing_period_end, b.billing_date,
+    b.recurring_fees, b.taxes, b.total_amount, 
+    b.voice_usage, b.data_usage, b.sms_usage, 
+    b.ROR_charge, b.one_time_fees,
+    b.status, 
+    c.msisdn, 
+    c.user_account_id,
+    rp.name AS rateplan_name
+FROM get_bill($P{BILL_ID}) b
+JOIN contract c ON b.contract_id = c.id
+JOIN get_customer_by_id(c.user_account_id) u ON true
+JOIN LATERAL get_rateplan_by_id(c.rateplan_id) rp ON true;]]></query>
+	<field name="name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="name"/>
+		<property name="com.jaspersoft.studio.field.label" value="name"/>
+	</field>
+	<field name="email" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="email"/>
+		<property name="com.jaspersoft.studio.field.label" value="email"/>
+	</field>
+	<field name="address" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="address"/>
+		<property name="com.jaspersoft.studio.field.label" value="address"/>
+	</field>
+	<field name="billing_period_start" class="java.sql.Date">
+		<property name="com.jaspersoft.studio.field.name" value="billing_period_start"/>
+		<property name="com.jaspersoft.studio.field.label" value="billing_period_start"/>
+	</field>
+	<field name="billing_period_end" class="java.sql.Date">
+		<property name="com.jaspersoft.studio.field.name" value="billing_period_end"/>
+		<property name="com.jaspersoft.studio.field.label" value="billing_period_end"/>
+	</field>
+	<field name="billing_date" class="java.sql.Date">
+		<property name="com.jaspersoft.studio.field.name" value="billing_date"/>
+		<property name="com.jaspersoft.studio.field.label" value="billing_date"/>
+	</field>
+	<field name="recurring_fees" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="recurring_fees"/>
+		<property name="com.jaspersoft.studio.field.label" value="recurring_fees"/>
+	</field>
+	<field name="taxes" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="taxes"/>
+		<property name="com.jaspersoft.studio.field.label" value="taxes"/>
+	</field>
+	<field name="total_amount" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="total_amount"/>
+		<property name="com.jaspersoft.studio.field.label" value="total_amount"/>
+	</field>
+	<field name="voice_usage" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="voice_usage"/>
+		<property name="com.jaspersoft.studio.field.label" value="voice_usage"/>
+	</field>
+	<field name="data_usage" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="data_usage"/>
+		<property name="com.jaspersoft.studio.field.label" value="data_usage"/>
+	</field>
+	<field name="sms_usage" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="sms_usage"/>
+		<property name="com.jaspersoft.studio.field.label" value="sms_usage"/>
+	</field>
+	<field name="ror_charge" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="ror_charge"/>
+		<property name="com.jaspersoft.studio.field.label" value="ror_charge"/>
+	</field>
+	<field name="one_time_fees" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="one_time_fees"/>
+		<property name="com.jaspersoft.studio.field.label" value="one_time_fees"/>
+	</field>
+	<field name="status" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="status"/>
+		<property name="com.jaspersoft.studio.field.label" value="status"/>
+	</field>
+	<field name="msisdn" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="msisdn"/>
+		<property name="com.jaspersoft.studio.field.label" value="msisdn"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="contract"/>
+	</field>
+	<field name="user_account_id" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="user_account_id"/>
+		<property name="com.jaspersoft.studio.field.label" value="user_account_id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="contract"/>
+	</field>
+	<field name="rateplan_name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="rateplan_name"/>
+		<property name="com.jaspersoft.studio.field.label" value="rateplan_name"/>
+	</field>
+	<background splitType="Stretch"/>
+	<detail>
+		<band height="802" splitType="Stretch">
+			<element kind="frame" uuid="67e2d795-afb3-43fb-8289-1529e904ac67" mode="Opaque" x="1" y="77" width="554" height="648" forecolor="#AB3C38" backcolor="#FFDEDE">
+				<property name="com.jaspersoft.studio.unit.x" value="px"/>
+				<element kind="frame" uuid="83fc0c4d-323b-4837-845d-86cede9b1d7c" mode="Opaque" x="5" y="170" width="544" height="120" forecolor="#FFFFFF" backcolor="#FFFFFF">
+					<borderSplitType>DrawBorders</borderSplitType>
+					<box>
+						<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#FFFFFF"/>
+						<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#FFFFFF"/>
+						<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#FFFFFF"/>
+						<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#FFFFFF"/>
+					</box>
+				</element>
+				<element kind="frame" uuid="a6fb4203-7baa-42dd-9037-eef72ebdfc03" mode="Opaque" x="5" y="10" width="405" height="150" forecolor="#FFFFFF" backcolor="#FFFFFF">
+					<borderSplitType>DrawBorders</borderSplitType>
+					<box>
+						<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#FFFFFF"/>
+						<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#FFFFFF"/>
+						<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#FFFFFF"/>
+						<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#FFFFFF"/>
+					</box>
+				</element>
+				<element kind="staticText" uuid="c07f7961-2b3e-4735-90a5-a3994d08a323" x="10" y="20" width="258" height="30" forecolor="#DE0804" fontSize="19.0" bold="true">
+					<text><![CDATA[Customer Information]]></text>
+				</element>
+				<element kind="staticText" uuid="cabc1a0d-bbe9-4c61-881c-804555810399" x="10" y="50" width="130" height="20" fontSize="16.0">
+					<text><![CDATA[Name:]]></text>
+				</element>
+				<element kind="staticText" uuid="33657b52-89de-4ac9-a904-d24f51bd74a4" x="10" y="70" width="160" height="20" fontSize="16.0">
+					<text><![CDATA[Account No:]]></text>
+				</element>
+				<element kind="staticText" uuid="67416441-94ad-4037-b4de-801f998e9cb2" x="10" y="90" width="130" height="20" fontSize="16.0">
+					<text><![CDATA[Phone No:]]></text>
+				</element>
+				<element kind="staticText" uuid="73af48b3-b0fe-40cf-a539-c885081e553e" x="10" y="110" width="70" height="20" fontSize="16.0">
+					<text><![CDATA[E-mail :]]></text>
+				</element>
+				<element kind="staticText" uuid="177f2967-2fb3-48e8-86d4-e185ecf99737" x="10" y="130" width="88" height="20" fontSize="16.0">
+					<text><![CDATA[Address :]]></text>
+				</element>
+				<element kind="textField" uuid="8dd8a2ea-de70-40b9-aa21-0c1dc7a193db" x="75" y="110" width="100" height="20" fontSize="16.0">
+					<expression><![CDATA[$F{email}]]></expression>
+				</element>
+				<element kind="textField" uuid="a8de5653-836a-4306-8889-7e0b9e393061" mode="Transparent" x="70" y="50" width="180" height="20" backcolor="#FFFFFF" fontSize="16.0" style="Table_TD">
+					<expression><![CDATA[$F{name}]]></expression>
+					<box style="Table_TD">
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+				</element>
+				<element kind="textField" uuid="7582448e-ec40-4822-aee2-47cc964965fb" x="85" y="130" width="191" height="20" fontSize="16.0">
+					<expression><![CDATA[$F{address}]]></expression>
+				</element>
+				<element kind="staticText" uuid="e5db87ea-f7ac-41ef-b8d4-24484b4d1177" x="11" y="180" width="258" height="30" forecolor="#DE0804" fontSize="19.0" bold="true">
+					<text><![CDATA[Billing Information]]></text>
+				</element>
+				<element kind="staticText" uuid="8734592a-4d42-493c-9bee-a61098d95613" x="11" y="232" width="140" height="20" fontSize="16.0">
+					<text><![CDATA[Billing Period :]]></text>
+				</element>
+				<element kind="staticText" uuid="f219aa73-74b3-4671-9bfd-fe1ceeab0dad" x="11" y="252" width="130" height="20" fontSize="16.0">
+					<text><![CDATA[Bill Date :]]></text>
+				</element>
+				<element kind="staticText" uuid="76218ddf-78af-4605-be57-a772425827a4" x="11" y="210" width="140" height="22" fontSize="16.0">
+					<text><![CDATA[Rate Plan :]]></text>
+				</element>
+				<element kind="textField" uuid="de3bf372-9a8d-41b5-bdc9-441ee3e515f7" x="96" y="252" width="213" height="20" fontSize="16.0">
+					<expression><![CDATA[$F{billing_date}]]></expression>
+				</element>
+				<element kind="textField" uuid="db302478-a74c-44d9-99f0-1f83b33d2ca4" x="126" y="232" width="230" height="20" fontSize="16.0">
+					<expression><![CDATA[$F{billing_period_start}]]></expression>
+				</element>
+				<element kind="textField" uuid="f045a039-94df-4610-8b0e-6f25a66adc0e" x="290" y="232" width="200" height="20" fontSize="16.0">
+					<expression><![CDATA[$F{billing_period_end}]]></expression>
+				</element>
+				<element kind="staticText" uuid="f97e8ad0-5411-4f64-b370-baafb69c26f6" x="270" y="231" width="19" height="22" fontSize="16.0">
+					<text><![CDATA[-]]></text>
+				</element>
+				<element kind="frame" uuid="a59f48ad-f1ab-4877-a717-348703d7b1da" mode="Opaque" x="4" y="410" width="544" height="160" forecolor="#FFFFFF">
+					<element kind="staticText" uuid="9068306b-e80b-44bd-8727-a90561a8c4b4" x="11" y="50" width="147" height="30" forecolor="#DE0804" fontSize="16.0" bold="true" hTextAlign="Left">
+						<text><![CDATA[recurring_fees :]]></text>
+					</element>
+					<element kind="textField" uuid="a93cf31d-a47b-4cdd-b2b4-def23df1a656" x="166" y="50" width="167" height="30" fontSize="16.0" hTextAlign="Left">
+						<expression><![CDATA[$F{recurring_fees}]]></expression>
+					</element>
+					<element kind="staticText" uuid="c4d44d2e-1919-4050-b9aa-9687d9da7f57" x="320" y="100" width="100" height="30" forecolor="#DE0804" fontSize="16.0" bold="true" hTextAlign="Left">
+						<text><![CDATA[taxes :]]></text>
+					</element>
+					<element kind="textField" uuid="5412560e-f19b-4e58-bc3a-681f42b5c21c" x="390" y="100" width="100" height="30" fontSize="16.0" bold="false" hTextAlign="Left">
+						<expression><![CDATA[$F{taxes}]]></expression>
+					</element>
+					<element kind="textField" uuid="8bcf35cc-35f0-40a0-91f3-31d882e0bf6d" x="430" y="50" width="99" height="30" fontSize="16.0">
+						<expression><![CDATA[$F{ror_charge}]]></expression>
+					</element>
+					<element kind="staticText" uuid="106111d7-bbdc-4f63-bf47-4fe4df4371ce" x="320" y="50" width="116" height="30" forecolor="#DE0804" fontSize="16.0" bold="true" hTextAlign="Left">
+						<text><![CDATA[ror_charge :]]></text>
+					</element>
+					<element kind="textField" uuid="c30a4e51-2079-4ae0-842a-645bab60f71e" x="167" y="100" width="170" height="30" fontSize="16.0" hTextAlign="Left">
+						<expression><![CDATA[$F{one_time_fees}]]></expression>
+					</element>
+					<element kind="staticText" uuid="ceeee84d-935b-4b79-92ae-d9361922ec23" x="11" y="100" width="184" height="30" forecolor="#DE0804" fontSize="16.0" bold="true" hTextAlign="Left">
+						<text><![CDATA[one_time_fees :]]></text>
+					</element>
+				</element>
+				<element kind="frame" uuid="158a0c35-1147-4adb-822f-97ae1f0a2467" mode="Opaque" x="5" y="300" width="544" height="103" forecolor="#FFFFFF">
+					<element kind="textField" uuid="0217764b-3526-4199-844d-59f09e0b264a" x="62" y="77" width="100" height="22" fontSize="16.0" hTextAlign="Left">
+						<expression><![CDATA[$F{voice_usage}]]></expression>
+					</element>
+					<element kind="staticText" uuid="3cbcb2ec-fb0d-4561-b653-d7ad07346d13" x="52" y="50" width="114" height="30" forecolor="#DE0804" fontSize="16.0" bold="true">
+						<text><![CDATA[voice_usage]]></text>
+					</element>
+					<element kind="textField" uuid="89491aba-f58f-4a45-9f68-c3ba8d9e17b1" x="245" y="78" width="100" height="20" fontSize="16.0" hTextAlign="Left">
+						<expression><![CDATA[$F{data_usage}]]></expression>
+					</element>
+					<element kind="staticText" uuid="5d6b530e-fa9b-4353-886c-3eb8ffbda035" x="240" y="50" width="113" height="30" forecolor="#DE0804" fontSize="16.0" bold="true">
+						<text><![CDATA[data_usage]]></text>
+					</element>
+					<element kind="staticText" uuid="b0f8029d-2f37-49ac-ae40-0fb9f1cc7a8e" x="94" y="78" width="100" height="20" fontSize="16.0">
+						<text><![CDATA[Min]]></text>
+					</element>
+					<element kind="staticText" uuid="5ceca11d-7a4d-4122-885f-7ec3b6ad1ec1" x="289" y="78" width="100" height="20" fontSize="16.0">
+						<text><![CDATA[Giga]]></text>
+					</element>
+					<element kind="staticText" uuid="4fc16b84-75fc-485a-918e-1a7f5a5f2bd5" x="458" y="75" width="81" height="20" fontSize="16.0">
+						<text><![CDATA[unit]]></text>
+					</element>
+				</element>
+				<element kind="staticText" uuid="89a17eff-037b-47e1-85b0-b3510b2d6cd1" x="16" y="310" width="208" height="30" forecolor="#DE0804" fontSize="19.0" bold="true">
+					<text><![CDATA[Usage Breakdown]]></text>
+				</element>
+				<element kind="staticText" uuid="a014d730-22fb-42cc-b3ff-aa403567a70a" x="420" y="352" width="100" height="26" forecolor="#DE0804" fontSize="16.0" bold="true">
+					<text><![CDATA[sms_usage]]></text>
+				</element>
+				<element kind="textField" uuid="867c3dcb-526f-4d71-9a67-acccd45e16ed" x="430" y="375" width="100" height="20" fontSize="16.0" hTextAlign="Left">
+					<expression><![CDATA[$F{sms_usage}]]></expression>
+				</element>
+				<element kind="textField" uuid="ea00bbf7-6ee1-4423-9c39-2ba619847beb" x="210" y="610" width="100" height="30" fontSize="19.0" hTextAlign="Center">
+					<expression><![CDATA[$F{total_amount}]]></expression>
+				</element>
+				<element kind="staticText" uuid="ef7ffcf9-709c-4200-9bcc-f333c667b442" x="206" y="579" width="146" height="30" forecolor="#DE0804" fontSize="19.0" bold="true">
+					<text><![CDATA[total_amount]]></text>
+				</element>
+				<element kind="line" uuid="a826b070-6328-44a0-ad52-a1ca2c9be670" mode="Opaque" x="0" y="648" width="553" height="1" forecolor="#D40804" backcolor="#D40804">
+					<pen lineWidth="5.0" lineStyle="Solid"/>
+				</element>
+				<element kind="line" uuid="4e3af460-2b67-4c9c-9ffe-0a94fac11aa1" mode="Opaque" x="1" y="0" width="553" height="1" forecolor="#D40804" backcolor="#D40804">
+					<pen lineWidth="5.0" lineStyle="Solid"/>
+				</element>
+				<element kind="textField" uuid="f7f8e76c-f137-4daf-919d-d4123cb9f9bc" x="98" y="90" width="152" height="20" fontSize="15.0" bold="false">
+					<expression><![CDATA[$F{msisdn}]]></expression>
+				</element>
+				<element kind="frame" uuid="102de478-cd36-462d-891d-45ecb1f53c9d" mode="Opaque" x="420" y="10" width="129" height="150" forecolor="#FFFFFF">
+					<element kind="textField" uuid="ff92b05b-0929-4c1f-8518-ec40da6d225e" x="13" y="55" width="100" height="30" fontSize="16.0" hTextAlign="Center">
+						<expression><![CDATA[$F{status}]]></expression>
+					</element>
+					<element kind="staticText" uuid="188fe70e-ce0a-46f0-a210-bb4d6b0f81e5" x="14" y="10" width="100" height="30" forecolor="#DE0804" fontSize="19.0" bold="true" hTextAlign="Center">
+						<text><![CDATA[status]]></text>
+					</element>
+				</element>
+				<element kind="staticText" uuid="4561c833-613b-47c2-8755-27b483f25f6b" x="11" y="420" width="208" height="30" forecolor="#DE0804" fontSize="19.0" bold="true">
+					<text><![CDATA[Account Charges]]></text>
+				</element>
+				<element kind="textField" uuid="4ace9dd2-33bf-47dd-a54a-f045a06128de" x="99" y="210" width="177" height="21" fontSize="16.0">
+					<expression><![CDATA[$F{rateplan_name}]]></expression>
+				</element>
+				<element kind="textField" uuid="dbc6f293-7a87-4fce-917c-b4985f5afba5" x="110" y="70" width="169" height="20" fontSize="16.0">
+					<expression><![CDATA[$F{user_account_id}]]></expression>
+				</element>
+			</element>
+			<element kind="staticText" uuid="e1fc33f4-26d7-4f49-ac36-1c2de76611ba" x="270" y="14" width="280" height="50" forecolor="#DB130F" fontSize="25.0" bold="false" hTextAlign="Center">
+				<text><![CDATA[INVOICE TAX]]></text>
+			</element>
+			<element kind="staticText" uuid="743fdfde-58cc-404d-b82a-78d4de90ae90" x="5" y="740" width="140" height="50" forecolor="#DE0804" fontSize="15.0" bold="true">
+				<text><![CDATA[Customer Care]]></text>
+			</element>
+			<element kind="staticText" uuid="c993d193-3a80-44c7-9d0d-baf78023ab09" x="200" y="740" width="140" height="50" forecolor="#DE0804" fontSize="15.0" bold="true" hTextAlign="Center">
+				<text><![CDATA[E-mail]]></text>
+			</element>
+			<element kind="staticText" uuid="05668dab-b67f-47a6-a99c-56985a6ff547" x="390" y="740" width="140" height="50" forecolor="#DE0804" fontSize="15.0" bold="true" hTextAlign="Center">
+				<text><![CDATA[Web Site]]></text>
+			</element>
+			<element kind="staticText" uuid="35e01ab3-11a6-4138-9570-efcb3f09e004" x="5" y="760" width="140" height="30" forecolor="#870703" fontSize="16.0">
+				<text><![CDATA[+20123456789]]></text>
+			</element>
+			<element kind="staticText" uuid="fb26283d-5b7a-4799-9875-a8e0a30907f1" x="197" y="760" width="162" height="30" forecolor="#870703" fontSize="16.0" hTextAlign="Center">
+				<text><![CDATA[alo123@gmail.com]]></text>
+			</element>
+			<element kind="staticText" uuid="2073cd73-d8da-4c93-a134-a440cf1da16c" x="383" y="760" width="162" height="30" forecolor="#870703" fontSize="16.0" hTextAlign="Center">
+				<text><![CDATA[www.alo.com]]></text>
+			</element>
+			<element kind="textField" uuid="5fd05304-71f6-40ae-acf7-b84041f1557e" x="400" y="40" width="130" height="24" fontSize="19.0" hTextAlign="Left">
+				<expression><![CDATA[$P{BILL_ID}]]></expression>
+			</element>
+			<element kind="staticText" uuid="775fc505-57a8-47a1-9877-b97150264b9c" x="380" y="40" width="23" height="24" fontSize="19.0">
+				<text><![CDATA[#]]></text>
+			</element>
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+		</band>
+	</detail>
+</jasperReport>
