@@ -10,7 +10,7 @@ return {
 	assets: new Set(["eand_logo.svg"]),
 	mimeTypes: {".svg":"image/svg+xml"},
 	_: {
-		client: {start:"_app/immutable/entry/start.DJ0GYwak.js",app:"_app/immutable/entry/app.B3y-gycC.js",imports:["_app/immutable/entry/start.DJ0GYwak.js","_app/immutable/chunks/I1f-VoRA.js","_app/immutable/chunks/87bIvZSd.js","_app/immutable/chunks/DJBmNonr.js","_app/immutable/chunks/BnS-mJsP.js","_app/immutable/chunks/CVvJ1TDU.js","_app/immutable/entry/app.B3y-gycC.js","_app/immutable/chunks/87bIvZSd.js","_app/immutable/chunks/C5ujjk74.js","_app/immutable/chunks/CVvJ1TDU.js","_app/immutable/chunks/RAoeSuPI.js","_app/immutable/chunks/D46fgPKJ.js","_app/immutable/chunks/DJBmNonr.js"],stylesheets:[],fonts:[],uses_env_dynamic_public:false},
+		client: {start:"_app/immutable/entry/start.vqbSMna_.js",app:"_app/immutable/entry/app.CXCEsOTA.js",imports:["_app/immutable/entry/start.vqbSMna_.js","_app/immutable/chunks/DQN_FATh.js","_app/immutable/chunks/0ZUd9Tt2.js","_app/immutable/chunks/BMuHSHd6.js","_app/immutable/chunks/Cna-0EbY.js","_app/immutable/chunks/B3GpPDC8.js","_app/immutable/entry/app.CXCEsOTA.js","_app/immutable/chunks/0ZUd9Tt2.js","_app/immutable/chunks/BFd6ASy-.js","_app/immutable/chunks/B3GpPDC8.js","_app/immutable/chunks/CB_n9g6T.js","_app/immutable/chunks/rnO5xDFN.js","_app/immutable/chunks/BMuHSHd6.js"],stylesheets:[],fonts:[],uses_env_dynamic_public:false},
 		nodes: [
 			__memo(() => import('./nodes/0.js')),
 			__memo(() => import('./nodes/1.js')),
@@ -25,7 +25,8 @@ return {
 			__memo(() => import('./nodes/10.js')),
 			__memo(() => import('./nodes/11.js')),
 			__memo(() => import('./nodes/12.js')),
-			__memo(() => import('./nodes/13.js'))
+			__memo(() => import('./nodes/13.js')),
+			__memo(() => import('./nodes/14.js'))
 		],
 		remotes: {
 			
@@ -81,38 +82,45 @@ return {
 				endpoint: null
 			},
 			{
+				id: "/onboarding",
+				pattern: /^\/onboarding\/?$/,
+				params: [],
+				page: { layouts: [0,], errors: [1,], leaf: 9 },
+				endpoint: null
+			},
+			{
 				id: "/packages",
 				pattern: /^\/packages\/?$/,
 				params: [],
-				page: { layouts: [0,], errors: [1,], leaf: 9 },
+				page: { layouts: [0,], errors: [1,], leaf: 10 },
 				endpoint: null
 			},
 			{
 				id: "/profile",
 				pattern: /^\/profile\/?$/,
 				params: [],
-				page: { layouts: [0,], errors: [1,], leaf: 10 },
+				page: { layouts: [0,], errors: [1,], leaf: 11 },
 				endpoint: null
 			},
 			{
 				id: "/profile/edit",
 				pattern: /^\/profile\/edit\/?$/,
 				params: [],
-				page: { layouts: [0,], errors: [1,], leaf: 11 },
+				page: { layouts: [0,], errors: [1,], leaf: 12 },
 				endpoint: null
 			},
 			{
 				id: "/profile/invoices",
 				pattern: /^\/profile\/invoices\/?$/,
 				params: [],
-				page: { layouts: [0,], errors: [1,], leaf: 12 },
+				page: { layouts: [0,], errors: [1,], leaf: 13 },
 				endpoint: null
 			},
 			{
 				id: "/register",
 				pattern: /^\/register\/?$/,
 				params: [],
-				page: { layouts: [0,], errors: [1,], leaf: 13 },
+				page: { layouts: [0,], errors: [1,], leaf: 14 },
 				endpoint: null
 			}
 		],

@@ -61,34 +61,42 @@ public class AuthServlet extends BaseServlet {
 
     private void handleRegister(HttpServletRequest req, HttpServletResponse res) throws IOException {
         Map body = readJson(req, Map.class);
-        String username = (String) body.get("username");
-        String password = (String) body.get("password");
-        String name = (String) body.get("name");
-        String email = (String) body.get("email");
-        String address = (String) body.get("address");
+        String username  = (String) body.get("username");
+        String password  = (String) body.get("password");
+        String name      = (String) body.get("name");
+        String email     = (String) body.get("email");
+        String address   = (String) body.get("address");
         String birthdate = (String) body.get("birthdate");
 
         try {
-            // Use Fouad's stored procedure directly via the helper
             List<Map<String, Object>> result = DB.executeSelect(
-                "SELECT create_customer(?, ?, ?, ?, ?, ?::DATE) as id",
-                username, password, name, email, address, birthdate
+                    "SELECT create_customer(?, ?, ?, ?, ?, ?::DATE) AS id",
+                    username, password, name, email, address, birthdate
             );
 
+            // ← get the real id back from DB, not from Java
             int newId = ((Number) result.get(0).get("id")).intValue();
-            
-            Map<String, Object> user = Map.of(
-                "id", newId,
-                "username", username,
-                "name", name,
-                "email", email,
-                "role", "customer"
+
+            System.out.println("[Register] New user id: " + newId);
+
+
+            List<Map<String, Object>> users = DB.executeSelect(
+                    "SELECT * FROM login(?, ?)", username, password
             );
+
+            if (users.isEmpty()) {
+                sendError(res, 500, "User created but login failed");
+                return;
+            }
+
+            Map<String, Object> user = users.get(0);
+            System.out.println("[Register] Session user: " + user); // debug
 
             HttpSession session = req.getSession(true);
             session.setAttribute("user", user);
             res.setStatus(201);
             sendJson(res, user);
+
         } catch (Exception e) {
             sendError(res, 500, e.getMessage());
         }

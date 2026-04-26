@@ -27,7 +27,7 @@
     try {
       const res = await fetch('/api/admin/cdr', { method: 'POST', credentials: 'include' });
       if (res.ok) {
-        page = 0; 
+        page = 0;
         await loadCDRs();
       }
     } catch (e) {
@@ -38,16 +38,45 @@
   }
 
   let filteredCDRs = $derived(
-    search ? cdrs.filter(c => c.msisdn.includes(search) || c.destination.includes(search)) : cdrs
+          search ? cdrs.filter(c => c.msisdn.includes(search) || (c.destination && c.destination.includes(search))) : cdrs
   );
 
-  function formatDuration(s) {
-    if (!s) return '0s';
-    const h = Math.floor(s / 3600);
-    const m = Math.floor((s % 3600) / 60);
-    const rs = s % 60;
-    return (h > 0 ? h + 'h ' : '') + (m > 0 ? m + 'm ' : '') + (rs + 's');
+  // Formatter: Logic updated because API sends MB
+  function formatUsage(value, type) {
+    if (value === 0) return '0';
+    if (!value) return '—';
+
+    switch (type) {
+      case 1: // Voice: Seconds to H/M/S
+        const h = Math.floor(value / 3600);
+        const m = Math.floor((value % 3600) / 60);
+        const s = value % 60;
+        return `${h > 0 ? h + 'h ' : ''}${m > 0 ? m + 'm ' : ''}${s}s`;
+
+      case 2: // Data: API sends MB
+        if (value >= 1024) return (value / 1024).toFixed(2) + ' GB';
+        return value.toFixed(2) + ' MB';
+
+      case 3: // SMS
+        return value + ' SMS';
+
+      case 4: // Units
+        return value + ' units';
+
+      default:
+        return value;
+    }
   }
+
+  const getTypeInfo = (type) => {
+    const map = {
+      1: { label: 'Voice', class: 'badge-voice' },
+      2: { label: 'Data', class: 'badge-data' },
+      3: { label: 'SMS', class: 'badge-sms' },
+      4: { label: 'Units', class: 'badge-units' }
+    };
+    return map[type] || { label: 'Other', class: '' };
+  };
 
   $effect(() => { loadCDRs(); });
 </script>
@@ -67,13 +96,13 @@
         {/if}
       </button>
     </div>
-    <p class="text-muted">Analyze and audit call detail records across the network</p>
+    <p class="text-muted">Analyze and audit network usage records</p>
   </div>
 
   <div class="search-bar animate-fade">
     <div class="input-group">
       <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
-      <input type="text" bind:value={search} placeholder="Search by phone number..." />
+      <input type="text" bind:value={search} placeholder="Search MSISDN or Destination..." />
     </div>
   </div>
 
@@ -82,55 +111,56 @@
       {#if loading}
         <div class="loading-state">
           <div class="spinner"></div>
-          <p>Loading Call Records...</p>
+          <p>Loading records...</p>
         </div>
       {:else if filteredCDRs.length === 0}
         <div class="empty-state">
-          <p>No call records found matching your search.</p>
+          <p>No records found matching your search.</p>
         </div>
       {:else}
         <table>
           <thead>
-            <tr>
-              <th>ID</th>
-              <th>MSISDN</th>
-              <th>Destination</th>
-              <th>Duration</th>
-              <th>Type</th>
-              <th>Timestamp</th>
-              <th>Status</th>
-            </tr>
+          <tr>
+            <th>ID</th>
+            <th>MSISDN</th>
+            <th>Destination</th>
+            <th>Usage</th>
+            <th>Type</th>
+            <th>Timestamp</th>
+            <th>Status</th>
+          </tr>
           </thead>
           <tbody>
-            {#each filteredCDRs as cdr}
-              <tr>
-                <td><span class="id-badge">#{cdr.id}</span></td>
-                <td><span class="phone-num">{cdr.msisdn}</span></td>
-                <td><span class="phone-num">{cdr.destination || '—'}</span></td>
-                <td><span class="duration">{formatDuration(cdr.duration)}</span></td>
-                <td>
-                  <span class="badge badge-customer">
-                    {cdr.type == 1 ? 'Voice' : cdr.type == 2 ? 'Data' : 'SMS'}
+          {#each filteredCDRs as cdr}
+            {@const typeInfo = getTypeInfo(cdr.type)}
+            <tr>
+              <td><span class="id-badge">#{cdr.id}</span></td>
+              <td><span class="phone-num">{cdr.msisdn}</span></td>
+              <td><span class="phone-num">{cdr.destination || '—'}</span></td>
+              <td><span class="usage-text">{formatUsage(cdr.duration, cdr.type)}</span></td>
+              <td>
+                  <span class="badge {typeInfo.class} badge-base">
+                    {typeInfo.label}
                   </span>
-                </td>
-                <td class="text-muted">{new Date(cdr.timestamp).toLocaleString()}</td>
-                <td>
+              </td>
+              <td class="text-muted">{new Date(cdr.timestamp).toLocaleString()}</td>
+              <td>
                   <span class="badge {cdr.rated ? 'badge-admin' : 'badge-customer'}">
                     {cdr.rated ? 'Rated' : 'Pending'}
                   </span>
-                </td>
-              </tr>
-            {/each}
+              </td>
+            </tr>
+          {/each}
           </tbody>
         </table>
-        
+
         <div class="pagination">
           <button class="btn-page" onclick={prevPage} disabled={page === 0}>
-            Previous 50
+            Previous
           </button>
           <span class="page-info">Page {page + 1}</span>
           <button class="btn-page" onclick={nextPage} disabled={cdrs.length < limit}>
-            Next 50
+            Next
           </button>
         </div>
       {/if}
@@ -141,6 +171,7 @@
 <style>
   .text-gradient { background: linear-gradient(135deg, var(--red), var(--red-light)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
   .header-main { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; }
+
   .btn-import { display: flex; align-items: center; gap: 0.5rem; background: var(--red); color: white; border: none; padding: 0.8rem 1.5rem; border-radius: 12px; font-weight: 600; cursor: pointer; transition: all 0.3s; box-shadow: 0 4px 15px rgba(224, 8, 0, 0.3); }
   .btn-import:hover:not(:disabled) { background: var(--red-light); transform: translateY(-2px); box-shadow: 0 6px 20px rgba(224, 8, 0, 0.4); }
   .btn-import:disabled { opacity: 0.6; cursor: not-allowed; }
@@ -151,31 +182,24 @@
   .input-group { position: relative; display: flex; align-items: center; }
   .input-group svg { position: absolute; left: 1rem; color: var(--text-muted); }
   .input-group input { width: 100%; padding: 0.8rem 1rem 0.8rem 3rem; background: rgba(255, 255, 255, 0.05); border: 1px solid var(--border); border-radius: 12px; color: white; transition: all 0.3s; }
-  .input-group input:focus { outline: none; border-color: var(--red); box-shadow: 0 0 15px rgba(224, 8, 0, 0.2); background: rgba(255, 255, 255, 0.08); }
+  .input-group input:focus { outline: none; border-color: var(--red); box-shadow: 0 0 15px rgba(224, 8, 0, 0.2); }
 
-  .table-card { 
-    padding: 0; 
-    overflow: hidden; 
-    border-radius: 20px; 
-    border: 1px solid var(--border);
-    background: var(--bg-card);
-  }
-  .table-card .table-wrapper {
-    border: none;
-    background: transparent;
-    margin-top: 0;
-  }
+  .table-card { padding: 0; overflow: hidden; border-radius: 20px; border: 1px solid var(--border); background: var(--bg-card); }
   .id-badge { background: rgba(255, 255, 255, 0.05); padding: 0.2rem 0.5rem; border-radius: 6px; font-size: 0.8rem; color: var(--text-muted); }
   .phone-num { font-family: 'JetBrains Mono', monospace; font-weight: 600; color: #3B82F6; }
-  .duration { font-weight: 700; color: #F59E0B; }
-  .cost { font-weight: 700; color: #22C55E; }
+
+  .usage-text { font-family: 'JetBrains Mono', monospace; font-weight: 700; color: #F59E0B; }
+
+  .badge-base { border-left: 3px solid transparent; }
+  .badge-voice { border-left-color: #3B82F6; color: #3B82F6; background: rgba(59, 130, 246, 0.1); }
+  .badge-data { border-left-color: #22C55E; color: #22C55E; background: rgba(34, 197, 94, 0.1); }
+  .badge-sms { border-left-color: #A855F7; color: #A855F7; background: rgba(168, 85, 247, 0.1); }
+  .badge-units { border-left-color: #F59E0B; color: #F59E0B; background: rgba(245, 158, 11, 0.1); }
 
   .loading-state, .empty-state { padding: 4rem; text-align: center; color: var(--text-muted); }
   .spinner { width: 40px; height: 40px; border: 4px solid rgba(224, 8, 0, 0.1); border-top-color: var(--red); border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 1rem; }
-  
-  @keyframes spin { to { transform: rotate(360deg); } }
 
-  .badge-roaming { background: rgba(168, 85, 247, 0.1); color: #A855F7; border: 1px solid rgba(168, 85, 247, 0.2); }
+  @keyframes spin { to { transform: rotate(360deg); } }
 
   .pagination { display: flex; align-items: center; justify-content: center; gap: 2rem; padding: 1.5rem; border-top: 1px solid var(--border); background: rgba(255, 255, 255, 0.02); }
   .btn-page { background: rgba(255, 255, 255, 0.05); color: white; border: 1px solid var(--border); padding: 0.5rem 1rem; border-radius: 8px; font-weight: 600; cursor: pointer; transition: all 0.2s; }

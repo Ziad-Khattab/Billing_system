@@ -1,12 +1,14 @@
 <script>
-  import { base } from '$app/paths';
   import { onMount } from 'svelte';
 
-  let username = $state('');
-  let password = $state('');
-  let msisdn = $state('');
-  let error = $state('');
-  let loading = $state(false);
+  let username  = $state('');
+  let password  = $state('');
+  let name      = $state('');
+  let email     = $state('');
+  let address   = $state('');
+  let birthdate = $state('');
+  let error     = $state('');
+  let loading   = $state(false);
 
   onMount(async () => {
     try {
@@ -27,17 +29,17 @@
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',
-        body: JSON.stringify({ username, password, msisdn, name, email, address, birthdate })
+        body: JSON.stringify({ username, password, name, email, address, birthdate })
       });
       if (res.ok) {
-        window.location.assign('/profile');
+        window.location.assign('/onboarding');
       } else {
         const data = await res.json();
         error = data.error || 'Registration failed';
         loading = false;
       }
-    } catch { 
-      error = 'Cannot connect to server'; 
+    } catch {
+      error = 'Cannot connect to server';
       loading = false;
     }
   }
@@ -50,7 +52,7 @@
     <div class="register-header">
       <img src="/eand_logo.svg" alt="e&" class="register-logo" />
       <h1>Join e& Billing</h1>
-      <p>Enter your phone number to create an account</p>
+      <p>Create your account to get started</p>
     </div>
 
     {#if error}
@@ -59,23 +61,53 @@
 
     <form onsubmit={handleRegister}>
       <div class="form-group">
-        <label class="label" for="msisdn">Phone Number (MSISDN)</label>
-        <input id="msisdn" class="input" type="text" bind:value={msisdn} placeholder="201000000000" required />
+        <label class="label" for="reg-name">Full Name</label>
+        <input id="reg-name" class="input" type="text"
+               bind:value={name} placeholder="Alice Smith" required />
       </div>
+
       <div class="form-group">
         <label class="label" for="reg-username">Username</label>
-        <input id="reg-username" class="input" type="text" bind:value={username} placeholder="choose a username" required />
+        <input id="reg-username" class="input" type="text"
+               bind:value={username} placeholder="Choose a username" required />
       </div>
+
+      <div class="form-group">
+        <label class="label" for="reg-email">Email</label>
+        <input id="reg-email" class="input" type="email"
+               bind:value={email} placeholder="alice@example.com" required />
+      </div>
+
       <div class="form-group">
         <label class="label" for="reg-password">Password</label>
-        <input id="reg-password" class="input" type="password" bind:value={password} placeholder="Min 6 characters" required minlength="6" />
+        <input id="reg-password" class="input" type="password"
+               bind:value={password} placeholder="Min 6 characters"
+               required minlength="6" />
       </div>
-      <button type="submit" class="btn btn-primary" style="width: 100%;" disabled={loading}>
-        {loading ? 'Verifying...' : 'Create Account'}
+
+      <div class="form-group">
+        <label class="label" for="reg-address">Address</label>
+        <input id="reg-address" class="input" type="text"
+               bind:value={address} placeholder="123 Main St" />
+      </div>
+
+      <div class="form-group">
+        <label class="label" for="reg-birthdate">Date of Birth</label>
+        <input id="reg-birthdate" class="input" type="date"
+               bind:value={birthdate} />
+      </div>
+
+      <button type="submit" class="btn btn-primary"
+              style="width: 100%; margin-top: 0.5rem;"
+              disabled={loading}>
+        {loading ? 'Creating account...' : 'Create Account'}
       </button>
     </form>
 
-    <p class="register-footer">Already have an account? <a href="/login" class="link-red">Sign In</a></p>
+    <p class="register-footer">
+      Already have an account?
+      <a href="/login" class="link-red">Sign In</a>
+    </p>
   </div>
 </div>
 
@@ -86,7 +118,16 @@
   .register-logo { height: 180px; display: block; margin: 0 auto 0.75rem auto; }
   .register-header h1 { font-size: 1.5rem; font-weight: 700; margin-bottom: 0.25rem; }
   .register-header p { color: var(--text-muted); font-size: 0.875rem; }
-  .error-msg { background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.2); color: #EF4444; padding: 0.75rem; border-radius: var(--radius-sm); font-size: 0.85rem; margin-bottom: 1rem; }
+  .form-group { margin-bottom: 1rem; }
+  .error-msg {
+    background: rgba(239,68,68,0.1);
+    border: 1px solid rgba(239,68,68,0.2);
+    color: #EF4444;
+    padding: 0.75rem;
+    border-radius: var(--radius-sm);
+    font-size: 0.85rem;
+    margin-bottom: 1rem;
+  }
   .register-footer { text-align: center; margin-top: 1.5rem; font-size: 0.85rem; color: var(--text-muted); }
   .link-red { color: var(--red); font-weight: 600; }
 </style>
