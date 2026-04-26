@@ -91,7 +91,8 @@ public class CustomerProfileServlet extends BaseServlet {
                 sendError(res, 404, "Unknown customer endpoint: " + path);
             }
         } catch (Exception e) {
-            sendError(res, 500, e.getMessage());
+            e.printStackTrace(); // Print to IntelliJ console for you to see
+            sendError(res, 500, "Jasper Error: " + e.getMessage() + " (Check console for full trace)");
         }
     }
 }
