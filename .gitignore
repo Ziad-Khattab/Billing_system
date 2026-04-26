@@ -52,3 +52,4 @@ backend_reference/
 frontend_backup_src/
 backend_backup_src/
 docs/
+.m2/

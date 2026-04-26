@@ -767,22 +767,22 @@ RETURNS TABLE (
 BEGIN
 RETURN QUERY
 SELECT
-    contract_id,
-    billing_period_start,
-    billing_period_end,
-    billing_date,
-    recurring_fees,
-    one_time_fees,
-    voice_usage,
-    data_usage,
-    sms_usage,
-    ROR_charge,
-    taxes,
-    total_amount,
-    status,
-    is_paid
-FROM bill
-WHERE id = p_bill_id;
+    b.contract_id,
+    b.billing_period_start,
+    b.billing_period_end,
+    b.billing_date,
+    b.recurring_fees,
+    b.one_time_fees,
+    b.voice_usage,
+    b.data_usage,
+    b.sms_usage,
+    b.ROR_charge,
+    b.taxes,
+    b.total_amount,
+    b.status,
+    b.is_paid
+FROM bill b
+WHERE b.id = p_bill_id;
 END;
 $$ LANGUAGE plpgsql;
 
