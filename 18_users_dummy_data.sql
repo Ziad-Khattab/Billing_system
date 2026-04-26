@@ -60,7 +60,7 @@ VALUES
     ('paul',   'password16', 'customer', 16),
     ('quinn',  'password17', 'customer', 17),
     ('rachel', 'password18', 'customer', 18),
-    ('admin',  'admin123',  'admin',    NULL);
+    ('admin',  'adminpass',  'admin',    NULL);
 
 ------------------------------------------------------------
 -- 3. RATE PLANS
