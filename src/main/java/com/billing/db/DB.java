@@ -64,7 +64,7 @@ public class DB {
     }
 
     /**
-     * SIMPLE OPTION: Execute a teammate's SQL function with a single line.
+     * Executes a stored procedure or function call.
      * Example: DB.executeCall("generate_bill", 101, "2023-10-01");
      */
     public static void executeCall(String functionName, Object... params) throws SQLException {
@@ -84,8 +84,8 @@ public class DB {
     }
 
     /**
-     * SIMPLE OPTION: Execute a SELECT and get a List of Maps (No Model classes needed!).
-     * This is perfect for the frontend as GSON can turn this List into JSON instantly.
+     * Executes a SELECT statement and returns a List of Maps.
+     * This format is optimized for JSON serialization via GSON.
      */
     public static java.util.List<java.util.Map<String, Object>> executeSelect(String sql, Object... params) throws SQLException {
         java.util.List<java.util.Map<String, Object>> rows = new java.util.ArrayList<>();
@@ -114,7 +114,7 @@ public class DB {
     }
 
     /**
-     * SIMPLE OPTION: Execute an INSERT, UPDATE, or DELETE statement.
+     * Executes an INSERT, UPDATE, or DELETE statement.
      * @return The number of rows affected.
      */
     public static int executeUpdate(String sql, Object... params) throws SQLException {
