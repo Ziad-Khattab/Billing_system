@@ -2195,3 +2195,18 @@ FROM generate_series(1, 99) AS i;
 UPDATE msisdn_pool
 SET is_available = FALSE
 WHERE msisdn IN (SELECT msisdn FROM contract);
+-- ============================================================
+-- AUTOMATION: NOTIFY BILL GENERATION
+-- ============================================================
+CREATE OR REPLACE FUNCTION notify_bill_generation()
+RETURNS TRIGGER AS $$
+BEGIN
+    PERFORM pg_notify('generate_bill_event', NEW.id::text);
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER trg_bill_inserted
+AFTER INSERT ON bill
+FOR EACH ROW
+EXECUTE FUNCTION notify_bill_generation();
