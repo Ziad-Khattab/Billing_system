@@ -1,0 +1,17 @@
+# Ignore everything by default
+**
+
+# Allow the Maven project file
+!pom.xml
+
+# Allow the source code (Java and Frontend)
+!src/**
+!frontend/**
+
+# Allow the configuration files
+!.env
+!Dockerfile
+!docker-compose.yml
+
+# Allow build artifacts (if building locally)
+!target/*.jar

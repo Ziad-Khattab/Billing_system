@@ -19,8 +19,16 @@ public class AdminCDRServlet extends BaseServlet {
             int offset = req.getParameter("offset") != null ? Integer.parseInt(req.getParameter("offset")) : 0;
 
             String sql = "SELECT * from get_cdrs(?,?)";
+            List<Map<String, Object>> data = DB.executeSelect(sql, limit, offset);
             
-            return DB.executeSelect(sql, limit, offset);
+            // Get total count for pagination
+            List<Map<String, Object>> countResult = DB.executeSelect("SELECT count(*) as total FROM cdr");
+            long total = countResult.isEmpty() ? 0 : ((Number) countResult.get(0).get("total")).longValue();
+
+            return Map.of(
+                "data", data,
+                "total", total
+            );
         });
     }
 

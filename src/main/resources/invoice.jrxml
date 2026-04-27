@@ -2,18 +2,10 @@
 <jasperReport name="Invoice_FMRZ" language="java" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="a1b2c3d4-e5f6-7890-abcd-ef1234567890">
 	<parameter name="BILL_ID" class="java.lang.Integer"/>
 	<parameter name="LOGO_PATH" class="java.lang.String"/>
-	<parameter name="GROUP_NAME" class="java.lang.String">
-		<defaultValueExpression><![CDATA["FMRZ Telecom Group"]]></defaultValueExpression>
-	</parameter>
-	<parameter name="COMPANY_CARE" class="java.lang.String">
-		<defaultValueExpression><![CDATA["+201012345678"]]></defaultValueExpression>
-	</parameter>
-	<parameter name="COMPANY_WEB" class="java.lang.String">
-		<defaultValueExpression><![CDATA["www.fmrz-telecom.com"]]></defaultValueExpression>
-	</parameter>
-	<parameter name="COMPANY_EMAIL" class="java.lang.String">
-		<defaultValueExpression><![CDATA["support@fmrz.com"]]></defaultValueExpression>
-	</parameter>
+	<parameter name="GROUP_NAME" class="java.lang.String"/>
+	<parameter name="COMPANY_CARE" class="java.lang.String"/>
+	<parameter name="COMPANY_WEB" class="java.lang.String"/>
+	<parameter name="COMPANY_EMAIL" class="java.lang.String"/>
 
 	<query language="SQL"><![CDATA[
 		SELECT 

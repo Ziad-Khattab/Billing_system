@@ -21,15 +21,34 @@ public class DB {
     static {
         try (InputStream input = DB.class.getClassLoader().getResourceAsStream("db.properties")) {
             if (input == null) {
-                throw new RuntimeException("CRITICAL: db.properties not found!");
+                System.err.println("WARNING: db.properties not found in classpath. Relying on Environment Variables.");
+            } else {
+                props.load(input);
             }
-            props.load(input);
 
             HikariConfig config = new HikariConfig();
             config.setDriverClassName("org.postgresql.Driver");
-            config.setJdbcUrl(props.getProperty("db.url"));
-            config.setUsername(props.getProperty("db.user"));
-            config.setPassword(props.getProperty("db.password"));
+            
+            // Safety Net: Priority logic with placeholder detection
+            String url = getEnvOrProp("DB_URL", "db.url");
+            String user = getEnvOrProp("DB_USER", "db.user");
+            String pass = getEnvOrProp("DB_PASSWORD", "db.password");
+
+            if (url == null || url.contains("REPLACE_WITH_ENV_VAR")) {
+                System.err.println("\n" + "=".repeat(60));
+                System.err.println("❌ CRITICAL: DATABASE CREDENTIALS MISSING");
+                System.err.println("=".repeat(60));
+                System.err.println("How to fix this:");
+                System.err.println("1. Locally (IntelliJ): Edit your 'Main' Run Configuration.");
+                System.err.println("   Add Environment Variables: DB_URL, DB_USER, DB_PASSWORD");
+                System.err.println("2. Cloud (Railway): Go to the 'Variables' tab and add them.");
+                System.err.println("=".repeat(60) + "\n");
+                throw new RuntimeException("Database URL is missing or placeholder. See logs above for help.");
+            }
+
+            config.setJdbcUrl(url);
+            config.setUsername(user);
+            config.setPassword(pass);
             
             // Pool Configuration
             config.setMaximumPoolSize(10);
@@ -60,6 +79,13 @@ public class DB {
     }
 
     public static String getProperty(String key) {
+        // Support for Environment Overrides
+        if (key.equals("cdr.input.path") && System.getenv("CDR_INPUT_PATH") != null) {
+            return System.getenv("CDR_INPUT_PATH");
+        }
+        if (key.equals("cdr.processed.path") && System.getenv("CDR_PROCESSED_PATH") != null) {
+            return System.getenv("CDR_PROCESSED_PATH");
+        }
         return props.getProperty(key);
     }
 
@@ -134,5 +160,13 @@ public class DB {
         if (dataSource != null) {
             dataSource.close();
         }
+    }
+
+    private static String getEnvOrProp(String envKey, String propKey) {
+        String val = System.getenv(envKey);
+        if (val == null || val.trim().isEmpty() || val.contains("REPLACE_WITH_ENV_VAR")) {
+            val = props.getProperty(propKey);
+        }
+        return val;
     }
 }

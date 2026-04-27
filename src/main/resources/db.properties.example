@@ -3,6 +3,6 @@ db.user=USERNAME
 db.password=PASSWORD
 
 # Alternative: set environment variables instead:
-#   BILLING_DB_URL
-#   BILLING_DB_USER
-#   BILLING_DB_PASSWORD
+#   DB_URL
+#   DB_USER
+#   DB_PASSWORD

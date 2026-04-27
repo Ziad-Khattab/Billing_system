@@ -1,4 +1,6 @@
 # Java / Maven
+cdr_backup_before_cleanup.sql
+*.sql
 target/
 *.class
 *.war
@@ -8,13 +10,22 @@ target/
 .m2
 # SvelteKit / Node
 node_modules/
+frontend/node/
+frontend/node_modules/
 .svelte-kit/
+frontend/.svelte-kit/
 build/
 .env
 .env.*
 !.env.example
 package-lock.json
 npm-debug.log*
+
+# Generated Assets
+src/main/webapp/_app/
+src/main/webapp/index.html
+*.jar
+!Telecom-Billing-Engine.jar # Keep if you want to track the specific version, but usually ignored
 
 # Database / Secrets
 src/main/resources/db.properties
@@ -53,3 +64,9 @@ frontend_backup_src/
 backend_backup_src/
 docs/
 .m2/
+node_dist/
+input/
+processed/
+*.tmp
+r0qiia_pom.xml
+cookies.txt

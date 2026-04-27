@@ -11,9 +11,37 @@ import java.sql.Connection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 
 @WebServlet("/api/customer/*")
 public class CustomerProfileServlet extends BaseServlet {
+    
+    private static final Properties config = new Properties();
+
+    static {
+        try (InputStream is = CustomerProfileServlet.class.getResourceAsStream("/config.properties")) {
+            if (is != null) config.load(is);
+        } catch (IOException e) {
+            System.err.println("WARNING: Could not load config.properties");
+        }
+    }
+
+    private static JasperReport cachedReport = null;
+
+    private JasperReport getCachedReport() throws JRException {
+        if (cachedReport == null) {
+            synchronized (CustomerProfileServlet.class) {
+                if (cachedReport == null) {
+                    try (InputStream is = getClass().getResourceAsStream("/invoice.jrxml")) {
+                        cachedReport = JasperCompileManager.compileReport(is);
+                    } catch (IOException e) {
+                        throw new JRException("Failed to load invoice.jrxml", e);
+                    }
+                }
+            }
+        }
+        return cachedReport;
+    }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse res) throws IOException {
@@ -76,15 +104,22 @@ public class CustomerProfileServlet extends BaseServlet {
                 res.setContentType("application/pdf");
                 res.setHeader("Content-Disposition", "attachment; filename=Invoice_" + billId + ".pdf");
 
-                try (InputStream reportStream = getClass().getResourceAsStream("/invoice.jrxml");
-                     Connection conn = DB.getConnection()) {
+                try (Connection conn = DB.getConnection()) {
                     
                     Map<String, Object> params = new HashMap<>();
                     params.put("BILL_ID", billId);
                     params.put("LOGO_PATH", getClass().getResource("/logo.svg").toExternalForm());
+                    
+                    // --- HARDENING: Inject Company Info as Parameters (Loaded from config.properties) ---
+                    params.put("GROUP_NAME", config.getProperty("company.name", "FMRZ Telecom Group"));
+                    params.put("COMPANY_CARE", config.getProperty("company.care", "+20 101 234 5678"));
+                    params.put("COMPANY_WEB", config.getProperty("company.web", "www.fmrz-telecom.com"));
+                    params.put("COMPANY_EMAIL", config.getProperty("company.email", "support@fmrz.com"));
+                    
                     params.put(JRParameter.REPORT_CLASS_LOADER, getClass().getClassLoader());
 
-                    JasperReport jasperReport = JasperCompileManager.compileReport(reportStream);
+                    // --- PERFORMANCE: Use cached report to avoid 2-second compilation delay ---
+                    JasperReport jasperReport = getCachedReport();
                     JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, params, conn);
                     JasperExportManager.exportReportToPdfStream(jasperPrint, res.getOutputStream());
                 }
@@ -93,7 +128,8 @@ public class CustomerProfileServlet extends BaseServlet {
                 sendError(res, 404, "Unknown customer endpoint: " + path);
             }
         } catch (Throwable e) {
-            e.printStackTrace(); // Print to IntelliJ console for you to see
+            e.printStackTrace();
+            // ... rest of the catch block
             // Clear response and send JSON error
             try {
                 if (!res.isCommitted()) {

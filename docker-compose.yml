@@ -1,0 +1,31 @@
+# FMRZ Telecom Billing System - Production Orchestration
+# Usage: podman-compose up -d --build
+
+services:
+  billing-app:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    image: fmr-billing-system:latest
+    container_name: billing-app-prod
+    ports:
+      - "8080:8080"
+    env_file:
+      - .env
+    environment:
+      # Paths for CDR processing inside the container
+      - CDR_INPUT_PATH=/app/input
+      - CDR_PROCESSED_PATH=/app/processed
+    volumes:
+      # Data Persistence for CDR Files (with SELinux :Z flag)
+      - ./input:/app/input:Z
+      - ./processed:/app/processed:Z
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    restart: always
+
+# Tip: Run 'podman-compose logs -f' to watch the startup in real-time.
