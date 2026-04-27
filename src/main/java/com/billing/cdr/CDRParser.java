@@ -100,25 +100,20 @@ public class CDRParser {
                     String timeStr = p[4].trim(); // HH:MM:SS
                     double externalPiasters = Double.parseDouble(p[5].trim());
 
-                    // Map Service ID
-                    String serviceName = "VOICE";
-                    if (serviceId == 2) serviceName = "SMS";
-                    else if (serviceId == 3) serviceName = "DATA";
-
                     // Construct full timestamp
                     Timestamp ts = Timestamp.valueOf(fileDateStr + " " + timeStr);
 
-                    // Insert via SQL function
+                    // Insert via SQL function (Match exact signature in whole_billing_updated.sql)
                     cs.registerOutParameter(1, Types.INTEGER);
                     cs.setInt(2, fileId);
                     cs.setString(3, dialA);
                     cs.setString(4, dialB);
                     cs.setTimestamp(5, ts);
                     cs.setInt(6, usage);
-                    cs.setInt(7, serviceId); // call_type_id
-                    cs.setString(8, serviceName);
-                    cs.setString(9, "LOCAL"); // Default to LOCAL roaming
-                    cs.setBigDecimal(10, BigDecimal.valueOf(externalPiasters / 100.0)); // Convert piasters to pounds
+                    cs.setInt(7, serviceId);
+                    cs.setNull(8, Types.VARCHAR); // p_hplmn
+                    cs.setNull(9, Types.VARCHAR); // p_vplmn
+                    cs.setBigDecimal(10, BigDecimal.valueOf(externalPiasters / 100.0)); // p_external_charges
 
                     cs.execute();
                 }
