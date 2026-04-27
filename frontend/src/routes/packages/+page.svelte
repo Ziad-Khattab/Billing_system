@@ -1,31 +1,18 @@
 <script>
   import { fade, fly } from 'svelte/transition';
   import { page } from '$app/state';
+  import { showToast } from '$lib/toast.svelte.js';
+  import { authState } from '$lib/auth.svelte.js';
+  import Modal from '$lib/components/Modal.svelte';
   let plans = $state([]);
   let servicePkgs = $state([]);
   let loading = $state(true);
   let activeIndex = $state(1); // Default to Gold
   let interval;
-  let message = $state(null);
-  
-  // Real-time Session Logic
-  let currentUser = $state(null);
-  let authChecked = $state(false);
-
-  // Admin State
+  let provisionLoading = $state(false);
   let showAdminModal = $state(false);
   let selectedPkg = $state(null);
   let adminTargetMsisdn = $state('');
-
-  async function checkAuth() {
-    try {
-      const res = await fetch('/api/auth/me');
-      if (res.ok) currentUser = await res.json();
-    } catch (e) {
-      currentUser = null;
-    }
-    authChecked = true;
-  }
 
   async function loadData() {
     try {
@@ -43,14 +30,14 @@
   }
 
   async function buyBundle(pkg) {
-    if (!authChecked) return;
+    if (!authState.initialized) return;
     
-    if (!currentUser) {
+    if (!authState.user) {
       window.location.href = '/login?returnTo=/packages';
       return;
     }
 
-    if (currentUser.role === 'admin') {
+    if (authState.user.role === 'admin') {
       selectedPkg = pkg;
       showAdminModal = true;
       return;
@@ -61,18 +48,20 @@
   }
 
   async function adminProvision() {
-    if (!adminTargetMsisdn) return showToast('Please enter an MSISDN', true);
-    
+    if (!adminTargetMsisdn) return showToast('Please enter an MSISDN', 'error');
+    provisionLoading = true;
     try {
       const contractRes = await fetch(`/api/admin/contracts`);
       const contracts = await contractRes.json();
       const contract = contracts.find(c => c.msisdn === adminTargetMsisdn);
       
-      if (!contract) return showToast('No active contract found for this MSISDN', true);
+      if (!contract) return showToast('No active contract found for this MSISDN', 'error');
       
       executePurchase(contract.id, selectedPkg.id, true);
     } catch (e) {
-      showToast('Error finding customer', true);
+      showToast('Error finding customer', 'error');
+    } finally {
+      provisionLoading = false;
     }
   }
 
@@ -92,17 +81,13 @@
         showAdminModal = false;
         adminTargetMsisdn = '';
       } else {
-        showToast(data.message || 'Action failed', true);
+        showToast(data.message || 'Action failed', 'error');
       }
     } catch (e) {
-      showToast('Connection error', true);
+      showToast('Connection error', 'error');
     }
   }
 
-  function showToast(msg, isError = false) {
-    message = { text: msg, isError };
-    setTimeout(() => message = null, 4000);
-  }
 
   function startCycle() {
     stopCycle();
@@ -138,7 +123,6 @@
   }
 
   $effect(() => {
-    checkAuth();
     loadData();
     startCycle();
     return () => stopCycle();
@@ -150,36 +134,30 @@
 </svelte:head>
 
 <div class="container">
-  {#if message}
-    <div class="toast {message.isError ? 'error' : 'success'}" in:fly={{ y: -20 }} out:fade>
-      {message.text}
-    </div>
-  {/if}
 
-  {#if showAdminModal}
-    <div class="admin-modal-overlay" transition:fade onclick={() => showAdminModal = false}>
-      <div class="admin-modal card" onclick={(e) => e.stopPropagation()} in:fly={{ y: 50 }}>
-        <div class="modal-header">
-          <h3>Provision <span class="text-gradient">Package</span></h3>
-          <p>Assign <strong>{selectedPkg?.name}</strong> to a customer</p>
-        </div>
-        <div class="modal-body">
-          <label for="msisdn">Target MSISDN</label>
-          <input 
-            type="text" 
-            id="msisdn" 
-            placeholder="e.g. 01012345678" 
-            bind:value={adminTargetMsisdn} 
-            class="admin-input"
-          />
-          <div class="modal-actions">
-            <button class="btn btn-secondary" onclick={() => showAdminModal = false}>Cancel</button>
-            <button class="btn btn-primary" onclick={adminProvision}>Confirm Provision</button>
-          </div>
-        </div>
-      </div>
+  <Modal 
+    bind:show={showAdminModal} 
+    title="Provision Package" 
+    subtitle="Assign {selectedPkg?.name} to a customer"
+    type="admin"
+  >
+    <div class="form-group">
+      <label class="label" for="msisdn">Target MSISDN</label>
+      <input 
+        type="text" 
+        id="msisdn" 
+        placeholder="e.g. 01012345678" 
+        bind:value={adminTargetMsisdn} 
+        class="input"
+      />
     </div>
-  {/if}
+    <div style="display:flex; gap: 1rem; margin-top: 2rem;">
+      <button class="btn btn-secondary" style="flex:1" onclick={() => showAdminModal = false}>Cancel</button>
+      <button class="btn btn-primary" style="flex:1" onclick={adminProvision} disabled={provisionLoading}>
+        {provisionLoading ? 'Processing...' : 'Confirm Provision'}
+      </button>
+    </div>
+  </Modal>
 
   <div class="page-header">
     <div>
@@ -241,18 +219,18 @@
                 </div>
                 <button
                   onclick={() => {
-                    if (!currentUser) window.location.href = '/register?plan=' + plans[activeIndex]?.id;
-                    else if (currentUser.role === 'admin') window.location.href = '/admin/contracts';
-                    else window.location.href = '/customer/dashboard';
+                    if (!authState.user) window.location.href = '/register?plan=' + plans[activeIndex]?.id;
+                    else if (authState.user.role === 'admin') window.location.href = '/admin/contracts';
+                    else window.location.href = '/profile';
                   }}
                   class="btn btn-primary"
                   style="width: 100%; margin-top: 2rem; position: relative; z-index: 2;"
                 >
-                  {#if !authChecked}
+                  {#if !authState.initialized}
                     Checking Status...
-                  {:else if !currentUser}
+                  {:else if !authState.user}
                     Activate Now
-                  {:else if currentUser.role === 'admin'}
+                  {:else if authState.user.role === 'admin'}
                     Manage Contracts
                   {:else}
                     Back to Dashboard
@@ -377,11 +355,11 @@
               class="btn btn-bundle-action" 
               style="width: 100%; margin-top: 2rem;"
             >
-              {#if !authChecked}
+              {#if !authState.initialized}
                 ...
-              {:else if !currentUser}
+              {:else if !authState.user}
                 Login to Buy
-              {:else if currentUser.role === 'admin'}
+              {:else if authState.user.role === 'admin'}
                 Provision for Customer
               {:else}
                 Add to Plan
@@ -395,34 +373,6 @@
 </div>
 
 <style>
-  .toast {
-    position: fixed; top: 2rem; left: 50%; transform: translateX(-50%);
-    padding: 1rem 2rem; border-radius: 100px; z-index: 1000;
-    font-weight: 700; backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.1);
-    box-shadow: 0 10px 40px rgba(0,0,0,0.5);
-  }
-  .toast.success { background: rgba(16, 185, 129, 0.2); color: #10b981; border-color: rgba(16, 185, 129, 0.4); }
-  .toast.error { background: rgba(224, 8, 0, 0.2); color: #ef4444; border-color: rgba(224, 8, 0, 0.4); }
-
-  /* Admin Modal */
-  .admin-modal-overlay {
-    position: fixed; inset: 0; background: rgba(0,0,0,0.8); backdrop-filter: blur(5px);
-    z-index: 2000; display: flex; align-items: center; justify-content: center;
-  }
-  .admin-modal {
-    width: 100%; max-width: 400px; padding: 2.5rem;
-    background: rgba(20, 20, 30, 0.95); border: 1px solid var(--red);
-    box-shadow: 0 0 50px rgba(224, 8, 0, 0.2); text-align: left;
-  }
-  .modal-header h3 { font-size: 1.8rem; margin-bottom: 0.5rem; }
-  .modal-header p { color: #94a3b8; margin-bottom: 2rem; }
-  .admin-input {
-    width: 100%; padding: 12px; background: rgba(255,255,255,0.05);
-    border: 1px solid rgba(255,255,255,0.1); border-radius: 8px;
-    color: white; font-size: 1rem; margin-top: 0.5rem; margin-bottom: 2rem;
-  }
-  .modal-actions { display: flex; gap: 1rem; }
-  .modal-actions button { flex: 1; }
 
   .nebula-outer { display: flex; align-items: center; justify-content: center; gap: 2rem; max-width: 1200px; margin: 0 auto; }
   .nav-arrow { width: 56px; height: 56px; border-radius: 50%; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); color: white; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.3s; backdrop-filter: blur(10px); }

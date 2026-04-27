@@ -1,4 +1,6 @@
 <script>
+  import { showToast } from '$lib/toast.svelte.js';
+  import Modal from '$lib/components/Modal.svelte';
   let contracts = $state([]);
   let customers = $state([]);
   let plans = $state([]);
@@ -42,7 +44,7 @@
 
   async function provisionLine(e) {
     e.preventDefault();
-    if (!selectedCustomer) { alert("Please select a customer"); return; }
+    if (!selectedCustomer) { showToast("Please select a customer", 'error'); return; }
     loading = true;
     try {
       const res = await fetch('/api/admin/contracts', {
@@ -57,6 +59,7 @@
         })
       });
       if (res.ok) {
+        showToast('Line provisioned successfully!');
         showModal = false;
         newMsisdn = '';
         selectedCustomer = null;
@@ -64,7 +67,7 @@
         loadData();
       } else {
         const err = await res.json();
-        alert(err.error || 'Provisioning failed');
+        showToast(err.error || 'Provisioning failed', 'error');
       }
     } finally {
       loading = false;
@@ -110,10 +113,7 @@
   </div>
 </div>
 
-{#if showModal}
-<div class="modal-overlay" onclick={() => showModal = false} role="button" tabindex="0" onkeydown={(e) => e.key === 'Escape' && (showModal = false)}>
-  <div class="modal card-glass animate-fade" onclick={e => e.stopPropagation()} role="dialog">
-    <h2 style="margin-bottom:1.5rem">Provision New Line</h2>
+  <Modal bind:show={showModal} title="Provision New Line" type="admin">
     <form onsubmit={provisionLine}>
       <div class="form-group" style="position:relative">
         <label class="label">Search Customer (Type to search)</label>
@@ -164,13 +164,9 @@
         </button>
       </div>
     </form>
-  </div>
-</div>
-{/if}
+  </Modal>
 
 <style>
-  .modal-overlay { position:fixed; inset:0; background:rgba(0,0,0,0.7); display:flex; align-items:center; justify-content:center; z-index:1000; backdrop-filter:blur(8px); }
-  .modal { width:100%; max-width:550px; padding:2.5rem; transform:none !important; }
   
   .search-dropdown {
     position: absolute;

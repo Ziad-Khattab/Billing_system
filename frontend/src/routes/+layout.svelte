@@ -1,28 +1,14 @@
 <script>
 	import '../app.css';
 	import { page } from '$app/stores';
+	import Toast from '$lib/components/Toast.svelte';
+	import { authState, checkAuth, logout } from '$lib/auth.svelte.js';
+	import { toastState, hideToast } from '$lib/toast.svelte.js';
 
 	/** @type {{ children: import('svelte').Snippet }} */
 	let { children } = $props();
 
-	let user = $state(null);
 	let navOpen = $state(false);
-
-	async function checkAuth() {
-		try {
-			const res = await fetch(`/api/auth/me`, { credentials: 'include' });
-
-			if (res.ok) user = await res.json(); else user = null;
-		} catch {
-			user = null;
-		}
-	}
-
-	async function logout() {
-		await fetch(`/api/auth/logout`, { method: 'POST', credentials: 'include' });
-		user = null;
-		window.location.href = `/`;
-	}
 
 	$effect(() => {
 		checkAuth();
@@ -56,7 +42,7 @@
 					class:active={$page.url.pathname.startsWith('/packages')}
 				>Packages</a>
 
-				{#if user && user.role === 'admin'}
+				{#if authState.user && authState.user.role === 'admin'}
 					<a
 						href="/admin"
 						class="nav-link"
@@ -80,7 +66,7 @@
 						class="nav-link"
 						class:active={$page.url.pathname.startsWith('/admin/billing')}
 					>Billing</a>
-				{:else if user && user.role === 'customer'}
+				{:else if authState.user && authState.user.role === 'customer'}
 					<a
 						href="/profile"
 						class="nav-link"
@@ -96,15 +82,15 @@
 
 				<div class="nav-spacer"></div>
 
-				{#if user}
+				{#if authState.user}
 					<button class="btn btn-ghost" onclick={logout} style="margin-right: 0.5rem;">Logout</button>
 					
 					<span class="nav-user">
 						<span
-							class="badge {user.role === 'admin' ? 'badge-admin' : 'badge-customer'}"
-						>{user.role}</span>
+							class="badge {authState.user.role === 'admin' ? 'badge-admin' : 'badge-customer'}"
+						>{authState.user.role}</span>
 
-						{user.name || user.username}
+						{authState.user.name || authState.user.username}
 					</span>
 				{:else}
 					<a href="/login" class="btn btn-ghost">Login</a>
@@ -116,6 +102,14 @@
 
 	<main class="main-content">{@render children()}</main>
 	<footer class="footer"><div class="container"><p>© 2026 FMRZ Telecom Billing — ITI Project</p></div></footer>
+
+	{#if toastState.message}
+		<Toast 
+			message={toastState.message} 
+			type={toastState.type} 
+			onclose={hideToast}
+		/>
+	{/if}
 </div>
 
 <style>

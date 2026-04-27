@@ -1,4 +1,6 @@
 <script>
+  import { showToast } from '$lib/toast.svelte.js';
+  import ConfirmModal from '$lib/components/ConfirmModal.svelte';
   let contractId = $state('');
   let bills = $state([]);
   let missingBills = $state([]);
@@ -7,6 +9,12 @@
   let showAudit = $state(false);
   let processingBills = $state(false);
   let selectedIds = $state(new Set());
+
+  // Confirm Modals State
+  let showRunConfirm = $state(false);
+  let showPayConfirm = $state(false);
+  let showBulkConfirm = $state(false);
+  let targetBillId = $state(null);
 
   async function loadData() {
     loading = true;
@@ -27,52 +35,69 @@
   }
 
   async function forceRunBilling() {
-    if (!confirm("This will generate bills for all active contracts for the current month. Proceed?")) return;
+    showRunConfirm = true;
+  }
+
+  async function executeRunBilling() {
+    showRunConfirm = false;
     processingBills = true;
     try {
       const res = await fetch('/api/admin/bills/generate', { method: 'POST', credentials: 'include' });
       if (res.ok) {
-        alert("Billing cycle completed successfully!");
+        showToast("Billing cycle completed successfully!");
         loadData();
       } else {
-        alert("Failed to run billing cycle.");
+        showToast("Failed to run billing cycle.", 'error');
       }
     } catch (e) {
-      alert("Network error.");
+      showToast("Network error.", 'error');
     } finally {
       processingBills = false;
     }
   }
 
   async function payBill(billId) {
-    if (!confirm(`Mark Bill #${billId} as paid?`)) return;
+    targetBillId = billId;
+    showPayConfirm = true;
+  }
+
+  async function executePayBill() {
+    if (!targetBillId) return;
+    const billId = targetBillId;
+    showPayConfirm = false;
     try {
       const res = await fetch(`/api/admin/bills/pay?billId=${billId}`, { method: 'POST', credentials: 'include' });
       if (res.ok) {
+        showToast(`Bill #${billId} marked as paid.`);
         selectedIds.delete(billId);
         loadData();
       } else {
-        alert("Payment update failed.");
+        showToast("Payment update failed.", 'error');
       }
     } catch (e) {
-      alert("Network error.");
+      showToast("Network error.", 'error');
     }
   }
 
   async function bulkPay() {
     if (selectedIds.size === 0) return;
-    if (!confirm(`Mark ${selectedIds.size} bills as paid?`)) return;
+    showBulkConfirm = true;
+  }
+
+  async function executeBulkPay() {
+    showBulkConfirm = false;
     const ids = Array.from(selectedIds).join(',');
     try {
       const res = await fetch(`/api/admin/bills/pay-bulk?ids=${ids}`, { method: 'POST', credentials: 'include' });
       if (res.ok) {
+        showToast(`${selectedIds.size} bills marked as paid.`);
         selectedIds.clear();
         loadData();
       } else {
-        alert("Bulk payment failed.");
+        showToast("Bulk payment failed.", 'error');
       }
     } catch (e) {
-      alert("Network error.");
+      showToast("Network error.", 'error');
     }
   }
 
@@ -113,6 +138,31 @@
       {/if}
     </button>
   </div>
+
+  <ConfirmModal 
+    bind:show={showRunConfirm} 
+    title="Run Billing Cycle" 
+    message="This will generate bills for all active contracts for the current month. This process may take a few seconds as it triggers the automated PDF generator."
+    onconfirm={executeRunBilling}
+    loading={processingBills}
+    type="admin"
+  />
+
+  <ConfirmModal 
+    bind:show={showPayConfirm} 
+    title="Confirm Payment" 
+    message="Are you sure you want to mark Bill #{targetBillId} as paid? This will update the collection status in the financial records."
+    onconfirm={executePayBill}
+    type="admin"
+  />
+
+  <ConfirmModal 
+    bind:show={showBulkConfirm} 
+    title="Bulk Payment" 
+    message="Are you sure you want to mark {selectedIds.size} selected bills as paid? This action cannot be undone."
+    onconfirm={executeBulkPay}
+    type="admin"
+  />
 
   <!-- Summary Stats Cards -->
   <div class="stats-grid">

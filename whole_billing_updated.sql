@@ -1,7 +1,7 @@
 -- ============================================================
 -- TELECOM BILLING SCHEMA
 -- ============================================================
-DROP TABLE IF EXISTS cdr,invoice,bill,ror_contract,contract_consumption,contract,rateplan_service_package,service_package,rateplan,customer,user_account,file CASCADE;
+DROP TABLE IF EXISTS cdr,invoice,bill,ror_contract,contract_consumption,contract_addon,contract,rateplan_service_package,service_package,rateplan,msisdn_pool,user_account,file CASCADE;
 DROP TYPE IF EXISTS service_type,contract_status,bill_status,user_role CASCADE;
 -- ------------------------------------------------------------
 -- FILE (raw CDR file ingestion tracker)
@@ -111,8 +111,8 @@ CREATE TABLE contract_consumption (
                                       starting_date       DATE NOT NULL,
                                       ending_date         DATE NOT NULL,
 
-                                      consumed            INTEGER NOT NULL DEFAULT 0,
-
+                                      consumed            NUMERIC(12,4) NOT NULL DEFAULT 0,
+                                      quota_limit         NUMERIC(12,4) NOT NULL DEFAULT 0,
                                       is_billed           BOOLEAN NOT NULL DEFAULT FALSE,
 
                                       PRIMARY KEY (contract_id, service_package_id, rateplan_id, starting_date, ending_date)
@@ -366,6 +366,112 @@ $$ LANGUAGE plpgsql;
 
 
 -- ------------------------------------------------------------
+-- PURCHASE ADD-ON
+-- Allows dynamic purchase of service packages (Top-ups).
+-- Deducts price from credit and updates quota stacking.
+-- [RULE] Welcome Bonus is restricted to once per customer.
+-- ------------------------------------------------------------
+CREATE OR REPLACE FUNCTION purchase_addon(
+    p_contract_id        INTEGER,
+    p_service_package_id INTEGER
+)
+    RETURNS INTEGER AS $$
+DECLARE
+    v_addon_id     INTEGER;
+    v_pkg_price    NUMERIC(12,2);
+    v_pkg_amount   NUMERIC(12,4);
+    v_pkg_type     service_type;
+    v_expiry       DATE;
+    v_period_start DATE;
+    v_period_end   DATE;
+BEGIN
+    -- Validate contract exists and is active
+    IF NOT EXISTS (
+        SELECT 1 FROM contract WHERE id = p_contract_id AND status = 'active'
+    ) THEN
+        RAISE EXCEPTION 'Contract % is not active', p_contract_id;
+    END IF;
+
+    -- Validate service package exists
+    SELECT price, amount, type
+    INTO v_pkg_price, v_pkg_amount, v_pkg_type
+    FROM service_package
+    WHERE id = p_service_package_id;
+
+    IF NOT FOUND THEN
+        RAISE EXCEPTION 'Service package % not found', p_service_package_id;
+    END IF;
+
+    -- [RULE] Welcome Bonus is only once per lifetime per customer (across all their lines)
+    IF EXISTS (
+        SELECT 1 FROM service_package sp
+        WHERE sp.id = p_service_package_id AND sp.name = 'Welcome Bonus'
+    ) AND EXISTS (
+        SELECT 1 FROM contract_addon ca
+        JOIN service_package sp ON ca.service_package_id = sp.id
+        JOIN contract c ON ca.contract_id = c.id
+        WHERE c.user_account_id = (SELECT user_account_id FROM contract WHERE id = p_contract_id)
+          AND sp.name = 'Welcome Bonus'
+    ) THEN
+        RAISE EXCEPTION 'Welcome Bonus can only be provisioned once per customer';
+    END IF;
+
+    -- Check customer has enough credit
+    IF NOT EXISTS (
+        SELECT 1 FROM contract
+        WHERE id = p_contract_id
+          AND available_credit >= COALESCE(v_pkg_price, 0)
+    ) THEN
+        RAISE EXCEPTION 'Insufficient credit to purchase add-on';
+    END IF;
+
+    -- Expiry = end of current billing month
+    v_expiry := (DATE_TRUNC('month', CURRENT_DATE) + INTERVAL '1 month - 1 day')::DATE;
+
+    -- Insert addon record
+    INSERT INTO contract_addon (
+        contract_id, service_package_id,
+        purchased_date, expiry_date,
+        is_active, price_paid
+    ) VALUES (
+                 p_contract_id, p_service_package_id,
+                 CURRENT_DATE, v_expiry,
+                 TRUE, COALESCE(v_pkg_price, 0)
+             ) RETURNING id INTO v_addon_id;
+
+    -- Deduct price from available credit
+    UPDATE contract
+    SET available_credit = available_credit - COALESCE(v_pkg_price, 0)
+    WHERE id = p_contract_id;
+
+    -- Update or Insert consumption row
+    v_period_start := DATE_TRUNC('month', CURRENT_DATE)::DATE;
+    v_period_end   := v_expiry;
+
+    INSERT INTO contract_consumption (
+        contract_id, service_package_id, rateplan_id,
+        starting_date, ending_date, consumed, quota_limit, is_billed
+    )
+    SELECT
+        p_contract_id,
+        p_service_package_id,
+        c.rateplan_id,
+        v_period_start,
+        v_period_end,
+        0,
+        v_pkg_amount,
+        FALSE
+    FROM contract c
+    WHERE c.id = p_contract_id
+    ON CONFLICT (contract_id, service_package_id, rateplan_id, starting_date, ending_date)
+    DO UPDATE SET quota_limit = contract_consumption.quota_limit + EXCLUDED.quota_limit;
+
+    RETURN v_addon_id;
+END;
+$$ LANGUAGE plpgsql;
+
+
+-- ------------------------------------------------------------
 -- RATE CDR
 -- Deducts usage from bundles in priority order,
 -- writes any overage to ror_contract,
@@ -395,17 +501,20 @@ END IF;
 
     -- Guard: skip if already rated
     IF v_cdr.rated_flag THEN
-        RAISE NOTICE 'CDR % already rated, skipping.', p_cdr_id;
         RETURN;
 END IF;
 
     -- Resolve active contract from dial_a
 SELECT * INTO v_contract
 FROM contract
-WHERE msisdn = v_cdr.dial_a
-  AND status = 'active';
+WHERE msisdn = v_cdr.dial_a;
+
 IF NOT FOUND THEN
-        RAISE EXCEPTION 'No active contract found for MSISDN %', v_cdr.dial_a;
+    RAISE EXCEPTION 'No contract found for MSISDN %', v_cdr.dial_a;
+END IF;
+
+IF v_contract.status != 'active' THEN
+    RAISE EXCEPTION 'Contract % is %, cannot rate CDR', v_contract.id, v_contract.status;
 END IF;
 
     -- Resolve service type from the CDR's service_package
@@ -413,10 +522,10 @@ SELECT type INTO v_service_type
 FROM service_package
 WHERE id = v_cdr.service_id;
 IF NOT FOUND THEN
-        RAISE EXCEPTION 'Service package with id % not found', v_cdr.service_id;
+         RAISE EXCEPTION 'Service package with id % not found', v_cdr.service_id;
 END IF;
 
-    -- Normalise usage into the unit used by contract_consumption
+    -- Normalise usage
     v_usage_amount := get_cdr_usage_amount(v_cdr.duration, v_service_type);
     v_remaining    := v_usage_amount;
 
@@ -425,85 +534,73 @@ END IF;
     v_period_end   := (DATE_TRUNC('month', v_cdr.start_time) + INTERVAL '1 month - 1 day')::DATE;
 
     -- Deduct from bundles in priority order
-FOR v_bundle IN
-SELECT
-    cc.service_package_id,
-    cc.rateplan_id,
-    cc.starting_date,
-    cc.ending_date,
-    sp.amount,
-    sp.priority,
-    cc.consumed
-FROM contract_consumption cc
-         JOIN service_package sp ON sp.id = cc.service_package_id
-WHERE cc.contract_id   = v_contract.id
-  AND cc.rateplan_id   = v_contract.rateplan_id
-  AND cc.starting_date = v_period_start
-  AND cc.ending_date   = v_period_end
-  AND cc.is_billed     = FALSE
-  AND sp.type          = v_service_type   -- only match relevant service type
-ORDER BY sp.priority ASC
+    FOR v_bundle IN
+        SELECT cc.*
+        FROM contract_consumption cc
+                 JOIN service_package sp ON sp.id = cc.service_package_id
+        WHERE cc.contract_id   = v_contract.id
+          AND cc.starting_date = v_period_start
+          AND cc.ending_date   = v_period_end
+          AND cc.is_billed     = FALSE
+          AND sp.type          = v_service_type
+          AND sp.is_roaming    = (v_cdr.vplmn IS NOT NULL) -- Filter by roaming status
+        ORDER BY sp.priority ASC
     LOOP
         EXIT WHEN v_remaining <= 0;
 
-v_available := v_bundle.amount - v_bundle.consumed;
-
+        v_available := v_bundle.quota_limit - v_bundle.consumed;
         IF v_available <= 0 THEN
-            CONTINUE;  -- bundle exhausted, move to next
-END IF;
+            CONTINUE;
+        END IF;
 
         v_deduct    := LEAST(v_remaining, v_available);
         v_remaining := v_remaining - v_deduct;
 
-UPDATE contract_consumption
-SET consumed = consumed + v_deduct
-WHERE contract_id        = v_contract.id
-  AND service_package_id = v_bundle.service_package_id
-  AND rateplan_id        = v_bundle.rateplan_id
-  AND starting_date      = v_bundle.starting_date
-  AND ending_date        = v_bundle.ending_date;
-END LOOP;
+        UPDATE contract_consumption
+        SET consumed = consumed + v_deduct
+        WHERE contract_id        = v_contract.id
+          AND service_package_id = v_bundle.service_package_id
+          AND rateplan_id        = v_bundle.rateplan_id
+          AND starting_date      = v_bundle.starting_date
+          AND ending_date        = v_bundle.ending_date;
+    END LOOP;
 
-    -- Handle overage: anything remaining after all bundles exhausted
+    -- Handle overage
     IF v_remaining > 0 AND v_service_type != 'free_units' THEN
-SELECT CASE v_service_type
-           WHEN 'voice' THEN ror_voice
-           WHEN 'data'  THEN ror_data
-           WHEN 'sms'   THEN ror_sms
-           END INTO v_ror_rate
-FROM rateplan
-WHERE id = v_contract.rateplan_id;
+        SELECT CASE v_service_type
+            WHEN 'voice' THEN ror_voice
+            WHEN 'data'  THEN ror_data
+            WHEN 'sms'   THEN ror_sms
+            END INTO v_ror_rate
+        FROM rateplan
+        WHERE id = v_contract.rateplan_id;
 
-v_overage_charge := v_remaining * COALESCE(v_ror_rate, 0);
+        v_overage_charge := v_remaining * COALESCE(v_ror_rate, 0);
 
-        -- Accumulate overage units in ror_contract
-INSERT INTO ror_contract (contract_id, rateplan_id, voice, data, sms)
-VALUES (
-           v_contract.id,
-           v_contract.rateplan_id,
-           CASE WHEN v_service_type = 'voice' THEN v_remaining ELSE 0 END,
-           CASE WHEN v_service_type = 'data'  THEN v_remaining ELSE 0 END,
-           CASE WHEN v_service_type = 'sms'   THEN v_remaining ELSE 0 END
-       )
-    ON CONFLICT (contract_id, rateplan_id) DO UPDATE SET
-    voice = ror_contract.voice + EXCLUDED.voice,
-                                                  data  = ror_contract.data  + EXCLUDED.data,
-                                                  sms   = ror_contract.sms   + EXCLUDED.sms;
+        -- RESET LOGIC: If existing ROR row is already billed, reset it for the new cycle
+        UPDATE ror_contract 
+        SET voice = 0, data = 0, sms = 0, bill_id = NULL 
+        WHERE contract_id = v_contract.id 
+          AND rateplan_id = v_contract.rateplan_id 
+          AND bill_id IS NOT NULL;
 
--- Deduct overage charge from available credit
-UPDATE contract
-SET available_credit = available_credit - v_overage_charge
-WHERE id = v_contract.id;
-END IF;
+        INSERT INTO ror_contract (contract_id, rateplan_id, voice, data, sms)
+        VALUES (v_contract.id, v_contract.rateplan_id,
+                CASE WHEN v_service_type='voice' THEN v_remaining ELSE 0 END,
+                CASE WHEN v_service_type='data'  THEN v_remaining ELSE 0 END,
+                CASE WHEN v_service_type='sms'   THEN v_remaining ELSE 0 END)
+        ON CONFLICT (contract_id, rateplan_id)
+        DO UPDATE SET
+            voice = ror_contract.voice + EXCLUDED.voice,
+            data  = ror_contract.data  + EXCLUDED.data,
+            sms   = ror_contract.sms   + EXCLUDED.sms;
+    END IF;
 
-    -- Mark CDR as rated
-UPDATE cdr
-SET rated_flag = TRUE
-WHERE id = p_cdr_id;
+    UPDATE cdr
+    SET rated_flag       = TRUE,
+        external_charges = v_overage_charge
+    WHERE id = p_cdr_id;
 
-EXCEPTION
-    WHEN OTHERS THEN
-        RAISE EXCEPTION 'rate_cdr failed for CDR id %: %', p_cdr_id, SQLERRM;
 END;
 $$ LANGUAGE plpgsql;
 
@@ -516,7 +613,7 @@ $$ LANGUAGE plpgsql;
 CREATE OR REPLACE FUNCTION initialize_consumption_period(p_period_start DATE)
 RETURNS VOID AS $$
 DECLARE
-v_period_end DATE;
+    v_period_end DATE;
 BEGIN
     v_period_end := (DATE_TRUNC('month', p_period_start) + INTERVAL '1 month - 1 day')::DATE;
 
@@ -527,6 +624,7 @@ INSERT INTO contract_consumption (
     starting_date,
     ending_date,
     consumed,
+    quota_limit,
     is_billed
 )
 SELECT
@@ -536,15 +634,14 @@ SELECT
     p_period_start,
     v_period_end,
     0,
+    sp.amount, 
     FALSE
 FROM contract c
          JOIN rateplan_service_package rsp ON rsp.rateplan_id = c.rateplan_id
+         JOIN service_package sp ON sp.id = rsp.service_package_id
 WHERE c.status = 'active'
-    ON CONFLICT DO NOTHING;  -- safe to re-run
+    ON CONFLICT DO NOTHING;
 
-EXCEPTION
-    WHEN OTHERS THEN
-        RAISE EXCEPTION 'initialize_consumption_period failed for period %: %', p_period_start, SQLERRM;
 END;
 $$ LANGUAGE plpgsql;
 
@@ -937,8 +1034,9 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 -- ------------------------------------------------------------
--- GET CDRs (paginated)
+-- GET CDRs (Baseline version)
 -- ------------------------------------------------------------
+DROP FUNCTION IF EXISTS get_cdrs(INTEGER, INTEGER);
 CREATE OR REPLACE FUNCTION get_cdrs(p_limit INTEGER DEFAULT 50, p_offset INTEGER DEFAULT 0)
     RETURNS TABLE (
                       id          INTEGER,
@@ -1821,8 +1919,9 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 -- --------------------------------------------------
--- DASHBOARD STATS
+-- DASHBOARD STATS (Baseline version)
 -- --------------------------------------------------
+DROP FUNCTION IF EXISTS get_dashboard_stats();
 CREATE OR REPLACE FUNCTION get_dashboard_stats()
     RETURNS TABLE (
                       total_customers  BIGINT,
@@ -1840,107 +1939,6 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
-
--- ------------------------------------------------------------
--- PURCHASE ADD-ON
--- Customer buys an extra service package
--- ------------------------------------------------------------
-CREATE OR REPLACE FUNCTION purchase_addon(
-    p_contract_id        INTEGER,
-    p_service_package_id INTEGER
-)
-    RETURNS INTEGER AS $$
-DECLARE
-    v_addon_id     INTEGER;
-    v_pkg_price    NUMERIC(12,2);
-    v_pkg_amount   NUMERIC(12,4);
-    v_pkg_type     service_type;
-    v_expiry       DATE;
-    v_period_start DATE;
-    v_period_end   DATE;
-BEGIN
-    -- Validate contract exists and is active
-    IF NOT EXISTS (
-        SELECT 1 FROM contract WHERE id = p_contract_id AND status = 'active'
-    ) THEN
-        RAISE EXCEPTION 'Contract % is not active', p_contract_id;
-    END IF;
-
-    -- Validate service package exists
-    SELECT price, amount, type
-    INTO v_pkg_price, v_pkg_amount, v_pkg_type
-    FROM service_package
-    WHERE id = p_service_package_id;
-
-    IF NOT FOUND THEN
-        RAISE EXCEPTION 'Service package % not found', p_service_package_id;
-    END IF;
-
-    -- Check not already active
-    IF EXISTS (
-        SELECT 1 FROM contract_addon
-        WHERE contract_id        = p_contract_id
-          AND service_package_id = p_service_package_id
-          AND is_active          = TRUE
-    ) THEN
-        RAISE EXCEPTION 'Add-on already active for this contract';
-    END IF;
-
-    -- Check customer has enough credit
-    IF NOT EXISTS (
-        SELECT 1 FROM contract
-        WHERE id = p_contract_id
-          AND available_credit >= COALESCE(v_pkg_price, 0)
-    ) THEN
-        RAISE EXCEPTION 'Insufficient credit to purchase add-on';
-    END IF;
-
-    -- Expiry = end of current billing month
-    v_expiry := (DATE_TRUNC('month', CURRENT_DATE) + INTERVAL '1 month - 1 day')::DATE;
-
-    -- Insert addon record
-    INSERT INTO contract_addon (
-        contract_id, service_package_id,
-        purchased_date, expiry_date,
-        is_active, price_paid
-    ) VALUES (
-                 p_contract_id, p_service_package_id,
-                 CURRENT_DATE, v_expiry,
-                 TRUE, COALESCE(v_pkg_price, 0)
-             ) RETURNING id INTO v_addon_id;
-
-    -- Deduct price from available credit
-    UPDATE contract
-    SET available_credit = available_credit - COALESCE(v_pkg_price, 0)
-    WHERE id = p_contract_id;
-
-    -- Add consumption row so rate_cdr can deduct from it
-    v_period_start := DATE_TRUNC('month', CURRENT_DATE)::DATE;
-    v_period_end   := v_expiry;
-
-    INSERT INTO contract_consumption (
-        contract_id, service_package_id, rateplan_id,
-        starting_date, ending_date, consumed, is_billed
-    )
-    SELECT
-        p_contract_id,
-        p_service_package_id,
-        c.rateplan_id,
-        v_period_start,
-        v_period_end,
-        0,
-        FALSE
-    FROM contract c
-    WHERE c.id = p_contract_id
-    ON CONFLICT DO NOTHING;
-
-    RETURN v_addon_id;
-
-EXCEPTION
-    WHEN OTHERS THEN
-        RAISE EXCEPTION 'purchase_addon failed: %', SQLERRM;
-END;
-$$ LANGUAGE plpgsql;
 
 
 -- ------------------------------------------------------------
@@ -2076,9 +2074,9 @@ VALUES
 ------------------------------------------------------------
 INSERT INTO rateplan (name, ror_data, ror_voice, ror_sms, price)
 VALUES
-    ('Basic',            0.10, 0.20, 0.05,  50),
-    ('Premium Gold',     0.05, 0.10, 0.02, 120),
-    ('Elite Enterprise', 0.02, 0.05, 0.01, 349);
+    ('Basic',            0.10, 0.20, 0.05,  75),
+    ('Premium Gold',     0.05, 0.10, 0.02, 370),
+    ('Elite Enterprise', 0.02, 0.05, 0.01, 950);
 
 ------------------------------------------------------------
 -- SERVICE PACKAGES
@@ -2086,13 +2084,13 @@ VALUES
 ------------------------------------------------------------
 INSERT INTO service_package (name, type, amount, priority, price, is_roaming, description)
 VALUES
-    ('Voice Pack',         'voice',      1000, 1,  0,    FALSE, '1000 local minutes per month'),
-    ('Data Pack',          'data',       5000, 1,  0,    FALSE, '5GB data per month'),
-    ('SMS Pack',           'sms',         200, 1,  0,    FALSE, '200 SMS per month'),
-    ('Welcome Bonus',      'free_units',   50, 2,  0,    FALSE, 'Free units for new customers'),
-    ('Roaming Voice Pack', 'voice',        200, 1, 25,   TRUE,  '200 roaming minutes'),
-    ('Roaming Data Pack',  'data',        1000, 1, 35,   TRUE,  '1GB roaming data'),
-    ('Roaming SMS Pack',   'sms',           50, 1, 10,   TRUE,  '50 roaming SMS');
+    ('Voice Pack',         'voice',      2000, 1,  0,    FALSE, '2000 local minutes per month'),
+    ('Data Pack',          'data',      10000, 1,  0,    FALSE, '10GB data per month'),
+    ('SMS Pack',           'sms',         500, 1,  0,    FALSE, '500 SMS per month'),
+    ('Welcome Bonus',      'free_units',10000, 2,  0,    FALSE, '10GB free data for new customers'),
+    ('Roaming Voice Pack', 'voice',       100, 1, 250,   TRUE,  '100 roaming minutes'),
+    ('Roaming Data Pack',  'data',       2000, 1, 500,   TRUE,  '2GB roaming data'),
+    ('Roaming SMS Pack',   'sms',         100, 1, 100,   TRUE,  '100 roaming SMS');
 
 ------------------------------------------------------------
 -- RATEPLAN → PACKAGES
@@ -2497,6 +2495,53 @@ VALUES
 UPDATE msisdn_pool
 SET is_available = FALSE
 WHERE msisdn IN (SELECT msisdn FROM contract);
+
+------------------------------------------------------------
+-- GENERATE 30 REALISTIC ADDITIONAL CUSTOMERS
+------------------------------------------------------------
+DO $$
+DECLARE
+    v_user_id INTEGER;
+    v_msisdn VARCHAR(20);
+    v_rateplan_id INTEGER;
+    v_first_names TEXT[] := ARRAY['Ahmed', 'Mohamed', 'Sara', 'Mona', 'Hassan', 'Youssef', 'Layla', 'Omar', 'Nour', 'Amir', 'Ziad', 'Mariam', 'Fatma', 'Ibrahim', 'Salma'];
+    v_last_names TEXT[]  := ARRAY['Hassan', 'Mansour', 'Zaki', 'Khattab', 'Fouad', 'Salem', 'Nasr', 'Said', 'Gaber', 'Ezzat', 'Wahba', 'Soliman'];
+    v_streets TEXT[]     := ARRAY['El-Nasr St', 'Cornish Rd', '9th Street', 'Tahrir Sq', 'Abbas El Akkad', 'Makram Ebeid', 'Gameat El Dowal'];
+    v_cities TEXT[]      := ARRAY['Cairo', 'Giza', 'Alexandria', 'Mansoura', 'Suez', 'Luxor'];
+    v_fname TEXT;
+    v_lname TEXT;
+    v_uname TEXT;
+BEGIN
+    FOR i IN 1..30 LOOP
+        v_fname := v_first_names[1 + FLOOR(RANDOM() * ARRAY_LENGTH(v_first_names, 1))];
+        v_lname := v_last_names[1 + FLOOR(RANDOM() * ARRAY_LENGTH(v_last_names, 1))];
+        v_uname := LOWER(v_fname) || '_' || (100 + i);
+
+        INSERT INTO user_account (name, address, birthdate, role, username, password, email)
+        VALUES (
+            v_fname || ' ' || v_lname,
+            (10 + FLOOR(RANDOM() * 90)) || ' ' || v_streets[1 + FLOOR(RANDOM() * ARRAY_LENGTH(v_streets, 1))] || ', ' || v_cities[1 + FLOOR(RANDOM() * ARRAY_LENGTH(v_cities, 1))],
+            '1985-01-01'::DATE + (FLOOR(RANDOM() * 10000) || ' days')::INTERVAL,
+            'customer',
+            v_uname,
+            '123456', -- Simple password as requested
+            LOWER(v_fname) || '.' || LOWER(v_lname) || (10 + i) || '@fmrz-telecom.com'
+        ) RETURNING id INTO v_user_id;
+
+        SELECT msisdn INTO v_msisdn FROM msisdn_pool WHERE is_available = TRUE LIMIT 1;
+        UPDATE msisdn_pool SET is_available = FALSE WHERE msisdn = v_msisdn;
+
+        v_rateplan_id := FLOOR(RANDOM() * 3 + 1);
+
+        INSERT INTO contract (user_account_id, rateplan_id, msisdn, status, credit_limit, available_credit)
+        VALUES (v_user_id, v_rateplan_id, v_msisdn, 'active', 300, 300);
+
+        PERFORM initialize_consumption_period(CURRENT_DATE);
+    END LOOP;
+END;
+$$;
+
+
 -- ============================================================
 -- AUTOMATION: NOTIFY BILL GENERATION
 -- ============================================================

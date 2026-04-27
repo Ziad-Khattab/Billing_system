@@ -74,21 +74,21 @@
     if (!value) return '—';
 
     // Smart Correction for legacy records: If type is Data (2) but usage is 1 and destination is numeric, treat as SMS
-    const isLegacySMS = type === 2 && value === 1 && destination && /^\d+$/.test(destination.replace(/[+]/g, ''));
-    const effectiveType = isLegacySMS ? 3 : type;
+    const isLegacySMS = type === 'data' && value === 1 && destination && /^\d+$/.test(destination.replace(/[+]/g, ''));
+    const effectiveType = isLegacySMS ? 'sms' : type;
 
     switch (effectiveType) {
-      case 1: // Voice
+      case 'voice':
         const h = Math.floor(value / 3600);
         const m = Math.floor((value % 3600) / 60);
         const s = value % 60;
         return `${h > 0 ? h + 'h ' : ''}${m > 0 ? m + 'm ' : ''}${s}s`;
 
-      case 2: // Data
+      case 'data':
         if (value >= 1024) return (value / 1024).toFixed(2) + ' GB';
         return value.toFixed(2) + ' MB';
 
-      case 3: // SMS
+      case 'sms':
         return value + ' SMS';
 
       default:
@@ -97,17 +97,24 @@
   }
 
   const getTypeInfo = (type, value, destination) => {
-    // Smart Correction for legacy records
-    const isLegacySMS = type === 2 && value === 1 && destination && /^\d+$/.test(destination.replace(/[+]/g, ''));
-    const effectiveType = isLegacySMS ? 3 : type;
+    // If it's a legacy number ID
+    if (type === 1 || type === '1') return { label: 'Voice', class: 'badge-voice' };
+    if (type === 2 || type === '2') {
+      const isLegacySMS = value === 1 && destination && /^\d+$/.test(destination.replace(/[+]/g, ''));
+      return isLegacySMS ? { label: 'SMS', class: 'badge-sms' } : { label: 'Data', class: 'badge-data' };
+    }
+    if (type === 3 || type === '3') return { label: 'SMS', class: 'badge-sms' };
 
-    const map = {
-      1: { label: 'Voice', class: 'badge-voice' },
-      2: { label: 'Data', class: 'badge-data' },
-      3: { label: 'SMS', class: 'badge-sms' },
-      4: { label: 'Units', class: 'badge-units' }
-    };
-    return map[effectiveType] || { label: 'Other', class: '' };
+    // New Smart Rating String Labels
+    const typeStr = String(type || '').toLowerCase();
+    
+    if (typeStr.includes('voice')) return { label: type, class: 'badge-voice' };
+    if (typeStr.includes('data')) return { label: type, class: 'badge-data' };
+    if (typeStr.includes('sms')) return { label: type, class: 'badge-sms' };
+    if (typeStr.includes('bonus') || typeStr.includes('free')) return { label: type, class: 'badge-units' };
+    if (typeStr.includes('overage')) return { label: 'Overage', class: 'badge-error' };
+    
+    return { label: type || 'Other', class: 'badge-secondary' };
   };
 
   $effect(() => { loadCDRs(); });
@@ -138,7 +145,7 @@
     </div>
   </div>
 
-  <div class="table-card card card-static animate-fade" style="animation-delay: 0.1s">
+  <div class="animate-fade" style="animation-delay: 0.1s">
     <div class="table-wrapper">
       {#if loading}
         <div class="loading-state">
@@ -238,7 +245,6 @@
   .input-group input { width: 100%; padding: 0.8rem 1rem 0.8rem 3rem; background: rgba(255, 255, 255, 0.05); border: 1px solid var(--border); border-radius: 12px; color: white; transition: all 0.3s; }
   .input-group input:focus { outline: none; border-color: var(--red); box-shadow: 0 0 15px rgba(224, 8, 0, 0.2); }
 
-  .table-card { padding: 0; overflow: hidden; border-radius: 20px; border: 1px solid var(--border); background: var(--bg-card); }
   .id-badge { background: rgba(255, 255, 255, 0.05); padding: 0.2rem 0.5rem; border-radius: 6px; font-size: 0.8rem; color: var(--text-muted); }
   .phone-num { font-family: 'JetBrains Mono', monospace; font-weight: 600; color: #3B82F6; }
 
@@ -249,6 +255,8 @@
   .badge-data { border-left-color: #22C55E; color: #22C55E; background: rgba(34, 197, 94, 0.1); }
   .badge-sms { border-left-color: #A855F7; color: #A855F7; background: rgba(168, 85, 247, 0.1); }
   .badge-units { border-left-color: #F59E0B; color: #F59E0B; background: rgba(245, 158, 11, 0.1); }
+  .badge-error { border-left-color: #EF4444; color: #EF4444; background: rgba(239, 68, 68, 0.1); }
+  .badge-secondary { border-left-color: #9CA3AF; color: #9CA3AF; background: rgba(156, 163, 175, 0.1); }
 
   .loading-state, .empty-state { padding: 4rem; text-align: center; color: var(--text-muted); }
   .spinner { width: 40px; height: 40px; border: 4px solid rgba(224, 8, 0, 0.1); border-top-color: var(--red); border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 1rem; }
