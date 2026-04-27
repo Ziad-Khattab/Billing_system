@@ -1,4 +1,6 @@
 # Java / Maven
+cdr_backup_before_cleanup.sql
+*.sql
 target/
 *.class
 *.war

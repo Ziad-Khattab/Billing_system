@@ -68,6 +68,11 @@ public class Main {
             // Production Mode: Classes are inside the JAR. We map the JAR dynamically.
             resources.addJarResources(new JarResourceSet(resources, "/WEB-INF/classes",
                     jarFile.getAbsolutePath(), "/"));
+            
+            // JAR Mode FIX: Map the internal 'webapp' folder to the root '/'
+            resources.addJarResources(new JarResourceSet(resources, "/",
+                    jarFile.getAbsolutePath(), "/webapp"));
+            
             System.out.println("Mapping resources from Dynamic JAR: " + jarFile.getAbsolutePath());
         }
         ctx.setResources(resources);

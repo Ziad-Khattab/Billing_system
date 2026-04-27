@@ -15,18 +15,42 @@ import java.sql.Timestamp;
 import java.sql.Types;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 import com.billing.db.DB;
 
 public class CDRParser {
+    private static java.util.Map<String, Integer> serviceMap = new java.util.HashMap<>();
+
+    private static void loadServiceConfig() {
+        try (Connection conn = DB.getConnection()) {
+            List<Map<String, Object>> services = DB.executeSelect("SELECT id, name FROM service_package");
+            for (Map<String, Object> s : services) {
+                serviceMap.put((String) s.get("name"), (Integer) s.get("id"));
+            }
+            System.out.println("[CONFIG] Loaded " + serviceMap.size() + " services from database.");
+        } catch (Exception e) {
+            System.err.println("[CONFIG] Failed to load services from database. Using safe defaults.");
+            serviceMap.put("Voice Pack", 1);
+            serviceMap.put("Data Pack", 2);
+            serviceMap.put("SMS Pack", 3);
+        }
+    }
+
+    private static int getServiceId(String name) {
+        return serviceMap.getOrDefault(name, -1);
+    }
 
     public static void main(String[] args) {
         String input = args.length > 0 ? args[0] : "input";
         String processed = args.length > 1 ? args[1] : "processed";
+        loadServiceConfig();
         processAll(input, processed);
     }
 
     public static void processAll(String sourceDir, String destDir) {
+        loadServiceConfig();
         File source = new File(sourceDir);
         File dest = new File(destDir);
 
@@ -86,28 +110,87 @@ public class CDRParser {
                  BufferedReader br = new BufferedReader(new FileReader(file))) {
 
                 String line;
+                boolean isHeader = true;
                 while ((line = br.readLine()) != null) {
                     if (line.trim().isEmpty()) continue;
                     
-                    // User Format: Dial A, Dial B, Service ID, Usage, Time, External charges
                     String[] p = line.split(",", -1);
-                    if (p.length < 6) continue;
+                    
+                    // Skip header if present (common in 9-column files)
+                    if (isHeader && p[0].equalsIgnoreCase("file_id")) {
+                        isHeader = false;
+                        continue;
+                    }
+                    isHeader = false;
 
-                    String dialA = p[0].trim();
-                    String dialB = p[1].trim();
+                    String dialA, dialB, timeStr;
+                    int serviceId, usage;
+                    double externalPiasters = 0;
+                    Timestamp ts;
 
-                    // Normalize MSISDNs (Strip leading '00' to match database format)
+                    if (p.length >= 9) {
+                        // 9-Column Format: file_id, dial_a, dial_b, start_time, duration, service_id, hplmn, vplmn, external_charges
+                        dialA = p[1].trim();
+                        dialB = p[2].trim();
+                        timeStr = p[3].trim(); // Full YYYY-MM-DD HH:MM:SS
+                        usage = Integer.parseInt(p[4].trim());
+                        serviceId = Integer.parseInt(p[5].trim());
+                        externalPiasters = Double.parseDouble(p[8].trim()) * 100.0; // Assume stored in dollars/major unit
+                        
+                        ts = Timestamp.valueOf(timeStr);
+                    } else if (p.length >= 6) {
+                        // 6-Column Format: Dial A, Dial B, Service ID, Usage, Time, External charges
+                        dialA = p[0].trim();
+                        dialB = p[1].trim();
+                        serviceId = Integer.parseInt(p[2].trim());
+                        
+                        // Detect unit: 6-column data usage is usually in Bytes
+                        int dataId = getServiceId("Data Pack");
+                        double rawUsage = Double.parseDouble(p[3].trim());
+                        if (serviceId == dataId) {
+                            usage = (int) Math.ceil(rawUsage / (1024.0 * 1024.0)); // Convert Bytes to MB
+                        } else {
+                            usage = (int) rawUsage; // Voice is usually in seconds
+                        }
+                        
+                        timeStr = p[4].trim(); // HH:MM:SS
+                        externalPiasters = Double.parseDouble(p[5].trim());
+
+                        ts = Timestamp.valueOf(fileDateStr + " " + timeStr);
+                    } else {
+                        continue; // Invalid format
+                    }
+
+                    // Normalize MSISDNs
                     if (dialA.startsWith("00")) dialA = dialA.substring(2);
                     if (dialB.startsWith("00")) dialB = dialB.substring(2);
-                    int serviceId = Integer.parseInt(p[2].trim());
-                    int usage = Integer.parseInt(p[3].trim());
-                    String timeStr = p[4].trim(); // HH:MM:SS
-                    double externalPiasters = Double.parseDouble(p[5].trim());
 
-                    // Construct full timestamp
-                    Timestamp ts = Timestamp.valueOf(fileDateStr + " " + timeStr);
+                    // Fetch dynamic configuration for smart correction
+                    int voiceId = getServiceId("Voice Pack");
+                    int dataId = getServiceId("Data Pack");
+                    int smsId = getServiceId("SMS Pack");
+                    
+                    String urlMarkers = DB.getProperty("cdr.url.markers");
+                    if (urlMarkers == null) urlMarkers = "://,.com,.net,.org,.gov";
+                    String[] markers = urlMarkers.split(",");
 
-                    // Insert via SQL function (Match exact signature in whole_billing_updated.sql)
+                    // SMART CORRECTION: Detect "Data Leakage" where URLs are labeled as SMS
+                    if (serviceId == smsId && usage > 100) {
+                        String lowerDest = dialB.toLowerCase();
+                        boolean matches = false;
+                        for (String m : markers) if (lowerDest.contains(m.trim())) { matches = true; break; }
+                        if (matches) serviceId = dataId;
+                    }
+
+                    // SMART CORRECTION 2: Detect "SMS Leakage" where SMS are labeled as Data
+                    if (serviceId == dataId && usage == 1) {
+                        String lowerDest = dialB.toLowerCase();
+                        boolean isUrl = false;
+                        for (String m : markers) if (lowerDest.contains(m.trim())) { isUrl = true; break; }
+                        if (!isUrl) serviceId = smsId;
+                    }
+
+                    // Insert via SQL function
                     cs.registerOutParameter(1, Types.INTEGER);
                     cs.setInt(2, fileId);
                     cs.setString(3, dialA);
@@ -117,7 +200,7 @@ public class CDRParser {
                     cs.setInt(7, serviceId);
                     cs.setNull(8, Types.VARCHAR); // p_hplmn
                     cs.setNull(9, Types.VARCHAR); // p_vplmn
-                    cs.setBigDecimal(10, BigDecimal.valueOf(externalPiasters / 100.0)); // p_external_charges
+                    cs.setBigDecimal(10, BigDecimal.valueOf(externalPiasters / 100.0));
 
                     cs.execute();
                 }
@@ -140,11 +223,24 @@ public class CDRParser {
     }
 
     private static void moveFile(File file, File destPath) throws IOException {
-        Path target = destPath.toPath().resolve(file.getName());
-        if (Files.exists(target)) {
-            String newName = System.currentTimeMillis() + "_" + file.getName();
-            target = destPath.toPath().resolve(newName);
+        String originalName = file.getName();
+        String finalName = originalName;
+        Path target = destPath.toPath().resolve(finalName);
+        
+        int counter = 0;
+        while (Files.exists(target)) {
+            finalName = System.currentTimeMillis() + (counter > 0 ? "_" + counter : "") + "_" + originalName;
+            target = destPath.toPath().resolve(finalName);
+            counter++;
         }
-        Files.move(file.toPath(), target, StandardCopyOption.REPLACE_EXISTING);
+        
+        System.out.println("[AUDIT] Moving " + originalName + " to " + target.toAbsolutePath());
+        try {
+            Files.move(file.toPath(), target, StandardCopyOption.REPLACE_EXISTING);
+        } catch (Exception e) {
+            // Fallback for cross-device moves
+            Files.copy(file.toPath(), target, StandardCopyOption.REPLACE_EXISTING);
+            Files.delete(file.toPath());
+        }
     }
 }

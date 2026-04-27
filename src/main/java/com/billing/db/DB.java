@@ -21,9 +21,10 @@ public class DB {
     static {
         try (InputStream input = DB.class.getClassLoader().getResourceAsStream("db.properties")) {
             if (input == null) {
-                throw new RuntimeException("CRITICAL: db.properties not found!");
+                System.err.println("WARNING: db.properties not found in classpath. Relying on Environment Variables.");
+            } else {
+                props.load(input);
             }
-            props.load(input);
 
             HikariConfig config = new HikariConfig();
             config.setDriverClassName("org.postgresql.Driver");

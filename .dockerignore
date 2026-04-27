@@ -1,7 +1,18 @@
 # Ignore everything by default
 **
 
-# Allow only the Fat JAR and configuration
+# Allow the build artifact
 !target/Telecom-Billing-Engine.jar
-!src/main/resources/db.properties
+
+# Allow the configuration files for Podman Compose
 !.env
+
+# Allow static assets (needed by the COPY command in Dockerfile)
+!src/main/webapp/**
+
+# Allow all resources (to ensure they are available for potential future COPY or build context)
+!src/main/resources/**
+
+# Expose the Dockerfile and Compose file (though they are not usually ignored by build context)
+!Dockerfile
+!docker-compose.yml

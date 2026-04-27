@@ -1,17 +1,26 @@
 <script>
   let cdrs = $state([]);
+  let total = $state(0);
   let search = $state('');
   let loading = $state(true);
   let importing = $state(false);
   let page = $state(0);
-  const limit = 50;
+  let limit = $state(50);
+  let jumpPage = $state(1);
+
+  const totalPages = $derived(Math.ceil(total / limit));
 
   async function loadCDRs() {
     loading = true;
     try {
       const offset = page * limit;
       const res = await fetch(`/api/admin/cdr?limit=${limit}&offset=${offset}`, { credentials: 'include' });
-      if (res.ok) cdrs = await res.json();
+      if (res.ok) {
+        const result = await res.json();
+        cdrs = result.data || [];
+        total = result.total || 0;
+        jumpPage = page + 1;
+      }
     } catch (e) {
       console.error(e);
     } finally {
@@ -19,8 +28,25 @@
     }
   }
 
-  function nextPage() { page++; loadCDRs(); }
+  function nextPage() { 
+    if ((page + 1) * limit < total) {
+      page++; 
+      loadCDRs(); 
+    }
+  }
   function prevPage() { if (page > 0) { page--; loadCDRs(); } }
+
+  function goToPage() {
+    const target = Math.max(1, Math.min(jumpPage, totalPages));
+    page = target - 1;
+    loadCDRs();
+  }
+
+  function handleLimitChange(e) {
+    limit = parseInt(e.target.value);
+    page = 0;
+    loadCDRs();
+  }
 
   async function importCDRs() {
     importing = true;
@@ -42,40 +68,46 @@
   );
 
   // Formatter: Logic updated because API sends MB
-  function formatUsage(value, type) {
+  // Smart Formatter: Logic updated to handle legacy SMS records and dynamic usage
+  function formatUsage(value, type, destination) {
     if (value === 0) return '0';
     if (!value) return '—';
 
-    switch (type) {
-      case 1: // Voice: Seconds to H/M/S
+    // Smart Correction for legacy records: If type is Data (2) but usage is 1 and destination is numeric, treat as SMS
+    const isLegacySMS = type === 2 && value === 1 && destination && /^\d+$/.test(destination.replace(/[+]/g, ''));
+    const effectiveType = isLegacySMS ? 3 : type;
+
+    switch (effectiveType) {
+      case 1: // Voice
         const h = Math.floor(value / 3600);
         const m = Math.floor((value % 3600) / 60);
         const s = value % 60;
         return `${h > 0 ? h + 'h ' : ''}${m > 0 ? m + 'm ' : ''}${s}s`;
 
-      case 2: // Data: API sends MB
+      case 2: // Data
         if (value >= 1024) return (value / 1024).toFixed(2) + ' GB';
         return value.toFixed(2) + ' MB';
 
       case 3: // SMS
         return value + ' SMS';
 
-      case 4: // Units
-        return value + ' units';
-
       default:
         return value;
     }
   }
 
-  const getTypeInfo = (type) => {
+  const getTypeInfo = (type, value, destination) => {
+    // Smart Correction for legacy records
+    const isLegacySMS = type === 2 && value === 1 && destination && /^\d+$/.test(destination.replace(/[+]/g, ''));
+    const effectiveType = isLegacySMS ? 3 : type;
+
     const map = {
       1: { label: 'Voice', class: 'badge-voice' },
       2: { label: 'Data', class: 'badge-data' },
       3: { label: 'SMS', class: 'badge-sms' },
       4: { label: 'Units', class: 'badge-units' }
     };
-    return map[type] || { label: 'Other', class: '' };
+    return map[effectiveType] || { label: 'Other', class: '' };
   };
 
   $effect(() => { loadCDRs(); });
@@ -113,55 +145,77 @@
           <div class="spinner"></div>
           <p>Loading records...</p>
         </div>
-      {:else if filteredCDRs.length === 0}
-        <div class="empty-state">
-          <p>No records found matching your search.</p>
-        </div>
       {:else}
-        <table>
-          <thead>
-          <tr>
-            <th>ID</th>
-            <th>MSISDN</th>
-            <th>Destination</th>
-            <th>Usage</th>
-            <th>Type</th>
-            <th>Timestamp</th>
-            <th>Status</th>
-          </tr>
-          </thead>
-          <tbody>
-          {#each filteredCDRs as cdr}
-            {@const typeInfo = getTypeInfo(cdr.type)}
+        {#if filteredCDRs.length === 0}
+          <div class="empty-state">
+            <p>No records found matching your search.</p>
+          </div>
+        {:else}
+          <table>
+            <thead>
             <tr>
-              <td><span class="id-badge">#{cdr.id}</span></td>
-              <td><span class="phone-num">{cdr.msisdn}</span></td>
-              <td><span class="phone-num">{cdr.destination || '—'}</span></td>
-              <td><span class="usage-text">{formatUsage(cdr.duration, cdr.type)}</span></td>
-              <td>
-                  <span class="badge {typeInfo.class} badge-base">
-                    {typeInfo.label}
-                  </span>
-              </td>
-              <td class="text-muted">{new Date(cdr.timestamp).toLocaleString()}</td>
-              <td>
-                  <span class="badge {cdr.rated ? 'badge-admin' : 'badge-customer'}">
-                    {cdr.rated ? 'Rated' : 'Pending'}
-                  </span>
-              </td>
+              <th>ID</th>
+              <th>MSISDN</th>
+              <th>Destination</th>
+              <th>Usage</th>
+              <th>Type</th>
+              <th>Timestamp</th>
+              <th>Status</th>
             </tr>
-          {/each}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+            {#each filteredCDRs as cdr}
+              {@const typeInfo = getTypeInfo(cdr.type, cdr.duration, cdr.destination)}
+              <tr>
+                <td><span class="id-badge">#{cdr.id}</span></td>
+                <td><span class="phone-num">{cdr.msisdn}</span></td>
+                <td><span class="phone-num">{cdr.destination || '—'}</span></td>
+                <td><span class="usage-text">{formatUsage(cdr.duration, cdr.type, cdr.destination)}</span></td>
+                <td>
+                    <span class="badge {typeInfo.class} badge-base">
+                      {typeInfo.label}
+                    </span>
+                </td>
+                <td class="text-muted">{new Date(cdr.timestamp).toLocaleString()}</td>
+                <td>
+                    <span class="badge {cdr.rated ? 'badge-admin' : 'badge-customer'}">
+                      {cdr.rated ? 'Rated' : 'Pending'}
+                    </span>
+                </td>
+              </tr>
+            {/each}
+            </tbody>
+          </table>
+        {/if}
 
         <div class="pagination">
-          <button class="btn-page" onclick={prevPage} disabled={page === 0}>
-            Previous
-          </button>
-          <span class="page-info">Page {page + 1}</span>
-          <button class="btn-page" onclick={nextPage} disabled={cdrs.length < limit}>
-            Next
-          </button>
+          <div class="pagination-controls">
+            <button class="btn-page" onclick={prevPage} disabled={page === 0}>
+              Previous
+            </button>
+            
+            <div class="page-jump">
+              <span>Page</span>
+              <input type="number" bind:value={jumpPage} min="1" max={totalPages} class="input-jump" />
+              <span>of {totalPages}</span>
+              <button class="btn-go" onclick={goToPage}>Go</button>
+            </div>
+
+            <button class="btn-page" onclick={nextPage} disabled={(page + 1) * limit >= total}>
+              Next
+            </button>
+          </div>
+
+          <div class="pagination-settings">
+            <span>Rows per page:</span>
+            <select bind:value={limit} onchange={handleLimitChange} class="select-limit">
+              <option value="10">10</option>
+              <option value="25">25</option>
+              <option value="50">50</option>
+              <option value="100">100</option>
+            </select>
+            <span class="total-info">Total: {total} records</span>
+          </div>
         </div>
       {/if}
     </div>
@@ -201,9 +255,20 @@
 
   @keyframes spin { to { transform: rotate(360deg); } }
 
-  .pagination { display: flex; align-items: center; justify-content: center; gap: 2rem; padding: 1.5rem; border-top: 1px solid var(--border); background: rgba(255, 255, 255, 0.02); }
+  .pagination { display: flex; flex-direction: column; align-items: center; gap: 1rem; padding: 1.5rem; border-top: 1px solid var(--border); background: rgba(255, 255, 255, 0.02); }
+  .pagination-controls { display: flex; align-items: center; gap: 1.5rem; }
+  .pagination-settings { display: flex; align-items: center; gap: 1rem; font-size: 0.85rem; color: var(--text-muted); }
+  
+  .page-jump { display: flex; align-items: center; gap: 0.5rem; font-weight: 600; color: var(--text-muted); font-size: 0.9rem; }
+  .input-jump { width: 60px; padding: 0.3rem 0.5rem; background: rgba(255, 255, 255, 0.05); border: 1px solid var(--border); border-radius: 6px; color: white; text-align: center; }
+  .btn-go { background: var(--red); color: white; border: none; padding: 0.3rem 0.8rem; border-radius: 6px; font-weight: 600; cursor: pointer; transition: 0.2s; }
+  .btn-go:hover { background: var(--red-light); }
+
+  .select-limit { background: rgba(255, 255, 255, 0.05); color: white; border: 1px solid var(--border); border-radius: 6px; padding: 0.2rem 0.5rem; outline: none; }
+  .select-limit:focus { border-color: var(--red); }
+  .total-info { margin-left: 1rem; font-style: italic; }
+
   .btn-page { background: rgba(255, 255, 255, 0.05); color: white; border: 1px solid var(--border); padding: 0.5rem 1rem; border-radius: 8px; font-weight: 600; cursor: pointer; transition: all 0.2s; }
   .btn-page:hover:not(:disabled) { background: rgba(255, 255, 255, 0.1); border-color: var(--red); }
   .btn-page:disabled { opacity: 0.4; cursor: not-allowed; }
-  .page-info { font-weight: 600; color: var(--text-muted); font-size: 0.9rem; }
 </style>

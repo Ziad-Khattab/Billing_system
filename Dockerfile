@@ -7,12 +7,12 @@ WORKDIR /app
 # Create a non-root user for security (Enterprise Best Practice)
 RUN addgroup --system javauser && adduser --system --ingroup javauser javauser
 
-# Copy the Fat JAR from the local target folder
-# This relies on you running './mvnw clean package' locally first
+# Copy the Fat JAR and static assets
 COPY target/Telecom-Billing-Engine.jar app.jar
+COPY src/main/webapp src/main/webapp
 
 # Set ownership to the non-root user
-RUN chown javauser:javauser app.jar
+RUN chown -R javauser:javauser app.jar src/main/webapp
 
 # Switch to the non-root user
 USER javauser
