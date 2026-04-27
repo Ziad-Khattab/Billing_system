@@ -49,7 +49,7 @@
       <p>Your billing history will appear here once your first cycle completes.</p>
     </div>
   {:else}
-    <div class="table-container card static-table" in:fly={{ y: 30 }}>
+    <div class="table-container card card-static static-table" in:fly={{ y: 30 }}>
       <table class="premium-table">
         <thead>
           <tr>
@@ -124,9 +124,23 @@
   
   .premium-table td { padding: 1.5rem 2rem; border-bottom: 1px solid rgba(255, 255, 255, 0.03); color: white; vertical-align: middle; }
   
-  /* Disable Hover Scaling & Lighting */
-  .static-table tr { transition: none !important; transform: none !important; }
-  .static-table tr:hover { background: rgba(255, 255, 255, 0.02) !important; filter: none !important; }
+  /* Disable Hover Scaling & Lighting - Force Static Box */
+  .card-static, .static-table { 
+    transform: none !important; 
+    transition: none !important; 
+    filter: none !important;
+  }
+  
+  .static-table tr { 
+    transition: none !important; 
+    transform: none !important; 
+  }
+  
+  .static-table tr:hover { 
+    background: rgba(255, 255, 255, 0.02) !important; 
+    filter: none !important; 
+    transform: none !important;
+  }
 
   .id-badge { 
     background: rgba(255, 255, 255, 0.05); padding: 4px 12px; border-radius: 6px;
