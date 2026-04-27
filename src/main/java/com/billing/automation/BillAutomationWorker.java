@@ -35,18 +35,33 @@ public class BillAutomationWorker implements Runnable {
         // Ensure output directory exists
         new File(OUTPUT_FOLDER).mkdirs();
 
-        try (Connection conn = DB.getConnection()) {
+        // For LISTEN/NOTIFY, we should ideally use a dedicated non-pooled connection.
+        // We'll fetch the credentials from the environment.
+        String url = System.getenv("DB_URL");
+        if (url != null && url.contains("-pooler")) {
+            url = url.replace("-pooler", "");
+            System.out.println("ℹ [Automation] Using direct connection (no-pooler) for LISTEN/NOTIFY.");
+        }
+        String user = System.getenv("DB_USER");
+        String pass = System.getenv("DB_PASSWORD");
+
+        try (Connection conn = java.sql.DriverManager.getConnection(url, user, pass)) {
             // Unwrap PostgreSQL connection to access LISTEN/NOTIFY features
             PGConnection pgConn = conn.unwrap(PGConnection.class);
 
             try (Statement stmt = conn.createStatement()) {
                 stmt.execute("LISTEN generate_bill_event");
-                System.out.println("✔ [Automation] Listening for 'generate_bill_event'...");
+                System.out.println("✔ [Automation] Listening for 'generate_bill_event' (Direct Connection)...");
             }
 
+            int heartbeatCount = 0;
             while (!Thread.currentThread().isInterrupted()) {
                 // Poll for notifications every 5 seconds
                 PGNotification[] notifications = pgConn.getNotifications(5000);
+
+                if (heartbeatCount++ % 12 == 0) { // Every minute
+                    System.out.println("💓 [Automation] Heartbeat: Worker is still listening...");
+                }
 
                 if (notifications != null) {
                     for (PGNotification notification : notifications) {
