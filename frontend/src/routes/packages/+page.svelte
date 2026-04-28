@@ -357,12 +357,12 @@
                 <span class="val">FREE</span>
                 <span class="sub">0 EGP</span>
               </div>
-              <button 
-                onclick={() => buyBundle(welcomeGift)}
-                class="btn btn-gift"
-              >
-                Claim My Gift
-              </button>
+               <button 
+                 onclick={() => buyBundle(welcomeGift)}
+                 class="btn btn-gift"
+               >
+                 {authState.user?.role === 'admin' ? 'Give to Customer' : 'Claim My Gift'}
+               </button>
             </div>
           </div>
         </div>

@@ -5,6 +5,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -17,7 +18,21 @@ public class AdminContractServlet extends BaseServlet {
             String path = req.getPathInfo();
             
             if ("/available-msisdn".equals(path)) {
-                return DB.executeSelect("SELECT msisdn FROM msisdn_pool WHERE is_available = TRUE ORDER BY msisdn LIMIT 50");
+                String search = req.getParameter("search");
+                String msisdn = req.getParameter("msisdn");
+                String query = "SELECT msisdn FROM msisdn_pool WHERE is_available = TRUE";
+                List<Object> params = new ArrayList<>();
+                
+                if (search != null && !search.trim().isEmpty()) {
+                    query += " AND msisdn ILIKE ?";
+                    params.add("%" + search.trim() + "%");
+                } else if (msisdn != null && !msisdn.trim().isEmpty()) {
+                    query += " AND msisdn = ?";
+                    params.add(msisdn.trim());
+                }
+                
+                query += " ORDER BY msisdn LIMIT 50";
+                return DB.executeSelect(query, params.toArray());
             }
 
             if (path == null || "/".equals(path)) {

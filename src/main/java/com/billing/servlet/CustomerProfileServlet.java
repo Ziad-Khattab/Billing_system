@@ -74,7 +74,9 @@ public class CustomerProfileServlet extends BaseServlet {
             }
             else if ("/invoices".equals(path)) {
                 List<Map<String, Object>> list = DB.executeSelect(
-                    "SELECT b.id, b.billing_date as \"generationDate\", c.msisdn, b.taxes, b.recurring_fees as \"recurringFees\", b.one_time_fees as \"oneTimeFees\" " +
+                    "SELECT b.id, CAST(b.billing_date AS VARCHAR) as \"generationDate\", c.msisdn, " +
+                    "b.taxes, b.recurring_fees as \"recurringFees\", b.one_time_fees as \"oneTimeFees\", " +
+                    "b.total_amount as \"totalAmount\", b.status " +
                     "FROM bill b " +
                     "JOIN contract c ON b.contract_id = c.id " +
                     "WHERE c.user_account_id = ? ORDER BY b.billing_date DESC", userId);

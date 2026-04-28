@@ -10,14 +10,16 @@
   let customerSearch = $state('');
   let showDropdown = $state(false);
 
-  // Form State
-  let newMsisdn = $state('');
-  let availableMsisdns = $state([]);
-  let msisdnSearch = $state('');
-  let showMsisdnDropdown = $state(false);
-  let selectedCustomer = $state(null); // {id, name, msisdn}
-  let selectedPlan = $state('');
-  let creditLimit = $state(1000);
+   // Form State
+   let newMsisdn = $state('');
+   let availableMsisdns = $state([]);
+   let msisdnSearch = $state('');
+   let showMsisdnDropdown = $state(false);
+   let msisdnResults = $state([]);   // dropdown results (from client filter or server search)
+   let msisdnSearchTimer;
+   let selectedCustomer = $state(null); // {id, name, msisdn}
+   let selectedPlan = $state('');
+   let creditLimit = $state(1000);
 
   // New Customer Fields
   let isNewCustomer = $state(false);
@@ -78,11 +80,23 @@
     }
   });
 
-  let filteredMsisdns = $derived(
-    msisdnSearch 
-      ? availableMsisdns.filter(m => m.msisdn.includes(msisdnSearch))
-      : availableMsisdns.slice(0, 10)
-  );
+  // Debounced server-side MSISDN search
+  $effect(() => {
+    clearTimeout(msisdnSearchTimer);
+    msisdnSearchTimer = setTimeout(async () => {
+      const term = msisdnSearch.trim();
+      if (term === '') {
+        // No search: show first 10 of available pool
+        msisdnResults = availableMsisdns.slice(0, 10);
+      } else {
+        try {
+          const res = await fetch(`/api/admin/contracts/available-msisdn?search=${encodeURIComponent(term)}`, { credentials: 'include' });
+          if (res.ok) msisdnResults = await res.json();
+        } catch (e) { console.error('MSISDN search error:', e); }
+      }
+    }, 300);
+    return () => clearTimeout(msisdnSearchTimer);
+  });
 
   function selectCustomer(u) {
     selectedCustomer = u;
@@ -260,16 +274,16 @@
             oninput={() => showMsisdnDropdown = true}
             required 
           />
-          {#if showMsisdnDropdown && filteredMsisdns.length > 0}
-            <div class="search-dropdown card animate-fade">
-              {#each filteredMsisdns as m}
-                <button type="button" class="dropdown-item" onclick={() => selectMsisdn(m)}>
-                  <span class="name">{m.msisdn}</span>
-                  <span class="msisdn text-muted" style="font-size:0.7rem">AVAILABLE</span>
-                </button>
-              {/each}
-            </div>
-          {/if}
+           {#if showMsisdnDropdown && msisdnResults.length > 0}
+             <div class="search-dropdown card animate-fade">
+               {#each msisdnResults as m}
+                 <button type="button" class="dropdown-item" onclick={() => selectMsisdn(m)}>
+                   <span class="name">{m.msisdn}</span>
+                   <span class="msisdn text-muted" style="font-size:0.7rem">AVAILABLE</span>
+                 </button>
+               {/each}
+             </div>
+           {/if}
         </div>
         <div class="form-group">
           <label class="label">Initial Credit Limit</label>

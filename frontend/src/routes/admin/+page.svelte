@@ -18,7 +18,7 @@
 
   async function fetchStats() {
     try {
-      const res = await fetch('/api/admin/stats');
+      const res = await fetch('/api/admin/stats', { credentials: 'include' });
       if (res.ok) {
         const data = await res.json();
         stats.customers = data.customers;
@@ -32,7 +32,7 @@
     } catch {}
   }
 
-  $effect(() => { load(); });
+  $effect(() => { fetchStats(); });
 </script>
 
 <svelte:head><title>Admin Dashboard — FMRZ</title></svelte:head>

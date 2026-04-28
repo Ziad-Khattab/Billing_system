@@ -1,6 +1,0 @@
- bill               | trg_bill_inserted
- bill               | trg_bill_payment
- cdr                | trg_auto_initialize_consumption
- cdr                | trg_auto_rate_cdr
- cdr                | trg_cdr_validate_contract
-
