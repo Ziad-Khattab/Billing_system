@@ -1,20 +1,4 @@
-# --- Ignore Everything by Default ---
-**/*
-
-# --- Allow only the necessary artifacts ---
-!target/Telecom-Billing-Engine.jar
-!.env
-!src/main/webapp/
-!input/
-!processed/
-
-# --- Whitelist Master Demo Data ---
-!master_dummy_data.sql
-!massive_real_world_data.sql
-!create_missing_statements_demo.sql
-!whole_billing_updated.sql
-
-# --- Explicitly ignore all metadata and junk ---
+# --- Standard Development Junk ---
 .git/
 .idea/
 .kilo/
@@ -23,12 +7,19 @@
 .mvn/
 node/
 node_dist/
-tomcat.*/
-scratch/
-backups/
+frontend/node_modules/
+target/generated-sources/
+target/maven-status/
+target/maven-archiver/
+*.log
+*.tmp
+
+# --- Build Artifacts ---
+# We ONLY want the final JAR, so we ignore everything else in target
 target/*
-!target/*.jar
-frontend/
-src/main/java/
-pom.xml
-mvnw*
+!target/Telecom-Billing-Engine.jar
+
+# --- Backups (Safety First) ---
+backups/
+*.sql.bak
+*.pgdump

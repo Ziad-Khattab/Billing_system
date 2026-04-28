@@ -1,4 +1,4 @@
-# FMRZ Telecom Billing System - Production Orchestration
+# Telecom Billing System - Production Orchestration
 # Usage: podman-compose up -d --build
 
 services:
@@ -6,7 +6,7 @@ services:
     build: 
       context: .
       dockerfile: Dockerfile
-    image: fmr-billing-system:latest
+    image: fmrz-billing-system:latest
     container_name: billing-app-prod
     network_mode: host
     env_file:

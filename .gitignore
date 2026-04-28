@@ -31,7 +31,6 @@ node_modules/
 .env
 .env.*
 !.env.example
-backups/
 db.properties
 src/main/resources/db.properties
 

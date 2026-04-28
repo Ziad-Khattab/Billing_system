@@ -112,7 +112,10 @@ public class CustomerProfileServlet extends BaseServlet {
                     
                     Map<String, Object> params = new HashMap<>();
                     params.put("BILL_ID", billId);
-                    params.put("LOGO_PATH", getClass().getResource("/logo.svg").toExternalForm());
+                    
+                    // Safe Stream-based logo loading (Fixed NPE)
+                    InputStream logoStream = getClass().getResourceAsStream("/logo.svg");
+                    params.put("LOGO_PATH", logoStream);
                     
                     // --- HARDENING: Inject Company Info as Parameters (Loaded from config.properties) ---
                     params.put("GROUP_NAME", config.getProperty("company.name", "FMRZ Telecom Group"));
