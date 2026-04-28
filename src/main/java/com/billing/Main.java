@@ -30,7 +30,12 @@ public class Main {
 
         // FIX: The docBase must exist for Tomcat to start. If the source folder is missing (production),
         // we create an empty placeholder directory.
-        File webappFile = new File("src/main/webapp");
+        // UNIVERSAL PATH FIX: Check for production static folder first
+        File webappFile = new File("webapp_static");
+        if (!webappFile.exists()) {
+            webappFile = new File("src/main/webapp");
+        }
+        
         if (!webappFile.exists()) {
             webappFile = new File(baseDir, "docbase");
             webappFile.mkdirs();
@@ -59,21 +64,21 @@ public class Main {
             resources.addPreResources(new DirResourceSet(resources, "/WEB-INF/classes",
                     additionWebInfClasses.getAbsolutePath(), "/"));
             
-            // IDE Mode FIX: Ensure static files from src/main/webapp are prioritized
-            resources.addPreResources(new DirResourceSet(resources, "/",
-                    webappFile.getAbsolutePath(), "/"));
-            
             System.out.println("Mapping resources from IDE path: " + additionWebInfClasses.getAbsolutePath());
         } else if (jarFile.isFile() && jarFile.getName().endsWith(".jar")) {
             // Production Mode: Classes are inside the JAR. We map the JAR dynamically.
             resources.addJarResources(new JarResourceSet(resources, "/WEB-INF/classes",
                     jarFile.getAbsolutePath(), "/"));
             
-            // JAR Mode FIX: Map the internal 'webapp' folder to the root '/'
-            resources.addJarResources(new JarResourceSet(resources, "/",
-                    jarFile.getAbsolutePath(), "/webapp"));
-            
             System.out.println("Mapping resources from Dynamic JAR: " + jarFile.getAbsolutePath());
+        }
+
+        // UNIVERSAL FIX: Always prioritize the filesystem 'webapp' folder if it exists
+        // This ensures Docker containers with externalized webapp folders (via COPY) work correctly.
+        if (webappFile.exists() && webappFile.isDirectory()) {
+            resources.addPreResources(new DirResourceSet(resources, "/",
+                    webappFile.getAbsolutePath(), "/"));
+            System.out.println("✔ Prioritizing filesystem webapp: " + webappFile.getAbsolutePath());
         }
         ctx.setResources(resources);
 
