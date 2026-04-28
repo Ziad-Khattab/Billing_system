@@ -87,12 +87,12 @@ CREATE TABLE rateplan_service_package (
 -- CONTRACT
 -- ties a customer to a rateplan + an MSISDN (phone number)
 -- ------------------------------------------------------------
-CREATE TYPE contract_status AS ENUM ('active', 'suspended', 'terminated');
+CREATE TYPE contract_status AS ENUM ('active', 'suspended', 'suspended_debt', 'terminated');
 CREATE TABLE contract (
                           id              SERIAL PRIMARY KEY,
                           user_account_id     INTEGER NOT NULL REFERENCES user_account(id),
                           rateplan_id     INTEGER NOT NULL REFERENCES rateplan(id),
-                          msisdn          VARCHAR(20) NOT NULL UNIQUE,
+                          msisdn          VARCHAR(20) NOT NULL,
                           status          contract_status NOT NULL DEFAULT 'active',
                           credit_limit    NUMERIC(12,2) NOT NULL DEFAULT 0,
                           available_credit NUMERIC(12,2) NOT NULL DEFAULT 0
@@ -128,6 +128,9 @@ CREATE TABLE ror_contract (
                               data        INTEGER,
                               voice       INTEGER,
                               sms         INTEGER,
+                              roaming_voice NUMERIC(12,2) DEFAULT 0.00,
+                              roaming_data NUMERIC(12,2) DEFAULT 0.00,
+                              roaming_sms  NUMERIC(12,2) DEFAULT 0.00,
                               PRIMARY KEY (contract_id, rateplan_id)
     -- bill_id added after bill table below (FK added via ALTER)
 );
@@ -150,6 +153,9 @@ CREATE TABLE bill (
                       data_usage           INTEGER       NOT NULL DEFAULT 0,  -- MB
                       sms_usage            INTEGER       NOT NULL DEFAULT 0,  -- count
                       ROR_charge           NUMERIC(12,2) NOT NULL DEFAULT 0,
+                      overage_charge       NUMERIC(12,2) NOT NULL DEFAULT 0,
+                      roaming_charge       NUMERIC(12,2) NOT NULL DEFAULT 0,
+                      promotional_discount NUMERIC(12,2) NOT NULL DEFAULT 0,
                       taxes                NUMERIC(12,2) NOT NULL DEFAULT 0,
                       total_amount         NUMERIC(12,2) NOT NULL DEFAULT 0,
                       status               bill_status   NOT NULL DEFAULT 'draft',
@@ -179,17 +185,18 @@ CREATE TABLE invoice (
 -- raw usage event; parsed from file, rated against rateplan
 -- ------------------------------------------------------------
 CREATE TABLE cdr (
-                     id               SERIAL PRIMARY KEY,
-                     file_id          INTEGER NOT NULL REFERENCES file(id),
-                     dial_a           VARCHAR(20) NOT NULL,  -- calling party MSISDN
-                     dial_b           VARCHAR(20) NOT NULL,  -- called party MSISDN
-                     start_time       TIMESTAMP NOT NULL,
-                     duration         INTEGER NOT NULL DEFAULT 0,  -- seconds
-                     service_id       INTEGER REFERENCES service_package(id),
-                     hplmn            VARCHAR(20),   -- Home PLMN code
-                     vplmn            VARCHAR(20),   -- Visited PLMN code (roaming)
-                     external_charges NUMERIC(12,2) NOT NULL DEFAULT 0,
-                     rated_flag       BOOLEAN NOT NULL DEFAULT FALSE
+                      id               SERIAL PRIMARY KEY,
+                      file_id          INTEGER NOT NULL REFERENCES file(id),
+                      dial_a           VARCHAR(20) NOT NULL,  -- calling party MSISDN
+                      dial_b           VARCHAR(20) NOT NULL,  -- called party MSISDN
+                      start_time       TIMESTAMP NOT NULL,
+                      duration         INTEGER NOT NULL DEFAULT 0,  -- seconds
+                      service_id       INTEGER REFERENCES service_package(id),
+                      hplmn            VARCHAR(20),   -- Home PLMN code
+                      vplmn            VARCHAR(20),   -- Visited PLMN code (roaming)
+                      external_charges NUMERIC(12,2) NOT NULL DEFAULT 0,
+                      rated_flag       BOOLEAN NOT NULL DEFAULT FALSE,
+                      rated_service_id INTEGER
 );
 
 -- ------------------------------------------------------------
@@ -214,7 +221,9 @@ CREATE TABLE contract_addon (
 CREATE INDEX idx_cdr_rated_flag     ON cdr(rated_flag);
 CREATE INDEX idx_cdr_file_id        ON cdr(file_id);
 CREATE INDEX idx_cdr_dial_a         ON cdr(dial_a);
-CREATE INDEX idx_contract_msisdn    ON contract(msisdn);
+-- Partial unique index: recycled MSISDNs can be reassigned to new contracts
+-- once the old contract is terminated (status = 'terminated')
+CREATE UNIQUE INDEX IF NOT EXISTS contract_msisdn_active_idx ON contract (msisdn) WHERE (status != 'terminated');
 CREATE INDEX idx_contract_user_account  ON contract(user_account_id);
 CREATE INDEX idx_bill_contract      ON bill(contract_id);
 CREATE INDEX idx_bill_billing_date  ON bill(billing_date);
@@ -478,130 +487,93 @@ $$ LANGUAGE plpgsql;
 -- deducts overage charge from available_credit.
 -- ------------------------------------------------------------
 CREATE OR REPLACE FUNCTION rate_cdr(p_cdr_id INTEGER)
-RETURNS VOID AS $$
-DECLARE
-v_cdr            cdr;
-    v_contract       contract;
-    v_service_type   service_type;
-    v_usage_amount   NUMERIC;
-    v_remaining      NUMERIC;
-    v_bundle         RECORD;
-    v_available      NUMERIC;
-    v_deduct         NUMERIC;
-    v_ror_rate       NUMERIC;
-    v_overage_charge NUMERIC := 0;
-    v_period_start   DATE;
-    v_period_end     DATE;
-BEGIN
-    -- Load CDR
-SELECT * INTO v_cdr FROM cdr WHERE id = p_cdr_id;
-IF NOT FOUND THEN
-        RAISE EXCEPTION 'CDR with id % not found', p_cdr_id;
-END IF;
+ RETURNS void
+ LANGUAGE plpgsql
+AS $$
+ DECLARE
+     v_cdr RECORD;
+     v_contract RECORD;
+     v_service_type VARCHAR;
+     v_bundle RECORD;
+     v_remaining NUMERIC;
+     v_deduct NUMERIC;
+     v_available NUMERIC;
+     v_ror_rate NUMERIC;
+     v_overage_charge NUMERIC := 0;
+     v_rated_service_id INTEGER;
+     v_is_roaming BOOLEAN;
+ BEGIN
+     SELECT * INTO v_cdr FROM cdr WHERE id = p_cdr_id;
+     
+     -- Only rate for ACTIVE contracts
+     SELECT * INTO v_contract FROM contract WHERE msisdn = v_cdr.dial_a AND status = 'active';
+     
+     IF NOT FOUND THEN
+         UPDATE cdr SET rated_flag = TRUE, external_charges = 0, rated_service_id = NULL WHERE id = p_cdr_id;
+         RETURN;
+     END IF;
 
-    -- Guard: skip if already rated
-    IF v_cdr.rated_flag THEN
-        RETURN;
-END IF;
+     SELECT type::TEXT INTO v_service_type FROM service_package WHERE id = v_cdr.service_id;
+     v_remaining := v_cdr.duration;
+     v_is_roaming := (v_cdr.vplmn IS NOT NULL);
 
-    -- Resolve active contract from dial_a
-SELECT * INTO v_contract
-FROM contract
-WHERE msisdn = v_cdr.dial_a;
+     FOR v_bundle IN 
+         SELECT cc.*, sp.name, sp.is_roaming as pkg_roaming
+         FROM contract_consumption cc
+         JOIN service_package sp ON cc.service_package_id = sp.id
+         WHERE cc.contract_id = v_contract.id AND cc.is_billed = FALSE
+           AND (sp.type::TEXT = v_service_type OR sp.type::TEXT = 'free_units')
+           AND sp.is_roaming = v_is_roaming
+         ORDER BY sp.priority ASC
+     LOOP
+         EXIT WHEN v_remaining <= 0;
+         v_available := v_bundle.quota_limit - v_bundle.consumed;
+         IF v_available <= 0 THEN CONTINUE; END IF;
+         v_deduct := LEAST(v_remaining, v_available);
+         v_remaining := v_remaining - v_deduct;
+         
+         UPDATE contract_consumption 
+         SET consumed = consumed + v_deduct 
+         WHERE contract_id = v_bundle.contract_id 
+           AND service_package_id = v_bundle.service_package_id 
+           AND rateplan_id = v_bundle.rateplan_id 
+           AND starting_date = v_bundle.starting_date 
+           AND ending_date = v_bundle.ending_date;
+         v_rated_service_id := v_bundle.service_package_id;
+     END LOOP;
 
-IF NOT FOUND THEN
-    RAISE EXCEPTION 'No contract found for MSISDN %', v_cdr.dial_a;
-END IF;
+     IF v_remaining > 0 THEN
+         SELECT CASE v_service_type 
+            WHEN 'voice' THEN ror_voice WHEN 'data' THEN ror_data WHEN 'sms' THEN ror_sms 
+            END INTO v_ror_rate FROM rateplan WHERE id = v_contract.rateplan_id;
+         
+         v_overage_charge := v_remaining * COALESCE(v_ror_rate, 0);
 
-IF v_contract.status != 'active' THEN
-    RAISE EXCEPTION 'Contract % is %, cannot rate CDR', v_contract.id, v_contract.status;
-END IF;
+         IF v_is_roaming THEN
+             INSERT INTO ror_contract (contract_id, rateplan_id, roaming_voice, roaming_data, roaming_sms)
+             VALUES (v_contract.id, v_contract.rateplan_id, 
+                    CASE WHEN v_service_type='voice' THEN v_overage_charge ELSE 0 END,
+                    CASE WHEN v_service_type='data'  THEN v_overage_charge ELSE 0 END,
+                    CASE WHEN v_service_type='sms'   THEN v_overage_charge ELSE 0 END)
+             ON CONFLICT (contract_id, rateplan_id) DO UPDATE SET
+                roaming_voice = ror_contract.roaming_voice + EXCLUDED.roaming_voice,
+                roaming_data = ror_contract.roaming_data + EXCLUDED.roaming_data,
+                roaming_sms = ror_contract.roaming_sms + EXCLUDED.roaming_sms;
+         ELSE
+             INSERT INTO ror_contract (contract_id, rateplan_id, voice, data, sms)
+             VALUES (v_contract.id, v_contract.rateplan_id, 
+                    CASE WHEN v_service_type='voice' THEN v_overage_charge ELSE 0 END,
+                    CASE WHEN v_service_type='data'  THEN v_overage_charge ELSE 0 END,
+                    CASE WHEN v_service_type='sms'   THEN v_overage_charge ELSE 0 END)
+             ON CONFLICT (contract_id, rateplan_id) DO UPDATE SET
+                voice = ror_contract.voice + EXCLUDED.voice,
+                data = ror_contract.data + EXCLUDED.data,
+                sms = ror_contract.sms + EXCLUDED.sms;
+         END IF;
+     END IF;
 
-    -- Resolve service type from the CDR's service_package
-SELECT type INTO v_service_type
-FROM service_package
-WHERE id = v_cdr.service_id;
-IF NOT FOUND THEN
-         RAISE EXCEPTION 'Service package with id % not found', v_cdr.service_id;
-END IF;
-
-    -- Normalise usage
-    v_usage_amount := get_cdr_usage_amount(v_cdr.duration, v_service_type);
-    v_remaining    := v_usage_amount;
-
-    -- Billing period boundaries
-    v_period_start := DATE_TRUNC('month', v_cdr.start_time)::DATE;
-    v_period_end   := (DATE_TRUNC('month', v_cdr.start_time) + INTERVAL '1 month - 1 day')::DATE;
-
-    -- Deduct from bundles in priority order
-    FOR v_bundle IN
-        SELECT cc.*
-        FROM contract_consumption cc
-                 JOIN service_package sp ON sp.id = cc.service_package_id
-        WHERE cc.contract_id   = v_contract.id
-          AND cc.starting_date = v_period_start
-          AND cc.ending_date   = v_period_end
-          AND cc.is_billed     = FALSE
-          AND sp.type          = v_service_type
-          AND sp.is_roaming    = (v_cdr.vplmn IS NOT NULL) -- Filter by roaming status
-        ORDER BY sp.priority ASC
-    LOOP
-        EXIT WHEN v_remaining <= 0;
-
-        v_available := v_bundle.quota_limit - v_bundle.consumed;
-        IF v_available <= 0 THEN
-            CONTINUE;
-        END IF;
-
-        v_deduct    := LEAST(v_remaining, v_available);
-        v_remaining := v_remaining - v_deduct;
-
-        UPDATE contract_consumption
-        SET consumed = consumed + v_deduct
-        WHERE contract_id        = v_contract.id
-          AND service_package_id = v_bundle.service_package_id
-          AND rateplan_id        = v_bundle.rateplan_id
-          AND starting_date      = v_bundle.starting_date
-          AND ending_date        = v_bundle.ending_date;
-    END LOOP;
-
-    -- Handle overage
-    IF v_remaining > 0 AND v_service_type != 'free_units' THEN
-        SELECT CASE v_service_type
-            WHEN 'voice' THEN ror_voice
-            WHEN 'data'  THEN ror_data
-            WHEN 'sms'   THEN ror_sms
-            END INTO v_ror_rate
-        FROM rateplan
-        WHERE id = v_contract.rateplan_id;
-
-        v_overage_charge := v_remaining * COALESCE(v_ror_rate, 0);
-
-        -- RESET LOGIC: If existing ROR row is already billed, reset it for the new cycle
-        UPDATE ror_contract 
-        SET voice = 0, data = 0, sms = 0, bill_id = NULL 
-        WHERE contract_id = v_contract.id 
-          AND rateplan_id = v_contract.rateplan_id 
-          AND bill_id IS NOT NULL;
-
-        INSERT INTO ror_contract (contract_id, rateplan_id, voice, data, sms)
-        VALUES (v_contract.id, v_contract.rateplan_id,
-                CASE WHEN v_service_type='voice' THEN v_remaining ELSE 0 END,
-                CASE WHEN v_service_type='data'  THEN v_remaining ELSE 0 END,
-                CASE WHEN v_service_type='sms'   THEN v_remaining ELSE 0 END)
-        ON CONFLICT (contract_id, rateplan_id)
-        DO UPDATE SET
-            voice = ror_contract.voice + EXCLUDED.voice,
-            data  = ror_contract.data  + EXCLUDED.data,
-            sms   = ror_contract.sms   + EXCLUDED.sms;
-    END IF;
-
-    UPDATE cdr
-    SET rated_flag       = TRUE,
-        external_charges = v_overage_charge
-    WHERE id = p_cdr_id;
-
-END;
+     UPDATE cdr SET rated_flag = TRUE, external_charges = v_overage_charge, rated_service_id = v_rated_service_id WHERE id = p_cdr_id;
+ END;
 $$ LANGUAGE plpgsql;
 
 
@@ -652,100 +624,82 @@ $$ LANGUAGE plpgsql;
 -- Marks consumption rows and ror_contract row as billed.
 -- ------------------------------------------------------------
 CREATE OR REPLACE FUNCTION generate_bill(p_contract_id INTEGER, p_billing_period_start DATE)
-       RETURNS VOID AS $$
-       DECLARE v_billing_period_end DATE;
-               v_recurring_fees NUMERIC(12,2);
-               v_one_time_fees NUMERIC(12,2);
-               v_voice_usage INTEGER;
-               v_data_usage INTEGER;
-               v_sms_usage INTEGER;
-               v_ROR_charge NUMERIC(12,2);
-               v_taxes NUMERIC(12,2);
-               v_total_amount NUMERIC(12,2);
-               v_rateplan_id INTEGER;
-               v_bill_id INTEGER;
-BEGIN
-               v_billing_period_end := (DATE_TRUNC('month', p_billing_period_start) + INTERVAL '1 month - 1 day')::DATE;
-                -- Load rateplan_id for convenience
-SELECT rateplan_id INTO v_rateplan_id
-FROM contract
-WHERE id = p_contract_id;
+    RETURNS INTEGER
+    LANGUAGE plpgsql
+AS $$
+    DECLARE
+        v_billing_period_end DATE;
+        v_recurring_fees NUMERIC(12,2);
+        v_voice_usage INTEGER;
+        v_data_usage INTEGER;
+        v_sms_usage INTEGER;
+        v_overage_charge NUMERIC(12,2);
+        v_roaming_charge NUMERIC(12,2);
+        v_promo_discount NUMERIC(12,2) := 0;
+        v_taxes NUMERIC(12,2);
+        v_subtotal NUMERIC(12,2);
+        v_total_amount NUMERIC(12,2);
+        v_rateplan_id INTEGER;
+        v_bill_id INTEGER;
+        v_msisdn VARCHAR;
+        v_ror_rate_v NUMERIC;
+        v_ror_rate_d NUMERIC;
+        v_ror_rate_s NUMERIC;
+    BEGIN
+        v_billing_period_end := (DATE_TRUNC('month', p_billing_period_start) + INTERVAL '1 month - 1 day')::DATE;
+        SELECT rateplan_id, msisdn INTO v_rateplan_id, v_msisdn FROM contract WHERE id = p_contract_id;
+        SELECT price, ror_voice, ror_data, ror_sms INTO v_recurring_fees, v_ror_rate_v, v_ror_rate_d, v_ror_rate_s FROM rateplan WHERE id = v_rateplan_id;
 
--- Calculate recurring fees from rateplan price
-SELECT price INTO v_recurring_fees
-FROM rateplan
-WHERE id = v_rateplan_id;
+        SELECT 
+            COALESCE(SUM(CASE WHEN sp.type::TEXT = 'voice' THEN c.duration ELSE 0 END), 0)::INT,
+            COALESCE(SUM(CASE WHEN sp.type::TEXT = 'data' THEN c.duration ELSE 0 END), 0)::INT,
+            COALESCE(SUM(CASE WHEN sp.type::TEXT = 'sms' THEN 1 ELSE 0 END), 0)::INT
+        INTO v_voice_usage, v_data_usage, v_sms_usage
+        FROM cdr c JOIN service_package sp ON c.service_id = sp.id
+        WHERE c.dial_a = v_msisdn AND c.start_time >= p_billing_period_start AND c.start_time <= v_billing_period_end;
 
--- Calculate usage fees from consumption and ROR
-SELECT SUM(CASE WHEN sp.type = 'voice' THEN cc.consumed ELSE 0 END),
-       SUM(CASE WHEN sp.type = 'data' THEN cc.consumed ELSE 0 END),
-       SUM(CASE WHEN sp.type = 'sms' THEN cc.consumed ELSE 0 END)
+        SELECT 
+            COALESCE(voice + data + sms, 0),
+            COALESCE(roaming_voice + roaming_data + roaming_sms, 0)
+        INTO v_overage_charge, v_roaming_charge
+        FROM ror_contract WHERE contract_id = p_contract_id AND bill_id IS NULL;
 
-INTO v_voice_usage, v_data_usage, v_sms_usage
-FROM contract_consumption cc
-         JOIN service_package sp ON sp.id = cc.service_package_id
-WHERE cc.contract_id = p_contract_id
-  AND cc.starting_date = p_billing_period_start
-  AND cc.ending_date = v_billing_period_end
-  AND cc.is_billed = FALSE;
-SELECT COALESCE(
-               (rc.data * rp.ror_data) + (rc.voice * rp.ror_voice) + (rc.sms * rp.ror_sms),0) INTO v_ROR_charge
-FROM ror_contract rc
-         JOIN rateplan rp ON rp.id = rc.rateplan_id
-WHERE contract_id = p_contract_id
-  AND rateplan_id = v_rateplan_id
-  AND bill_id IS NULL;  -- only consider unbilled ROR
+        -- Calculate Promotional Savings (Regex for better matching)
+        SELECT 
+            COALESCE(SUM(
+              CASE 
+                WHEN sp.type::TEXT = 'voice' THEN cc.consumed * v_ror_rate_v
+                WHEN sp.type::TEXT = 'data'  THEN cc.consumed * v_ror_rate_d
+                WHEN sp.type::TEXT = 'sms'   THEN cc.consumed * v_ror_rate_s
+                ELSE 0 
+              END), 0)
+        INTO v_promo_discount
+        FROM contract_consumption cc
+        JOIN service_package sp ON cc.service_package_id = sp.id
+        WHERE cc.contract_id = p_contract_id AND cc.starting_date = p_billing_period_start
+            AND (sp.name ~* 'Welcome|Gift|Bonus');
 
--- For simplicity, let's say taxes are 10% of (recurring + ROR)
-v_one_time_fees := 0.69;  -- could include one-time charges here
-v_taxes := 0.10 * (v_recurring_fees + v_ROR_charge);
-v_total_amount := v_recurring_fees + v_one_time_fees + v_ROR_charge + v_taxes;
+        -- Math Precision: Savings already reflected in overage (Overage is 0 if covered).
+        -- We don't double-subtract. We show it for transparency.
+        v_subtotal := (v_recurring_fees + COALESCE(v_overage_charge,0) + COALESCE(v_roaming_charge,0));
+        v_taxes := 0.14 * v_subtotal;
+        v_total_amount := v_subtotal + v_taxes;
 
-    -- Insert bill
-INSERT INTO bill (
-    contract_id,
-    billing_period_start,
-    billing_period_end,
-    billing_date,
-    recurring_fees,
-    one_time_fees,
-    voice_usage,
-    data_usage,
-    sms_usage,
-    ROR_charge,
-    taxes,
-    total_amount,
-    status,
-    is_paid
-)VALUES (
-            p_contract_id,
-            p_billing_period_start,
-            v_billing_period_end,
-            CURRENT_DATE,
-            v_recurring_fees,
-            v_one_time_fees,
-            v_voice_usage,
-            v_data_usage,
-            v_sms_usage,
-            v_ROR_charge,
-            v_taxes,
-            v_total_amount,
-            'issued',
-            FALSE
-        )RETURNING id INTO v_bill_id;
--- Mark consumption and ROR rows as billed
-UPDATE contract_consumption
-SET is_billed = TRUE, bill_id = v_bill_id
-WHERE contract_id = p_contract_id
-  AND starting_date = p_billing_period_start
-  AND ending_date = v_billing_period_end;
-UPDATE ror_contract
-SET bill_id = v_bill_id
-WHERE contract_id = p_contract_id  AND rateplan_id = v_rateplan_id;
-EXCEPTION
-    WHEN OTHERS THEN
-        RAISE EXCEPTION 'generate_bill failed for contract id % and period %: %', p_contract_id, p_billing_period_start, SQLERRM;
-END;
+        INSERT INTO bill (
+            contract_id, billing_period_start, billing_period_end, billing_date,
+            recurring_fees, voice_usage, data_usage, sms_usage,
+            overage_charge, roaming_charge, promotional_discount, taxes, total_amount, status
+        ) VALUES (
+            p_contract_id, p_billing_period_start, v_billing_period_end, CURRENT_DATE,
+            v_recurring_fees, v_voice_usage, v_data_usage, v_sms_usage,
+            v_overage_charge, v_roaming_charge, v_promo_discount, v_taxes, v_total_amount, 'issued'
+        ) RETURNING id INTO v_bill_id;
+
+        UPDATE ror_contract SET bill_id = v_bill_id WHERE contract_id = p_contract_id AND bill_id IS NULL;
+        UPDATE contract_consumption SET bill_id = v_bill_id, is_billed = TRUE WHERE contract_id = p_contract_id AND starting_date = p_billing_period_start;
+        
+        RETURN v_bill_id;
+    END;
 $$ LANGUAGE plpgsql;
 
 -- ------------------------------------------------------------
@@ -1924,10 +1878,13 @@ $$ LANGUAGE plpgsql;
 DROP FUNCTION IF EXISTS get_dashboard_stats();
 CREATE OR REPLACE FUNCTION get_dashboard_stats()
     RETURNS TABLE (
-                      total_customers  BIGINT,
-                      total_contracts  BIGINT,
-                      active_contracts BIGINT,
-                      total_cdrs       BIGINT
+                      total_customers            BIGINT,
+                      total_contracts            BIGINT,
+                      active_contracts           BIGINT,
+                      suspended_contracts        BIGINT,
+                      suspended_debt_contracts   BIGINT,
+                      terminated_contracts       BIGINT,
+                      total_cdrs                 BIGINT
                   ) AS $$
 BEGIN
     RETURN QUERY
@@ -1935,6 +1892,9 @@ BEGIN
             (SELECT COUNT(*) FROM user_account  WHERE role = 'customer'),
             (SELECT COUNT(*) FROM contract),
             (SELECT COUNT(*) FROM contract      WHERE status = 'active'),
+            (SELECT COUNT(*) FROM contract      WHERE status = 'suspended'),
+            (SELECT COUNT(*) FROM contract      WHERE status = 'suspended_debt'),
+            (SELECT COUNT(*) FROM contract      WHERE status = 'terminated'),
             (SELECT COUNT(*) FROM cdr);
 END;
 $$ LANGUAGE plpgsql;
