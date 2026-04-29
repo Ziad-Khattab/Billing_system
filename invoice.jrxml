@@ -202,28 +202,28 @@
 				<text><![CDATA[Monthly Subscription]]></text>
 			</element>
 			<element kind="textField" x="420" y="342" width="110" height="18" forecolor="#FFFFFF" fontSize="10.0" hTextAlign="Right">
-				<expression><![CDATA[$F{recurring_fees} + " EGP"]]></expression>
+				<expression><![CDATA[$F{recurring_fees} + " E£"]]></expression>
 			</element>
 			<!-- Domestic Overage row -->
 			<element kind="staticText" x="30" y="342" width="260" height="18" forecolor="#E0E0E0" fontSize="10.0">
 				<text><![CDATA[Domestic Overage]]></text>
 			</element>
 			<element kind="textField" x="420" y="342" width="110" height="18" forecolor="#FF4444" fontSize="10.0" hTextAlign="Right">
-				<expression><![CDATA[($F{overage_charge} != null ? $F{overage_charge} : 0) + " EGP"]]></expression>
+				<expression><![CDATA[($F{overage_charge} != null ? $F{overage_charge} : 0) + " E£"]]></expression>
 			</element>
 			<!-- Roaming row -->
 			<element kind="staticText" x="30" y="364" width="260" height="18" forecolor="#E0E0E0" fontSize="10.0">
 				<text><![CDATA[Roaming Overage]]></text>
 			</element>
 			<element kind="textField" x="420" y="364" width="110" height="18" forecolor="#FFAA00" fontSize="10.0" hTextAlign="Right">
-				<expression><![CDATA[($F{roaming_charge} != null ? $F{roaming_charge} : 0) + " EGP"]]></expression>
+				<expression><![CDATA[($F{roaming_charge} != null ? $F{roaming_charge} : 0) + " E£"]]></expression>
 			</element>
 			<!-- Taxes row -->
 			<element kind="staticText" x="30" y="386" width="260" height="18" forecolor="#E0E0E0" fontSize="10.0">
 				<text><![CDATA[Government Tax (14%)]]></text>
 			</element>
 			<element kind="textField" x="420" y="386" width="110" height="18" forecolor="#FFFFFF" fontSize="10.0" hTextAlign="Right">
-				<expression><![CDATA[$F{taxes} + " EGP"]]></expression>
+				<expression><![CDATA[$F{taxes} + " E£"]]></expression>
 			</element>
 			<!-- Divider line -->
 			<element kind="line" x="30" y="410" width="500" height="1" forecolor="#333333"/>
@@ -232,7 +232,7 @@
 				<text><![CDATA[One-time Fees]]></text>
 			</element>
 			<element kind="textField" x="420" y="416" width="110" height="18" forecolor="#FFFFFF" fontSize="10.0" hTextAlign="Right">
-				<expression><![CDATA[$F{one_time_fees} + " EGP"]]></expression>
+				<expression><![CDATA[$F{one_time_fees} + " E£"]]></expression>
 			</element>
 
 			<!-- ===== TOTAL DUE BAR ===== -->
@@ -256,7 +256,7 @@
 			</element>
 			<!-- Total amount -->
 			<element kind="textField" x="310" y="468" width="235" height="44" forecolor="#FF0000" fontSize="24.0" bold="true" hTextAlign="Right" vTextAlign="Middle">
-				<expression><![CDATA[$F{total_amount} + " EGP"]]></expression>
+				<expression><![CDATA[$F{total_amount} + " E£"]]></expression>
 			</element>
 		</band>
 	</detail>
