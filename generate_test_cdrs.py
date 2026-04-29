@@ -59,7 +59,12 @@ def generate_cdrs(msisdns, count=100):
     now = datetime.datetime.now()
     
     for i in range(count):
-        dial_a = random.choice(msisdns)
+        # 10% Chance of a "Ghost" MSISDN (not in database) to test auditing
+        if random.random() < 0.10:
+            dial_a = "2019" + str(random.randint(10000000, 99999999))
+        else:
+            dial_a = random.choice(msisdns)
+            
         # Randomly choose service: 1=Voice, 2=Data, 3=SMS
         service_id = random.choice([1, 2, 3])
         
@@ -68,8 +73,8 @@ def generate_cdrs(msisdns, count=100):
             duration = random.randint(30, 3600) # seconds (30s to 1 hour)
         elif service_id == 2: # Data
             dial_b = random.choice(url_destinations)
-            # Duration is in BYTES now for the 9-column format
-            duration = random.randint(500 * 1024, 100 * 1024 * 1024) # Bytes (0.5MB to 100MB)
+            # Duration is in MB for the 9-column format (converted to bytes by Parser if needed)
+            duration = random.randint(1, 500) # 1MB to 500MB
         else: # SMS
             dial_b = random.choice(phone_destinations)
             duration = 1 # count

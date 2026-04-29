@@ -5,10 +5,64 @@
 -- 1. Initialize System State
 SELECT initialize_consumption_period('2026-04-01');
 
--- 2. Register Source File
+-- 2. Ensure Audit Table Exists
+CREATE TABLE IF NOT EXISTS rejected_cdr (
+    id               SERIAL PRIMARY KEY,
+    file_id          INTEGER REFERENCES file(id),
+    dial_a           VARCHAR(20),
+    dial_b           VARCHAR(20),
+    start_time       TIMESTAMP,
+    duration         INTEGER,
+    service_id       INTEGER,
+    rejection_reason VARCHAR(255),
+    rejected_at      TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- 3. Register Source File
 INSERT INTO file (file_path, parsed_flag) VALUES ('master_test.cdr', TRUE) ON CONFLICT DO NOTHING;
 
--- 3. MASSIVE REAL-WORLD DATA INJECTION
+-- 4. Update core function to support auditing
+CREATE OR REPLACE FUNCTION insert_cdr(
+    p_file_id          INTEGER,
+    p_dial_a           VARCHAR(20),
+    p_dial_b           VARCHAR(20),
+    p_start_time       TIMESTAMP,
+    p_duration         INTEGER,
+    p_service_id       INTEGER,
+    p_hplmn            VARCHAR(20),
+    p_vplmn            VARCHAR(20),
+    p_external_charges NUMERIC(12,2)
+)
+RETURNS INTEGER AS $$
+DECLARE
+    v_new_id      INTEGER;
+    v_contract_id INTEGER;
+    v_status      contract_status;
+BEGIN
+    -- MSISDN check
+    SELECT id, status INTO v_contract_id, v_status FROM contract WHERE msisdn = p_dial_a;
+
+    -- Handle Rejections
+    IF v_contract_id IS NULL THEN
+        INSERT INTO rejected_cdr (file_id, dial_a, dial_b, start_time, duration, service_id, rejection_reason)
+        VALUES (p_file_id, p_dial_a, p_dial_b, p_start_time, p_duration, p_service_id, 'NO_CONTRACT_FOUND');
+        RETURN 0;
+    END IF;
+
+    IF v_status != 'active' THEN
+        INSERT INTO rejected_cdr (file_id, dial_a, dial_b, start_time, duration, service_id, rejection_reason)
+        VALUES (p_file_id, p_dial_a, p_dial_b, p_start_time, p_duration, p_service_id, 'CONTRACT_' || UPPER(v_status::TEXT));
+        RETURN 0;
+    END IF;
+
+    INSERT INTO cdr (file_id, dial_a, dial_b, start_time, duration, service_id, hplmn, vplmn, external_charges, rated_flag)
+    VALUES (p_file_id, p_dial_a, p_dial_b, p_start_time, p_duration, p_service_id, p_hplmn, p_vplmn, COALESCE(p_external_charges, 0), FALSE)
+    RETURNING id INTO v_new_id;
+    RETURN v_new_id;
+END;
+$$ LANGUAGE plpgsql;
+
+-- 5. MASSIVE REAL-WORLD DATA INJECTION
 DO $$
 DECLARE
     v_user_id INTEGER;
