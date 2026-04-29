@@ -19,7 +19,7 @@ public class JasperLoader {
         // Force Jasper 7 to use the correct extensions if shading issues persist
         DefaultJasperReportsContext context = DefaultJasperReportsContext.getInstance();
         context.setProperty("net.sf.jasperreports.extension.registry.factory.pdf", 
-                           "net.sf.jasperreports.pdf.type.PdfExtensionsRegistryFactory");
+                           "net.sf.jasperreports.pdf.PdfExtensionsRegistryFactory");
         // Ensure no display is required for PDF generation
         System.setProperty("java.awt.headless", "true");
     }

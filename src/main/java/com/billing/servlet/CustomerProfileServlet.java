@@ -99,7 +99,7 @@ public class CustomerProfileServlet extends BaseServlet {
                     params.put("BILL_ID", billId);
                     
                     // Restored logo using stable PNG format to avoid Batik conflicts
-                    try (InputStream logoStream = com.billing.util.JasperLoader.getResourceStream("Pictures/red-logo.png")) {
+                    try (InputStream logoStream = com.billing.util.JasperLoader.getResourceStream("red-logo.png")) {
                         params.put("LOGO_PATH", logoStream);
                     } catch (Exception e) {
                         logger.warn("Could not load logo: {}", e.getMessage());

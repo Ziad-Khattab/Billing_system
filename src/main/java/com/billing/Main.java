@@ -20,9 +20,9 @@ public class Main {
         try {
             net.sf.jasperreports.engine.DefaultJasperReportsContext context = 
                 net.sf.jasperreports.engine.DefaultJasperReportsContext.getInstance();
-            // Force PDF Extension Registry
+            // Force PDF Extension Registry (Corrected Path for Jasper 7.0.1)
             context.setProperty("net.sf.jasperreports.extension.registry.factory.pdf", 
-                               "net.sf.jasperreports.pdf.type.PdfExtensionsRegistryFactory");
+                               "net.sf.jasperreports.pdf.PdfExtensionsRegistryFactory");
             // Set headless mode for document rendering
             System.setProperty("java.awt.headless", "true");
             System.out.println("✔ JasperReports 7 Environment Initialized");
