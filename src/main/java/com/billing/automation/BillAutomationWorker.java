@@ -12,12 +12,15 @@ import java.sql.PreparedStatement;
 import java.sql.Statement;
 import java.util.HashMap;
 import java.util.Map;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * BillAutomationWorker listens for PostgreSQL notifications and automatically
  * generates JasperReport PDFs for new bills.
  */
 public class BillAutomationWorker implements Runnable {
+    private static final Logger logger = LoggerFactory.getLogger(BillAutomationWorker.class);
 
     private static final String OUTPUT_FOLDER = System.getenv("CDR_PROCESSED_PATH") != null 
             ? System.getenv("CDR_PROCESSED_PATH") + "/invoices" 
@@ -27,9 +30,14 @@ public class BillAutomationWorker implements Runnable {
 
     @Override
     public void run() {
-        System.out.println("🚀 [Automation] Starting BillAutomationWorker...");
+        logger.info("Starting BillAutomationWorker...");
         
-        new File(OUTPUT_FOLDER).mkdirs();
+        File outDir = new File(OUTPUT_FOLDER);
+        if (!outDir.exists()) {
+            if (!outDir.mkdirs()) {
+                logger.warn("Could not create output folder: {}", OUTPUT_FOLDER);
+            }
+        }
 
         String url = DB.getEnvOrProp("DB_URL", "db.url");
         String user = DB.getEnvOrProp("DB_USER", "db.user");
@@ -40,7 +48,7 @@ public class BillAutomationWorker implements Runnable {
 
             try (Statement stmt = conn.createStatement()) {
                 stmt.execute("LISTEN generate_bill_event");
-                System.out.println("✔ [Automation] Listening for 'generate_bill_event' (Direct Connection)...");
+                logger.info("Listening for 'generate_bill_event' (Direct Connection)...");
             }
 
             int heartbeatCount = 0;
@@ -48,7 +56,7 @@ public class BillAutomationWorker implements Runnable {
                 PGNotification[] notifications = pgConn.getNotifications(5000);
 
                 if (heartbeatCount++ % 12 == 0) {
-                    System.out.println("💓 [Automation] Heartbeat: Worker is still listening...");
+                    logger.debug("Heartbeat: Worker is still listening...");
                 }
 
                 if (notifications != null) {
@@ -57,19 +65,19 @@ public class BillAutomationWorker implements Runnable {
                     }
                 }
             }
+            }
         } catch (Exception e) {
-            System.err.println("❌ [Automation] Worker crashed: " + e.getMessage());
-            e.printStackTrace();
+            logger.error("Worker crashed: {}", e.getMessage(), e);
         }
     }
 
     private void handleNotification(PGNotification notification, Connection conn) {
         try {
             int billId = Integer.parseInt(notification.getParameter());
-            System.out.println("📩 [Automation] New Bill Event: ID " + billId);
+            logger.info("New Bill Event: ID {}", billId);
             generatePdf(billId, conn);
         } catch (Exception e) {
-            System.err.println("❌ [Automation] Error handling notification: " + e.getMessage());
+            logger.error("Error handling notification: {}", e.getMessage());
         }
     }
 
@@ -97,7 +105,7 @@ public class BillAutomationWorker implements Runnable {
 
             JasperPrint print = JasperFillManager.fillReport(jasperReport, params, conn);
             JasperExportManager.exportReportToPdfFile(print, pdfPath);
-            System.out.println("✅ [Automation] PDF generated: " + pdfPath);
+            logger.info("PDF generated: {}", pdfPath);
 
             try (PreparedStatement pstmt = conn.prepareStatement(
                     "INSERT INTO invoice (bill_id, pdf_path) VALUES (?, ?) " +
@@ -105,12 +113,11 @@ public class BillAutomationWorker implements Runnable {
                 pstmt.setInt(1, billId);
                 pstmt.setString(2, pdfPath);
                 pstmt.executeUpdate();
-                System.out.println("💾 [Automation] Invoice table updated for Bill " + billId);
+                logger.info("Invoice table updated for Bill {}", billId);
             }
 
         } catch (Exception e) {
-            System.err.println("❌ [Automation] Jasper generation failed for Bill " + billId + ": " + e.getMessage());
-            e.printStackTrace();
+            logger.error("Jasper generation failed for Bill {}: {}", billId, e.getMessage(), e);
         }
     }
 }
