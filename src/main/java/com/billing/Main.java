@@ -16,6 +16,20 @@ import org.slf4j.LoggerFactory;
 public class Main {
     private static final Logger logger = LoggerFactory.getLogger(Main.class);
     public static void main(String[] args) throws LifecycleException {
+        // --- JasperReports 7 Pre-initialization ---
+        try {
+            net.sf.jasperreports.engine.DefaultJasperReportsContext context = 
+                net.sf.jasperreports.engine.DefaultJasperReportsContext.getInstance();
+            // Force PDF Extension Registry
+            context.setProperty("net.sf.jasperreports.extension.registry.factory.pdf", 
+                               "net.sf.jasperreports.pdf.type.PdfExtensionsRegistryFactory");
+            // Set headless mode for document rendering
+            System.setProperty("java.awt.headless", "true");
+            System.out.println("✔ JasperReports 7 Environment Initialized");
+        } catch (Exception e) {
+            System.err.println("✘ JasperReports Initialization Warning: " + e.getMessage());
+        }
+
         Tomcat tomcat = new Tomcat();
         
         // Use port from environment variable or default to 8080

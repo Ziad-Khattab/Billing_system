@@ -99,8 +99,9 @@ public class CustomerProfileServlet extends BaseServlet {
                     params.put("BILL_ID", billId);
                     
                     // Safe Stream-based logo loading using central utility
-                    InputStream logoStream = com.billing.util.JasperLoader.getResourceStream("logo.svg");
-                    params.put("LOGO_PATH", logoStream);
+                    // Temporarily disable logo to isolate Batik conflict
+                    // InputStream logoStream = com.billing.util.JasperLoader.getResourceStream("logo.svg");
+                    // params.put("LOGO_PATH", logoStream);
                     
                     // --- HARDENING: Inject Company Info as Parameters (Loaded from config.properties) ---
                     params.put("GROUP_NAME", config.getProperty("company.name", "FMRZ Telecom Group"));
