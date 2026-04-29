@@ -37,7 +37,8 @@
       const timer = setTimeout(async () => {
         const res = await fetch(`/api/admin/contracts?search=${encodeURIComponent(msisdnSearch)}`);
         if (res.ok) {
-          searchResults = await res.json();
+          const data = await res.json();
+          searchResults = data.data || [];
           showDropdown = true;
         }
       }, 300);
@@ -175,12 +176,17 @@
         class="input" 
         type="text" 
         bind:value={msisdnSearch} 
+        onfocus={() => { if (searchResults.length > 0) showDropdown = true; }}
+        onblur={() => setTimeout(() => showDropdown = false, 200)}
         oninput={() => selectedContract = null}
         placeholder="Type MSISDN or Name..." 
       />
       
       {#if showDropdown && searchResults.length > 0}
-        <div class="search-results card-glass">
+        <div class="search-results card animate-fade">
+          <div class="dropdown-header" style="padding: 8px 16px; font-size: 0.7rem; color: var(--text-muted); border-bottom: 1px solid var(--border); background: rgba(255,255,255,0.02)">
+            Top Matches
+          </div>
           {#each searchResults as contract}
             {@const pName = (contract.rateplanName || '').toLowerCase()}
             {@const badgeClass = pName.includes('basic') ? 'badge-plan-basic' : pName.includes('premium') ? 'badge-plan-premium' : pName.includes('elite') ? 'badge-plan-elite' : pName.includes('standard') || pName.includes('gold') ? 'badge-plan-standard' : 'badge-customer'}
@@ -245,54 +251,67 @@
         </div>
 
         {#key activeIndex}
+          {@const activePlan = plans[activeIndex]}
+          {@const isElite = activePlan?.name?.toLowerCase().includes('elite') || activePlan?.price > 500}
+          {@const isBasic = activePlan?.name?.toLowerCase().includes('basic') || activePlan?.price < 100}
+          {@const glowColor = isElite ? 'rgba(139, 92, 246, 0.25)' : isBasic ? 'rgba(59, 130, 246, 0.25)' : 'rgba(224, 8, 0, 0.2)'}
+
           <div 
             id="focus-card"
             class="focus-card card"
-            style="--glow-color: {plans[activeIndex]?.name.includes('Basic') ? 'rgba(0, 150, 255, 0.25)' : plans[activeIndex]?.name.includes('Elite') ? 'rgba(255, 165, 0, 0.25)' : 'rgba(224, 8, 0, 0.2)'};"
+            style="--glow-color: {glowColor};"
             onmousemove={(e) => handleMouseMove(e, 'focus-card')}
             in:fly={{ x: 50, duration: 800, opacity: 0 }}
           >
             <div class="glow-layer"></div>
-            
+
             <div class="badge-container">
-              {#if activeIndex === 1}
-                <div class="plan-badge shimmer-pill popular">⭐ Most Popular</div>
-              {:else if plans[activeIndex]?.name.includes('Elite')}
+              {#if isElite}
                 <div class="plan-badge shimmer-pill elite-pill">⚡ Enterprise Grade</div>
+              {:else if activeIndex === 1 || activePlan?.name?.toLowerCase().includes('gold') || activePlan?.name?.toLowerCase().includes('premium')}
+                <div class="plan-badge shimmer-pill popular">⭐ Most Popular</div>
+              {:else if isBasic}
+                <div class="plan-badge shimmer-pill basic-pill">🌱 Essential</div>
               {:else}
                 <div class="badge-spacer"></div>
+                <div class="plan-badge shimmer-pill trend-pill">🔥 Best Value</div>
               {/if}
             </div>
 
             <div class="card-content-grid">
               <div class="card-visual-side">
                 <div class="plan-header">
-                  <h3>{plans[activeIndex]?.name}</h3>
+                  <h3>{activePlan?.name}</h3>
                   <div class="plan-price">
                     <span class="currency">EGP</span>
-                    <span class="amount">{plans[activeIndex]?.price}</span>
+                    <span class="amount">{activePlan?.price}</span>
                     <span class="period">/mo</span>
                   </div>
                 </div>
-                <button
-                  onclick={() => {
-                    if (!authState.user) window.location.href = '/register?plan=' + plans[activeIndex]?.id;
-                    else if (authState.user.role === 'admin') window.location.href = '/admin/contracts';
-                    else window.location.href = '/profile';
-                  }}
-                  class="btn btn-primary"
-                  style="width: 100%; margin-top: 2rem; position: relative; z-index: 2;"
-                >
-                  {#if !authState.initialized}
-                    Checking Status...
-                  {:else if !authState.user}
-                    Activate Now
-                  {:else if authState.user.role === 'admin'}
-                    Manage Contracts
-                  {:else}
-                    Back to Dashboard
-                  {/if}
-                </button>
+
+                <div class="plan-actions" style="margin-top: 2.5rem; display: flex; flex-direction: column; gap: 1rem;">
+                  <button
+                    onclick={() => {
+                      if (!authState.user) window.location.href = '/register?plan=' + activePlan?.id;
+                      else if (authState.user.role === 'admin') window.location.href = '/admin/contracts?plan=' + activePlan?.id;
+                      else window.location.href = '/onboarding?plan=' + activePlan?.id;
+                    }}
+                    class="btn btn-primary"
+                    style="width: 100%; position: relative; z-index: 2; padding: 1.25rem;"
+                  >
+                    {#if !authState.initialized}
+                      Checking Status...
+                    {:else if !authState.user}
+                      Get Started Now
+                    {:else if authState.user.role === 'admin'}
+                      Provision to Customer
+                    {:else}
+                      Switch to This Plan
+                    {/if}
+                  </button>
+
+                  <p class="tax-info">Prices exclude 14% VAT. Automatic monthly renewal.</p>
+                </div>
               </div>
 
               <div class="card-info-side">
@@ -524,6 +543,7 @@
 
   .popular { border-color: rgba(224, 8, 0, 0.4); background: rgba(224, 8, 0, 0.1); }
   .elite-pill { border-color: rgba(139, 92, 246, 0.4); background: rgba(139, 92, 246, 0.1); }
+  .basic-pill { border-color: rgba(59, 130, 246, 0.4); background: rgba(59, 130, 246, 0.1); }
   .roaming-pill { border-color: rgba(59, 130, 246, 0.4); background: rgba(59, 130, 246, 0.1); }
   .deal-pill { border-color: rgba(16, 185, 129, 0.4); background: rgba(16, 185, 129, 0.1); }
   .trend-pill { border-color: rgba(239, 68, 68, 0.4); background: rgba(239, 68, 68, 0.1); }
@@ -649,7 +669,7 @@
     overflow-y: auto;
     border: 1px solid rgba(255,255,255,0.1);
     box-shadow: 0 20px 40px rgba(0,0,0,0.4);
-    background: rgba(15, 15, 25, 0.95);
+    background: rgba(10, 10, 15, 0.98) !important;
     backdrop-filter: blur(10px);
     border-radius: 12px;
   }
@@ -657,43 +677,31 @@
     width: 100%;
     display: flex;
     justify-content: space-between;
+    align-items: center;
     padding: 12px 16px;
-    background: none;
+    background: transparent;
     border: none;
     border-bottom: 1px solid rgba(255,255,255,0.05);
     color: white;
     cursor: pointer;
     text-align: left;
-    transition: background 0.2s;
+    transition: all 0.2s;
+    transform: none !important;
   }
-  .result-item:hover { background: rgba(224, 8, 0, 0.2); }
+  .result-item:hover { 
+    background: rgba(255, 255, 255, 0.08) !important; 
+    border-left: 4px solid var(--red);
+    padding-left: 12px;
+  }
   .res-num { font-family: 'JetBrains Mono', monospace; font-weight: 700; color: #EF4444; }
   .res-name { font-size: 0.85rem; color: #94a3b8; }
   .selection-status { margin-top: 1rem; padding: 10px; background: rgba(34, 197, 94, 0.1); border-radius: 8px; color: #22C55E; font-size: 0.9rem; }
 
-  .badge-plan-basic { 
-    background: rgba(59, 130, 246, 0.1); 
-    color: #60a5fa; 
-    border: 1px solid rgba(59, 130, 246, 0.2);
-    border-left: 3px solid #3b82f6;
-  }
-  .badge-plan-standard { 
-    background: rgba(255, 255, 255, 0.05); 
-    color: #cbd5e1; 
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-left: 3px solid #94a3b8;
-  }
-  .badge-plan-premium { 
+  .badge-plan-basic, .badge-plan-standard, .badge-plan-premium, .badge-plan-gold, .badge-plan-elite { 
     background: rgba(248, 113, 113, 0.1); 
     color: #fca5a5; 
     border: 1px solid rgba(248, 113, 113, 0.2);
     border-left: 3px solid #f87171;
-  }
-  .badge-plan-elite { 
-    background: rgba(139, 92, 246, 0.1); 
-    color: #a78bfa; 
-    border: 1px solid rgba(139, 92, 246, 0.2);
-    border-left: 3px solid #8b5cf6;
   }
 
 </style>

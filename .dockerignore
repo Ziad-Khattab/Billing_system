@@ -23,3 +23,9 @@ target/*
 backups/
 *.sql.bak
 *.pgdump
+# --- Environment & Secrets ---
+.env
+.env.*
+!.env.example
+db.properties
+src/main/resources/db.properties

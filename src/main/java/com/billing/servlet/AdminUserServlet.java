@@ -16,7 +16,16 @@ public class AdminUserServlet extends BaseServlet {
         handle(res, () -> {
             String pathParam = getPathParam(req);
             if (pathParam == null) {
-                return DB.executeSelect("SELECT * FROM get_all_customers()");
+                String search = req.getParameter("search");
+                int limit = getIntParam(req, "limit", 50);
+                int offset = getIntParam(req, "offset", 0);
+                
+                List<Map<String, Object>> list = DB.executeSelect("SELECT * FROM get_all_customers(?, ?, ?)", search, limit, offset);
+                long total = 0;
+                if (!list.isEmpty()) {
+                    total = ((Number) list.get(0).get("total_count")).longValue();
+                }
+                return Map.of("data", list, "total", total);
             } else {
                 int id = Integer.parseInt(pathParam);
                 List<Map<String, Object>> list = DB.executeSelect("SELECT * FROM get_customer_by_id(?)", id);
@@ -30,7 +39,10 @@ public class AdminUserServlet extends BaseServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse res) throws IOException {
         handle(res, () -> {
             Map<String, Object> data = readJson(req);
-            String msisdn = (String) data.get("msisdn");
+            String username = (String) data.get("username");
+            if (username != null && username.matches("\\d+")) {
+                throw new RuntimeException("Username cannot be numbers only");
+            }
             String name = (String) data.get("name");
             String email = (String) data.get("email");
             String address = (String) data.get("address");
@@ -40,7 +52,7 @@ public class AdminUserServlet extends BaseServlet {
             // Using our fixed stored function to handle 2-table insertion
             List<Map<String, Object>> result = DB.executeSelect(
                 "SELECT create_customer(?, ?, ?, ?, ?, ?::DATE) as id",
-                msisdn, "customer123", name, email, address, birthdate
+                username, "customer123", name, email, address, birthdate
             );
             
             int newId = ((Number) result.get(0).get("id")).intValue();

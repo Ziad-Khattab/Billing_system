@@ -2,7 +2,7 @@
 -- PostgreSQL database dump
 --
 
-\restrict RwFaKbTXk7nYR5bL27HUW2WoLPEKeB2FMh47bNOgy8dDkNtB0Sdofnsrg61hotk
+\restrict nCQtnlw3KbRt5p5DQAOzkHaVCTWYZBzfPnj8E1eWGfoqfMgfbij0BJfuaJ2c1qC
 
 -- Dumped from database version 18.3
 -- Dumped by pg_dump version 18.3
@@ -20,7 +20,7 @@ SET client_min_messages = warning;
 SET row_security = off;
 
 --
--- Name: bill_status; Type: TYPE; Schema: public; Owner: -
+-- Name: bill_status; Type: TYPE; Schema: public; Owner: zkhattab
 --
 
 CREATE TYPE public.bill_status AS ENUM (
@@ -32,8 +32,10 @@ CREATE TYPE public.bill_status AS ENUM (
 );
 
 
+ALTER TYPE public.bill_status OWNER TO zkhattab;
+
 --
--- Name: contract_recurring_status; Type: TYPE; Schema: public; Owner: -
+-- Name: contract_recurring_status; Type: TYPE; Schema: public; Owner: zkhattab
 --
 
 CREATE TYPE public.contract_recurring_status AS ENUM (
@@ -44,8 +46,10 @@ CREATE TYPE public.contract_recurring_status AS ENUM (
 );
 
 
+ALTER TYPE public.contract_recurring_status OWNER TO zkhattab;
+
 --
--- Name: contract_status; Type: TYPE; Schema: public; Owner: -
+-- Name: contract_status; Type: TYPE; Schema: public; Owner: zkhattab
 --
 
 CREATE TYPE public.contract_status AS ENUM (
@@ -56,8 +60,10 @@ CREATE TYPE public.contract_status AS ENUM (
 );
 
 
+ALTER TYPE public.contract_status OWNER TO zkhattab;
+
 --
--- Name: contract_status_enum; Type: TYPE; Schema: public; Owner: -
+-- Name: contract_status_enum; Type: TYPE; Schema: public; Owner: zkhattab
 --
 
 CREATE TYPE public.contract_status_enum AS ENUM (
@@ -68,8 +74,10 @@ CREATE TYPE public.contract_status_enum AS ENUM (
 );
 
 
+ALTER TYPE public.contract_status_enum OWNER TO zkhattab;
+
 --
--- Name: cot_status_enum; Type: TYPE; Schema: public; Owner: -
+-- Name: cot_status_enum; Type: TYPE; Schema: public; Owner: zkhattab
 --
 
 CREATE TYPE public.cot_status_enum AS ENUM (
@@ -79,8 +87,10 @@ CREATE TYPE public.cot_status_enum AS ENUM (
 );
 
 
+ALTER TYPE public.cot_status_enum OWNER TO zkhattab;
+
 --
--- Name: cr_status_enum; Type: TYPE; Schema: public; Owner: -
+-- Name: cr_status_enum; Type: TYPE; Schema: public; Owner: zkhattab
 --
 
 CREATE TYPE public.cr_status_enum AS ENUM (
@@ -91,8 +101,10 @@ CREATE TYPE public.cr_status_enum AS ENUM (
 );
 
 
+ALTER TYPE public.cr_status_enum OWNER TO zkhattab;
+
 --
--- Name: customer_type; Type: TYPE; Schema: public; Owner: -
+-- Name: customer_type; Type: TYPE; Schema: public; Owner: zkhattab
 --
 
 CREATE TYPE public.customer_type AS ENUM (
@@ -101,8 +113,10 @@ CREATE TYPE public.customer_type AS ENUM (
 );
 
 
+ALTER TYPE public.customer_type OWNER TO zkhattab;
+
 --
--- Name: one_time_status; Type: TYPE; Schema: public; Owner: -
+-- Name: one_time_status; Type: TYPE; Schema: public; Owner: zkhattab
 --
 
 CREATE TYPE public.one_time_status AS ENUM (
@@ -112,8 +126,10 @@ CREATE TYPE public.one_time_status AS ENUM (
 );
 
 
+ALTER TYPE public.one_time_status OWNER TO zkhattab;
+
 --
--- Name: rateplan_status; Type: TYPE; Schema: public; Owner: -
+-- Name: rateplan_status; Type: TYPE; Schema: public; Owner: zkhattab
 --
 
 CREATE TYPE public.rateplan_status AS ENUM (
@@ -122,8 +138,10 @@ CREATE TYPE public.rateplan_status AS ENUM (
 );
 
 
+ALTER TYPE public.rateplan_status OWNER TO zkhattab;
+
 --
--- Name: rateplan_status_enum; Type: TYPE; Schema: public; Owner: -
+-- Name: rateplan_status_enum; Type: TYPE; Schema: public; Owner: zkhattab
 --
 
 CREATE TYPE public.rateplan_status_enum AS ENUM (
@@ -132,8 +150,10 @@ CREATE TYPE public.rateplan_status_enum AS ENUM (
 );
 
 
+ALTER TYPE public.rateplan_status_enum OWNER TO zkhattab;
+
 --
--- Name: service_type; Type: TYPE; Schema: public; Owner: -
+-- Name: service_type; Type: TYPE; Schema: public; Owner: zkhattab
 --
 
 CREATE TYPE public.service_type AS ENUM (
@@ -144,8 +164,10 @@ CREATE TYPE public.service_type AS ENUM (
 );
 
 
+ALTER TYPE public.service_type OWNER TO zkhattab;
+
 --
--- Name: service_type_enum; Type: TYPE; Schema: public; Owner: -
+-- Name: service_type_enum; Type: TYPE; Schema: public; Owner: zkhattab
 --
 
 CREATE TYPE public.service_type_enum AS ENUM (
@@ -158,8 +180,10 @@ CREATE TYPE public.service_type_enum AS ENUM (
 );
 
 
+ALTER TYPE public.service_type_enum OWNER TO zkhattab;
+
 --
--- Name: service_uom; Type: TYPE; Schema: public; Owner: -
+-- Name: service_uom; Type: TYPE; Schema: public; Owner: zkhattab
 --
 
 CREATE TYPE public.service_uom AS ENUM (
@@ -171,8 +195,10 @@ CREATE TYPE public.service_uom AS ENUM (
 );
 
 
+ALTER TYPE public.service_uom OWNER TO zkhattab;
+
 --
--- Name: service_uom_enum; Type: TYPE; Schema: public; Owner: -
+-- Name: service_uom_enum; Type: TYPE; Schema: public; Owner: zkhattab
 --
 
 CREATE TYPE public.service_uom_enum AS ENUM (
@@ -184,8 +210,10 @@ CREATE TYPE public.service_uom_enum AS ENUM (
 );
 
 
+ALTER TYPE public.service_uom_enum OWNER TO zkhattab;
+
 --
--- Name: user_role; Type: TYPE; Schema: public; Owner: -
+-- Name: user_role; Type: TYPE; Schema: public; Owner: zkhattab
 --
 
 CREATE TYPE public.user_role AS ENUM (
@@ -194,8 +222,10 @@ CREATE TYPE public.user_role AS ENUM (
 );
 
 
+ALTER TYPE public.user_role OWNER TO zkhattab;
+
 --
--- Name: auto_initialize_consumption(); Type: FUNCTION; Schema: public; Owner: -
+-- Name: auto_initialize_consumption(); Type: FUNCTION; Schema: public; Owner: zkhattab
 --
 
 CREATE FUNCTION public.auto_initialize_consumption() RETURNS trigger
@@ -210,8 +240,10 @@ END;
 $$;
 
 
+ALTER FUNCTION public.auto_initialize_consumption() OWNER TO zkhattab;
+
 --
--- Name: auto_rate_cdr(); Type: FUNCTION; Schema: public; Owner: -
+-- Name: auto_rate_cdr(); Type: FUNCTION; Schema: public; Owner: zkhattab
 --
 
 CREATE FUNCTION public.auto_rate_cdr() RETURNS trigger
@@ -226,8 +258,10 @@ END;
 $$;
 
 
+ALTER FUNCTION public.auto_rate_cdr() OWNER TO zkhattab;
+
 --
--- Name: cancel_addon(integer); Type: FUNCTION; Schema: public; Owner: -
+-- Name: cancel_addon(integer); Type: FUNCTION; Schema: public; Owner: zkhattab
 --
 
 CREATE FUNCTION public.cancel_addon(p_addon_id integer) RETURNS void
@@ -248,8 +282,10 @@ END;
 $$;
 
 
+ALTER FUNCTION public.cancel_addon(p_addon_id integer) OWNER TO zkhattab;
+
 --
--- Name: change_contract_rateplan(integer, integer); Type: FUNCTION; Schema: public; Owner: -
+-- Name: change_contract_rateplan(integer, integer); Type: FUNCTION; Schema: public; Owner: zkhattab
 --
 
 CREATE FUNCTION public.change_contract_rateplan(p_contract_id integer, p_new_rateplan_id integer) RETURNS void
@@ -508,8 +544,10 @@ END;
 $$;
 
 
+ALTER FUNCTION public.change_contract_rateplan(p_contract_id integer, p_new_rateplan_id integer) OWNER TO zkhattab;
+
 --
--- Name: change_contract_status(integer, public.contract_status); Type: FUNCTION; Schema: public; Owner: -
+-- Name: change_contract_status(integer, public.contract_status); Type: FUNCTION; Schema: public; Owner: zkhattab
 --
 
 CREATE FUNCTION public.change_contract_status(p_contract_id integer, p_status public.contract_status) RETURNS void
@@ -536,8 +574,10 @@ END;
 $$;
 
 
+ALTER FUNCTION public.change_contract_status(p_contract_id integer, p_status public.contract_status) OWNER TO zkhattab;
+
 --
--- Name: create_admin(character varying, character varying, character varying, character varying); Type: FUNCTION; Schema: public; Owner: -
+-- Name: create_admin(character varying, character varying, character varying, character varying); Type: FUNCTION; Schema: public; Owner: zkhattab
 --
 
 CREATE FUNCTION public.create_admin(p_username character varying, p_password character varying, p_name character varying, p_email character varying) RETURNS integer
@@ -561,8 +601,10 @@ END;
 $$;
 
 
+ALTER FUNCTION public.create_admin(p_username character varying, p_password character varying, p_name character varying, p_email character varying) OWNER TO zkhattab;
+
 --
--- Name: create_admin(character varying, character varying, character varying, character varying, text, date); Type: FUNCTION; Schema: public; Owner: -
+-- Name: create_admin(character varying, character varying, character varying, character varying, text, date); Type: FUNCTION; Schema: public; Owner: zkhattab
 --
 
 CREATE FUNCTION public.create_admin(p_username character varying, p_password character varying, p_name character varying, p_email character varying, p_address text, p_birthdate date) RETURNS integer
@@ -584,8 +626,10 @@ END;
 $$;
 
 
+ALTER FUNCTION public.create_admin(p_username character varying, p_password character varying, p_name character varying, p_email character varying, p_address text, p_birthdate date) OWNER TO zkhattab;
+
 --
--- Name: create_contract(integer, integer, character varying, double precision); Type: FUNCTION; Schema: public; Owner: -
+-- Name: create_contract(integer, integer, character varying, double precision); Type: FUNCTION; Schema: public; Owner: zkhattab
 --
 
 CREATE FUNCTION public.create_contract(p_user_account_id integer, p_rateplan_id integer, p_msisdn character varying, p_credit_limit double precision) RETURNS integer
@@ -635,11 +679,12 @@ BEGIN
 
     INSERT INTO contract_consumption (
         contract_id, service_package_id, rateplan_id,
-        starting_date, ending_date, consumed, is_billed
+        starting_date, ending_date, consumed, quota_limit, is_billed
     )
     SELECT v_contract_id, rsp.service_package_id, p_rateplan_id,
-           v_period_start, v_period_end, 0, FALSE
+           v_period_start, v_period_end, 0, sp.amount, FALSE
     FROM rateplan_service_package rsp
+    JOIN service_package sp ON rsp.service_package_id = sp.id
     WHERE rsp.rateplan_id = p_rateplan_id
     ON CONFLICT DO NOTHING;
 
@@ -652,8 +697,10 @@ END;
 $$;
 
 
+ALTER FUNCTION public.create_contract(p_user_account_id integer, p_rateplan_id integer, p_msisdn character varying, p_credit_limit double precision) OWNER TO zkhattab;
+
 --
--- Name: create_customer(character varying, character varying, character varying, character varying, text, date); Type: FUNCTION; Schema: public; Owner: -
+-- Name: create_customer(character varying, character varying, character varying, character varying, text, date); Type: FUNCTION; Schema: public; Owner: zkhattab
 --
 
 CREATE FUNCTION public.create_customer(p_username character varying, p_password character varying, p_name character varying, p_email character varying, p_address text, p_birthdate date) RETURNS integer
@@ -675,8 +722,10 @@ END;
 $$;
 
 
+ALTER FUNCTION public.create_customer(p_username character varying, p_password character varying, p_name character varying, p_email character varying, p_address text, p_birthdate date) OWNER TO zkhattab;
+
 --
--- Name: create_file_record(text); Type: FUNCTION; Schema: public; Owner: -
+-- Name: create_file_record(text); Type: FUNCTION; Schema: public; Owner: zkhattab
 --
 
 CREATE FUNCTION public.create_file_record(p_file_path text) RETURNS integer
@@ -694,8 +743,10 @@ END;
 $$;
 
 
+ALTER FUNCTION public.create_file_record(p_file_path text) OWNER TO zkhattab;
+
 --
--- Name: create_service_package(character varying, public.service_type, numeric, integer, numeric, text, boolean); Type: FUNCTION; Schema: public; Owner: -
+-- Name: create_service_package(character varying, public.service_type, numeric, integer, numeric, text, boolean); Type: FUNCTION; Schema: public; Owner: zkhattab
 --
 
 CREATE FUNCTION public.create_service_package(p_name character varying, p_type public.service_type, p_amount numeric, p_priority integer, p_price numeric, p_description text, p_is_roaming boolean DEFAULT false) RETURNS TABLE(id integer, name character varying, type public.service_type, amount numeric, priority integer, price numeric, description text, is_roaming boolean)
@@ -718,8 +769,10 @@ END;
 $$;
 
 
+ALTER FUNCTION public.create_service_package(p_name character varying, p_type public.service_type, p_amount numeric, p_priority integer, p_price numeric, p_description text, p_is_roaming boolean) OWNER TO zkhattab;
+
 --
--- Name: expire_addons(); Type: FUNCTION; Schema: public; Owner: -
+-- Name: expire_addons(); Type: FUNCTION; Schema: public; Owner: zkhattab
 --
 
 CREATE FUNCTION public.expire_addons() RETURNS void
@@ -734,8 +787,10 @@ END;
 $$;
 
 
+ALTER FUNCTION public.expire_addons() OWNER TO zkhattab;
+
 --
--- Name: generate_all_bills(date); Type: FUNCTION; Schema: public; Owner: -
+-- Name: generate_all_bills(date); Type: FUNCTION; Schema: public; Owner: zkhattab
 --
 
 CREATE FUNCTION public.generate_all_bills(p_period_start date) RETURNS void
@@ -771,8 +826,10 @@ END;
 $$;
 
 
+ALTER FUNCTION public.generate_all_bills(p_period_start date) OWNER TO zkhattab;
+
 --
--- Name: generate_bill(integer, date); Type: FUNCTION; Schema: public; Owner: -
+-- Name: generate_bill(integer, date); Type: FUNCTION; Schema: public; Owner: zkhattab
 --
 
 CREATE FUNCTION public.generate_bill(p_contract_id integer, p_billing_period_start date) RETURNS integer
@@ -801,43 +858,35 @@ CREATE FUNCTION public.generate_bill(p_contract_id integer, p_billing_period_sta
         SELECT rateplan_id, msisdn INTO v_rateplan_id, v_msisdn FROM contract WHERE id = p_contract_id;
         SELECT price, ror_voice, ror_data, ror_sms INTO v_recurring_fees, v_ror_rate_v, v_ror_rate_d, v_ror_rate_s FROM rateplan WHERE id = v_rateplan_id;
 
-        SELECT 
-            COALESCE(SUM(CASE WHEN sp.type::TEXT = 'voice' THEN c.duration ELSE 0 END), 0)::INT,
-            COALESCE(SUM(CASE WHEN sp.type::TEXT = 'data' THEN c.duration ELSE 0 END), 0)::INT,
-            COALESCE(SUM(CASE WHEN sp.type::TEXT = 'sms' THEN 1 ELSE 0 END), 0)::INT
+        -- Calculate actual usage from contract_consumption (normalized units)
+        SELECT
+            COALESCE(SUM(CASE WHEN sp.type::TEXT = 'voice' THEN cc.consumed ELSE 0 END), 0)::INT,
+            COALESCE(SUM(CASE WHEN sp.type::TEXT = 'data' THEN cc.consumed ELSE 0 END), 0)::INT,
+            COALESCE(SUM(CASE WHEN sp.type::TEXT = 'sms' THEN cc.consumed ELSE 0 END), 0)::INT
         INTO v_voice_usage, v_data_usage, v_sms_usage
-        FROM cdr c JOIN service_package sp ON c.service_id = sp.id
-        WHERE c.dial_a = v_msisdn AND c.start_time >= p_billing_period_start AND c.start_time <= v_billing_period_end;
+        FROM contract_consumption cc
+        JOIN service_package sp ON cc.service_package_id = sp.id
+        WHERE cc.contract_id = p_contract_id AND cc.starting_date = p_billing_period_start;
 
-        v_overage_charge := 0;
-        v_roaming_charge := 0;
-        SELECT 
-            COALESCE(voice + data + sms, 0),
-            COALESCE(roaming_voice + roaming_data + roaming_sms, 0)
+        -- Calculate overage charges from ror_contract (units * rates)
+        SELECT
+            COALESCE(SUM((voice * v_ror_rate_v) + (data / 1073741824.0 * v_ror_rate_d) + (sms * v_ror_rate_s)), 0),
+            COALESCE(SUM((roaming_voice * v_ror_rate_v) + (roaming_data / 1073741824.0 * v_ror_rate_d) + (roaming_sms * v_ror_rate_s)), 0)
         INTO v_overage_charge, v_roaming_charge
-        FROM ror_contract WHERE contract_id = p_contract_id AND bill_id IS NULL;
-        
+        FROM ror_contract 
+        WHERE contract_id = p_contract_id 
+          AND starting_date = p_billing_period_start
+          AND bill_id IS NULL;
+
         v_overage_charge := COALESCE(v_overage_charge, 0);
         v_roaming_charge := COALESCE(v_roaming_charge, 0);
 
-        -- Calculate Promotional Savings (Regex for better matching)
-        SELECT 
-            COALESCE(SUM(
-              CASE 
-                WHEN sp.type::TEXT = 'voice' THEN cc.consumed * v_ror_rate_v
-                WHEN sp.type::TEXT = 'data'  THEN cc.consumed * v_ror_rate_d
-                WHEN sp.type::TEXT = 'sms'   THEN cc.consumed * v_ror_rate_s
-                ELSE 0 
-              END), 0)
-        INTO v_promo_discount
-        FROM contract_consumption cc
-        JOIN service_package sp ON cc.service_package_id = sp.id
-        WHERE cc.contract_id = p_contract_id AND cc.starting_date = p_billing_period_start
-            AND (sp.name ~* 'Welcome|Gift|Bonus');
+        -- Calculate Promotional Savings (free units don't cost anything)
+        -- For now, set to 0 as promotional discounts should be calculated separately
+        v_promo_discount := 0;
 
-        -- Math Precision: Savings already reflected in overage (Overage is 0 if covered).
-        -- We don't double-subtract. We show it for transparency.
-        v_subtotal := (v_recurring_fees + COALESCE(v_overage_charge,0) + COALESCE(v_roaming_charge,0));
+        -- Calculate subtotal and taxes
+        v_subtotal := (v_recurring_fees + v_overage_charge + v_roaming_charge - v_promo_discount);
         v_taxes := 0.14 * v_subtotal;
         v_total_amount := v_subtotal + v_taxes;
 
@@ -851,16 +900,53 @@ CREATE FUNCTION public.generate_bill(p_contract_id integer, p_billing_period_sta
             v_overage_charge, v_roaming_charge, v_promo_discount, v_taxes, v_total_amount, 'issued'
         ) RETURNING id INTO v_bill_id;
 
-        UPDATE ror_contract SET bill_id = v_bill_id WHERE contract_id = p_contract_id AND bill_id IS NULL;
+        UPDATE ror_contract SET bill_id = v_bill_id WHERE contract_id = p_contract_id AND starting_date = p_billing_period_start AND bill_id IS NULL;
         UPDATE contract_consumption SET bill_id = v_bill_id, is_billed = TRUE WHERE contract_id = p_contract_id AND starting_date = p_billing_period_start;
-        
+
         RETURN v_bill_id;
     END;
 $$;
 
 
+ALTER FUNCTION public.generate_bill(p_contract_id integer, p_billing_period_start date) OWNER TO zkhattab;
+
 --
--- Name: generate_invoice(integer, text); Type: FUNCTION; Schema: public; Owner: -
+-- Name: generate_bulk_missing(text); Type: PROCEDURE; Schema: public; Owner: zkhattab
+--
+
+CREATE PROCEDURE public.generate_bulk_missing(IN p_search text)
+    LANGUAGE plpgsql
+    AS $$
+DECLARE
+    v_contract_id INTEGER;
+    v_period_start DATE := DATE_TRUNC('month', CURRENT_DATE)::DATE;
+BEGIN
+    FOR v_contract_id IN
+        SELECT c.id
+        FROM contract c
+        JOIN user_account u ON c.user_account_id = u.id
+        LEFT JOIN rateplan r ON c.rateplan_id = r.id
+        WHERE c.status IN ('active', 'suspended', 'suspended_debt')
+          AND NOT EXISTS (
+            SELECT 1 FROM bill b
+            WHERE b.contract_id = c.id
+              AND b.billing_period_start = v_period_start
+          )
+          AND (p_search IS NULL OR p_search = '' OR
+               c.msisdn ILIKE '%' || p_search || '%' OR
+               u.name ILIKE '%' || p_search || '%' OR
+               r.name ILIKE '%' || p_search || '%')
+    LOOP
+        PERFORM generate_bill(v_contract_id, v_period_start);
+    END LOOP;
+END;
+$$;
+
+
+ALTER PROCEDURE public.generate_bulk_missing(IN p_search text) OWNER TO zkhattab;
+
+--
+-- Name: generate_invoice(integer, text); Type: FUNCTION; Schema: public; Owner: zkhattab
 --
 
 CREATE FUNCTION public.generate_invoice(p_bill_id integer, p_pdf_path text) RETURNS void
@@ -876,8 +962,10 @@ END;
 $$;
 
 
+ALTER FUNCTION public.generate_invoice(p_bill_id integer, p_pdf_path text) OWNER TO zkhattab;
+
 --
--- Name: get_admin_stats(); Type: FUNCTION; Schema: public; Owner: -
+-- Name: get_admin_stats(); Type: FUNCTION; Schema: public; Owner: zkhattab
 --
 
 CREATE FUNCTION public.get_admin_stats() RETURNS TABLE(customers bigint, contracts bigint, cdrs bigint, revenue numeric, pending_bills bigint)
@@ -894,14 +982,77 @@ END;
 $$;
 
 
+ALTER FUNCTION public.get_admin_stats() OWNER TO zkhattab;
+
 --
--- Name: get_all_contracts(); Type: FUNCTION; Schema: public; Owner: -
+-- Name: get_all_bills(text, integer, integer); Type: FUNCTION; Schema: public; Owner: zkhattab
 --
 
-CREATE FUNCTION public.get_all_contracts() RETURNS TABLE(id integer, msisdn character varying, status public.contract_status, available_credit numeric, customer_name character varying, rateplan_name character varying)
+CREATE FUNCTION public.get_all_bills(p_search text DEFAULT NULL::text, p_limit integer DEFAULT 50, p_offset integer DEFAULT 0) RETURNS TABLE(id integer, contract_id integer, billing_date date, billing_period_start date, billing_period_end date, total_amount numeric, is_paid boolean, status character varying, voice_usage integer, data_usage integer, sms_usage integer, customer_name character varying, msisdn character varying, total_count bigint)
     LANGUAGE plpgsql
     AS $$
+DECLARE
+    v_total BIGINT;
 BEGIN
+    SELECT COUNT(*) INTO v_total
+    FROM bill b
+    JOIN contract c ON b.contract_id = c.id
+    JOIN user_account ua ON c.user_account_id = ua.id
+    WHERE (p_search IS NULL OR p_search = '' OR
+           ua.name ILIKE '%' || p_search || '%' OR
+           c.msisdn ILIKE '%' || p_search || '%' OR
+           b.status::TEXT ILIKE '%' || p_search || '%');
+
+    RETURN QUERY
+        SELECT
+            b.id,
+            b.contract_id,
+            b.billing_date,
+            b.billing_period_start,
+            b.billing_period_end,
+            b.total_amount,
+            b.is_paid,
+            b.status::VARCHAR(20) AS status,
+            b.voice_usage,
+            b.data_usage,
+            b.sms_usage,
+            ua.name AS customer_name,
+            c.msisdn,
+            v_total
+        FROM bill b
+        JOIN contract c ON b.contract_id = c.id
+        JOIN user_account ua ON c.user_account_id = ua.id
+        WHERE (p_search IS NULL OR p_search = '' OR
+               ua.name ILIKE '%' || p_search || '%' OR
+               c.msisdn ILIKE '%' || p_search || '%' OR
+               b.status::TEXT ILIKE '%' || p_search || '%')
+        ORDER BY b.billing_date DESC
+        LIMIT p_limit OFFSET p_offset;
+END;
+$$;
+
+
+ALTER FUNCTION public.get_all_bills(p_search text, p_limit integer, p_offset integer) OWNER TO zkhattab;
+
+--
+-- Name: get_all_contracts(text, integer, integer); Type: FUNCTION; Schema: public; Owner: zkhattab
+--
+
+CREATE FUNCTION public.get_all_contracts(p_search text DEFAULT NULL::text, p_limit integer DEFAULT 50, p_offset integer DEFAULT 0) RETURNS TABLE(id integer, msisdn character varying, status public.contract_status, available_credit numeric, customer_name character varying, rateplan_name character varying, total_count bigint)
+    LANGUAGE plpgsql
+    AS $$
+DECLARE
+    v_total BIGINT;
+BEGIN
+    SELECT COUNT(*) INTO v_total
+    FROM contract c
+    JOIN user_account u ON c.user_account_id = u.id
+    LEFT JOIN rateplan r ON c.rateplan_id = r.id
+    WHERE (p_search IS NULL OR p_search = '' OR
+           c.msisdn ILIKE '%' || p_search || '%' OR
+           u.name ILIKE '%' || p_search || '%' OR
+           r.name ILIKE '%' || p_search || '%');
+
     RETURN QUERY
         SELECT
             c.id,
@@ -909,25 +1060,45 @@ BEGIN
             c.status,
             c.available_credit,
             u.name  AS customer_name,
-            r.name  AS rateplan_name
+            r.name  AS rateplan_name,
+            v_total
         FROM contract c
                  JOIN user_account u ON c.user_account_id = u.id
                  LEFT JOIN rateplan r ON c.rateplan_id = r.id
-        ORDER BY c.id DESC;
+        WHERE (p_search IS NULL OR p_search = '' OR
+               c.msisdn ILIKE '%' || p_search || '%' OR
+               u.name ILIKE '%' || p_search || '%' OR
+               r.name ILIKE '%' || p_search || '%')
+        ORDER BY c.id DESC
+        LIMIT p_limit OFFSET p_offset;
 END;
 $$;
 
 
+ALTER FUNCTION public.get_all_contracts(p_search text, p_limit integer, p_offset integer) OWNER TO zkhattab;
+
 --
--- Name: get_all_customers(); Type: FUNCTION; Schema: public; Owner: -
+-- Name: get_all_customers(text, integer, integer); Type: FUNCTION; Schema: public; Owner: zkhattab
 --
 
-CREATE FUNCTION public.get_all_customers() RETURNS TABLE(id integer, username character varying, name character varying, email character varying, role public.user_role, address text, birthdate date, msisdn character varying)
+CREATE FUNCTION public.get_all_customers(p_search text DEFAULT NULL::text, p_limit integer DEFAULT 50, p_offset integer DEFAULT 0) RETURNS TABLE(id integer, username character varying, name character varying, email character varying, role public.user_role, address text, birthdate date, msisdn character varying, total_count bigint)
     LANGUAGE plpgsql
     AS $$
+DECLARE
+    v_total BIGINT;
 BEGIN
+    SELECT COUNT(DISTINCT ua.id) INTO v_total
+    FROM user_account ua
+    LEFT JOIN contract c ON ua.id = c.user_account_id
+    WHERE ua.role = 'customer'
+      AND (p_search IS NULL OR p_search = '' OR
+           ua.name ILIKE '%' || p_search || '%' OR
+           ua.email ILIKE '%' || p_search || '%' OR
+           ua.username ILIKE '%' || p_search || '%' OR
+           c.msisdn ILIKE '%' || p_search || '%');
+
     RETURN QUERY
-        SELECT
+        SELECT DISTINCT ON (ua.id)
             ua.id,
             ua.username,
             ua.name,
@@ -935,17 +1106,26 @@ BEGIN
             ua.role,
             ua.address,
             ua.birthdate,
-            c.msisdn
+            c.msisdn,
+            v_total
         FROM user_account ua
         LEFT JOIN contract c ON ua.id = c.user_account_id
         WHERE ua.role = 'customer'
-        ORDER BY ua.id DESC;
+          AND (p_search IS NULL OR p_search = '' OR
+               ua.name ILIKE '%' || p_search || '%' OR
+               ua.email ILIKE '%' || p_search || '%' OR
+               ua.username ILIKE '%' || p_search || '%' OR
+               c.msisdn ILIKE '%' || p_search || '%')
+        ORDER BY ua.id DESC
+        LIMIT p_limit OFFSET p_offset;
 END;
 $$;
 
 
+ALTER FUNCTION public.get_all_customers(p_search text, p_limit integer, p_offset integer) OWNER TO zkhattab;
+
 --
--- Name: get_all_rateplans(); Type: FUNCTION; Schema: public; Owner: -
+-- Name: get_all_rateplans(); Type: FUNCTION; Schema: public; Owner: zkhattab
 --
 
 CREATE FUNCTION public.get_all_rateplans() RETURNS TABLE(id integer, name character varying, price numeric, ror_voice numeric, ror_data numeric, ror_sms numeric)
@@ -966,8 +1146,10 @@ END;
 $$;
 
 
+ALTER FUNCTION public.get_all_rateplans() OWNER TO zkhattab;
+
 --
--- Name: get_all_service_packages(); Type: FUNCTION; Schema: public; Owner: -
+-- Name: get_all_service_packages(); Type: FUNCTION; Schema: public; Owner: zkhattab
 --
 
 CREATE FUNCTION public.get_all_service_packages() RETURNS TABLE(id integer, name character varying, type public.service_type, amount numeric, priority integer, price numeric, description text, is_roaming boolean)
@@ -990,8 +1172,10 @@ END;
 $$;
 
 
+ALTER FUNCTION public.get_all_service_packages() OWNER TO zkhattab;
+
 --
--- Name: get_available_msisdns(); Type: FUNCTION; Schema: public; Owner: -
+-- Name: get_available_msisdns(); Type: FUNCTION; Schema: public; Owner: zkhattab
 --
 
 CREATE FUNCTION public.get_available_msisdns() RETURNS TABLE(id integer, msisdn character varying)
@@ -1007,8 +1191,10 @@ END;
 $$;
 
 
+ALTER FUNCTION public.get_available_msisdns() OWNER TO zkhattab;
+
 --
--- Name: get_bill(integer); Type: FUNCTION; Schema: public; Owner: -
+-- Name: get_bill(integer); Type: FUNCTION; Schema: public; Owner: zkhattab
 --
 
 CREATE FUNCTION public.get_bill(p_bill_id integer) RETURNS TABLE(contract_id integer, billing_period_start date, billing_period_end date, billing_date date, recurring_fees numeric, one_time_fees numeric, voice_usage integer, data_usage integer, sms_usage integer, ror_charge numeric, taxes numeric, total_amount numeric, status public.bill_status, is_paid boolean)
@@ -1037,8 +1223,10 @@ END;
 $$;
 
 
+ALTER FUNCTION public.get_bill(p_bill_id integer) OWNER TO zkhattab;
+
 --
--- Name: get_bill_usage_breakdown(integer); Type: FUNCTION; Schema: public; Owner: -
+-- Name: get_bill_usage_breakdown(integer); Type: FUNCTION; Schema: public; Owner: zkhattab
 --
 
 CREATE FUNCTION public.get_bill_usage_breakdown(p_bill_id integer) RETURNS TABLE(service_type text, category_label text, quota integer, consumed integer, unit_rate numeric, line_total numeric, is_roaming boolean, is_promotional boolean, notes text)
@@ -1077,11 +1265,11 @@ BEGIN
     -- 2. Domestic overage (from ror_contract non-roaming columns)
     SELECT 
         'voice'::TEXT AS service_type,
-        'Domestic Overage - Voice'::TEXT AS category_label,
+        'Overage - Voice'::TEXT AS category_label,
         NULL::INTEGER AS quota,
-        NULL::INTEGER AS consumed,
+        rc.voice::INTEGER AS consumed,
         rp.ror_voice AS unit_rate,
-        ROUND(rc.voice::NUMERIC, 2) AS line_total,
+        ROUND((rc.voice * rp.ror_voice)::NUMERIC, 2) AS line_total,
         FALSE AS is_roaming,
         FALSE AS is_promotional,
         'Overage minutes beyond bundle allowance'::TEXT AS notes
@@ -1094,81 +1282,66 @@ BEGIN
     UNION ALL
     SELECT 
         'data'::TEXT AS service_type,
-        'Domestic Overage - Data'::TEXT AS category_label,
-        NULL::INTEGER, NULL::INTEGER, rp.ror_data,
-        ROUND(rc.data::NUMERIC, 2), FALSE, FALSE,
+        'Overage - Data'::TEXT AS category_label,
+        NULL::INTEGER, 
+        (rc.data / 1024 / 1024)::INTEGER, -- Show as MB in consumed
+        rp.ror_data,
+        ROUND((rc.data / 1073741824.0 * rp.ror_data)::NUMERIC, 2), -- Convert Bytes to GB for pricing
+        FALSE, FALSE,
         'Overage data beyond bundle allowance'::TEXT
     FROM ror_contract rc JOIN rateplan rp ON rc.rateplan_id = rp.id
     WHERE rc.contract_id = v_contract_id AND rc.bill_id = p_bill_id AND rc.data > 0
     
     UNION ALL
+    -- 3. Roaming overage (from ror_contract roaming columns)
     SELECT 
-        'sms'::TEXT AS service_type,
-        'Domestic Overage - SMS'::TEXT AS category_label,
-        NULL::INTEGER, NULL::INTEGER, rp.ror_sms,
-        ROUND(rc.sms::NUMERIC, 2), FALSE, FALSE,
-        'Overage SMS beyond bundle allowance'::TEXT
-    FROM ror_contract rc JOIN rateplan rp ON rc.rateplan_id = rp.id
-    WHERE rc.contract_id = v_contract_id AND rc.bill_id = p_bill_id AND rc.sms > 0
-    
-    UNION ALL
-    
-    -- 3. Roaming charges (from ror_contract roaming columns)
-    SELECT 
-        'roaming_voice'::TEXT AS service_type,
-        'Roaming - Voice'::TEXT AS category_label,
-        NULL::INTEGER, NULL::INTEGER, rp.ror_voice,
-        ROUND(rc.roaming_voice::NUMERIC, 2), TRUE, FALSE,
-        'Voice usage while roaming'::TEXT
+        'voice'::TEXT AS service_type,
+        'Roaming Overage - Voice'::TEXT AS category_label,
+        NULL::INTEGER, rc.roaming_voice::INTEGER, rp.ror_roaming_voice,
+        ROUND((rc.roaming_voice * rp.ror_roaming_voice)::NUMERIC, 2),
+        TRUE, FALSE, 'Roaming overage minutes'::TEXT
     FROM ror_contract rc JOIN rateplan rp ON rc.rateplan_id = rp.id
     WHERE rc.contract_id = v_contract_id AND rc.bill_id = p_bill_id AND rc.roaming_voice > 0
     
     UNION ALL
     SELECT 
-        'roaming_data'::TEXT AS service_type,
-        'Roaming - Data'::TEXT AS category_label,
-        NULL::INTEGER, NULL::INTEGER, rp.ror_data,
-        ROUND(rc.roaming_data::NUMERIC, 2), TRUE, FALSE,
-        'Data usage while roaming'::TEXT
+        'data'::TEXT AS service_type,
+        'Roaming Overage - Data'::TEXT AS category_label,
+        NULL::INTEGER, (rc.roaming_data / 1024 / 1024)::INTEGER, rp.ror_roaming_data,
+        ROUND((rc.roaming_data / 1073741824.0 * rp.ror_roaming_data)::NUMERIC, 2),
+        TRUE, FALSE, 'Roaming overage data (MB)'::TEXT
     FROM ror_contract rc JOIN rateplan rp ON rc.rateplan_id = rp.id
     WHERE rc.contract_id = v_contract_id AND rc.bill_id = p_bill_id AND rc.roaming_data > 0
     
     UNION ALL
     SELECT 
-        'roaming_sms'::TEXT AS service_type,
-        'Roaming - SMS'::TEXT AS category_label,
-        NULL::INTEGER, NULL::INTEGER, rp.ror_sms,
-        ROUND(rc.roaming_sms::NUMERIC, 2), TRUE, FALSE,
-        'SMS usage while roaming'::TEXT
+        'sms'::TEXT AS service_type,
+        'Overage - SMS'::TEXT AS category_label,
+        NULL::INTEGER, rc.sms::INTEGER, rp.ror_sms,
+        ROUND((rc.sms * rp.ror_sms)::NUMERIC, 2), FALSE, FALSE,
+        'Overage SMS beyond bundle allowance'::TEXT
+    FROM ror_contract rc JOIN rateplan rp ON rc.rateplan_id = rp.id
+    WHERE rc.contract_id = v_contract_id AND rc.bill_id = p_bill_id AND rc.sms > 0
+
+    UNION ALL
+    SELECT 
+        'sms'::TEXT AS service_type,
+        'Roaming Overage - SMS'::TEXT AS category_label,
+        NULL::INTEGER, rc.roaming_sms::INTEGER, rp.ror_roaming_sms,
+        ROUND((rc.roaming_sms * rp.ror_roaming_sms)::NUMERIC, 2),
+        TRUE, FALSE, 'Roaming overage SMS'::TEXT
     FROM ror_contract rc JOIN rateplan rp ON rc.rateplan_id = rp.id
     WHERE rc.contract_id = v_contract_id AND rc.bill_id = p_bill_id AND rc.roaming_sms > 0
-    
-    UNION ALL
-    
-    -- 4. Promotional discounts (attributed to service packages with promotional names)
-    SELECT 
-        sp.type::TEXT AS service_type,
-        sp.name::TEXT AS category_label,
-        cc.quota_limit::INTEGER AS quota,
-        cc.consumed::INTEGER AS consumed,
-        0::NUMERIC(12,4) AS unit_rate,
-        0::NUMERIC(12,2) AS line_total,
-        sp.is_roaming,
-        TRUE AS is_promotional,
-        'Promotional rate applied'::TEXT AS notes
-    FROM contract_consumption cc
-    JOIN service_package sp ON cc.service_package_id = sp.id
-    WHERE cc.bill_id = p_bill_id
-      AND cc.is_billed = TRUE
-      AND sp.name ~* 'Welcome|Gift|Bonus'
     
     ORDER BY service_type, is_roaming DESC, category_label;
 END;
 $$;
 
 
+ALTER FUNCTION public.get_bill_usage_breakdown(p_bill_id integer) OWNER TO zkhattab;
+
 --
--- Name: get_bills_by_contract(integer); Type: FUNCTION; Schema: public; Owner: -
+-- Name: get_bills_by_contract(integer); Type: FUNCTION; Schema: public; Owner: zkhattab
 --
 
 CREATE FUNCTION public.get_bills_by_contract(p_contract_id integer) RETURNS TABLE(id integer, billing_period_start date, billing_period_end date, billing_date date, total_amount numeric, status public.bill_status)
@@ -1183,8 +1356,10 @@ END;
 $$;
 
 
+ALTER FUNCTION public.get_bills_by_contract(p_contract_id integer) OWNER TO zkhattab;
+
 --
--- Name: get_cdr_usage_amount(integer, public.service_type); Type: FUNCTION; Schema: public; Owner: -
+-- Name: get_cdr_usage_amount(integer, public.service_type); Type: FUNCTION; Schema: public; Owner: zkhattab
 --
 
 CREATE FUNCTION public.get_cdr_usage_amount(p_duration integer, p_service_type public.service_type) RETURNS numeric
@@ -1201,32 +1376,44 @@ END;
 $$;
 
 
+ALTER FUNCTION public.get_cdr_usage_amount(p_duration integer, p_service_type public.service_type) OWNER TO zkhattab;
+
 --
--- Name: get_cdrs(integer, integer); Type: FUNCTION; Schema: public; Owner: -
+-- Name: get_cdrs(integer, integer); Type: FUNCTION; Schema: public; Owner: zkhattab
 --
 
-CREATE FUNCTION public.get_cdrs(p_limit integer DEFAULT 50, p_offset integer DEFAULT 0) RETURNS TABLE(id integer, msisdn character varying, destination character varying, duration integer, "timestamp" timestamp without time zone, type integer, rated boolean)
+CREATE FUNCTION public.get_cdrs(p_limit integer DEFAULT 50, p_offset integer DEFAULT 0) RETURNS TABLE(id integer, msisdn character varying, destination character varying, duration integer, "timestamp" timestamp without time zone, rated boolean, type character varying, service_id integer, service_type text)
     LANGUAGE plpgsql
     AS $$
-BEGIN
-    RETURN QUERY
-        SELECT
-            c.id,
-            c.dial_a   AS msisdn,
-            c.dial_b   AS destination,
-            c.duration,
-            c.start_time AS timestamp,
-            c.service_id AS type,
-            c.rated_flag AS rated
-        FROM cdr c
-        ORDER BY c.start_time DESC
-        LIMIT p_limit OFFSET p_offset;
-END;
-$$;
+ BEGIN
+     RETURN QUERY
+     SELECT 
+         c.id, 
+         c.dial_a AS msisdn, 
+         c.dial_b AS destination, 
+         c.duration, 
+         c.start_time AS "timestamp", 
+         c.rated_flag AS rated,
+         CASE 
+            WHEN sp_rated.id IS NOT NULL THEN sp_rated.name
+            WHEN c.external_charges > 0 THEN 'Overage (' || sp_base.name || ')'
+            ELSE COALESCE(sp_base.name, 'Unrated')
+         END AS type,
+         COALESCE(c.rated_service_id, c.service_id) AS service_id,
+         COALESCE(sp_rated.type::TEXT, sp_base.type::TEXT, 'other') AS service_type
+     FROM cdr c
+     LEFT JOIN service_package sp_rated ON c.rated_service_id = sp_rated.id
+     LEFT JOIN service_package sp_base ON c.service_id = sp_base.id
+     ORDER BY c.start_time DESC
+     LIMIT p_limit OFFSET p_offset;
+ END;
+ $$;
 
+
+ALTER FUNCTION public.get_cdrs(p_limit integer, p_offset integer) OWNER TO zkhattab;
 
 --
--- Name: get_contract_addons(integer); Type: FUNCTION; Schema: public; Owner: -
+-- Name: get_contract_addons(integer); Type: FUNCTION; Schema: public; Owner: zkhattab
 --
 
 CREATE FUNCTION public.get_contract_addons(p_contract_id integer) RETURNS TABLE(id integer, service_package_id integer, package_name character varying, type public.service_type, amount numeric, purchased_date date, expiry_date date, price_paid numeric, is_active boolean)
@@ -1252,8 +1439,10 @@ END;
 $$;
 
 
+ALTER FUNCTION public.get_contract_addons(p_contract_id integer) OWNER TO zkhattab;
+
 --
--- Name: get_contract_by_id(integer); Type: FUNCTION; Schema: public; Owner: -
+-- Name: get_contract_by_id(integer); Type: FUNCTION; Schema: public; Owner: zkhattab
 --
 
 CREATE FUNCTION public.get_contract_by_id(p_id integer) RETURNS TABLE(id integer, user_account_id integer, rateplan_id integer, msisdn character varying, status public.contract_status, credit_limit numeric, available_credit numeric, customer_name character varying, rateplan_name character varying)
@@ -1279,8 +1468,10 @@ END;
 $$;
 
 
+ALTER FUNCTION public.get_contract_by_id(p_id integer) OWNER TO zkhattab;
+
 --
--- Name: get_contract_consumption(integer, date); Type: FUNCTION; Schema: public; Owner: -
+-- Name: get_contract_consumption(integer, date); Type: FUNCTION; Schema: public; Owner: zkhattab
 --
 
 CREATE FUNCTION public.get_contract_consumption(p_contract_id integer, p_period_start date) RETURNS TABLE(service_package_id integer, consumed integer)
@@ -1297,8 +1488,10 @@ END;
 $$;
 
 
+ALTER FUNCTION public.get_contract_consumption(p_contract_id integer, p_period_start date) OWNER TO zkhattab;
+
 --
--- Name: get_customer_by_id(integer); Type: FUNCTION; Schema: public; Owner: -
+-- Name: get_customer_by_id(integer); Type: FUNCTION; Schema: public; Owner: zkhattab
 --
 
 CREATE FUNCTION public.get_customer_by_id(p_id integer) RETURNS TABLE(id integer, username character varying, name character varying, email character varying, role public.user_role, address text, birthdate date)
@@ -1320,8 +1513,10 @@ END;
 $$;
 
 
+ALTER FUNCTION public.get_customer_by_id(p_id integer) OWNER TO zkhattab;
+
 --
--- Name: get_dashboard_stats(); Type: FUNCTION; Schema: public; Owner: -
+-- Name: get_dashboard_stats(); Type: FUNCTION; Schema: public; Owner: zkhattab
 --
 
 CREATE FUNCTION public.get_dashboard_stats() RETURNS TABLE(total_customers bigint, total_contracts bigint, active_contracts bigint, suspended_contracts bigint, suspended_debt_contracts bigint, terminated_contracts bigint, total_cdrs bigint, revenue numeric, pending_bills bigint)
@@ -1343,38 +1538,65 @@ END;
 $$;
 
 
+ALTER FUNCTION public.get_dashboard_stats() OWNER TO zkhattab;
+
 --
--- Name: get_missing_bills(); Type: FUNCTION; Schema: public; Owner: -
+-- Name: get_missing_bills(text, integer, integer); Type: FUNCTION; Schema: public; Owner: zkhattab
 --
 
-CREATE FUNCTION public.get_missing_bills() RETURNS TABLE(contract_id integer, msisdn character varying, customer_name character varying, rateplan_name character varying)
+CREATE FUNCTION public.get_missing_bills(p_search text DEFAULT NULL::text, p_limit integer DEFAULT 50, p_offset integer DEFAULT 0) RETURNS TABLE(contract_id integer, msisdn character varying, customer_name character varying, rateplan_name character varying, last_bill_date date, total_count bigint)
     LANGUAGE plpgsql
     AS $$
 DECLARE
     v_period_start DATE := DATE_TRUNC('month', CURRENT_DATE)::DATE;
+    v_total BIGINT;
 BEGIN
+    SELECT COUNT(*) INTO v_total
+    FROM contract c
+    JOIN user_account u ON c.user_account_id = u.id
+    LEFT JOIN rateplan r ON c.rateplan_id = r.id
+    WHERE c.status IN ('active', 'suspended', 'suspended_debt')
+      AND NOT EXISTS (
+        SELECT 1 FROM bill b
+        WHERE b.contract_id = c.id
+          AND b.billing_period_start = v_period_start
+      )
+      AND (p_search IS NULL OR p_search = '' OR
+           c.msisdn ILIKE '%' || p_search || '%' OR
+           u.name ILIKE '%' || p_search || '%' OR
+           r.name ILIKE '%' || p_search || '%');
+
     RETURN QUERY
         SELECT
             c.id           AS contract_id,
             c.msisdn,
             u.name         AS customer_name,
-            r.name         AS rateplan_name
+            r.name         AS rateplan_name,
+            (SELECT MAX(billing_date) FROM bill b WHERE b.contract_id = c.id) AS last_bill_date,
+            v_total AS total_count
         FROM contract c
                  JOIN user_account u ON c.user_account_id = u.id
                  LEFT JOIN rateplan r ON c.rateplan_id = r.id
-        WHERE c.status = 'active'
+        WHERE c.status IN ('active', 'suspended', 'suspended_debt')
           AND NOT EXISTS (
             SELECT 1 FROM bill b
             WHERE b.contract_id = c.id
               AND b.billing_period_start = v_period_start
-        )
-        ORDER BY c.id;
+          )
+          AND (p_search IS NULL OR p_search = '' OR
+               c.msisdn ILIKE '%' || p_search || '%' OR
+               u.name ILIKE '%' || p_search || '%' OR
+               r.name ILIKE '%' || p_search || '%')
+        ORDER BY c.id
+        LIMIT p_limit OFFSET p_offset;
 END;
 $$;
 
 
+ALTER FUNCTION public.get_missing_bills(p_search text, p_limit integer, p_offset integer) OWNER TO zkhattab;
+
 --
--- Name: get_rateplan_by_id(integer); Type: FUNCTION; Schema: public; Owner: -
+-- Name: get_rateplan_by_id(integer); Type: FUNCTION; Schema: public; Owner: zkhattab
 --
 
 CREATE FUNCTION public.get_rateplan_by_id(p_id integer) RETURNS TABLE(id integer, name character varying, ror_voice numeric, ror_data numeric, ror_sms numeric, price numeric)
@@ -1395,8 +1617,10 @@ END;
 $$;
 
 
+ALTER FUNCTION public.get_rateplan_by_id(p_id integer) OWNER TO zkhattab;
+
 --
--- Name: get_rateplan_data(integer); Type: FUNCTION; Schema: public; Owner: -
+-- Name: get_rateplan_data(integer); Type: FUNCTION; Schema: public; Owner: zkhattab
 --
 
 CREATE FUNCTION public.get_rateplan_data(p_rateplan_id integer) RETURNS TABLE(id integer, name character varying, ror_data numeric, ror_voice numeric, ror_sms numeric, price numeric)
@@ -1419,8 +1643,10 @@ CREATE FUNCTION public.get_rateplan_data(p_rateplan_id integer) RETURNS TABLE(id
  $$;
 
 
+ALTER FUNCTION public.get_rateplan_data(p_rateplan_id integer) OWNER TO zkhattab;
+
 --
--- Name: get_service_package_by_id(integer); Type: FUNCTION; Schema: public; Owner: -
+-- Name: get_service_package_by_id(integer); Type: FUNCTION; Schema: public; Owner: zkhattab
 --
 
 CREATE FUNCTION public.get_service_package_by_id(p_id integer) RETURNS TABLE(id integer, name character varying, type public.service_type, amount numeric, priority integer, price numeric, description text, is_roaming boolean)
@@ -1443,8 +1669,10 @@ END;
 $$;
 
 
+ALTER FUNCTION public.get_service_package_by_id(p_id integer) OWNER TO zkhattab;
+
 --
--- Name: get_user_contracts(integer); Type: FUNCTION; Schema: public; Owner: -
+-- Name: get_user_contracts(integer); Type: FUNCTION; Schema: public; Owner: zkhattab
 --
 
 CREATE FUNCTION public.get_user_contracts(p_user_id integer) RETURNS TABLE(id integer, msisdn character varying, status public.contract_status, available_credit numeric, credit_limit numeric, rateplan_name character varying)
@@ -1466,8 +1694,10 @@ END;
 $$;
 
 
+ALTER FUNCTION public.get_user_contracts(p_user_id integer) OWNER TO zkhattab;
+
 --
--- Name: get_user_data(integer); Type: FUNCTION; Schema: public; Owner: -
+-- Name: get_user_data(integer); Type: FUNCTION; Schema: public; Owner: zkhattab
 --
 
 CREATE FUNCTION public.get_user_data(p_user_account_id integer) RETURNS TABLE(username character varying, role character varying, name character varying, email character varying, address text, birthdate date)
@@ -1488,8 +1718,10 @@ END;
 $$;
 
 
+ALTER FUNCTION public.get_user_data(p_user_account_id integer) OWNER TO zkhattab;
+
 --
--- Name: get_user_invoices(integer); Type: FUNCTION; Schema: public; Owner: -
+-- Name: get_user_invoices(integer); Type: FUNCTION; Schema: public; Owner: zkhattab
 --
 
 CREATE FUNCTION public.get_user_invoices(p_user_id integer) RETURNS TABLE(id integer, contract_id integer, billing_period_start date, billing_period_end date, billing_date date, recurring_fees numeric, one_time_fees numeric, voice_usage integer, data_usage integer, sms_usage integer, ror_charge numeric, taxes numeric, total_amount numeric, status public.bill_status, is_paid boolean, pdf_path text)
@@ -1523,8 +1755,10 @@ END;
 $$;
 
 
+ALTER FUNCTION public.get_user_invoices(p_user_id integer) OWNER TO zkhattab;
+
 --
--- Name: get_user_msisdn_bill(integer); Type: FUNCTION; Schema: public; Owner: -
+-- Name: get_user_msisdn_bill(integer); Type: FUNCTION; Schema: public; Owner: zkhattab
 --
 
 CREATE FUNCTION public.get_user_msisdn_bill(p_contract_id integer) RETURNS TABLE(user_account_id integer, msisdn character varying, bill_id integer)
@@ -1547,8 +1781,10 @@ END;
 $$;
 
 
+ALTER FUNCTION public.get_user_msisdn_bill(p_contract_id integer) OWNER TO zkhattab;
+
 --
--- Name: initialize_consumption_period(date); Type: FUNCTION; Schema: public; Owner: -
+-- Name: initialize_consumption_period(date); Type: FUNCTION; Schema: public; Owner: zkhattab
 --
 
 CREATE FUNCTION public.initialize_consumption_period(p_period_start date) RETURNS void
@@ -1588,8 +1824,10 @@ END;
 $$;
 
 
+ALTER FUNCTION public.initialize_consumption_period(p_period_start date) OWNER TO zkhattab;
+
 --
--- Name: insert_cdr(integer, character varying, character varying, timestamp without time zone, integer, integer, character varying, character varying, numeric); Type: FUNCTION; Schema: public; Owner: -
+-- Name: insert_cdr(integer, character varying, character varying, timestamp without time zone, integer, integer, character varying, character varying, numeric); Type: FUNCTION; Schema: public; Owner: zkhattab
 --
 
 CREATE FUNCTION public.insert_cdr(p_file_id integer, p_dial_a character varying, p_dial_b character varying, p_start_time timestamp without time zone, p_duration integer, p_service_id integer, p_hplmn character varying, p_vplmn character varying, p_external_charges numeric) RETURNS integer
@@ -1655,8 +1893,10 @@ END;
 $$;
 
 
+ALTER FUNCTION public.insert_cdr(p_file_id integer, p_dial_a character varying, p_dial_b character varying, p_start_time timestamp without time zone, p_duration integer, p_service_id integer, p_hplmn character varying, p_vplmn character varying, p_external_charges numeric) OWNER TO zkhattab;
+
 --
--- Name: login(character varying, character varying); Type: FUNCTION; Schema: public; Owner: -
+-- Name: login(character varying, character varying); Type: FUNCTION; Schema: public; Owner: zkhattab
 --
 
 CREATE FUNCTION public.login(p_username character varying, p_password character varying) RETURNS TABLE(id integer, username character varying, name character varying, email character varying, role public.user_role)
@@ -1677,8 +1917,10 @@ END;
 $$;
 
 
+ALTER FUNCTION public.login(p_username character varying, p_password character varying) OWNER TO zkhattab;
+
 --
--- Name: mark_bill_paid(integer); Type: FUNCTION; Schema: public; Owner: -
+-- Name: mark_bill_paid(integer); Type: FUNCTION; Schema: public; Owner: zkhattab
 --
 
 CREATE FUNCTION public.mark_bill_paid(p_bill_id integer) RETURNS void
@@ -1695,8 +1937,10 @@ END;
 $$;
 
 
+ALTER FUNCTION public.mark_bill_paid(p_bill_id integer) OWNER TO zkhattab;
+
 --
--- Name: mark_msisdn_taken(character varying); Type: FUNCTION; Schema: public; Owner: -
+-- Name: mark_msisdn_taken(character varying); Type: FUNCTION; Schema: public; Owner: zkhattab
 --
 
 CREATE FUNCTION public.mark_msisdn_taken(p_msisdn character varying) RETURNS void
@@ -1714,8 +1958,10 @@ END;
 $$;
 
 
+ALTER FUNCTION public.mark_msisdn_taken(p_msisdn character varying) OWNER TO zkhattab;
+
 --
--- Name: notify_bill_generation(); Type: FUNCTION; Schema: public; Owner: -
+-- Name: notify_bill_generation(); Type: FUNCTION; Schema: public; Owner: zkhattab
 --
 
 CREATE FUNCTION public.notify_bill_generation() RETURNS trigger
@@ -1728,8 +1974,10 @@ END;
 $$;
 
 
+ALTER FUNCTION public.notify_bill_generation() OWNER TO zkhattab;
+
 --
--- Name: pay_bill(integer, text); Type: FUNCTION; Schema: public; Owner: -
+-- Name: pay_bill(integer, text); Type: FUNCTION; Schema: public; Owner: zkhattab
 --
 
 CREATE FUNCTION public.pay_bill(p_bill_id integer, p_pdf_path text) RETURNS void
@@ -1747,8 +1995,10 @@ END;
 $$;
 
 
+ALTER FUNCTION public.pay_bill(p_bill_id integer, p_pdf_path text) OWNER TO zkhattab;
+
 --
--- Name: purchase_addon(integer, integer); Type: FUNCTION; Schema: public; Owner: -
+-- Name: purchase_addon(integer, integer); Type: FUNCTION; Schema: public; Owner: zkhattab
 --
 
 CREATE FUNCTION public.purchase_addon(p_contract_id integer, p_service_package_id integer) RETURNS integer
@@ -1849,8 +2099,10 @@ END;
 $$;
 
 
+ALTER FUNCTION public.purchase_addon(p_contract_id integer, p_service_package_id integer) OWNER TO zkhattab;
+
 --
--- Name: rate_cdr(integer); Type: FUNCTION; Schema: public; Owner: -
+-- Name: rate_cdr(integer); Type: FUNCTION; Schema: public; Owner: zkhattab
 --
 
 CREATE FUNCTION public.rate_cdr(p_cdr_id integer) RETURNS void
@@ -1865,9 +2117,13 @@ CREATE FUNCTION public.rate_cdr(p_cdr_id integer) RETURNS void
      v_deduct NUMERIC;
      v_available NUMERIC;
      v_ror_rate NUMERIC;
+     v_ror_rate_v NUMERIC;
+     v_ror_rate_d NUMERIC;
+     v_ror_rate_s NUMERIC;
      v_overage_charge NUMERIC := 0;
      v_rated_service_id INTEGER;
      v_is_roaming BOOLEAN;
+     v_period_start DATE;
  BEGIN
      SELECT * INTO v_cdr FROM cdr WHERE id = p_cdr_id;
      
@@ -1880,71 +2136,94 @@ CREATE FUNCTION public.rate_cdr(p_cdr_id integer) RETURNS void
      END IF;
 
      SELECT type::TEXT INTO v_service_type FROM service_package WHERE id = v_cdr.service_id;
-     v_remaining := v_cdr.duration;
-     v_is_roaming := (v_cdr.vplmn IS NOT NULL);
+     v_remaining := get_cdr_usage_amount(v_cdr.duration, v_service_type::service_type);
+     v_is_roaming := (v_cdr.vplmn IS NOT NULL AND v_cdr.vplmn != '');
 
-     FOR v_bundle IN 
-         SELECT cc.*, sp.name, sp.is_roaming as pkg_roaming
+     -- Determine billing period for this CDR
+     v_period_start := DATE_TRUNC('month', v_cdr.start_time)::DATE;
+
+     FOR v_bundle IN
+         SELECT cc.contract_id, cc.service_package_id, cc.rateplan_id, cc.consumed, cc.quota_limit, sp.name, sp.is_roaming as pkg_roaming
          FROM contract_consumption cc
          JOIN service_package sp ON cc.service_package_id = sp.id
          WHERE cc.contract_id = v_contract.id AND cc.is_billed = FALSE
+           AND cc.starting_date = v_period_start
            AND (sp.type::TEXT = v_service_type OR sp.type::TEXT = 'free_units')
-           AND sp.is_roaming = v_is_roaming
+           AND (sp.is_roaming = v_is_roaming OR sp.type::TEXT = 'free_units')
          ORDER BY sp.priority ASC
-     LOOP
-         EXIT WHEN v_remaining <= 0;
-         v_available := v_bundle.quota_limit - v_bundle.consumed;
-         IF v_available <= 0 THEN CONTINUE; END IF;
-         v_deduct := LEAST(v_remaining, v_available);
-         v_remaining := v_remaining - v_deduct;
-         
-         UPDATE contract_consumption 
-         SET consumed = consumed + v_deduct 
-         WHERE contract_id = v_bundle.contract_id 
-           AND service_package_id = v_bundle.service_package_id 
-           AND rateplan_id = v_bundle.rateplan_id 
-           AND starting_date = v_bundle.starting_date 
-           AND ending_date = v_bundle.ending_date;
-         v_rated_service_id := v_bundle.service_package_id;
-     END LOOP;
+       LOOP
+          EXIT WHEN v_remaining <= 0;
+          v_available := v_bundle.quota_limit - v_bundle.consumed;
+          IF v_available <= 0 THEN CONTINUE; END IF;
+          v_deduct := LEAST(v_remaining, v_available);
+          v_remaining := v_remaining - v_deduct;
 
-     IF v_remaining > 0 THEN
-         SELECT CASE v_service_type 
-            WHEN 'voice' THEN ror_voice WHEN 'data' THEN ror_data WHEN 'sms' THEN ror_sms 
-            END INTO v_ror_rate FROM rateplan WHERE id = v_contract.rateplan_id;
-         
-         v_overage_charge := v_remaining * COALESCE(v_ror_rate, 0);
+          UPDATE contract_consumption
+          SET consumed = consumed + v_deduct
+          WHERE contract_id = v_bundle.contract_id
+            AND service_package_id = v_bundle.service_package_id
+            AND rateplan_id = v_bundle.rateplan_id
+            AND starting_date = v_period_start;
+          v_rated_service_id := v_bundle.service_package_id;
+      END LOOP;
 
-         IF v_is_roaming THEN
-             INSERT INTO ror_contract (contract_id, rateplan_id, roaming_voice, roaming_data, roaming_sms)
-             VALUES (v_contract.id, v_contract.rateplan_id, 
-                    CASE WHEN v_service_type='voice' THEN v_overage_charge ELSE 0 END,
-                    CASE WHEN v_service_type='data'  THEN v_overage_charge ELSE 0 END,
-                    CASE WHEN v_service_type='sms'   THEN v_overage_charge ELSE 0 END)
-             ON CONFLICT (contract_id, rateplan_id) DO UPDATE SET
-                roaming_voice = ror_contract.roaming_voice + EXCLUDED.roaming_voice,
-                roaming_data = ror_contract.roaming_data + EXCLUDED.roaming_data,
-                roaming_sms = ror_contract.roaming_sms + EXCLUDED.roaming_sms;
-         ELSE
-             INSERT INTO ror_contract (contract_id, rateplan_id, voice, data, sms)
-             VALUES (v_contract.id, v_contract.rateplan_id, 
-                    CASE WHEN v_service_type='voice' THEN v_overage_charge ELSE 0 END,
-                    CASE WHEN v_service_type='data'  THEN v_overage_charge ELSE 0 END,
-                    CASE WHEN v_service_type='sms'   THEN v_overage_charge ELSE 0 END)
-             ON CONFLICT (contract_id, rateplan_id) DO UPDATE SET
-                voice = ror_contract.voice + EXCLUDED.voice,
-                data = ror_contract.data + EXCLUDED.data,
-                sms = ror_contract.sms + EXCLUDED.sms;
-         END IF;
-     END IF;
+      IF v_remaining > 0 THEN
+          IF v_is_roaming THEN
+              INSERT INTO ror_contract (contract_id, rateplan_id, starting_date, roaming_voice, roaming_data, roaming_sms)
+              VALUES (v_contract.id, v_contract.rateplan_id, v_period_start,
+                     CASE WHEN v_service_type='voice' THEN v_remaining ELSE 0 END,
+                     CASE WHEN v_service_type='data'  THEN v_remaining ELSE 0 END,
+                     CASE WHEN v_service_type='sms'   THEN v_remaining ELSE 0 END)
+              ON CONFLICT (contract_id, rateplan_id, starting_date) DO UPDATE SET
+                 roaming_voice = ror_contract.roaming_voice + EXCLUDED.roaming_voice,
+                 roaming_data = ror_contract.roaming_data + EXCLUDED.roaming_data,
+                 roaming_sms = ror_contract.roaming_sms + EXCLUDED.roaming_sms;
+          ELSE
+              INSERT INTO ror_contract (contract_id, rateplan_id, starting_date, voice, data, sms)
+              VALUES (v_contract.id, v_contract.rateplan_id, v_period_start,
+                     CASE WHEN v_service_type='voice' THEN v_remaining ELSE 0 END,
+                     CASE WHEN v_service_type='data'  THEN v_remaining ELSE 0 END,
+                     CASE WHEN v_service_type='sms'   THEN v_remaining ELSE 0 END)
+              ON CONFLICT (contract_id, rateplan_id, starting_date) DO UPDATE SET
+                 voice = ror_contract.voice + EXCLUDED.voice,
+                 data = ror_contract.data + EXCLUDED.data,
+                 sms = ror_contract.sms + EXCLUDED.sms;
+          END IF;
+
+          -- Calculate charge for the CDR record
+          SELECT 
+            CASE WHEN v_is_roaming THEN ror_roaming_voice ELSE ror_voice END as v_rate,
+            CASE WHEN v_is_roaming THEN ror_roaming_data ELSE ror_data END as d_rate,
+            CASE WHEN v_is_roaming THEN ror_roaming_sms ELSE ror_sms END as s_rate
+          INTO v_ror_rate_v, v_ror_rate_d, v_ror_rate_s
+          FROM rateplan WHERE id = v_contract.rateplan_id;
+
+          IF v_service_type = 'voice' THEN v_ror_rate := v_ror_rate_v;
+          ELSIF v_service_type = 'data' THEN v_ror_rate := v_ror_rate_d;
+          ELSIF v_service_type = 'sms' THEN v_ror_rate := v_ror_rate_s;
+          END IF;
+          
+          IF v_service_type = 'data' THEN
+              v_overage_charge := (v_remaining / 1073741824.0) * COALESCE(v_ror_rate, 0);
+          ELSE
+              v_overage_charge := v_remaining * COALESCE(v_ror_rate, 0);
+          END IF;
+
+          -- Deduct from available_credit
+          UPDATE contract 
+          SET available_credit = available_credit - v_overage_charge
+          WHERE id = v_contract.id;
+      END IF;
 
      UPDATE cdr SET rated_flag = TRUE, external_charges = v_overage_charge, rated_service_id = v_rated_service_id WHERE id = p_cdr_id;
  END;
 $$;
 
 
+ALTER FUNCTION public.rate_cdr(p_cdr_id integer) OWNER TO zkhattab;
+
 --
--- Name: release_msisdn(character varying); Type: FUNCTION; Schema: public; Owner: -
+-- Name: release_msisdn(character varying); Type: FUNCTION; Schema: public; Owner: zkhattab
 --
 
 CREATE FUNCTION public.release_msisdn(p_msisdn character varying) RETURNS void
@@ -1958,8 +2237,10 @@ END;
 $$;
 
 
+ALTER FUNCTION public.release_msisdn(p_msisdn character varying) OWNER TO zkhattab;
+
 --
--- Name: set_file_parsed(integer); Type: FUNCTION; Schema: public; Owner: -
+-- Name: set_file_parsed(integer); Type: FUNCTION; Schema: public; Owner: zkhattab
 --
 
 CREATE FUNCTION public.set_file_parsed(p_file_id integer) RETURNS void
@@ -1976,8 +2257,10 @@ END;
 $$;
 
 
+ALTER FUNCTION public.set_file_parsed(p_file_id integer) OWNER TO zkhattab;
+
 --
--- Name: trg_restore_credit_on_payment(); Type: FUNCTION; Schema: public; Owner: -
+-- Name: trg_restore_credit_on_payment(); Type: FUNCTION; Schema: public; Owner: zkhattab
 --
 
 CREATE FUNCTION public.trg_restore_credit_on_payment() RETURNS trigger
@@ -1994,8 +2277,10 @@ END;
 $$;
 
 
+ALTER FUNCTION public.trg_restore_credit_on_payment() OWNER TO zkhattab;
+
 --
--- Name: validate_cdr_contract(); Type: FUNCTION; Schema: public; Owner: -
+-- Name: validate_cdr_contract(); Type: FUNCTION; Schema: public; Owner: zkhattab
 --
 
 CREATE FUNCTION public.validate_cdr_contract() RETURNS trigger
@@ -2016,12 +2301,14 @@ END;
 $$;
 
 
+ALTER FUNCTION public.validate_cdr_contract() OWNER TO zkhattab;
+
 SET default_tablespace = '';
 
 SET default_table_access_method = heap;
 
 --
--- Name: bill; Type: TABLE; Schema: public; Owner: -
+-- Name: bill; Type: TABLE; Schema: public; Owner: zkhattab
 --
 
 CREATE TABLE public.bill (
@@ -2046,8 +2333,10 @@ CREATE TABLE public.bill (
 );
 
 
+ALTER TABLE public.bill OWNER TO zkhattab;
+
 --
--- Name: bill_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: bill_id_seq; Type: SEQUENCE; Schema: public; Owner: zkhattab
 --
 
 CREATE SEQUENCE public.bill_id_seq
@@ -2059,15 +2348,17 @@ CREATE SEQUENCE public.bill_id_seq
     CACHE 1;
 
 
+ALTER SEQUENCE public.bill_id_seq OWNER TO zkhattab;
+
 --
--- Name: bill_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+-- Name: bill_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: zkhattab
 --
 
 ALTER SEQUENCE public.bill_id_seq OWNED BY public.bill.id;
 
 
 --
--- Name: cdr; Type: TABLE; Schema: public; Owner: -
+-- Name: cdr; Type: TABLE; Schema: public; Owner: zkhattab
 --
 
 CREATE TABLE public.cdr (
@@ -2086,8 +2377,10 @@ CREATE TABLE public.cdr (
 );
 
 
+ALTER TABLE public.cdr OWNER TO zkhattab;
+
 --
--- Name: cdr_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: cdr_id_seq; Type: SEQUENCE; Schema: public; Owner: zkhattab
 --
 
 CREATE SEQUENCE public.cdr_id_seq
@@ -2099,15 +2392,17 @@ CREATE SEQUENCE public.cdr_id_seq
     CACHE 1;
 
 
+ALTER SEQUENCE public.cdr_id_seq OWNER TO zkhattab;
+
 --
--- Name: cdr_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+-- Name: cdr_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: zkhattab
 --
 
 ALTER SEQUENCE public.cdr_id_seq OWNED BY public.cdr.id;
 
 
 --
--- Name: contract; Type: TABLE; Schema: public; Owner: -
+-- Name: contract; Type: TABLE; Schema: public; Owner: zkhattab
 --
 
 CREATE TABLE public.contract (
@@ -2121,8 +2416,10 @@ CREATE TABLE public.contract (
 );
 
 
+ALTER TABLE public.contract OWNER TO zkhattab;
+
 --
--- Name: contract_addon; Type: TABLE; Schema: public; Owner: -
+-- Name: contract_addon; Type: TABLE; Schema: public; Owner: zkhattab
 --
 
 CREATE TABLE public.contract_addon (
@@ -2136,8 +2433,10 @@ CREATE TABLE public.contract_addon (
 );
 
 
+ALTER TABLE public.contract_addon OWNER TO zkhattab;
+
 --
--- Name: contract_addon_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: contract_addon_id_seq; Type: SEQUENCE; Schema: public; Owner: zkhattab
 --
 
 CREATE SEQUENCE public.contract_addon_id_seq
@@ -2149,15 +2448,17 @@ CREATE SEQUENCE public.contract_addon_id_seq
     CACHE 1;
 
 
+ALTER SEQUENCE public.contract_addon_id_seq OWNER TO zkhattab;
+
 --
--- Name: contract_addon_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+-- Name: contract_addon_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: zkhattab
 --
 
 ALTER SEQUENCE public.contract_addon_id_seq OWNED BY public.contract_addon.id;
 
 
 --
--- Name: contract_consumption; Type: TABLE; Schema: public; Owner: -
+-- Name: contract_consumption; Type: TABLE; Schema: public; Owner: zkhattab
 --
 
 CREATE TABLE public.contract_consumption (
@@ -2173,8 +2474,10 @@ CREATE TABLE public.contract_consumption (
 );
 
 
+ALTER TABLE public.contract_consumption OWNER TO zkhattab;
+
 --
--- Name: contract_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: contract_id_seq; Type: SEQUENCE; Schema: public; Owner: zkhattab
 --
 
 CREATE SEQUENCE public.contract_id_seq
@@ -2186,15 +2489,17 @@ CREATE SEQUENCE public.contract_id_seq
     CACHE 1;
 
 
+ALTER SEQUENCE public.contract_id_seq OWNER TO zkhattab;
+
 --
--- Name: contract_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+-- Name: contract_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: zkhattab
 --
 
 ALTER SEQUENCE public.contract_id_seq OWNED BY public.contract.id;
 
 
 --
--- Name: file; Type: TABLE; Schema: public; Owner: -
+-- Name: file; Type: TABLE; Schema: public; Owner: zkhattab
 --
 
 CREATE TABLE public.file (
@@ -2204,8 +2509,10 @@ CREATE TABLE public.file (
 );
 
 
+ALTER TABLE public.file OWNER TO zkhattab;
+
 --
--- Name: file_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: file_id_seq; Type: SEQUENCE; Schema: public; Owner: zkhattab
 --
 
 CREATE SEQUENCE public.file_id_seq
@@ -2217,15 +2524,17 @@ CREATE SEQUENCE public.file_id_seq
     CACHE 1;
 
 
+ALTER SEQUENCE public.file_id_seq OWNER TO zkhattab;
+
 --
--- Name: file_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+-- Name: file_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: zkhattab
 --
 
 ALTER SEQUENCE public.file_id_seq OWNED BY public.file.id;
 
 
 --
--- Name: invoice; Type: TABLE; Schema: public; Owner: -
+-- Name: invoice; Type: TABLE; Schema: public; Owner: zkhattab
 --
 
 CREATE TABLE public.invoice (
@@ -2236,8 +2545,10 @@ CREATE TABLE public.invoice (
 );
 
 
+ALTER TABLE public.invoice OWNER TO zkhattab;
+
 --
--- Name: invoice_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: invoice_id_seq; Type: SEQUENCE; Schema: public; Owner: zkhattab
 --
 
 CREATE SEQUENCE public.invoice_id_seq
@@ -2249,15 +2560,17 @@ CREATE SEQUENCE public.invoice_id_seq
     CACHE 1;
 
 
+ALTER SEQUENCE public.invoice_id_seq OWNER TO zkhattab;
+
 --
--- Name: invoice_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+-- Name: invoice_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: zkhattab
 --
 
 ALTER SEQUENCE public.invoice_id_seq OWNED BY public.invoice.id;
 
 
 --
--- Name: msisdn_pool; Type: TABLE; Schema: public; Owner: -
+-- Name: msisdn_pool; Type: TABLE; Schema: public; Owner: zkhattab
 --
 
 CREATE TABLE public.msisdn_pool (
@@ -2267,8 +2580,10 @@ CREATE TABLE public.msisdn_pool (
 );
 
 
+ALTER TABLE public.msisdn_pool OWNER TO zkhattab;
+
 --
--- Name: msisdn_pool_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: msisdn_pool_id_seq; Type: SEQUENCE; Schema: public; Owner: zkhattab
 --
 
 CREATE SEQUENCE public.msisdn_pool_id_seq
@@ -2280,15 +2595,17 @@ CREATE SEQUENCE public.msisdn_pool_id_seq
     CACHE 1;
 
 
+ALTER SEQUENCE public.msisdn_pool_id_seq OWNER TO zkhattab;
+
 --
--- Name: msisdn_pool_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+-- Name: msisdn_pool_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: zkhattab
 --
 
 ALTER SEQUENCE public.msisdn_pool_id_seq OWNED BY public.msisdn_pool.id;
 
 
 --
--- Name: rateplan; Type: TABLE; Schema: public; Owner: -
+-- Name: rateplan; Type: TABLE; Schema: public; Owner: zkhattab
 --
 
 CREATE TABLE public.rateplan (
@@ -2297,12 +2614,17 @@ CREATE TABLE public.rateplan (
     ror_data numeric(10,2),
     ror_voice numeric(10,2),
     ror_sms numeric(10,2),
+    ror_roaming_data numeric(10,2),
+    ror_roaming_voice numeric(10,2),
+    ror_roaming_sms numeric(10,2),
     price numeric(10,2)
 );
 
 
+ALTER TABLE public.rateplan OWNER TO zkhattab;
+
 --
--- Name: rateplan_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: rateplan_id_seq; Type: SEQUENCE; Schema: public; Owner: zkhattab
 --
 
 CREATE SEQUENCE public.rateplan_id_seq
@@ -2314,15 +2636,17 @@ CREATE SEQUENCE public.rateplan_id_seq
     CACHE 1;
 
 
+ALTER SEQUENCE public.rateplan_id_seq OWNER TO zkhattab;
+
 --
--- Name: rateplan_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+-- Name: rateplan_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: zkhattab
 --
 
 ALTER SEQUENCE public.rateplan_id_seq OWNED BY public.rateplan.id;
 
 
 --
--- Name: rateplan_service_package; Type: TABLE; Schema: public; Owner: -
+-- Name: rateplan_service_package; Type: TABLE; Schema: public; Owner: zkhattab
 --
 
 CREATE TABLE public.rateplan_service_package (
@@ -2331,25 +2655,30 @@ CREATE TABLE public.rateplan_service_package (
 );
 
 
+ALTER TABLE public.rateplan_service_package OWNER TO zkhattab;
+
 --
--- Name: ror_contract; Type: TABLE; Schema: public; Owner: -
+-- Name: ror_contract; Type: TABLE; Schema: public; Owner: zkhattab
 --
 
 CREATE TABLE public.ror_contract (
     contract_id integer NOT NULL,
     rateplan_id integer NOT NULL,
-    data integer,
-    voice integer,
-    sms integer,
+    starting_date date DEFAULT (date_trunc('month'::text, (CURRENT_DATE)::timestamp with time zone))::date NOT NULL,
+    data bigint DEFAULT 0,
+    voice numeric(12,2) DEFAULT 0,
+    sms bigint DEFAULT 0,
     roaming_voice numeric(12,2) DEFAULT 0.00,
-    roaming_data numeric(12,2) DEFAULT 0.00,
-    roaming_sms numeric(12,2) DEFAULT 0.00,
+    roaming_data bigint DEFAULT 0,
+    roaming_sms bigint DEFAULT 0,
     bill_id integer
 );
 
 
+ALTER TABLE public.ror_contract OWNER TO zkhattab;
+
 --
--- Name: service_package; Type: TABLE; Schema: public; Owner: -
+-- Name: service_package; Type: TABLE; Schema: public; Owner: zkhattab
 --
 
 CREATE TABLE public.service_package (
@@ -2364,8 +2693,10 @@ CREATE TABLE public.service_package (
 );
 
 
+ALTER TABLE public.service_package OWNER TO zkhattab;
+
 --
--- Name: service_package_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: service_package_id_seq; Type: SEQUENCE; Schema: public; Owner: zkhattab
 --
 
 CREATE SEQUENCE public.service_package_id_seq
@@ -2377,15 +2708,17 @@ CREATE SEQUENCE public.service_package_id_seq
     CACHE 1;
 
 
+ALTER SEQUENCE public.service_package_id_seq OWNER TO zkhattab;
+
 --
--- Name: service_package_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+-- Name: service_package_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: zkhattab
 --
 
 ALTER SEQUENCE public.service_package_id_seq OWNED BY public.service_package.id;
 
 
 --
--- Name: user_account; Type: TABLE; Schema: public; Owner: -
+-- Name: user_account; Type: TABLE; Schema: public; Owner: zkhattab
 --
 
 CREATE TABLE public.user_account (
@@ -2400,8 +2733,10 @@ CREATE TABLE public.user_account (
 );
 
 
+ALTER TABLE public.user_account OWNER TO zkhattab;
+
 --
--- Name: user_account_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: user_account_id_seq; Type: SEQUENCE; Schema: public; Owner: zkhattab
 --
 
 CREATE SEQUENCE public.user_account_id_seq
@@ -2413,15 +2748,17 @@ CREATE SEQUENCE public.user_account_id_seq
     CACHE 1;
 
 
+ALTER SEQUENCE public.user_account_id_seq OWNER TO zkhattab;
+
 --
--- Name: user_account_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+-- Name: user_account_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: zkhattab
 --
 
 ALTER SEQUENCE public.user_account_id_seq OWNED BY public.user_account.id;
 
 
 --
--- Name: v_msisdn; Type: TABLE; Schema: public; Owner: -
+-- Name: v_msisdn; Type: TABLE; Schema: public; Owner: zkhattab
 --
 
 CREATE TABLE public.v_msisdn (
@@ -2429,78 +2766,80 @@ CREATE TABLE public.v_msisdn (
 );
 
 
+ALTER TABLE public.v_msisdn OWNER TO zkhattab;
+
 --
--- Name: bill id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: bill id; Type: DEFAULT; Schema: public; Owner: zkhattab
 --
 
 ALTER TABLE ONLY public.bill ALTER COLUMN id SET DEFAULT nextval('public.bill_id_seq'::regclass);
 
 
 --
--- Name: cdr id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: cdr id; Type: DEFAULT; Schema: public; Owner: zkhattab
 --
 
 ALTER TABLE ONLY public.cdr ALTER COLUMN id SET DEFAULT nextval('public.cdr_id_seq'::regclass);
 
 
 --
--- Name: contract id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: contract id; Type: DEFAULT; Schema: public; Owner: zkhattab
 --
 
 ALTER TABLE ONLY public.contract ALTER COLUMN id SET DEFAULT nextval('public.contract_id_seq'::regclass);
 
 
 --
--- Name: contract_addon id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: contract_addon id; Type: DEFAULT; Schema: public; Owner: zkhattab
 --
 
 ALTER TABLE ONLY public.contract_addon ALTER COLUMN id SET DEFAULT nextval('public.contract_addon_id_seq'::regclass);
 
 
 --
--- Name: file id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: file id; Type: DEFAULT; Schema: public; Owner: zkhattab
 --
 
 ALTER TABLE ONLY public.file ALTER COLUMN id SET DEFAULT nextval('public.file_id_seq'::regclass);
 
 
 --
--- Name: invoice id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: invoice id; Type: DEFAULT; Schema: public; Owner: zkhattab
 --
 
 ALTER TABLE ONLY public.invoice ALTER COLUMN id SET DEFAULT nextval('public.invoice_id_seq'::regclass);
 
 
 --
--- Name: msisdn_pool id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: msisdn_pool id; Type: DEFAULT; Schema: public; Owner: zkhattab
 --
 
 ALTER TABLE ONLY public.msisdn_pool ALTER COLUMN id SET DEFAULT nextval('public.msisdn_pool_id_seq'::regclass);
 
 
 --
--- Name: rateplan id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: rateplan id; Type: DEFAULT; Schema: public; Owner: zkhattab
 --
 
 ALTER TABLE ONLY public.rateplan ALTER COLUMN id SET DEFAULT nextval('public.rateplan_id_seq'::regclass);
 
 
 --
--- Name: service_package id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: service_package id; Type: DEFAULT; Schema: public; Owner: zkhattab
 --
 
 ALTER TABLE ONLY public.service_package ALTER COLUMN id SET DEFAULT nextval('public.service_package_id_seq'::regclass);
 
 
 --
--- Name: user_account id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: user_account id; Type: DEFAULT; Schema: public; Owner: zkhattab
 --
 
 ALTER TABLE ONLY public.user_account ALTER COLUMN id SET DEFAULT nextval('public.user_account_id_seq'::regclass);
 
 
 --
--- Data for Name: bill; Type: TABLE DATA; Schema: public; Owner: -
+-- Data for Name: bill; Type: TABLE DATA; Schema: public; Owner: zkhattab
 --
 
 COPY public.bill (id, contract_id, billing_period_start, billing_period_end, billing_date, recurring_fees, one_time_fees, voice_usage, data_usage, sms_usage, ror_charge, overage_charge, roaming_charge, promotional_discount, taxes, total_amount, status, is_paid) FROM stdin;
@@ -2522,1892 +2861,2014 @@ COPY public.bill (id, contract_id, billing_period_start, billing_period_end, bil
 16	17	2026-02-01	2026-02-28	2026-03-01	370.00	0.69	310	950	42	0.00	0.00	0.00	0.00	51.80	422.49	paid	t
 17	1	2026-03-01	2026-03-31	2026-04-01	75.00	0.69	310	0	42	0.00	0.00	0.00	0.00	10.50	86.19	paid	t
 18	2	2026-03-01	2026-03-31	2026-04-01	370.00	0.69	640	2200	80	0.00	0.00	0.00	0.00	51.80	422.49	paid	t
-19	3	2026-03-01	2026-03-31	2026-04-01	75.00	0.69	170	0	20	0.00	0.00	0.00	0.00	10.50	86.19	issued	f
-20	4	2026-03-01	2026-03-31	2026-04-01	370.00	0.69	450	1600	58	0.00	0.00	0.00	0.00	51.80	422.49	issued	f
-21	5	2026-03-01	2026-03-31	2026-04-01	75.00	0.69	90	0	11	0.00	0.00	0.00	0.00	10.50	86.19	issued	f
-22	6	2026-03-01	2026-03-31	2026-04-01	370.00	0.69	720	3100	105	0.00	0.00	0.00	0.00	51.80	422.49	issued	f
-23	7	2026-03-01	2026-03-31	2026-04-01	75.00	0.69	200	0	28	0.00	0.00	0.00	0.00	10.50	86.19	issued	f
-24	8	2026-03-01	2026-03-31	2026-04-01	370.00	0.69	380	1350	50	0.00	0.00	0.00	0.00	51.80	422.49	issued	f
-25	9	2026-03-01	2026-03-31	2026-04-01	75.00	0.69	130	0	16	0.00	0.00	0.00	0.00	10.50	86.19	issued	f
-26	10	2026-03-01	2026-03-31	2026-04-01	370.00	0.69	500	1900	68	0.00	0.00	0.00	0.00	51.80	422.49	issued	f
-27	11	2026-03-01	2026-03-31	2026-04-01	75.00	0.69	900	0	195	14.50	0.00	0.00	0.00	6.52	71.71	issued	f
-28	12	2026-03-01	2026-03-31	2026-04-01	370.00	0.69	280	850	35	0.00	0.00	0.00	0.00	51.80	422.49	issued	f
-29	14	2026-03-01	2026-03-31	2026-04-01	370.00	0.69	420	1100	55	0.00	0.00	0.00	0.00	51.80	422.49	issued	f
-30	15	2026-03-01	2026-03-31	2026-04-01	950.00	0.69	800	3700	140	0.00	0.00	0.00	0.00	133.00	1083.69	issued	f
-31	16	2026-03-01	2026-03-31	2026-04-01	950.00	0.69	920	4800	170	8.00	0.00	0.00	0.00	35.77	393.46	issued	f
-32	17	2026-03-01	2026-03-31	2026-04-01	370.00	0.69	330	980	45	0.00	0.00	0.00	0.00	51.80	422.49	issued	f
-33	1	2026-04-01	2026-04-30	2026-04-28	75.00	0.00	2460	0	6	0.00	492.00	0.00	0.00	79.38	646.38	issued	f
-34	2	2026-04-01	2026-04-30	2026-04-28	370.00	0.00	2130	3550	5	0.00	336.00	55.02	0.00	106.54	867.56	issued	f
-35	3	2026-04-01	2026-04-30	2026-04-28	75.00	0.00	630	0	2	0.00	126.00	0.00	0.00	28.14	229.14	issued	f
-36	4	2026-04-01	2026-04-30	2026-04-28	370.00	0.00	1320	2100	2	0.00	237.00	0.00	0.00	84.98	691.98	issued	f
-37	5	2026-04-01	2026-04-30	2026-04-28	75.00	0.00	360	0	2	0.00	72.00	0.00	0.00	20.58	167.58	issued	f
-38	6	2026-04-01	2026-04-30	2026-04-28	370.00	0.00	2400	2850	3	0.00	383.00	0.00	0.00	105.42	858.42	issued	f
-39	7	2026-04-01	2026-04-30	2026-04-28	75.00	0.00	600	0	2	0.00	120.00	0.00	0.00	27.30	222.30	issued	f
-40	8	2026-04-01	2026-04-30	2026-04-28	370.00	0.00	1110	1400	2	0.00	182.00	0.00	0.00	77.28	629.28	issued	f
-41	9	2026-04-01	2026-04-30	2026-04-28	75.00	0.00	330	0	2	0.00	66.00	0.00	0.00	19.74	160.74	issued	f
-42	10	2026-04-01	2026-04-30	2026-04-28	370.00	0.00	1380	2400	2	0.00	258.00	0.00	0.00	87.92	715.92	issued	f
-43	11	2026-04-01	2026-04-30	2026-04-28	75.00	0.00	2040	0	4	0.00	408.00	0.00	0.00	67.62	550.62	issued	f
-44	12	2026-04-01	2026-04-30	2026-04-28	370.00	0.00	600	550	1	0.00	88.00	0.00	0.00	64.12	522.12	issued	f
-45	14	2026-04-01	2026-04-30	2026-04-28	370.00	0.00	840	1350	2	0.00	152.00	0.00	0.00	73.08	595.08	issued	f
-61	31	2026-04-01	2026-04-30	2026-04-28	370.00	0.00	0	0	0	0.00	0.00	0.00	0.00	51.80	421.80	issued	f
-62	32	2026-04-01	2026-04-30	2026-04-28	75.00	0.00	0	0	0	0.00	0.00	0.00	0.00	10.50	85.50	issued	f
-63	33	2026-04-01	2026-04-30	2026-04-28	75.00	0.00	0	0	0	0.00	0.00	0.00	0.00	10.50	85.50	issued	f
-64	34	2026-04-01	2026-04-30	2026-04-28	75.00	0.00	0	0	0	0.00	0.00	0.00	0.00	10.50	85.50	issued	f
-65	35	2026-04-01	2026-04-30	2026-04-28	370.00	0.00	0	0	0	0.00	0.00	0.00	0.00	51.80	421.80	issued	f
-67	37	2026-04-01	2026-04-30	2026-04-28	75.00	0.00	0	0	0	0.00	0.00	0.00	0.00	10.50	85.50	issued	f
-68	38	2026-04-01	2026-04-30	2026-04-28	75.00	0.00	0	0	0	0.00	0.00	0.00	0.00	10.50	85.50	issued	f
-69	39	2026-04-01	2026-04-30	2026-04-28	75.00	0.00	0	0	0	0.00	0.00	0.00	0.00	10.50	85.50	issued	f
-70	40	2026-04-01	2026-04-30	2026-04-28	75.00	0.00	0	0	0	0.00	0.00	0.00	0.00	10.50	85.50	issued	f
-71	41	2026-04-01	2026-04-30	2026-04-28	370.00	0.00	0	0	0	0.00	0.00	0.00	0.00	51.80	421.80	issued	f
-72	42	2026-04-01	2026-04-30	2026-04-28	75.00	0.00	0	0	0	0.00	0.00	0.00	0.00	10.50	85.50	issued	f
-73	43	2026-04-01	2026-04-30	2026-04-28	950.00	0.00	0	0	0	0.00	0.00	0.00	0.00	133.00	1083.00	issued	f
-74	44	2026-04-01	2026-04-30	2026-04-28	950.00	0.00	0	0	0	0.00	0.00	0.00	0.00	133.00	1083.00	issued	f
-75	45	2026-04-01	2026-04-30	2026-04-28	370.00	0.00	0	0	0	0.00	0.00	0.00	0.00	51.80	421.80	paid	t
-47	16	2026-04-01	2026-04-30	2026-04-28	950.00	0.00	2220	4800	2	0.00	227.00	0.00	0.00	164.78	1341.78	paid	t
-66	36	2026-04-01	2026-04-30	2026-04-28	75.00	0.00	0	0	0	0.00	0.00	0.00	0.00	10.50	85.50	paid	t
-49	19	2026-04-01	2026-04-30	2026-04-28	370.00	0.00	0	0	0	0.00	0.00	0.00	0.00	51.80	421.80	paid	t
-46	15	2026-04-01	2026-04-30	2026-04-28	950.00	0.00	2040	4900	3	0.00	180.00	20.01	0.00	161.00	1311.01	paid	t
-78	48	2026-04-01	2026-04-30	2026-04-28	370.00	0.00	0	0	0	0.00	0.00	0.00	0.00	51.80	421.80	paid	t
-77	47	2026-04-01	2026-04-30	2026-04-28	950.00	0.00	0	0	0	0.00	0.00	0.00	0.00	133.00	1083.00	paid	t
-76	46	2026-04-01	2026-04-30	2026-04-28	75.00	0.00	0	0	0	0.00	0.00	0.00	0.00	10.50	85.50	paid	t
-48	17	2026-04-01	2026-04-30	2026-04-28	370.00	0.00	720	1350	2	0.00	140.00	0.00	0.00	71.40	581.40	paid	t
-80	22	2026-04-01	2026-04-30	2026-04-28	370.00	0.00	253	37888	2	0.00	0.00	5.30	0.00	52.54	427.84	issued	f
-81	23	2026-04-01	2026-04-30	2026-04-28	75.00	0.00	107	78848	2	0.00	0.00	7884.80	0.00	1114.37	9074.17	issued	f
-82	24	2026-04-01	2026-04-30	2026-04-28	950.00	0.00	108	26624	2	0.00	0.00	0.00	0.00	133.00	1083.00	issued	f
-83	25	2026-04-01	2026-04-30	2026-04-28	950.00	0.00	306	128000	1	0.00	1760.00	0.00	0.00	379.40	3089.40	issued	f
-86	28	2026-04-01	2026-04-30	2026-04-28	370.00	0.00	222	47104	1	0.00	355.00	0.00	0.00	101.50	826.50	issued	f
-87	29	2026-04-01	2026-04-30	2026-04-28	950.00	0.00	326	82944	2	0.00	865.00	0.00	0.00	254.10	2069.10	issued	f
-88	30	2026-04-01	2026-04-30	2026-04-28	75.00	0.00	252	81920	2	0.00	0.00	50.40	0.00	17.56	142.96	issued	f
-89	20	2026-04-01	2026-04-30	2026-04-28	75.00	0.00	517	41984	1	0.00	0.00	4198.40	0.00	598.28	4871.68	issued	f
-90	53	2026-04-01	2026-04-30	2026-04-28	75.00	0.00	79	15360	2	0.00	544.00	0.05	0.00	86.67	705.72	issued	f
-91	54	2026-04-01	2026-04-30	2026-04-28	75.00	0.00	49	140288	1	0.00	0.00	5222.40	0.00	741.64	6039.04	issued	f
-93	56	2026-04-01	2026-04-30	2026-04-28	75.00	0.00	235	83968	2	0.00	7420.00	0.00	0.00	1049.30	8544.30	issued	f
-94	58	2026-04-01	2026-04-30	2026-04-28	370.00	0.00	264	72704	1	0.00	2635.00	0.00	0.00	420.70	3425.70	issued	f
-95	59	2026-04-01	2026-04-30	2026-04-28	75.00	0.00	488	86016	1	0.00	7633.00	35.80	0.00	1084.13	8827.93	issued	f
-96	60	2026-04-01	2026-04-30	2026-04-28	950.00	0.00	34	18432	2	0.00	0.00	328.64	0.00	179.01	1457.65	issued	f
-97	63	2026-04-01	2026-04-30	2026-04-28	75.00	0.00	71	143360	1	0.00	14336.00	0.00	0.00	2017.54	16428.54	issued	f
-98	66	2026-04-01	2026-04-30	2026-04-28	75.00	0.00	143	14336	1	0.00	1434.00	0.00	0.00	211.26	1720.26	issued	f
-99	68	2026-04-01	2026-04-30	2026-04-28	370.00	0.00	215	65536	2	0.00	2288.00	0.00	0.00	372.12	3030.12	issued	f
-100	69	2026-04-01	2026-04-30	2026-04-28	75.00	0.00	301	54272	1	0.00	5428.00	0.00	0.00	770.42	6273.42	issued	f
-101	70	2026-04-01	2026-04-30	2026-04-28	370.00	0.00	562	92160	1	0.00	0.00	22.80	0.00	54.99	447.79	issued	f
-102	71	2026-04-01	2026-04-30	2026-04-28	75.00	0.00	125	45056	2	0.00	3518.00	0.05	0.00	503.03	4096.08	issued	f
-103	72	2026-04-01	2026-04-30	2026-04-28	75.00	0.00	182	79872	1	0.00	7270.00	716.80	0.00	1128.65	9190.45	issued	f
-104	73	2026-04-01	2026-04-30	2026-04-28	370.00	0.00	245	72704	1	0.00	2138.00	0.00	0.00	351.12	2859.12	issued	f
-105	76	2026-04-01	2026-04-30	2026-04-28	950.00	0.00	255	8192	2	0.00	0.00	7.75	0.00	134.09	1091.84	issued	f
-106	77	2026-04-01	2026-04-30	2026-04-28	370.00	0.00	41	29696	1	0.00	0.00	1026.40	0.00	195.50	1591.90	issued	f
-107	79	2026-04-01	2026-04-30	2026-04-28	75.00	0.00	219	34816	1	0.00	0.00	3481.60	0.00	497.92	4054.52	issued	f
-108	80	2026-04-01	2026-04-30	2026-04-28	370.00	0.00	291	44032	2	0.00	1216.00	0.00	0.00	222.04	1808.04	issued	f
-109	81	2026-04-01	2026-04-30	2026-04-28	370.00	0.00	153	99328	1	0.00	0.00	156.00	0.00	73.64	599.64	issued	f
-110	82	2026-04-01	2026-04-30	2026-04-28	370.00	0.00	413	53248	1	0.00	0.00	2562.40	0.00	410.54	3342.94	issued	f
-111	83	2026-04-01	2026-04-30	2026-04-28	370.00	0.00	282	29696	2	0.00	0.00	0.00	0.00	51.80	421.80	issued	f
-112	84	2026-04-01	2026-04-30	2026-04-28	950.00	0.00	209	151552	1	0.00	2431.00	0.00	0.00	473.34	3854.34	issued	f
-113	85	2026-04-01	2026-04-30	2026-04-28	75.00	0.00	437	10240	1	0.00	53.00	0.00	0.00	17.92	145.92	issued	f
-114	87	2026-04-01	2026-04-30	2026-04-28	75.00	0.00	93	24576	2	0.00	1467.00	0.00	0.00	215.88	1757.88	issued	f
-115	88	2026-04-01	2026-04-30	2026-04-28	370.00	0.00	49	177152	1	0.00	7857.00	0.00	0.00	1151.78	9378.78	issued	f
-116	90	2026-04-01	2026-04-30	2026-04-28	370.00	0.00	432	83968	1	0.00	2704.00	0.00	0.00	430.36	3504.36	issued	f
-117	91	2026-04-01	2026-04-30	2026-04-28	950.00	0.00	52	48128	2	0.00	564.00	0.00	0.00	211.96	1725.96	issued	f
-118	92	2026-04-01	2026-04-30	2026-04-28	370.00	0.00	104	52224	1	0.00	638.00	872.80	0.00	263.31	2144.11	issued	f
-119	93	2026-04-01	2026-04-30	2026-04-28	75.00	0.00	568	72704	1	0.00	7270.00	0.00	0.00	1028.30	8373.30	issued	f
-120	94	2026-04-01	2026-04-30	2026-04-28	370.00	0.00	95	63488	2	0.00	1679.00	0.00	0.00	286.86	2335.86	issued	f
-121	95	2026-04-01	2026-04-30	2026-04-28	75.00	0.00	177	103424	1	0.00	9342.00	0.00	0.00	1318.38	10735.38	issued	f
-122	99	2026-04-01	2026-04-30	2026-04-28	75.00	0.00	301	78848	1	0.00	7885.00	0.00	0.00	1114.40	9074.40	issued	f
-123	101	2026-04-01	2026-04-30	2026-04-28	370.00	0.00	200	51200	2	0.00	1070.00	0.00	0.00	201.60	1641.60	issued	f
-124	102	2026-04-01	2026-04-30	2026-04-28	950.00	0.00	229	97280	1	0.00	0.00	130.29	0.00	151.24	1231.53	issued	f
-125	103	2026-04-01	2026-04-30	2026-04-28	950.00	0.00	101	87040	1	0.00	1341.00	0.00	0.00	320.74	2611.74	issued	f
-126	104	2026-04-01	2026-04-30	2026-04-28	370.00	0.00	328	90112	2	0.00	0.00	4405.60	0.00	668.58	5444.18	issued	f
-127	105	2026-04-01	2026-04-30	2026-04-28	75.00	0.00	45	121856	1	0.00	11185.00	0.00	0.00	1576.40	12836.40	issued	f
-128	106	2026-04-01	2026-04-30	2026-04-28	370.00	0.00	341	84992	1	0.00	2755.00	0.00	0.00	437.50	3562.50	issued	f
-129	107	2026-04-01	2026-04-30	2026-04-28	370.00	0.00	64	67584	2	0.00	0.00	3279.20	0.00	510.89	4160.09	issued	f
-130	109	2026-04-01	2026-04-30	2026-04-28	75.00	0.00	256	183296	1	0.00	0.00	9625.60	0.00	1358.08	11058.68	issued	f
-131	111	2026-04-01	2026-04-30	2026-04-28	75.00	0.00	551	24576	1	0.00	0.00	2513.80	0.00	362.43	2951.23	issued	f
-132	112	2026-04-01	2026-04-30	2026-04-28	75.00	0.00	132	66560	2	0.00	0.00	6656.00	0.00	942.34	7673.34	issued	f
-133	113	2026-04-01	2026-04-30	2026-04-28	75.00	0.00	70	176128	1	0.00	16613.00	0.00	0.00	2336.32	19024.32	issued	f
-134	114	2026-04-01	2026-04-30	2026-04-28	75.00	0.00	432	55296	1	0.00	5530.00	0.00	0.00	784.70	6389.70	issued	f
-135	115	2026-04-01	2026-04-30	2026-04-28	370.00	0.00	177	98304	2	0.00	3424.00	0.00	0.00	531.16	4325.16	issued	f
-136	118	2026-04-01	2026-04-30	2026-04-28	370.00	0.00	183	109568	1	0.00	4479.00	0.00	0.00	678.86	5527.86	issued	f
-137	119	2026-04-01	2026-04-30	2026-04-28	370.00	0.00	218	60416	1	0.00	2027.00	0.00	0.00	335.58	2732.58	issued	f
-138	121	2026-04-01	2026-04-30	2026-04-28	370.00	0.00	326	16384	2	0.00	0.00	0.00	0.00	51.80	421.80	issued	f
-139	122	2026-04-01	2026-04-30	2026-04-28	75.00	0.00	182	86016	1	0.00	8601.00	0.00	0.00	1214.64	9890.64	issued	f
-140	125	2026-04-01	2026-04-30	2026-04-28	370.00	0.00	428	29696	1	0.00	0.00	32.80	0.00	56.39	459.19	issued	f
-141	126	2026-04-01	2026-04-30	2026-04-28	370.00	0.00	246	36864	2	0.00	856.00	0.00	0.00	171.64	1397.64	issued	f
-142	127	2026-04-01	2026-04-30	2026-04-28	75.00	0.00	71	120832	1	0.00	11083.00	0.00	0.00	1562.12	12720.12	issued	f
-143	129	2026-04-01	2026-04-30	2026-04-28	370.00	0.00	340	62464	1	0.00	2137.00	0.00	0.00	350.98	2857.98	issued	f
-144	130	2026-04-01	2026-04-30	2026-04-28	370.00	0.00	85	88064	2	0.00	2908.00	0.00	0.00	458.92	3736.92	issued	f
-145	134	2026-04-01	2026-04-30	2026-04-28	75.00	0.00	242	161792	1	0.00	15179.00	48.40	0.00	2142.34	17444.74	issued	f
-146	135	2026-04-01	2026-04-30	2026-04-28	75.00	0.00	534	59392	1	0.00	5939.00	0.00	0.00	841.96	6855.96	issued	f
-147	136	2026-04-01	2026-04-30	2026-04-28	950.00	0.00	195	73728	2	0.00	878.00	0.00	0.00	255.92	2083.92	issued	f
-148	137	2026-04-01	2026-04-30	2026-04-28	370.00	0.00	152	112640	1	0.00	4632.00	0.00	0.00	700.28	5702.28	issued	f
-149	140	2026-04-01	2026-04-30	2026-04-28	370.00	0.00	271	50176	1	0.00	1016.00	0.00	0.00	194.04	1580.04	issued	f
-92	55	2026-04-01	2026-04-30	2026-04-28	370.00	0.00	429	95232	1	0.00	3274.00	0.00	0.00	510.16	4154.16	paid	t
-85	27	2026-04-01	2026-04-30	2026-04-28	950.00	0.00	251	121856	1	0.00	1638.00	0.00	0.00	362.32	2950.32	paid	t
-79	21	2026-04-01	2026-04-30	2026-04-28	950.00	0.00	319	103424	1	0.00	1268.00	0.00	0.00	310.52	2528.52	paid	t
-150	142	2026-04-01	2026-04-30	2026-04-28	370.00	0.00	293	70656	2	0.00	2547.00	0.00	0.00	408.38	3325.38	issued	f
-151	145	2026-04-01	2026-04-30	2026-04-28	370.00	0.00	97	126976	1	0.00	5349.00	0.00	0.00	800.66	6519.66	issued	f
-152	146	2026-04-01	2026-04-30	2026-04-28	370.00	0.00	352	83968	1	0.00	0.00	8.30	0.00	52.96	431.26	issued	f
-153	149	2026-04-01	2026-04-30	2026-04-28	370.00	0.00	316	71680	2	0.00	2600.00	0.00	0.00	415.80	3385.80	issued	f
-154	150	2026-04-01	2026-04-30	2026-04-28	75.00	0.00	314	121856	1	0.00	11186.00	62.80	0.00	1585.33	12909.13	issued	f
-84	26	2026-04-01	2026-04-30	2026-04-28	75.00	0.00	97	68608	2	0.00	0.00	0.05	0.00	10.51	85.56	paid	t
-156	151	2026-04-01	2026-04-30	2026-04-28	75.00	0.00	0	0	0	0.00	0.00	0.00	0.00	10.50	85.50	issued	f
-158	152	2026-04-01	2026-04-30	2026-04-28	75.00	0.00	0	0	0	0.00	0.00	0.00	0.00	10.50	85.50	issued	f
+32	17	2026-03-01	2026-03-31	2026-04-01	370.00	0.69	330	980	45	0.00	0.00	0.00	0.00	51.80	422.49	paid	t
+31	16	2026-03-01	2026-03-31	2026-04-01	950.00	0.69	920	4800	170	8.00	0.00	0.00	0.00	35.77	393.46	paid	t
+30	15	2026-03-01	2026-03-31	2026-04-01	950.00	0.69	800	3700	140	0.00	0.00	0.00	0.00	133.00	1083.69	paid	t
+29	14	2026-03-01	2026-03-31	2026-04-01	370.00	0.69	420	1100	55	0.00	0.00	0.00	0.00	51.80	422.49	paid	t
+28	12	2026-03-01	2026-03-31	2026-04-01	370.00	0.69	280	850	35	0.00	0.00	0.00	0.00	51.80	422.49	paid	t
+27	11	2026-03-01	2026-03-31	2026-04-01	75.00	0.69	900	0	195	14.50	0.00	0.00	0.00	6.52	71.71	paid	t
+26	10	2026-03-01	2026-03-31	2026-04-01	370.00	0.69	500	1900	68	0.00	0.00	0.00	0.00	51.80	422.49	paid	t
+25	9	2026-03-01	2026-03-31	2026-04-01	75.00	0.69	130	0	16	0.00	0.00	0.00	0.00	10.50	86.19	paid	t
+24	8	2026-03-01	2026-03-31	2026-04-01	370.00	0.69	380	1350	50	0.00	0.00	0.00	0.00	51.80	422.49	paid	t
+23	7	2026-03-01	2026-03-31	2026-04-01	75.00	0.69	200	0	28	0.00	0.00	0.00	0.00	10.50	86.19	paid	t
+22	6	2026-03-01	2026-03-31	2026-04-01	370.00	0.69	720	3100	105	0.00	0.00	0.00	0.00	51.80	422.49	paid	t
+21	5	2026-03-01	2026-03-31	2026-04-01	75.00	0.69	90	0	11	0.00	0.00	0.00	0.00	10.50	86.19	paid	t
+20	4	2026-03-01	2026-03-31	2026-04-01	370.00	0.69	450	1600	58	0.00	0.00	0.00	0.00	51.80	422.49	paid	t
+19	3	2026-03-01	2026-03-31	2026-04-01	75.00	0.69	170	0	20	0.00	0.00	0.00	0.00	10.50	86.19	paid	t
+33	10	2026-04-01	2026-04-30	2026-04-29	370.00	0.00	510	2400	75	0.00	2.34	0.00	0.00	52.13	424.47	issued	f
+34	9	2026-04-01	2026-04-30	2026-04-29	75.00	0.00	140	0	8	0.00	1.30	0.00	0.00	10.68	86.98	issued	f
+35	8	2026-04-01	2026-04-30	2026-04-29	370.00	0.00	390	1500	55	0.00	1.94	0.00	0.00	52.07	424.01	issued	f
+36	7	2026-04-01	2026-04-30	2026-04-29	75.00	0.00	210	0	18	0.00	2.10	0.00	0.00	10.79	87.89	issued	f
+37	6	2026-04-01	2026-04-30	2026-04-29	370.00	0.00	750	3200	110	0.00	4.06	0.00	0.00	52.37	426.43	issued	f
+38	5	2026-04-01	2026-04-30	2026-04-29	75.00	0.00	95	0	12	0.00	1.50	0.00	0.00	10.71	87.21	issued	f
+39	4	2026-04-01	2026-04-30	2026-04-29	370.00	0.00	480	1800	65	0.00	2.24	0.00	0.00	52.11	424.35	issued	f
+40	3	2026-04-01	2026-04-30	2026-04-29	75.00	0.00	180	0	22	0.00	2.30	0.00	0.00	10.82	88.12	issued	f
+42	2	2026-04-01	2026-04-30	2026-04-29	370.00	0.00	740	2500	115	0.00	3.18	0.52	0.00	52.32	426.02	issued	f
+43	19	2026-04-01	2026-04-30	2026-04-29	950.00	0.00	0	0	0	0.00	0.00	0.00	0.00	133.00	1083.00	issued	f
+44	20	2026-04-01	2026-04-30	2026-04-29	950.00	0.00	0	0	0	0.00	0.00	0.00	0.00	133.00	1083.00	issued	f
+45	21	2026-04-01	2026-04-30	2026-04-29	370.00	0.00	0	0	0	0.00	0.00	0.00	0.00	51.80	421.80	issued	f
+46	22	2026-04-01	2026-04-30	2026-04-29	370.00	0.00	0	0	0	0.00	0.00	0.00	0.00	51.80	421.80	issued	f
+47	23	2026-04-01	2026-04-30	2026-04-29	370.00	0.00	0	0	0	0.00	0.00	0.00	0.00	51.80	421.80	issued	f
+48	24	2026-04-01	2026-04-30	2026-04-29	950.00	0.00	0	0	0	0.00	0.00	0.00	0.00	133.00	1083.00	issued	f
+49	25	2026-04-01	2026-04-30	2026-04-29	950.00	0.00	0	0	0	0.00	0.00	0.00	0.00	133.00	1083.00	issued	f
+50	26	2026-04-01	2026-04-30	2026-04-29	950.00	0.00	0	0	0	0.00	0.00	0.00	0.00	133.00	1083.00	issued	f
+51	27	2026-04-01	2026-04-30	2026-04-29	950.00	0.00	0	0	0	0.00	0.00	0.00	0.00	133.00	1083.00	issued	f
+52	28	2026-04-01	2026-04-30	2026-04-29	950.00	0.00	0	0	0	0.00	0.00	0.00	0.00	133.00	1083.00	issued	f
+53	29	2026-04-01	2026-04-30	2026-04-29	950.00	0.00	0	0	0	0.00	0.00	0.00	0.00	133.00	1083.00	issued	f
+62	38	2026-04-01	2026-04-30	2026-04-29	370.00	0.00	0	0	0	0.00	0.00	0.00	0.00	51.80	421.80	paid	t
+61	37	2026-04-01	2026-04-30	2026-04-29	75.00	0.00	0	0	0	0.00	0.00	0.00	0.00	10.50	85.50	paid	t
+60	36	2026-04-01	2026-04-30	2026-04-29	75.00	0.00	0	0	0	0.00	0.00	0.00	0.00	10.50	85.50	paid	t
+59	35	2026-04-01	2026-04-30	2026-04-29	950.00	0.00	0	0	0	0.00	0.00	0.00	0.00	133.00	1083.00	paid	t
+58	34	2026-04-01	2026-04-30	2026-04-29	75.00	0.00	0	0	0	0.00	0.00	0.00	0.00	10.50	85.50	paid	t
+57	33	2026-04-01	2026-04-30	2026-04-29	75.00	0.00	0	0	0	0.00	0.00	0.00	0.00	10.50	85.50	paid	t
+56	32	2026-04-01	2026-04-30	2026-04-29	950.00	0.00	0	0	0	0.00	0.00	0.00	0.00	133.00	1083.00	paid	t
+55	31	2026-04-01	2026-04-30	2026-04-29	370.00	0.00	0	0	0	0.00	0.00	0.00	0.00	51.80	421.80	paid	t
+54	30	2026-04-01	2026-04-30	2026-04-29	370.00	0.00	0	0	0	0.00	0.00	0.00	0.00	51.80	421.80	paid	t
+41	1	2026-04-01	2026-04-30	2026-04-29	75.00	0.00	350	0	45	0.00	8.90	0.00	0.00	11.75	95.65	paid	t
+78	11	2026-04-01	2026-04-30	2026-04-29	75.00	0.00	980	0	190	0.00	7.00	0.00	0.00	11.48	93.48	paid	t
+77	12	2026-04-01	2026-04-30	2026-04-29	370.00	0.00	290	900	35	0.00	1.12	0.00	0.00	51.96	423.08	paid	t
+76	14	2026-04-01	2026-04-30	2026-04-29	370.00	0.00	430	1200	60	0.00	1.54	0.00	0.00	52.02	423.56	paid	t
+75	15	2026-04-01	2026-04-30	2026-04-29	950.00	0.00	900	4120	165	0.00	1.52	0.21	0.00	133.24	1084.97	paid	t
+74	16	2026-04-01	2026-04-30	2026-04-29	950.00	0.00	950	4900	180	0.00	1.87	0.00	0.00	133.26	1085.13	paid	t
+73	17	2026-04-01	2026-04-30	2026-04-29	370.00	0.00	340	1100	48	0.00	1.24	0.00	0.00	51.97	423.21	paid	t
+72	48	2026-04-01	2026-04-30	2026-04-29	75.00	0.00	0	0	0	0.00	0.00	0.00	0.00	10.50	85.50	paid	t
+71	47	2026-04-01	2026-04-30	2026-04-29	75.00	0.00	0	0	0	0.00	0.00	0.00	0.00	10.50	85.50	paid	t
+70	46	2026-04-01	2026-04-30	2026-04-29	370.00	0.00	0	0	0	0.00	0.00	0.00	0.00	51.80	421.80	paid	t
+69	45	2026-04-01	2026-04-30	2026-04-29	950.00	0.00	0	0	0	0.00	0.00	0.00	0.00	133.00	1083.00	paid	t
+68	44	2026-04-01	2026-04-30	2026-04-29	370.00	0.00	0	0	0	0.00	0.00	0.00	0.00	51.80	421.80	paid	t
+67	43	2026-04-01	2026-04-30	2026-04-29	950.00	0.00	0	0	0	0.00	0.00	0.00	0.00	133.00	1083.00	paid	t
+66	42	2026-04-01	2026-04-30	2026-04-29	950.00	0.00	0	0	0	0.00	0.00	0.00	0.00	133.00	1083.00	paid	t
+65	41	2026-04-01	2026-04-30	2026-04-29	950.00	0.00	0	0	0	0.00	0.00	0.00	0.00	133.00	1083.00	paid	t
+64	40	2026-04-01	2026-04-30	2026-04-29	370.00	0.00	0	0	0	0.00	0.00	0.00	0.00	51.80	421.80	paid	t
+63	39	2026-04-01	2026-04-30	2026-04-29	950.00	0.00	0	0	0	0.00	0.00	0.00	0.00	133.00	1083.00	paid	t
+91	13	2026-03-01	2026-03-31	2026-04-29	75.00	0.00	0	0	0	0.00	0.00	0.00	0.00	10.50	85.50	issued	f
+96	19	2026-03-01	2026-03-31	2026-04-29	950.00	0.00	0	0	0	0.00	0.00	0.00	0.00	133.00	1083.00	issued	f
+97	20	2026-03-01	2026-03-31	2026-04-29	950.00	0.00	0	0	0	0.00	0.00	0.00	0.00	133.00	1083.00	issued	f
+98	21	2026-03-01	2026-03-31	2026-04-29	370.00	0.00	0	0	0	0.00	0.00	0.00	0.00	51.80	421.80	issued	f
+99	22	2026-03-01	2026-03-31	2026-04-29	370.00	0.00	0	0	0	0.00	0.00	0.00	0.00	51.80	421.80	issued	f
+100	23	2026-03-01	2026-03-31	2026-04-29	370.00	0.00	0	0	0	0.00	0.00	0.00	0.00	51.80	421.80	issued	f
+101	24	2026-03-01	2026-03-31	2026-04-29	950.00	0.00	0	0	0	0.00	0.00	0.00	0.00	133.00	1083.00	issued	f
+102	25	2026-03-01	2026-03-31	2026-04-29	950.00	0.00	0	0	0	0.00	0.00	0.00	0.00	133.00	1083.00	issued	f
+103	26	2026-03-01	2026-03-31	2026-04-29	950.00	0.00	0	0	0	0.00	0.00	0.00	0.00	133.00	1083.00	issued	f
+104	27	2026-03-01	2026-03-31	2026-04-29	950.00	0.00	0	0	0	0.00	0.00	0.00	0.00	133.00	1083.00	issued	f
+105	28	2026-03-01	2026-03-31	2026-04-29	950.00	0.00	0	0	0	0.00	0.00	0.00	0.00	133.00	1083.00	issued	f
+106	29	2026-03-01	2026-03-31	2026-04-29	950.00	0.00	0	0	0	0.00	0.00	0.00	0.00	133.00	1083.00	issued	f
+107	30	2026-03-01	2026-03-31	2026-04-29	370.00	0.00	0	0	0	0.00	0.00	0.00	0.00	51.80	421.80	issued	f
+108	31	2026-03-01	2026-03-31	2026-04-29	370.00	0.00	0	0	0	0.00	0.00	0.00	0.00	51.80	421.80	issued	f
+109	32	2026-03-01	2026-03-31	2026-04-29	950.00	0.00	0	0	0	0.00	0.00	0.00	0.00	133.00	1083.00	issued	f
+110	33	2026-03-01	2026-03-31	2026-04-29	75.00	0.00	0	0	0	0.00	0.00	0.00	0.00	10.50	85.50	issued	f
+111	34	2026-03-01	2026-03-31	2026-04-29	75.00	0.00	0	0	0	0.00	0.00	0.00	0.00	10.50	85.50	issued	f
+112	35	2026-03-01	2026-03-31	2026-04-29	950.00	0.00	0	0	0	0.00	0.00	0.00	0.00	133.00	1083.00	issued	f
+113	36	2026-03-01	2026-03-31	2026-04-29	75.00	0.00	0	0	0	0.00	0.00	0.00	0.00	10.50	85.50	issued	f
+114	37	2026-03-01	2026-03-31	2026-04-29	75.00	0.00	0	0	0	0.00	0.00	0.00	0.00	10.50	85.50	issued	f
+115	38	2026-03-01	2026-03-31	2026-04-29	370.00	0.00	0	0	0	0.00	0.00	0.00	0.00	51.80	421.80	issued	f
+116	39	2026-03-01	2026-03-31	2026-04-29	950.00	0.00	0	0	0	0.00	0.00	0.00	0.00	133.00	1083.00	issued	f
+117	40	2026-03-01	2026-03-31	2026-04-29	370.00	0.00	0	0	0	0.00	0.00	0.00	0.00	51.80	421.80	issued	f
+118	41	2026-03-01	2026-03-31	2026-04-29	950.00	0.00	0	0	0	0.00	0.00	0.00	0.00	133.00	1083.00	issued	f
+119	42	2026-03-01	2026-03-31	2026-04-29	950.00	0.00	0	0	0	0.00	0.00	0.00	0.00	133.00	1083.00	issued	f
+120	43	2026-03-01	2026-03-31	2026-04-29	950.00	0.00	0	0	0	0.00	0.00	0.00	0.00	133.00	1083.00	issued	f
+121	44	2026-03-01	2026-03-31	2026-04-29	370.00	0.00	0	0	0	0.00	0.00	0.00	0.00	51.80	421.80	issued	f
+122	45	2026-03-01	2026-03-31	2026-04-29	950.00	0.00	0	0	0	0.00	0.00	0.00	0.00	133.00	1083.00	issued	f
+123	46	2026-03-01	2026-03-31	2026-04-29	370.00	0.00	0	0	0	0.00	0.00	0.00	0.00	51.80	421.80	issued	f
+124	47	2026-03-01	2026-03-31	2026-04-29	75.00	0.00	0	0	0	0.00	0.00	0.00	0.00	10.50	85.50	issued	f
+125	48	2026-03-01	2026-03-31	2026-04-29	75.00	0.00	0	0	0	0.00	0.00	0.00	0.00	10.50	85.50	issued	f
+126	49	2026-03-01	2026-03-31	2026-04-29	950.00	0.00	0	0	0	0.00	0.00	0.00	0.00	133.00	1083.00	issued	f
+127	50	2026-03-01	2026-03-31	2026-04-29	75.00	0.00	0	0	0	0.00	0.00	0.00	0.00	10.50	85.50	issued	f
+128	51	2026-03-01	2026-03-31	2026-04-29	950.00	0.00	0	0	0	0.00	0.00	0.00	0.00	133.00	1083.00	issued	f
+129	52	2026-03-01	2026-03-31	2026-04-29	950.00	0.00	0	0	0	0.00	0.00	0.00	0.00	133.00	1083.00	issued	f
+130	53	2026-03-01	2026-03-31	2026-04-29	75.00	0.00	0	0	0	0.00	0.00	0.00	0.00	10.50	85.50	issued	f
+131	54	2026-03-01	2026-03-31	2026-04-29	370.00	0.00	0	0	0	0.00	0.00	0.00	0.00	51.80	421.80	issued	f
+132	55	2026-03-01	2026-03-31	2026-04-29	75.00	0.00	0	0	0	0.00	0.00	0.00	0.00	10.50	85.50	issued	f
+133	56	2026-03-01	2026-03-31	2026-04-29	370.00	0.00	0	0	0	0.00	0.00	0.00	0.00	51.80	421.80	issued	f
+134	57	2026-03-01	2026-03-31	2026-04-29	75.00	0.00	0	0	0	0.00	0.00	0.00	0.00	10.50	85.50	issued	f
+135	58	2026-03-01	2026-03-31	2026-04-29	950.00	0.00	0	0	0	0.00	0.00	0.00	0.00	133.00	1083.00	issued	f
+136	59	2026-03-01	2026-03-31	2026-04-29	370.00	0.00	0	0	0	0.00	0.00	0.00	0.00	51.80	421.80	issued	f
+137	60	2026-03-01	2026-03-31	2026-04-29	75.00	0.00	0	0	0	0.00	0.00	0.00	0.00	10.50	85.50	issued	f
+138	61	2026-03-01	2026-03-31	2026-04-29	75.00	0.00	0	0	0	0.00	0.00	0.00	0.00	10.50	85.50	issued	f
+139	62	2026-03-01	2026-03-31	2026-04-29	75.00	0.00	0	0	0	0.00	0.00	0.00	0.00	10.50	85.50	issued	f
+140	63	2026-03-01	2026-03-31	2026-04-29	370.00	0.00	0	0	0	0.00	0.00	0.00	0.00	51.80	421.80	issued	f
+141	64	2026-03-01	2026-03-31	2026-04-29	370.00	0.00	0	0	0	0.00	0.00	0.00	0.00	51.80	421.80	issued	f
+142	66	2026-03-01	2026-03-31	2026-04-29	370.00	0.00	0	0	0	0.00	0.00	0.00	0.00	51.80	421.80	issued	f
+143	67	2026-03-01	2026-03-31	2026-04-29	75.00	0.00	0	0	0	0.00	0.00	0.00	0.00	10.50	85.50	issued	f
+144	68	2026-03-01	2026-03-31	2026-04-29	75.00	0.00	0	0	0	0.00	0.00	0.00	0.00	10.50	85.50	issued	f
+145	69	2026-03-01	2026-03-31	2026-04-29	370.00	0.00	0	0	0	0.00	0.00	0.00	0.00	51.80	421.80	issued	f
+146	70	2026-03-01	2026-03-31	2026-04-29	950.00	0.00	0	0	0	0.00	0.00	0.00	0.00	133.00	1083.00	issued	f
+147	71	2026-03-01	2026-03-31	2026-04-29	370.00	0.00	0	0	0	0.00	0.00	0.00	0.00	51.80	421.80	issued	f
+148	72	2026-03-01	2026-03-31	2026-04-29	370.00	0.00	0	0	0	0.00	0.00	0.00	0.00	51.80	421.80	issued	f
+149	73	2026-03-01	2026-03-31	2026-04-29	75.00	0.00	0	0	0	0.00	0.00	0.00	0.00	10.50	85.50	issued	f
+150	74	2026-03-01	2026-03-31	2026-04-29	370.00	0.00	0	0	0	0.00	0.00	0.00	0.00	51.80	421.80	issued	f
+151	75	2026-03-01	2026-03-31	2026-04-29	370.00	0.00	0	0	0	0.00	0.00	0.00	0.00	51.80	421.80	issued	f
+152	76	2026-03-01	2026-03-31	2026-04-29	75.00	0.00	0	0	0	0.00	0.00	0.00	0.00	10.50	85.50	issued	f
+153	77	2026-03-01	2026-03-31	2026-04-29	370.00	0.00	0	0	0	0.00	0.00	0.00	0.00	51.80	421.80	issued	f
+154	78	2026-03-01	2026-03-31	2026-04-29	370.00	0.00	0	0	0	0.00	0.00	0.00	0.00	51.80	421.80	issued	f
+155	79	2026-03-01	2026-03-31	2026-04-29	950.00	0.00	0	0	0	0.00	0.00	0.00	0.00	133.00	1083.00	issued	f
+156	80	2026-03-01	2026-03-31	2026-04-29	950.00	0.00	0	0	0	0.00	0.00	0.00	0.00	133.00	1083.00	issued	f
+157	81	2026-03-01	2026-03-31	2026-04-29	75.00	0.00	0	0	0	0.00	0.00	0.00	0.00	10.50	85.50	issued	f
+158	82	2026-03-01	2026-03-31	2026-04-29	75.00	0.00	0	0	0	0.00	0.00	0.00	0.00	10.50	85.50	issued	f
+159	83	2026-03-01	2026-03-31	2026-04-29	75.00	0.00	0	0	0	0.00	0.00	0.00	0.00	10.50	85.50	issued	f
+160	84	2026-03-01	2026-03-31	2026-04-29	950.00	0.00	0	0	0	0.00	0.00	0.00	0.00	133.00	1083.00	issued	f
+161	85	2026-03-01	2026-03-31	2026-04-29	370.00	0.00	0	0	0	0.00	0.00	0.00	0.00	51.80	421.80	issued	f
+162	86	2026-03-01	2026-03-31	2026-04-29	950.00	0.00	0	0	0	0.00	0.00	0.00	0.00	133.00	1083.00	issued	f
+163	87	2026-03-01	2026-03-31	2026-04-29	75.00	0.00	0	0	0	0.00	0.00	0.00	0.00	10.50	85.50	issued	f
+164	88	2026-03-01	2026-03-31	2026-04-29	75.00	0.00	0	0	0	0.00	0.00	0.00	0.00	10.50	85.50	issued	f
+165	89	2026-03-01	2026-03-31	2026-04-29	370.00	0.00	0	0	0	0.00	0.00	0.00	0.00	51.80	421.80	issued	f
+166	90	2026-03-01	2026-03-31	2026-04-29	75.00	0.00	0	0	0	0.00	0.00	0.00	0.00	10.50	85.50	issued	f
+167	91	2026-03-01	2026-03-31	2026-04-29	370.00	0.00	0	0	0	0.00	0.00	0.00	0.00	51.80	421.80	issued	f
+168	92	2026-03-01	2026-03-31	2026-04-29	950.00	0.00	0	0	0	0.00	0.00	0.00	0.00	133.00	1083.00	issued	f
+169	93	2026-03-01	2026-03-31	2026-04-29	75.00	0.00	0	0	0	0.00	0.00	0.00	0.00	10.50	85.50	issued	f
+170	94	2026-03-01	2026-03-31	2026-04-29	370.00	0.00	0	0	0	0.00	0.00	0.00	0.00	51.80	421.80	issued	f
+171	95	2026-03-01	2026-03-31	2026-04-29	75.00	0.00	0	0	0	0.00	0.00	0.00	0.00	10.50	85.50	issued	f
+172	96	2026-03-01	2026-03-31	2026-04-29	75.00	0.00	0	0	0	0.00	0.00	0.00	0.00	10.50	85.50	issued	f
+173	97	2026-03-01	2026-03-31	2026-04-29	370.00	0.00	0	0	0	0.00	0.00	0.00	0.00	51.80	421.80	issued	f
+174	98	2026-03-01	2026-03-31	2026-04-29	75.00	0.00	0	0	0	0.00	0.00	0.00	0.00	10.50	85.50	issued	f
+175	99	2026-03-01	2026-03-31	2026-04-29	370.00	0.00	0	0	0	0.00	0.00	0.00	0.00	51.80	421.80	issued	f
+176	100	2026-03-01	2026-03-31	2026-04-29	370.00	0.00	0	0	0	0.00	0.00	0.00	0.00	51.80	421.80	issued	f
+177	101	2026-03-01	2026-03-31	2026-04-29	75.00	0.00	0	0	0	0.00	0.00	0.00	0.00	10.50	85.50	issued	f
+178	102	2026-03-01	2026-03-31	2026-04-29	370.00	0.00	0	0	0	0.00	0.00	0.00	0.00	51.80	421.80	issued	f
+179	103	2026-03-01	2026-03-31	2026-04-29	950.00	0.00	0	0	0	0.00	0.00	0.00	0.00	133.00	1083.00	issued	f
+180	104	2026-03-01	2026-03-31	2026-04-29	370.00	0.00	0	0	0	0.00	0.00	0.00	0.00	51.80	421.80	issued	f
+181	105	2026-03-01	2026-03-31	2026-04-29	75.00	0.00	0	0	0	0.00	0.00	0.00	0.00	10.50	85.50	issued	f
+182	106	2026-03-01	2026-03-31	2026-04-29	370.00	0.00	0	0	0	0.00	0.00	0.00	0.00	51.80	421.80	issued	f
+183	107	2026-03-01	2026-03-31	2026-04-29	370.00	0.00	0	0	0	0.00	0.00	0.00	0.00	51.80	421.80	issued	f
+184	108	2026-03-01	2026-03-31	2026-04-29	75.00	0.00	0	0	0	0.00	0.00	0.00	0.00	10.50	85.50	issued	f
+185	109	2026-03-01	2026-03-31	2026-04-29	950.00	0.00	0	0	0	0.00	0.00	0.00	0.00	133.00	1083.00	issued	f
+186	110	2026-03-01	2026-03-31	2026-04-29	75.00	0.00	0	0	0	0.00	0.00	0.00	0.00	10.50	85.50	issued	f
+187	112	2026-03-01	2026-03-31	2026-04-29	75.00	0.00	0	0	0	0.00	0.00	0.00	0.00	10.50	85.50	issued	f
+188	113	2026-03-01	2026-03-31	2026-04-29	370.00	0.00	0	0	0	0.00	0.00	0.00	0.00	51.80	421.80	issued	f
+189	114	2026-03-01	2026-03-31	2026-04-29	370.00	0.00	0	0	0	0.00	0.00	0.00	0.00	51.80	421.80	issued	f
+190	115	2026-03-01	2026-03-31	2026-04-29	370.00	0.00	0	0	0	0.00	0.00	0.00	0.00	51.80	421.80	issued	f
+191	116	2026-03-01	2026-03-31	2026-04-29	370.00	0.00	0	0	0	0.00	0.00	0.00	0.00	51.80	421.80	issued	f
+192	118	2026-03-01	2026-03-31	2026-04-29	75.00	0.00	0	0	0	0.00	0.00	0.00	0.00	10.50	85.50	issued	f
+193	119	2026-03-01	2026-03-31	2026-04-29	370.00	0.00	0	0	0	0.00	0.00	0.00	0.00	51.80	421.80	issued	f
+194	120	2026-03-01	2026-03-31	2026-04-29	370.00	0.00	0	0	0	0.00	0.00	0.00	0.00	51.80	421.80	issued	f
+195	122	2026-03-01	2026-03-31	2026-04-29	75.00	0.00	0	0	0	0.00	0.00	0.00	0.00	10.50	85.50	issued	f
+196	123	2026-03-01	2026-03-31	2026-04-29	75.00	0.00	0	0	0	0.00	0.00	0.00	0.00	10.50	85.50	issued	f
+197	124	2026-03-01	2026-03-31	2026-04-29	370.00	0.00	0	0	0	0.00	0.00	0.00	0.00	51.80	421.80	issued	f
+198	125	2026-03-01	2026-03-31	2026-04-29	370.00	0.00	0	0	0	0.00	0.00	0.00	0.00	51.80	421.80	issued	f
+199	126	2026-03-01	2026-03-31	2026-04-29	370.00	0.00	0	0	0	0.00	0.00	0.00	0.00	51.80	421.80	issued	f
+200	127	2026-03-01	2026-03-31	2026-04-29	75.00	0.00	0	0	0	0.00	0.00	0.00	0.00	10.50	85.50	issued	f
+201	128	2026-03-01	2026-03-31	2026-04-29	950.00	0.00	0	0	0	0.00	0.00	0.00	0.00	133.00	1083.00	issued	f
+202	129	2026-03-01	2026-03-31	2026-04-29	370.00	0.00	0	0	0	0.00	0.00	0.00	0.00	51.80	421.80	issued	f
+203	130	2026-03-01	2026-03-31	2026-04-29	75.00	0.00	0	0	0	0.00	0.00	0.00	0.00	10.50	85.50	issued	f
+204	131	2026-03-01	2026-03-31	2026-04-29	75.00	0.00	0	0	0	0.00	0.00	0.00	0.00	10.50	85.50	issued	f
+205	132	2026-03-01	2026-03-31	2026-04-29	370.00	0.00	0	0	0	0.00	0.00	0.00	0.00	51.80	421.80	issued	f
+206	133	2026-03-01	2026-03-31	2026-04-29	75.00	0.00	0	0	0	0.00	0.00	0.00	0.00	10.50	85.50	issued	f
+207	134	2026-03-01	2026-03-31	2026-04-29	370.00	0.00	0	0	0	0.00	0.00	0.00	0.00	51.80	421.80	issued	f
+208	135	2026-03-01	2026-03-31	2026-04-29	75.00	0.00	0	0	0	0.00	0.00	0.00	0.00	10.50	85.50	issued	f
+209	136	2026-03-01	2026-03-31	2026-04-29	370.00	0.00	0	0	0	0.00	0.00	0.00	0.00	51.80	421.80	issued	f
+210	137	2026-03-01	2026-03-31	2026-04-29	370.00	0.00	0	0	0	0.00	0.00	0.00	0.00	51.80	421.80	issued	f
+211	138	2026-03-01	2026-03-31	2026-04-29	370.00	0.00	0	0	0	0.00	0.00	0.00	0.00	51.80	421.80	issued	f
+212	139	2026-03-01	2026-03-31	2026-04-29	370.00	0.00	0	0	0	0.00	0.00	0.00	0.00	51.80	421.80	issued	f
+213	140	2026-03-01	2026-03-31	2026-04-29	75.00	0.00	0	0	0	0.00	0.00	0.00	0.00	10.50	85.50	issued	f
+214	141	2026-03-01	2026-03-31	2026-04-29	75.00	0.00	0	0	0	0.00	0.00	0.00	0.00	10.50	85.50	issued	f
+215	142	2026-03-01	2026-03-31	2026-04-29	370.00	0.00	0	0	0	0.00	0.00	0.00	0.00	51.80	421.80	issued	f
+216	143	2026-03-01	2026-03-31	2026-04-29	75.00	0.00	0	0	0	0.00	0.00	0.00	0.00	10.50	85.50	issued	f
+217	144	2026-03-01	2026-03-31	2026-04-29	370.00	0.00	0	0	0	0.00	0.00	0.00	0.00	51.80	421.80	issued	f
+218	145	2026-03-01	2026-03-31	2026-04-29	370.00	0.00	0	0	0	0.00	0.00	0.00	0.00	51.80	421.80	issued	f
+219	146	2026-03-01	2026-03-31	2026-04-29	370.00	0.00	0	0	0	0.00	0.00	0.00	0.00	51.80	421.80	issued	f
+220	147	2026-03-01	2026-03-31	2026-04-29	370.00	0.00	0	0	0	0.00	0.00	0.00	0.00	51.80	421.80	issued	f
+221	148	2026-03-01	2026-03-31	2026-04-29	370.00	0.00	0	0	0	0.00	0.00	0.00	0.00	51.80	421.80	issued	f
+222	149	2026-03-01	2026-03-31	2026-04-29	370.00	0.00	0	0	0	0.00	0.00	0.00	0.00	51.80	421.80	issued	f
+223	150	2026-03-01	2026-03-31	2026-04-29	950.00	0.00	0	0	0	0.00	0.00	0.00	0.00	133.00	1083.00	issued	f
+224	151	2026-03-01	2026-03-31	2026-04-29	950.00	0.00	0	0	0	0.00	0.00	0.00	0.00	133.00	1083.00	issued	f
+225	152	2026-03-01	2026-03-31	2026-04-29	950.00	0.00	0	0	0	0.00	0.00	0.00	0.00	133.00	1083.00	issued	f
+226	153	2026-03-01	2026-03-31	2026-04-29	75.00	0.00	0	0	0	0.00	0.00	0.00	0.00	10.50	85.50	issued	f
+227	154	2026-03-01	2026-03-31	2026-04-29	75.00	0.00	0	0	0	0.00	0.00	0.00	0.00	10.50	85.50	issued	f
+228	155	2026-03-01	2026-03-31	2026-04-29	370.00	0.00	0	0	0	0.00	0.00	0.00	0.00	51.80	421.80	issued	f
+229	156	2026-03-01	2026-03-31	2026-04-29	370.00	0.00	0	0	0	0.00	0.00	0.00	0.00	51.80	421.80	issued	f
+230	157	2026-03-01	2026-03-31	2026-04-29	370.00	0.00	0	0	0	0.00	0.00	0.00	0.00	51.80	421.80	issued	f
+231	158	2026-03-01	2026-03-31	2026-04-29	75.00	0.00	0	0	0	0.00	0.00	0.00	0.00	10.50	85.50	issued	f
+232	159	2026-03-01	2026-03-31	2026-04-29	950.00	0.00	0	0	0	0.00	0.00	0.00	0.00	133.00	1083.00	issued	f
+233	160	2026-03-01	2026-03-31	2026-04-29	75.00	0.00	0	0	0	0.00	0.00	0.00	0.00	10.50	85.50	issued	f
+234	161	2026-03-01	2026-03-31	2026-04-29	370.00	0.00	0	0	0	0.00	0.00	0.00	0.00	51.80	421.80	issued	f
+235	162	2026-03-01	2026-03-31	2026-04-29	370.00	0.00	0	0	0	0.00	0.00	0.00	0.00	51.80	421.80	issued	f
+236	163	2026-03-01	2026-03-31	2026-04-29	370.00	0.00	0	0	0	0.00	0.00	0.00	0.00	51.80	421.80	issued	f
+237	164	2026-03-01	2026-03-31	2026-04-29	370.00	0.00	0	0	0	0.00	0.00	0.00	0.00	51.80	421.80	issued	f
+238	165	2026-03-01	2026-03-31	2026-04-29	950.00	0.00	0	0	0	0.00	0.00	0.00	0.00	133.00	1083.00	issued	f
+239	166	2026-03-01	2026-03-31	2026-04-29	370.00	0.00	0	0	0	0.00	0.00	0.00	0.00	51.80	421.80	issued	f
+240	167	2026-03-01	2026-03-31	2026-04-29	370.00	0.00	0	0	0	0.00	0.00	0.00	0.00	51.80	421.80	issued	f
+241	168	2026-03-01	2026-03-31	2026-04-29	370.00	0.00	0	0	0	0.00	0.00	0.00	0.00	51.80	421.80	issued	f
+242	169	2026-03-01	2026-03-31	2026-04-29	370.00	0.00	0	0	0	0.00	0.00	0.00	0.00	51.80	421.80	issued	f
+243	170	2026-03-01	2026-03-31	2026-04-29	370.00	0.00	0	0	0	0.00	0.00	0.00	0.00	51.80	421.80	issued	f
+244	171	2026-03-01	2026-03-31	2026-04-29	950.00	0.00	0	0	0	0.00	0.00	0.00	0.00	133.00	1083.00	issued	f
+245	172	2026-03-01	2026-03-31	2026-04-29	75.00	0.00	0	0	0	0.00	0.00	0.00	0.00	10.50	85.50	issued	f
+246	173	2026-03-01	2026-03-31	2026-04-29	75.00	0.00	0	0	0	0.00	0.00	0.00	0.00	10.50	85.50	issued	f
+247	174	2026-03-01	2026-03-31	2026-04-29	75.00	0.00	0	0	0	0.00	0.00	0.00	0.00	10.50	85.50	issued	f
+248	175	2026-03-01	2026-03-31	2026-04-29	370.00	0.00	0	0	0	0.00	0.00	0.00	0.00	51.80	421.80	issued	f
+249	176	2026-03-01	2026-03-31	2026-04-29	370.00	0.00	0	0	0	0.00	0.00	0.00	0.00	51.80	421.80	issued	f
+250	177	2026-03-01	2026-03-31	2026-04-29	75.00	0.00	0	0	0	0.00	0.00	0.00	0.00	10.50	85.50	issued	f
+251	178	2026-03-01	2026-03-31	2026-04-29	75.00	0.00	0	0	0	0.00	0.00	0.00	0.00	10.50	85.50	issued	f
+252	179	2026-03-01	2026-03-31	2026-04-29	370.00	0.00	0	0	0	0.00	0.00	0.00	0.00	51.80	421.80	issued	f
+253	180	2026-03-01	2026-03-31	2026-04-29	75.00	0.00	0	0	0	0.00	0.00	0.00	0.00	10.50	85.50	issued	f
+254	181	2026-03-01	2026-03-31	2026-04-29	75.00	0.00	0	0	0	0.00	0.00	0.00	0.00	10.50	85.50	issued	f
+255	182	2026-03-01	2026-03-31	2026-04-29	75.00	0.00	0	0	0	0.00	0.00	0.00	0.00	10.50	85.50	issued	f
+256	183	2026-03-01	2026-03-31	2026-04-29	950.00	0.00	0	0	0	0.00	0.00	0.00	0.00	133.00	1083.00	issued	f
+257	184	2026-03-01	2026-03-31	2026-04-29	950.00	0.00	0	0	0	0.00	0.00	0.00	0.00	133.00	1083.00	issued	f
+258	185	2026-03-01	2026-03-31	2026-04-29	75.00	0.00	0	0	0	0.00	0.00	0.00	0.00	10.50	85.50	issued	f
+259	186	2026-03-01	2026-03-31	2026-04-29	950.00	0.00	0	0	0	0.00	0.00	0.00	0.00	133.00	1083.00	issued	f
+260	187	2026-03-01	2026-03-31	2026-04-29	370.00	0.00	0	0	0	0.00	0.00	0.00	0.00	51.80	421.80	issued	f
+261	188	2026-03-01	2026-03-31	2026-04-29	950.00	0.00	0	0	0	0.00	0.00	0.00	0.00	133.00	1083.00	issued	f
+262	189	2026-03-01	2026-03-31	2026-04-29	75.00	0.00	0	0	0	0.00	0.00	0.00	0.00	10.50	85.50	issued	f
+263	190	2026-03-01	2026-03-31	2026-04-29	950.00	0.00	0	0	0	0.00	0.00	0.00	0.00	133.00	1083.00	issued	f
+264	191	2026-03-01	2026-03-31	2026-04-29	370.00	0.00	0	0	0	0.00	0.00	0.00	0.00	51.80	421.80	issued	f
+265	192	2026-03-01	2026-03-31	2026-04-29	75.00	0.00	0	0	0	0.00	0.00	0.00	0.00	10.50	85.50	issued	f
+266	193	2026-03-01	2026-03-31	2026-04-29	370.00	0.00	0	0	0	0.00	0.00	0.00	0.00	51.80	421.80	issued	f
+267	194	2026-03-01	2026-03-31	2026-04-29	950.00	0.00	0	0	0	0.00	0.00	0.00	0.00	133.00	1083.00	issued	f
+268	195	2026-03-01	2026-03-31	2026-04-29	370.00	0.00	0	0	0	0.00	0.00	0.00	0.00	51.80	421.80	issued	f
+269	196	2026-03-01	2026-03-31	2026-04-29	75.00	0.00	0	0	0	0.00	0.00	0.00	0.00	10.50	85.50	issued	f
+270	197	2026-03-01	2026-03-31	2026-04-29	370.00	0.00	0	0	0	0.00	0.00	0.00	0.00	51.80	421.80	issued	f
+271	198	2026-03-01	2026-03-31	2026-04-29	370.00	0.00	0	0	0	0.00	0.00	0.00	0.00	51.80	421.80	issued	f
+272	13	2026-04-01	2026-04-30	2026-04-29	75.00	0.00	0	0	0	0.00	0.00	0.00	0.00	10.50	85.50	issued	f
+273	49	2026-04-01	2026-04-30	2026-04-29	950.00	0.00	0	0	0	0.00	0.00	0.00	0.00	133.00	1083.00	issued	f
+274	50	2026-04-01	2026-04-30	2026-04-29	75.00	0.00	0	0	0	0.00	0.00	0.00	0.00	10.50	85.50	issued	f
+275	51	2026-04-01	2026-04-30	2026-04-29	950.00	0.00	0	0	0	0.00	0.00	0.00	0.00	133.00	1083.00	issued	f
+276	52	2026-04-01	2026-04-30	2026-04-29	950.00	0.00	0	0	0	0.00	0.00	0.00	0.00	133.00	1083.00	issued	f
+277	53	2026-04-01	2026-04-30	2026-04-29	75.00	0.00	0	0	0	0.00	0.00	0.00	0.00	10.50	85.50	issued	f
+278	54	2026-04-01	2026-04-30	2026-04-29	370.00	0.00	0	0	0	0.00	0.00	0.00	0.00	51.80	421.80	issued	f
+279	55	2026-04-01	2026-04-30	2026-04-29	75.00	0.00	0	0	0	0.00	0.00	0.00	0.00	10.50	85.50	issued	f
+280	56	2026-04-01	2026-04-30	2026-04-29	370.00	0.00	0	0	0	0.00	0.00	0.00	0.00	51.80	421.80	issued	f
+281	57	2026-04-01	2026-04-30	2026-04-29	75.00	0.00	0	0	0	0.00	0.00	0.00	0.00	10.50	85.50	issued	f
+282	58	2026-04-01	2026-04-30	2026-04-29	950.00	0.00	0	0	0	0.00	0.00	0.00	0.00	133.00	1083.00	issued	f
+283	59	2026-04-01	2026-04-30	2026-04-29	370.00	0.00	0	0	0	0.00	0.00	0.00	0.00	51.80	421.80	issued	f
+284	60	2026-04-01	2026-04-30	2026-04-29	75.00	0.00	0	0	0	0.00	0.00	0.00	0.00	10.50	85.50	issued	f
+285	61	2026-04-01	2026-04-30	2026-04-29	75.00	0.00	15	0	0	0.00	0.00	0.00	0.00	10.50	85.50	issued	f
+286	62	2026-04-01	2026-04-30	2026-04-29	75.00	0.00	0	0	0	0.00	0.00	0.00	0.00	10.50	85.50	issued	f
+287	63	2026-04-01	2026-04-30	2026-04-29	370.00	0.00	0	0	0	0.00	0.00	0.00	0.00	51.80	421.80	issued	f
+288	64	2026-04-01	2026-04-30	2026-04-29	370.00	0.00	0	0	0	0.00	0.00	0.00	0.00	51.80	421.80	issued	f
+289	66	2026-04-01	2026-04-30	2026-04-29	370.00	0.00	0	0	0	0.00	0.00	0.00	0.00	51.80	421.80	issued	f
+290	67	2026-04-01	2026-04-30	2026-04-29	75.00	0.00	0	0	0	0.00	0.00	0.00	0.00	10.50	85.50	issued	f
+291	68	2026-04-01	2026-04-30	2026-04-29	75.00	0.00	15	0	0	0.00	0.00	0.00	0.00	10.50	85.50	issued	f
+292	69	2026-04-01	2026-04-30	2026-04-29	370.00	0.00	0	0	0	0.00	0.00	0.00	0.00	51.80	421.80	issued	f
+293	70	2026-04-01	2026-04-30	2026-04-29	950.00	0.00	0	0	0	0.00	0.00	0.00	0.00	133.00	1083.00	issued	f
+294	71	2026-04-01	2026-04-30	2026-04-29	370.00	0.00	0	0	0	0.00	0.00	0.00	0.00	51.80	421.80	issued	f
+295	72	2026-04-01	2026-04-30	2026-04-29	370.00	0.00	0	0	0	0.00	0.00	0.00	0.00	51.80	421.80	issued	f
+296	73	2026-04-01	2026-04-30	2026-04-29	75.00	0.00	15	0	0	0.00	0.00	0.00	0.00	10.50	85.50	issued	f
+297	74	2026-04-01	2026-04-30	2026-04-29	370.00	0.00	0	0	0	0.00	0.00	0.00	0.00	51.80	421.80	issued	f
+298	75	2026-04-01	2026-04-30	2026-04-29	370.00	0.00	0	0	0	0.00	0.00	0.00	0.00	51.80	421.80	issued	f
+299	76	2026-04-01	2026-04-30	2026-04-29	75.00	0.00	0	0	0	0.00	0.00	0.00	0.00	10.50	85.50	issued	f
+300	77	2026-04-01	2026-04-30	2026-04-29	370.00	0.00	0	0	0	0.00	0.00	0.00	0.00	51.80	421.80	issued	f
+301	78	2026-04-01	2026-04-30	2026-04-29	370.00	0.00	0	0	0	0.00	0.00	0.00	0.00	51.80	421.80	issued	f
+302	79	2026-04-01	2026-04-30	2026-04-29	950.00	0.00	0	0	0	0.00	0.00	0.00	0.00	133.00	1083.00	issued	f
+303	80	2026-04-01	2026-04-30	2026-04-29	950.00	0.00	0	0	0	0.00	0.00	0.00	0.00	133.00	1083.00	issued	f
+304	81	2026-04-01	2026-04-30	2026-04-29	75.00	0.00	15	0	0	0.00	0.00	0.00	0.00	10.50	85.50	issued	f
+305	82	2026-04-01	2026-04-30	2026-04-29	75.00	0.00	0	0	0	0.00	0.00	0.00	0.00	10.50	85.50	issued	f
+306	83	2026-04-01	2026-04-30	2026-04-29	75.00	0.00	15	0	0	0.00	0.00	0.00	0.00	10.50	85.50	issued	f
+307	84	2026-04-01	2026-04-30	2026-04-29	950.00	0.00	0	0	0	0.00	0.00	0.00	0.00	133.00	1083.00	issued	f
+308	85	2026-04-01	2026-04-30	2026-04-29	370.00	0.00	0	0	0	0.00	0.00	0.00	0.00	51.80	421.80	issued	f
+309	86	2026-04-01	2026-04-30	2026-04-29	950.00	0.00	0	0	0	0.00	0.00	0.00	0.00	133.00	1083.00	issued	f
+310	87	2026-04-01	2026-04-30	2026-04-29	75.00	0.00	0	0	0	0.00	0.00	0.00	0.00	10.50	85.50	issued	f
+311	88	2026-04-01	2026-04-30	2026-04-29	75.00	0.00	15	0	0	0.00	0.00	0.00	0.00	10.50	85.50	issued	f
+312	89	2026-04-01	2026-04-30	2026-04-29	370.00	0.00	0	0	0	0.00	0.00	0.00	0.00	51.80	421.80	issued	f
+313	90	2026-04-01	2026-04-30	2026-04-29	75.00	0.00	0	0	0	0.00	0.00	0.00	0.00	10.50	85.50	issued	f
+314	91	2026-04-01	2026-04-30	2026-04-29	370.00	0.00	0	0	0	0.00	0.00	0.00	0.00	51.80	421.80	issued	f
+315	92	2026-04-01	2026-04-30	2026-04-29	950.00	0.00	0	0	0	0.00	0.00	0.00	0.00	133.00	1083.00	issued	f
+316	93	2026-04-01	2026-04-30	2026-04-29	75.00	0.00	0	0	0	0.00	0.00	0.00	0.00	10.50	85.50	issued	f
+317	94	2026-04-01	2026-04-30	2026-04-29	370.00	0.00	0	0	0	0.00	0.00	0.00	0.00	51.80	421.80	issued	f
+318	95	2026-04-01	2026-04-30	2026-04-29	75.00	0.00	0	0	0	0.00	0.00	0.00	0.00	10.50	85.50	issued	f
+319	96	2026-04-01	2026-04-30	2026-04-29	75.00	0.00	15	0	0	0.00	0.00	0.00	0.00	10.50	85.50	issued	f
+320	97	2026-04-01	2026-04-30	2026-04-29	370.00	0.00	0	0	0	0.00	0.00	0.00	0.00	51.80	421.80	issued	f
+321	98	2026-04-01	2026-04-30	2026-04-29	75.00	0.00	15	0	0	0.00	0.00	0.00	0.00	10.50	85.50	issued	f
+322	99	2026-04-01	2026-04-30	2026-04-29	370.00	0.00	0	0	0	0.00	0.00	0.00	0.00	51.80	421.80	issued	f
+323	100	2026-04-01	2026-04-30	2026-04-29	370.00	0.00	0	0	0	0.00	0.00	0.00	0.00	51.80	421.80	issued	f
+324	101	2026-04-01	2026-04-30	2026-04-29	75.00	0.00	15	0	0	0.00	0.00	0.00	0.00	10.50	85.50	issued	f
+325	102	2026-04-01	2026-04-30	2026-04-29	370.00	0.00	0	0	0	0.00	0.00	0.00	0.00	51.80	421.80	issued	f
+326	103	2026-04-01	2026-04-30	2026-04-29	950.00	0.00	0	0	0	0.00	0.00	0.00	0.00	133.00	1083.00	issued	f
+327	104	2026-04-01	2026-04-30	2026-04-29	370.00	0.00	0	0	0	0.00	0.00	0.00	0.00	51.80	421.80	issued	f
+328	105	2026-04-01	2026-04-30	2026-04-29	75.00	0.00	0	0	0	0.00	0.00	0.00	0.00	10.50	85.50	issued	f
+329	106	2026-04-01	2026-04-30	2026-04-29	370.00	0.00	0	0	0	0.00	0.00	0.00	0.00	51.80	421.80	issued	f
+330	107	2026-04-01	2026-04-30	2026-04-29	370.00	0.00	0	0	0	0.00	0.00	0.00	0.00	51.80	421.80	issued	f
+331	108	2026-04-01	2026-04-30	2026-04-29	75.00	0.00	15	0	0	0.00	0.00	0.00	0.00	10.50	85.50	issued	f
+332	109	2026-04-01	2026-04-30	2026-04-29	950.00	0.00	0	0	0	0.00	0.00	0.00	0.00	133.00	1083.00	issued	f
+333	110	2026-04-01	2026-04-30	2026-04-29	75.00	0.00	0	0	0	0.00	0.00	0.00	0.00	10.50	85.50	issued	f
+334	112	2026-04-01	2026-04-30	2026-04-29	75.00	0.00	15	0	0	0.00	0.00	0.00	0.00	10.50	85.50	issued	f
+335	113	2026-04-01	2026-04-30	2026-04-29	370.00	0.00	0	0	0	0.00	0.00	0.00	0.00	51.80	421.80	issued	f
+336	114	2026-04-01	2026-04-30	2026-04-29	370.00	0.00	0	0	0	0.00	0.00	0.00	0.00	51.80	421.80	issued	f
+337	115	2026-04-01	2026-04-30	2026-04-29	370.00	0.00	0	0	0	0.00	0.00	0.00	0.00	51.80	421.80	issued	f
+338	116	2026-04-01	2026-04-30	2026-04-29	370.00	0.00	0	0	0	0.00	0.00	0.00	0.00	51.80	421.80	issued	f
+339	118	2026-04-01	2026-04-30	2026-04-29	75.00	0.00	15	0	0	0.00	0.00	0.00	0.00	10.50	85.50	issued	f
+340	119	2026-04-01	2026-04-30	2026-04-29	370.00	0.00	0	0	0	0.00	0.00	0.00	0.00	51.80	421.80	issued	f
+341	120	2026-04-01	2026-04-30	2026-04-29	370.00	0.00	0	0	0	0.00	0.00	0.00	0.00	51.80	421.80	issued	f
+342	122	2026-04-01	2026-04-30	2026-04-29	75.00	0.00	15	0	0	0.00	0.00	0.00	0.00	10.50	85.50	issued	f
+343	123	2026-04-01	2026-04-30	2026-04-29	75.00	0.00	15	0	0	0.00	0.00	0.00	0.00	10.50	85.50	issued	f
+344	124	2026-04-01	2026-04-30	2026-04-29	370.00	0.00	0	0	0	0.00	0.00	0.00	0.00	51.80	421.80	issued	f
+345	125	2026-04-01	2026-04-30	2026-04-29	370.00	0.00	0	0	0	0.00	0.00	0.00	0.00	51.80	421.80	issued	f
+346	126	2026-04-01	2026-04-30	2026-04-29	370.00	0.00	0	0	0	0.00	0.00	0.00	0.00	51.80	421.80	issued	f
+347	127	2026-04-01	2026-04-30	2026-04-29	75.00	0.00	0	0	0	0.00	0.00	0.00	0.00	10.50	85.50	issued	f
+348	128	2026-04-01	2026-04-30	2026-04-29	950.00	0.00	0	0	0	0.00	0.00	0.00	0.00	133.00	1083.00	issued	f
+349	129	2026-04-01	2026-04-30	2026-04-29	370.00	0.00	0	0	0	0.00	0.00	0.00	0.00	51.80	421.80	issued	f
+350	130	2026-04-01	2026-04-30	2026-04-29	75.00	0.00	15	0	0	0.00	0.00	0.00	0.00	10.50	85.50	issued	f
+351	131	2026-04-01	2026-04-30	2026-04-29	75.00	0.00	0	0	0	0.00	0.00	0.00	0.00	10.50	85.50	issued	f
+352	132	2026-04-01	2026-04-30	2026-04-29	370.00	0.00	0	0	0	0.00	0.00	0.00	0.00	51.80	421.80	issued	f
+353	133	2026-04-01	2026-04-30	2026-04-29	75.00	0.00	0	0	0	0.00	0.00	0.00	0.00	10.50	85.50	issued	f
+354	134	2026-04-01	2026-04-30	2026-04-29	370.00	0.00	0	0	0	0.00	0.00	0.00	0.00	51.80	421.80	issued	f
+355	135	2026-04-01	2026-04-30	2026-04-29	75.00	0.00	0	0	0	0.00	0.00	0.00	0.00	10.50	85.50	issued	f
+356	136	2026-04-01	2026-04-30	2026-04-29	370.00	0.00	0	0	0	0.00	0.00	0.00	0.00	51.80	421.80	issued	f
+357	137	2026-04-01	2026-04-30	2026-04-29	370.00	0.00	0	0	0	0.00	0.00	0.00	0.00	51.80	421.80	issued	f
+358	138	2026-04-01	2026-04-30	2026-04-29	370.00	0.00	0	0	0	0.00	0.00	0.00	0.00	51.80	421.80	issued	f
+359	139	2026-04-01	2026-04-30	2026-04-29	370.00	0.00	0	0	0	0.00	0.00	0.00	0.00	51.80	421.80	issued	f
+360	140	2026-04-01	2026-04-30	2026-04-29	75.00	0.00	0	0	0	0.00	0.00	0.00	0.00	10.50	85.50	issued	f
+361	141	2026-04-01	2026-04-30	2026-04-29	75.00	0.00	15	0	0	0.00	0.00	0.00	0.00	10.50	85.50	issued	f
+362	142	2026-04-01	2026-04-30	2026-04-29	370.00	0.00	0	0	0	0.00	0.00	0.00	0.00	51.80	421.80	issued	f
+363	143	2026-04-01	2026-04-30	2026-04-29	75.00	0.00	15	0	0	0.00	0.00	0.00	0.00	10.50	85.50	issued	f
+364	144	2026-04-01	2026-04-30	2026-04-29	370.00	0.00	0	0	0	0.00	0.00	0.00	0.00	51.80	421.80	issued	f
+365	145	2026-04-01	2026-04-30	2026-04-29	370.00	0.00	0	0	0	0.00	0.00	0.00	0.00	51.80	421.80	issued	f
+366	146	2026-04-01	2026-04-30	2026-04-29	370.00	0.00	0	0	0	0.00	0.00	0.00	0.00	51.80	421.80	issued	f
+367	147	2026-04-01	2026-04-30	2026-04-29	370.00	0.00	0	0	0	0.00	0.00	0.00	0.00	51.80	421.80	issued	f
+368	148	2026-04-01	2026-04-30	2026-04-29	370.00	0.00	0	0	0	0.00	0.00	0.00	0.00	51.80	421.80	issued	f
+369	149	2026-04-01	2026-04-30	2026-04-29	370.00	0.00	0	0	0	0.00	0.00	0.00	0.00	51.80	421.80	issued	f
+370	150	2026-04-01	2026-04-30	2026-04-29	950.00	0.00	0	0	0	0.00	0.00	0.00	0.00	133.00	1083.00	issued	f
+371	151	2026-04-01	2026-04-30	2026-04-29	950.00	0.00	0	0	0	0.00	0.00	0.00	0.00	133.00	1083.00	issued	f
+372	152	2026-04-01	2026-04-30	2026-04-29	950.00	0.00	0	0	0	0.00	0.00	0.00	0.00	133.00	1083.00	issued	f
+373	153	2026-04-01	2026-04-30	2026-04-29	75.00	0.00	15	0	0	0.00	0.00	0.00	0.00	10.50	85.50	issued	f
+374	154	2026-04-01	2026-04-30	2026-04-29	75.00	0.00	0	0	0	0.00	0.00	0.00	0.00	10.50	85.50	issued	f
+375	155	2026-04-01	2026-04-30	2026-04-29	370.00	0.00	0	0	0	0.00	0.00	0.00	0.00	51.80	421.80	issued	f
+376	156	2026-04-01	2026-04-30	2026-04-29	370.00	0.00	0	0	0	0.00	0.00	0.00	0.00	51.80	421.80	issued	f
+377	157	2026-04-01	2026-04-30	2026-04-29	370.00	0.00	0	0	0	0.00	0.00	0.00	0.00	51.80	421.80	issued	f
+378	158	2026-04-01	2026-04-30	2026-04-29	75.00	0.00	0	0	0	0.00	0.00	0.00	0.00	10.50	85.50	issued	f
+379	159	2026-04-01	2026-04-30	2026-04-29	950.00	0.00	0	0	0	0.00	0.00	0.00	0.00	133.00	1083.00	issued	f
+380	160	2026-04-01	2026-04-30	2026-04-29	75.00	0.00	15	0	0	0.00	0.00	0.00	0.00	10.50	85.50	issued	f
+381	161	2026-04-01	2026-04-30	2026-04-29	370.00	0.00	0	0	0	0.00	0.00	0.00	0.00	51.80	421.80	issued	f
+382	162	2026-04-01	2026-04-30	2026-04-29	370.00	0.00	0	0	0	0.00	0.00	0.00	0.00	51.80	421.80	issued	f
+383	163	2026-04-01	2026-04-30	2026-04-29	370.00	0.00	0	0	0	0.00	0.00	0.00	0.00	51.80	421.80	issued	f
+384	164	2026-04-01	2026-04-30	2026-04-29	370.00	0.00	0	0	0	0.00	0.00	0.00	0.00	51.80	421.80	issued	f
+385	165	2026-04-01	2026-04-30	2026-04-29	950.00	0.00	0	0	0	0.00	0.00	0.00	0.00	133.00	1083.00	issued	f
+386	166	2026-04-01	2026-04-30	2026-04-29	370.00	0.00	0	0	0	0.00	0.00	0.00	0.00	51.80	421.80	issued	f
+387	167	2026-04-01	2026-04-30	2026-04-29	370.00	0.00	0	0	0	0.00	0.00	0.00	0.00	51.80	421.80	issued	f
+388	168	2026-04-01	2026-04-30	2026-04-29	370.00	0.00	0	0	0	0.00	0.00	0.00	0.00	51.80	421.80	issued	f
+389	169	2026-04-01	2026-04-30	2026-04-29	370.00	0.00	0	0	0	0.00	0.00	0.00	0.00	51.80	421.80	issued	f
+390	170	2026-04-01	2026-04-30	2026-04-29	370.00	0.00	0	0	0	0.00	0.00	0.00	0.00	51.80	421.80	issued	f
+391	171	2026-04-01	2026-04-30	2026-04-29	950.00	0.00	0	0	0	0.00	0.00	0.00	0.00	133.00	1083.00	issued	f
+392	172	2026-04-01	2026-04-30	2026-04-29	75.00	0.00	0	0	0	0.00	0.00	0.00	0.00	10.50	85.50	issued	f
+393	173	2026-04-01	2026-04-30	2026-04-29	75.00	0.00	15	0	0	0.00	0.00	0.00	0.00	10.50	85.50	issued	f
+394	174	2026-04-01	2026-04-30	2026-04-29	75.00	0.00	0	0	0	0.00	0.00	0.00	0.00	10.50	85.50	issued	f
+395	175	2026-04-01	2026-04-30	2026-04-29	370.00	0.00	0	0	0	0.00	0.00	0.00	0.00	51.80	421.80	issued	f
+396	176	2026-04-01	2026-04-30	2026-04-29	370.00	0.00	0	0	0	0.00	0.00	0.00	0.00	51.80	421.80	issued	f
+397	177	2026-04-01	2026-04-30	2026-04-29	75.00	0.00	0	0	0	0.00	0.00	0.00	0.00	10.50	85.50	issued	f
+398	178	2026-04-01	2026-04-30	2026-04-29	75.00	0.00	15	0	0	0.00	0.00	0.00	0.00	10.50	85.50	issued	f
+399	179	2026-04-01	2026-04-30	2026-04-29	370.00	0.00	0	0	0	0.00	0.00	0.00	0.00	51.80	421.80	issued	f
+400	180	2026-04-01	2026-04-30	2026-04-29	75.00	0.00	15	0	0	0.00	0.00	0.00	0.00	10.50	85.50	issued	f
+401	181	2026-04-01	2026-04-30	2026-04-29	75.00	0.00	0	0	0	0.00	0.00	0.00	0.00	10.50	85.50	issued	f
+402	182	2026-04-01	2026-04-30	2026-04-29	75.00	0.00	0	0	0	0.00	0.00	0.00	0.00	10.50	85.50	issued	f
+403	183	2026-04-01	2026-04-30	2026-04-29	950.00	0.00	0	0	0	0.00	0.00	0.00	0.00	133.00	1083.00	issued	f
+404	184	2026-04-01	2026-04-30	2026-04-29	950.00	0.00	0	0	0	0.00	0.00	0.00	0.00	133.00	1083.00	issued	f
 \.
 
 
 --
--- Data for Name: cdr; Type: TABLE DATA; Schema: public; Owner: -
+-- Data for Name: cdr; Type: TABLE DATA; Schema: public; Owner: zkhattab
 --
 
 COPY public.cdr (id, file_id, dial_a, dial_b, start_time, duration, service_id, hplmn, vplmn, external_charges, rated_flag, rated_service_id) FROM stdin;
-130	1	201000000044	201090000000	2026-04-01 10:30:00	77824	2	EGYVO	\N	756.48	t	2
-131	1	201000000044	201090000000	2026-04-01 11:00:00	1	3	EGYVO	\N	0.00	t	3
-132	1	201000000044	201090000000	2026-04-01 11:30:00	66	1	EGYVO	\N	0.00	t	1
-133	1	201000000044	201090000000	2026-04-01 12:00:00	37888	2	EGYVO	\N	757.76	t	\N
-134	1	201000000047	201090000000	2026-04-01 12:30:00	1	3	EGYVO	VODAFONE_UK	0.00	t	7
-135	1	201000000047	201090000000	2026-04-01 13:00:00	301	1	EGYVO	\N	0.00	t	4
-136	1	201000000047	201090000000	2026-04-01 13:30:00	73728	2	EGYVO	\N	680.58	t	2
-137	1	201000000047	201090000000	2026-04-01 14:00:00	1	3	EGYVO	\N	0.00	t	3
-138	1	201000000041	201090000000	2026-04-01 14:30:00	70	1	EGYVO	\N	0.00	t	4
-139	1	201000000041	201090000000	2026-04-01 15:00:00	8192	2	EGYVO	\N	0.00	t	4
-140	1	201000000041	201090000000	2026-04-01 15:30:00	1	3	EGYVO	\N	0.00	t	4
-141	1	201000000041	201090000000	2026-04-01 16:00:00	216	1	EGYVO	\N	0.00	t	4
-142	1	201000000027	201090000000	2026-04-01 16:30:00	50176	2	EGYVO	\N	203.52	t	2
-143	1	201000000027	201090000000	2026-04-01 17:00:00	1	3	EGYVO	\N	0.00	t	3
-144	1	201000000027	201090000000	2026-04-01 17:30:00	251	1	EGYVO	\N	0.00	t	1
-145	1	201000000027	201090000000	2026-04-01 18:00:00	71680	2	EGYVO	\N	1433.60	t	\N
-146	1	201000000001	201090000000	2026-04-01 18:30:00	1	3	EGYVO	VODAFONE_UK	0.05	t	\N
-147	1	201000000001	201090000000	2026-04-01 19:00:00	233	1	EGYVO	\N	0.00	t	1
-148	1	201000000001	201090000000	2026-04-01 19:30:00	46080	2	EGYVO	\N	4608.00	t	\N
-149	1	201000000001	201090000000	2026-04-01 20:00:00	1	3	EGYVO	VODAFONE_UK	0.05	t	\N
-150	1	201000000042	201090000000	2026-04-01 20:30:00	142	1	EGYVO	\N	0.00	t	1
-151	1	201000000042	201090000000	2026-04-01 21:00:00	71680	2	EGYVO	\N	7168.00	t	\N
-152	1	201000000042	201090000000	2026-04-01 21:30:00	1	3	EGYVO	VODAFONE_UK	0.05	t	\N
-153	1	201000000042	201090000000	2026-04-01 22:00:00	185	1	EGYVO	VODAFONE_UK	37.00	t	\N
-154	1	201000000011	201090000000	2026-04-01 22:30:00	39936	2	EGYVO	\N	3993.60	t	\N
-155	1	201000000011	201090000000	2026-04-01 23:00:00	1	3	EGYVO	\N	0.00	t	3
-156	1	201000000011	201090000000	2026-04-01 23:30:00	315	1	EGYVO	VODAFONE_UK	63.00	t	\N
-157	1	201000000011	201090000000	2026-04-02 00:00:00	30720	2	EGYVO	\N	3072.00	t	\N
-158	1	201000000026	201090000000	2026-04-02 00:30:00	1	3	EGYVO	VODAFONE_UK	0.05	t	\N
-159	1	201000000026	201090000000	2026-04-02 01:00:00	97	1	EGYVO	\N	0.00	t	1
-160	1	201000000026	201090000000	2026-04-02 01:30:00	68608	2	EGYVO	\N	6860.80	t	\N
-161	1	201000000026	201090000000	2026-04-02 02:00:00	1	3	EGYVO	\N	0.00	t	3
-162	1	201000000034	201090000000	2026-04-02 02:30:00	203	1	EGYVO	\N	0.00	t	1
-163	1	201000000034	201090000000	2026-04-02 03:00:00	49152	2	EGYVO	\N	4915.20	t	\N
-164	1	201000000034	201090000000	2026-04-02 03:30:00	1	3	EGYVO	\N	0.00	t	3
-165	1	201000000034	201090000000	2026-04-02 04:00:00	258	1	EGYVO	\N	0.00	t	1
-166	1	201000000019	201090000000	2026-04-02 04:30:00	40960	2	EGYVO	VODAFONE_UK	1848.00	t	6
-167	1	201000000019	201090000000	2026-04-02 05:00:00	1	3	EGYVO	\N	0.00	t	4
-168	1	201000000019	201090000000	2026-04-02 05:30:00	162	1	EGYVO	\N	0.00	t	4
-169	1	201000000019	201090000000	2026-04-02 06:00:00	54272	2	EGYVO	VODAFONE_UK	2713.60	t	\N
-170	1	201000000014	201090000000	2026-04-02 06:30:00	1	3	EGYVO	\N	0.00	t	4
-171	1	201000000014	201090000000	2026-04-02 07:00:00	32	1	EGYVO	\N	0.00	t	4
-172	1	201000000014	201090000000	2026-04-02 07:30:00	8192	2	EGYVO	\N	0.00	t	4
-173	1	201000000014	201090000000	2026-04-02 08:00:00	1	3	EGYVO	\N	0.00	t	4
-174	1	201000000005	201090000000	2026-04-02 08:30:00	88	1	EGYVO	\N	0.00	t	1
-175	1	201000000005	201090000000	2026-04-02 09:00:00	25600	2	EGYVO	\N	2560.00	t	\N
-176	1	201000000005	201090000000	2026-04-02 09:30:00	1	3	EGYVO	\N	0.00	t	3
-177	1	201000000005	201090000000	2026-04-02 10:00:00	97	1	EGYVO	VODAFONE_UK	19.40	t	\N
-178	1	201000000004	201090000000	2026-04-02 10:30:00	64512	2	EGYVO	\N	2225.60	t	2
-179	1	201000000004	201090000000	2026-04-02 11:00:00	1	3	EGYVO	VODAFONE_UK	0.00	t	7
-180	1	201000000004	201090000000	2026-04-02 11:30:00	212	1	EGYVO	\N	0.00	t	1
-181	1	201000000004	201090000000	2026-04-02 12:00:00	53248	2	EGYVO	\N	2662.40	t	\N
-182	1	201000000023	201090000000	2026-04-02 12:30:00	1	3	EGYVO	\N	0.00	t	3
-183	1	201000000023	201090000000	2026-04-02 13:00:00	107	1	EGYVO	\N	0.00	t	1
-184	1	201000000023	201090000000	2026-04-02 13:30:00	78848	2	EGYVO	VODAFONE_UK	7884.80	t	\N
-185	1	201000000023	201090000000	2026-04-02 14:00:00	1	3	EGYVO	\N	0.00	t	3
-186	1	201000000002	201090000000	2026-04-02 14:30:00	238	1	EGYVO	\N	0.00	t	4
-187	1	201000000002	201090000000	2026-04-02 15:00:00	73728	2	EGYVO	\N	2698.30	t	2
-188	1	201000000002	201090000000	2026-04-02 15:30:00	1	3	EGYVO	\N	0.00	t	3
-189	1	201000000002	201090000000	2026-04-02 16:00:00	252	1	EGYVO	\N	0.00	t	1
-190	1	201000000036	201090000000	2026-04-02 16:30:00	72704	2	EGYVO	\N	7270.40	t	\N
-191	1	201000000036	201090000000	2026-04-02 17:00:00	1	3	EGYVO	\N	0.00	t	3
-192	1	201000000036	201090000000	2026-04-02 17:30:00	169	1	EGYVO	\N	0.00	t	1
-1	1	201000000001	201000000002	2026-04-01 09:15:00	180	1	EGYVO	\N	36.00	t	\N
+230	1	201929443681	201090000000	2026-04-01 10:00:00	300	1	EGYVO	\N	0.00	t	4
+231	1	201929443681	201090000000	2026-04-01 10:00:00	300	1	EGYVO	\N	0.00	t	4
+232	1	201929443681	201090000000	2026-04-01 10:00:00	300	1	EGYVO	\N	0.00	t	4
+233	1	201413480521	201090000000	2026-04-01 10:00:00	300	1	EGYVO	\N	0.00	t	4
+234	1	201413480521	201090000000	2026-04-01 10:00:00	300	1	EGYVO	\N	0.00	t	4
+235	1	201413480521	201090000000	2026-04-01 10:00:00	300	1	EGYVO	\N	0.00	t	4
+236	1	201100488135	201090000000	2026-04-01 10:00:00	300	1	EGYVO	\N	0.00	t	4
+237	1	201100488135	201090000000	2026-04-01 10:00:00	300	1	EGYVO	\N	0.00	t	4
+238	1	201100488135	201090000000	2026-04-01 10:00:00	300	1	EGYVO	\N	0.00	t	4
+239	1	201921537400	201090000000	2026-04-01 10:00:00	300	1	EGYVO	\N	0.00	t	4
+240	1	201921537400	201090000000	2026-04-01 10:00:00	300	1	EGYVO	\N	0.00	t	4
+241	1	201921537400	201090000000	2026-04-01 10:00:00	300	1	EGYVO	\N	0.00	t	4
+242	1	201766068173	201090000000	2026-04-01 10:00:00	300	1	EGYVO	\N	0.00	t	4
+243	1	201766068173	201090000000	2026-04-01 10:00:00	300	1	EGYVO	\N	0.00	t	4
+244	1	201766068173	201090000000	2026-04-01 10:00:00	300	1	EGYVO	\N	0.00	t	4
+245	1	201577029209	201090000000	2026-04-01 10:00:00	300	1	EGYVO	\N	0.00	t	1
+246	1	201577029209	201090000000	2026-04-01 10:00:00	300	1	EGYVO	\N	0.00	t	1
+247	1	201577029209	201090000000	2026-04-01 10:00:00	300	1	EGYVO	\N	0.00	t	1
+248	1	201807868584	201090000000	2026-04-01 10:00:00	300	1	EGYVO	\N	0.00	t	1
+249	1	201807868584	201090000000	2026-04-01 10:00:00	300	1	EGYVO	\N	0.00	t	1
+250	1	201807868584	201090000000	2026-04-01 10:00:00	300	1	EGYVO	\N	0.00	t	1
+251	1	201971560057	201090000000	2026-04-01 10:00:00	300	1	EGYVO	\N	0.00	t	4
+252	1	201971560057	201090000000	2026-04-01 10:00:00	300	1	EGYVO	\N	0.00	t	4
+253	1	201971560057	201090000000	2026-04-01 10:00:00	300	1	EGYVO	\N	0.00	t	4
+254	1	201840246205	201090000000	2026-04-01 10:00:00	300	1	EGYVO	\N	0.00	t	4
+255	1	201840246205	201090000000	2026-04-01 10:00:00	300	1	EGYVO	\N	0.00	t	4
+256	1	201840246205	201090000000	2026-04-01 10:00:00	300	1	EGYVO	\N	0.00	t	4
+257	1	201684075608	201090000000	2026-04-01 10:00:00	300	1	EGYVO	\N	0.00	t	4
+258	1	201684075608	201090000000	2026-04-01 10:00:00	300	1	EGYVO	\N	0.00	t	4
+259	1	201684075608	201090000000	2026-04-01 10:00:00	300	1	EGYVO	\N	0.00	t	4
+260	1	201974393501	201090000000	2026-04-01 10:00:00	300	1	EGYVO	\N	0.00	t	1
+261	1	201974393501	201090000000	2026-04-01 10:00:00	300	1	EGYVO	\N	0.00	t	1
+262	1	201974393501	201090000000	2026-04-01 10:00:00	300	1	EGYVO	\N	0.00	t	1
+263	1	201198754346	201090000000	2026-04-01 10:00:00	300	1	EGYVO	\N	0.00	t	4
+264	1	201198754346	201090000000	2026-04-01 10:00:00	300	1	EGYVO	\N	0.00	t	4
+265	1	201198754346	201090000000	2026-04-01 10:00:00	300	1	EGYVO	\N	0.00	t	4
+266	1	201407381378	201090000000	2026-04-01 10:00:00	300	1	EGYVO	\N	0.00	t	4
+267	1	201407381378	201090000000	2026-04-01 10:00:00	300	1	EGYVO	\N	0.00	t	4
+268	1	201407381378	201090000000	2026-04-01 10:00:00	300	1	EGYVO	\N	0.00	t	4
+269	1	201526237308	201090000000	2026-04-01 10:00:00	300	1	EGYVO	\N	0.00	t	4
+270	1	201526237308	201090000000	2026-04-01 10:00:00	300	1	EGYVO	\N	0.00	t	4
+271	1	201526237308	201090000000	2026-04-01 10:00:00	300	1	EGYVO	\N	0.00	t	4
+272	1	201554543248	201090000000	2026-04-01 10:00:00	300	1	EGYVO	\N	0.00	t	4
+273	1	201554543248	201090000000	2026-04-01 10:00:00	300	1	EGYVO	\N	0.00	t	4
+274	1	201554543248	201090000000	2026-04-01 10:00:00	300	1	EGYVO	\N	0.00	t	4
+275	1	201776684616	201090000000	2026-04-01 10:00:00	300	1	EGYVO	\N	0.00	t	1
+276	1	201776684616	201090000000	2026-04-01 10:00:00	300	1	EGYVO	\N	0.00	t	1
+277	1	201776684616	201090000000	2026-04-01 10:00:00	300	1	EGYVO	\N	0.00	t	1
+278	1	201718702362	201090000000	2026-04-01 10:00:00	300	1	EGYVO	\N	0.00	t	1
+279	1	201718702362	201090000000	2026-04-01 10:00:00	300	1	EGYVO	\N	0.00	t	1
+280	1	201718702362	201090000000	2026-04-01 10:00:00	300	1	EGYVO	\N	0.00	t	1
+281	1	201232465204	201090000000	2026-04-01 10:00:00	300	1	EGYVO	\N	0.00	t	4
+282	1	201232465204	201090000000	2026-04-01 10:00:00	300	1	EGYVO	\N	0.00	t	4
+283	1	201232465204	201090000000	2026-04-01 10:00:00	300	1	EGYVO	\N	0.00	t	4
+284	1	201659706181	201090000000	2026-04-01 10:00:00	300	1	EGYVO	\N	0.00	t	1
+285	1	201659706181	201090000000	2026-04-01 10:00:00	300	1	EGYVO	\N	0.00	t	1
+286	1	201659706181	201090000000	2026-04-01 10:00:00	300	1	EGYVO	\N	0.00	t	1
+287	1	201649117498	201090000000	2026-04-01 10:00:00	300	1	EGYVO	\N	0.00	t	4
+288	1	201649117498	201090000000	2026-04-01 10:00:00	300	1	EGYVO	\N	0.00	t	4
+289	1	201649117498	201090000000	2026-04-01 10:00:00	300	1	EGYVO	\N	0.00	t	4
+290	1	201653069004	201090000000	2026-04-01 10:00:00	300	1	EGYVO	\N	0.00	t	1
+291	1	201653069004	201090000000	2026-04-01 10:00:00	300	1	EGYVO	\N	0.00	t	1
+292	1	201653069004	201090000000	2026-04-01 10:00:00	300	1	EGYVO	\N	0.00	t	1
+293	1	201779264035	201090000000	2026-04-01 10:00:00	300	1	EGYVO	\N	0.00	t	4
+1	1	201000000001	201000000002	2026-04-01 09:15:00	180	1	EGYVO	\N	0.60	t	\N
 2	1	201000000001	201000000003	2026-04-01 14:30:00	1	3	EGYVO	\N	0.05	t	\N
-3	1	201000000001	201000000005	2026-04-02 08:00:00	300	1	EGYVO	\N	60.00	t	\N
+3	1	201000000001	201000000005	2026-04-02 08:00:00	300	1	EGYVO	\N	1.00	t	\N
 4	1	201000000001	201000000007	2026-04-03 11:20:00	1	3	EGYVO	\N	0.05	t	\N
-5	1	201000000001	201000000009	2026-04-04 10:05:00	240	1	EGYVO	\N	48.00	t	\N
+5	1	201000000001	201000000009	2026-04-04 10:05:00	240	1	EGYVO	\N	0.80	t	\N
 6	1	201000000001	201000000002	2026-04-05 16:45:00	1	3	EGYVO	\N	0.05	t	\N
-7	1	201000000001	201000000011	2026-04-07 09:30:00	420	1	EGYVO	\N	84.00	t	\N
+7	1	201000000001	201000000011	2026-04-07 09:30:00	420	1	EGYVO	\N	1.40	t	\N
 8	1	201000000001	201000000013	2026-04-08 13:00:00	1	3	EGYVO	\N	0.05	t	\N
-9	1	201000000001	201000000015	2026-04-09 17:20:00	150	1	EGYVO	\N	30.00	t	\N
-10	1	201000000001	201000000002	2026-04-10 08:45:00	360	1	EGYVO	\N	72.00	t	\N
+9	1	201000000001	201000000015	2026-04-09 17:20:00	150	1	EGYVO	\N	0.60	t	\N
+10	1	201000000001	201000000002	2026-04-10 08:45:00	360	1	EGYVO	\N	1.20	t	\N
 11	1	201000000001	201000000003	2026-04-12 12:10:00	1	3	EGYVO	\N	0.05	t	\N
-12	1	201000000001	201000000017	2026-04-14 15:30:00	210	1	EGYVO	\N	42.00	t	\N
-13	1	201000000001	201000000004	2026-04-16 09:00:00	270	1	EGYVO	\N	54.00	t	\N
+12	1	201000000001	201000000017	2026-04-14 15:30:00	210	1	EGYVO	\N	0.80	t	\N
+13	1	201000000001	201000000004	2026-04-16 09:00:00	270	1	EGYVO	\N	1.00	t	\N
 14	1	201000000001	201000000006	2026-04-18 14:00:00	1	3	EGYVO	\N	0.05	t	\N
-15	1	201000000001	201000000008	2026-04-20 10:30:00	330	1	EGYVO	\N	66.00	t	\N
-16	1	201000000002	201000000001	2026-04-01 08:30:00	300	1	EGYVO	\N	30.00	t	\N
-17	1	201000000002	201000000004	2026-04-01 10:00:00	500	2	EGYVO	\N	25.00	t	\N
+15	1	201000000001	201000000008	2026-04-20 10:30:00	330	1	EGYVO	\N	1.20	t	\N
+16	1	201000000002	201000000001	2026-04-01 08:30:00	300	1	EGYVO	\N	0.50	t	\N
+17	1	201000000002	201000000004	2026-04-01 10:00:00	500	2	EGYVO	\N	0.00	t	\N
 18	1	201000000002	201000000006	2026-04-01 12:00:00	1	3	EGYVO	\N	0.02	t	\N
-19	1	201000000002	201000000008	2026-04-02 09:15:00	450	1	EGYVO	\N	45.00	t	\N
-20	1	201000000002	201000000010	2026-04-02 14:30:00	750	2	EGYVO	\N	37.50	t	\N
+19	1	201000000002	201000000008	2026-04-02 09:15:00	450	1	EGYVO	\N	0.80	t	\N
+20	1	201000000002	201000000010	2026-04-02 14:30:00	750	2	EGYVO	\N	0.00	t	\N
 21	1	201000000002	201000000012	2026-04-03 08:00:00	1	3	EGYVO	\N	0.02	t	\N
-22	1	201000000002	201000000001	2026-04-04 11:45:00	600	1	EGYVO	\N	60.00	t	\N
-23	1	201000000002	201000000014	2026-04-05 15:00:00	1000	2	EGYVO	\N	50.00	t	\N
+22	1	201000000002	201000000001	2026-04-04 11:45:00	600	1	EGYVO	\N	1.00	t	\N
+23	1	201000000002	201000000014	2026-04-05 15:00:00	1000	2	EGYVO	\N	0.00	t	\N
 24	1	201000000002	201000000016	2026-04-06 09:30:00	1	3	EGYVO	\N	0.02	t	\N
-25	1	201000000002	201000000018	2026-04-07 13:20:00	480	1	EGYVO	\N	48.00	t	\N
-26	1	201000000002	201000000001	2026-04-08 17:00:00	800	2	EGYVO	\N	40.00	t	\N
+25	1	201000000002	201000000018	2026-04-07 13:20:00	480	1	EGYVO	\N	0.80	t	\N
+26	1	201000000002	201000000001	2026-04-08 17:00:00	800	2	EGYVO	\N	0.00	t	\N
 27	1	201000000002	201000000003	2026-04-09 10:15:00	1	3	EGYVO	\N	0.02	t	\N
-28	2	201000000002	201000000001	2026-04-15 10:00:00	180	5	EGYVO	DEUTS	18.00	t	\N
-29	2	201000000002	201000000004	2026-04-15 14:30:00	200	6	EGYVO	DEUTS	10.00	t	\N
-30	2	201000000002	201000000006	2026-04-16 09:00:00	1	7	EGYVO	DEUTS	0.02	t	\N
-31	2	201000000002	201000000008	2026-04-16 15:45:00	120	5	EGYVO	DEUTS	12.00	t	\N
-32	2	201000000002	201000000001	2026-04-17 11:00:00	300	6	EGYVO	DEUTS	15.00	t	\N
-33	1	201000000003	201000000001	2026-04-01 09:00:00	120	1	EGYVO	\N	24.00	t	\N
+28	2	201000000002	201000000001	2026-04-15 10:00:00	180	5	EGYVO	DEUTS	0.00	t	\N
+29	2	201000000002	201000000004	2026-04-15 14:30:00	200	6	EGYVO	DEUTS	0.00	t	\N
+30	2	201000000002	201000000006	2026-04-16 09:00:00	1	7	EGYVO	DEUTS	0.00	t	\N
+31	2	201000000002	201000000008	2026-04-16 15:45:00	120	5	EGYVO	DEUTS	0.00	t	\N
+32	2	201000000002	201000000001	2026-04-17 11:00:00	300	6	EGYVO	DEUTS	0.00	t	\N
+33	1	201000000003	201000000001	2026-04-01 09:00:00	120	1	EGYVO	\N	0.40	t	\N
 34	1	201000000003	201000000005	2026-04-02 11:30:00	1	3	EGYVO	\N	0.05	t	\N
-35	1	201000000003	201000000007	2026-04-04 14:00:00	240	1	EGYVO	\N	48.00	t	\N
+35	1	201000000003	201000000007	2026-04-04 14:00:00	240	1	EGYVO	\N	0.80	t	\N
 36	1	201000000003	201000000009	2026-04-06 16:30:00	1	3	EGYVO	\N	0.05	t	\N
-37	1	201000000003	201000000001	2026-04-08 10:15:00	180	1	EGYVO	\N	36.00	t	\N
-38	1	201000000003	201000000011	2026-04-10 13:45:00	90	1	EGYVO	\N	18.00	t	\N
-39	1	201000000004	201000000002	2026-04-01 08:00:00	360	1	EGYVO	\N	36.00	t	\N
-40	1	201000000004	201000000006	2026-04-01 13:00:00	600	2	EGYVO	\N	30.00	t	\N
+37	1	201000000003	201000000001	2026-04-08 10:15:00	180	1	EGYVO	\N	0.60	t	\N
+38	1	201000000003	201000000011	2026-04-10 13:45:00	90	1	EGYVO	\N	0.40	t	\N
+39	1	201000000004	201000000002	2026-04-01 08:00:00	360	1	EGYVO	\N	0.60	t	\N
+40	1	201000000004	201000000006	2026-04-01 13:00:00	600	2	EGYVO	\N	0.00	t	\N
 41	1	201000000004	201000000008	2026-04-02 10:30:00	1	3	EGYVO	\N	0.02	t	\N
-42	1	201000000004	201000000010	2026-04-03 15:00:00	420	1	EGYVO	\N	42.00	t	\N
-43	1	201000000004	201000000012	2026-04-05 09:45:00	800	2	EGYVO	\N	40.00	t	\N
+42	1	201000000004	201000000010	2026-04-03 15:00:00	420	1	EGYVO	\N	0.70	t	\N
+43	1	201000000004	201000000012	2026-04-05 09:45:00	800	2	EGYVO	\N	0.00	t	\N
 44	1	201000000004	201000000002	2026-04-07 14:00:00	1	3	EGYVO	\N	0.02	t	\N
-45	1	201000000004	201000000014	2026-04-09 11:30:00	540	1	EGYVO	\N	54.00	t	\N
-46	1	201000000004	201000000016	2026-04-11 16:00:00	700	2	EGYVO	\N	35.00	t	\N
-47	1	201000000005	201000000001	2026-04-01 10:00:00	90	1	EGYVO	\N	18.00	t	\N
+45	1	201000000004	201000000014	2026-04-09 11:30:00	540	1	EGYVO	\N	0.90	t	\N
+46	1	201000000004	201000000016	2026-04-11 16:00:00	700	2	EGYVO	\N	0.00	t	\N
+47	1	201000000005	201000000001	2026-04-01 10:00:00	90	1	EGYVO	\N	0.40	t	\N
 48	1	201000000005	201000000003	2026-04-03 12:30:00	1	3	EGYVO	\N	0.05	t	\N
-49	1	201000000005	201000000007	2026-04-05 15:45:00	150	1	EGYVO	\N	30.00	t	\N
+49	1	201000000005	201000000007	2026-04-05 15:45:00	150	1	EGYVO	\N	0.60	t	\N
 50	1	201000000005	201000000009	2026-04-08 09:00:00	1	3	EGYVO	\N	0.05	t	\N
-51	1	201000000005	201000000001	2026-04-11 11:15:00	120	1	EGYVO	\N	24.00	t	\N
-52	2	201000000006	201000000002	2026-04-01 09:30:00	540	1	EGYVO	\N	54.00	t	\N
-53	2	201000000006	201000000008	2026-04-01 13:00:00	900	2	EGYVO	\N	45.00	t	\N
+51	1	201000000005	201000000001	2026-04-11 11:15:00	120	1	EGYVO	\N	0.40	t	\N
+52	2	201000000006	201000000002	2026-04-01 09:30:00	540	1	EGYVO	\N	0.90	t	\N
+53	2	201000000006	201000000008	2026-04-01 13:00:00	900	2	EGYVO	\N	0.00	t	\N
 54	2	201000000006	201000000010	2026-04-02 08:15:00	1	3	EGYVO	\N	0.02	t	\N
-55	2	201000000006	201000000012	2026-04-02 14:00:00	480	1	EGYVO	\N	48.00	t	\N
-56	2	201000000006	201000000014	2026-04-03 10:30:00	1100	2	EGYVO	\N	55.00	t	\N
+55	2	201000000006	201000000012	2026-04-02 14:00:00	480	1	EGYVO	\N	0.80	t	\N
+56	2	201000000006	201000000014	2026-04-03 10:30:00	1100	2	EGYVO	\N	0.00	t	\N
 57	2	201000000006	201000000002	2026-04-04 15:45:00	1	3	EGYVO	\N	0.02	t	\N
-58	2	201000000006	201000000016	2026-04-05 09:00:00	660	1	EGYVO	\N	66.00	t	\N
-59	2	201000000006	201000000018	2026-04-06 12:30:00	850	2	EGYVO	\N	42.50	t	\N
+58	2	201000000006	201000000016	2026-04-05 09:00:00	660	1	EGYVO	\N	1.10	t	\N
+59	2	201000000006	201000000018	2026-04-06 12:30:00	850	2	EGYVO	\N	0.00	t	\N
 60	2	201000000006	201000000002	2026-04-07 16:00:00	1	3	EGYVO	\N	0.02	t	\N
-61	2	201000000006	201000000004	2026-04-08 10:15:00	720	1	EGYVO	\N	72.00	t	\N
-62	2	201000000007	201000000001	2026-04-01 08:45:00	60	1	EGYVO	\N	12.00	t	\N
+61	2	201000000006	201000000004	2026-04-08 10:15:00	720	1	EGYVO	\N	1.20	t	\N
+62	2	201000000007	201000000001	2026-04-01 08:45:00	60	1	EGYVO	\N	0.20	t	\N
 63	2	201000000007	201000000009	2026-04-03 13:30:00	1	3	EGYVO	\N	0.05	t	\N
-64	2	201000000007	201000000011	2026-04-05 16:00:00	120	1	EGYVO	\N	24.00	t	\N
-65	2	201000000007	201000000001	2026-04-08 10:00:00	180	1	EGYVO	\N	36.00	t	\N
+64	2	201000000007	201000000011	2026-04-05 16:00:00	120	1	EGYVO	\N	0.40	t	\N
+65	2	201000000007	201000000001	2026-04-08 10:00:00	180	1	EGYVO	\N	0.60	t	\N
 66	2	201000000007	201000000003	2026-04-11 14:15:00	1	3	EGYVO	\N	0.05	t	\N
-67	2	201000000007	201000000005	2026-04-14 09:30:00	240	1	EGYVO	\N	48.00	t	\N
-68	2	201000000008	201000000002	2026-04-01 10:15:00	300	1	EGYVO	\N	30.00	t	\N
-69	2	201000000008	201000000004	2026-04-02 12:00:00	650	2	EGYVO	\N	32.50	t	\N
+67	2	201000000007	201000000005	2026-04-14 09:30:00	240	1	EGYVO	\N	0.80	t	\N
+68	2	201000000008	201000000002	2026-04-01 10:15:00	300	1	EGYVO	\N	0.50	t	\N
+69	2	201000000008	201000000004	2026-04-02 12:00:00	650	2	EGYVO	\N	0.00	t	\N
 70	2	201000000008	201000000006	2026-04-03 15:30:00	1	3	EGYVO	\N	0.02	t	\N
-71	2	201000000008	201000000010	2026-04-04 09:00:00	420	1	EGYVO	\N	42.00	t	\N
-72	2	201000000008	201000000012	2026-04-05 13:45:00	750	2	EGYVO	\N	37.50	t	\N
+71	2	201000000008	201000000010	2026-04-04 09:00:00	420	1	EGYVO	\N	0.70	t	\N
+72	2	201000000008	201000000012	2026-04-05 13:45:00	750	2	EGYVO	\N	0.00	t	\N
 73	2	201000000008	201000000002	2026-04-07 11:00:00	1	3	EGYVO	\N	0.02	t	\N
-74	2	201000000008	201000000014	2026-04-09 16:30:00	390	1	EGYVO	\N	39.00	t	\N
-75	2	201000000009	201000000001	2026-04-01 11:00:00	180	1	EGYVO	\N	36.00	t	\N
+74	2	201000000008	201000000014	2026-04-09 16:30:00	390	1	EGYVO	\N	0.70	t	\N
+75	2	201000000009	201000000001	2026-04-01 11:00:00	180	1	EGYVO	\N	0.60	t	\N
 76	2	201000000009	201000000003	2026-04-03 14:00:00	1	3	EGYVO	\N	0.05	t	\N
-77	2	201000000009	201000000005	2026-04-06 09:30:00	150	1	EGYVO	\N	30.00	t	\N
+77	2	201000000009	201000000005	2026-04-06 09:30:00	150	1	EGYVO	\N	0.60	t	\N
 78	2	201000000009	201000000007	2026-04-09 12:45:00	1	3	EGYVO	\N	0.05	t	\N
-79	2	201000000010	201000000002	2026-04-01 09:45:00	360	1	EGYVO	\N	36.00	t	\N
-80	2	201000000010	201000000004	2026-04-02 13:15:00	700	2	EGYVO	\N	35.00	t	\N
+79	2	201000000010	201000000002	2026-04-01 09:45:00	360	1	EGYVO	\N	0.60	t	\N
+80	2	201000000010	201000000004	2026-04-02 13:15:00	700	2	EGYVO	\N	0.00	t	\N
 81	2	201000000010	201000000006	2026-04-03 16:00:00	1	3	EGYVO	\N	0.02	t	\N
-82	2	201000000010	201000000008	2026-04-04 10:30:00	480	1	EGYVO	\N	48.00	t	\N
-83	2	201000000010	201000000012	2026-04-05 14:00:00	900	2	EGYVO	\N	45.00	t	\N
+82	2	201000000010	201000000008	2026-04-04 10:30:00	480	1	EGYVO	\N	0.80	t	\N
+83	2	201000000010	201000000012	2026-04-05 14:00:00	900	2	EGYVO	\N	0.00	t	\N
 84	2	201000000010	201000000002	2026-04-07 09:15:00	1	3	EGYVO	\N	0.02	t	\N
-85	2	201000000010	201000000014	2026-04-09 15:45:00	540	1	EGYVO	\N	54.00	t	\N
-86	2	201000000010	201000000016	2026-04-11 11:00:00	800	2	EGYVO	\N	40.00	t	\N
-87	1	201000000011	201000000001	2026-04-01 08:00:00	600	1	EGYVO	\N	120.00	t	\N
+85	2	201000000010	201000000014	2026-04-09 15:45:00	540	1	EGYVO	\N	0.90	t	\N
+86	2	201000000010	201000000016	2026-04-11 11:00:00	800	2	EGYVO	\N	0.00	t	\N
+87	1	201000000011	201000000001	2026-04-01 08:00:00	600	1	EGYVO	\N	2.00	t	\N
 88	1	201000000011	201000000003	2026-04-02 10:30:00	1	3	EGYVO	\N	0.05	t	\N
-89	1	201000000011	201000000005	2026-04-03 14:15:00	480	1	EGYVO	\N	96.00	t	\N
+89	1	201000000011	201000000005	2026-04-03 14:15:00	480	1	EGYVO	\N	1.60	t	\N
 90	1	201000000011	201000000007	2026-04-04 16:45:00	1	3	EGYVO	\N	0.05	t	\N
-91	1	201000000011	201000000009	2026-04-05 09:30:00	540	1	EGYVO	\N	108.00	t	\N
+91	1	201000000011	201000000009	2026-04-05 09:30:00	540	1	EGYVO	\N	1.80	t	\N
 92	1	201000000011	201000000001	2026-04-07 13:00:00	1	3	EGYVO	\N	0.05	t	\N
-93	1	201000000011	201000000003	2026-04-09 10:15:00	420	1	EGYVO	\N	84.00	t	\N
+93	1	201000000011	201000000003	2026-04-09 10:15:00	420	1	EGYVO	\N	1.40	t	\N
 94	1	201000000011	201000000005	2026-04-11 15:30:00	1	3	EGYVO	\N	0.05	t	\N
-95	1	201000000012	201000000002	2026-04-01 11:30:00	270	1	EGYVO	\N	27.00	t	\N
-96	1	201000000012	201000000004	2026-04-03 09:00:00	550	2	EGYVO	\N	27.50	t	\N
+95	1	201000000012	201000000002	2026-04-01 11:30:00	270	1	EGYVO	\N	0.50	t	\N
+96	1	201000000012	201000000004	2026-04-03 09:00:00	550	2	EGYVO	\N	0.00	t	\N
 97	1	201000000012	201000000006	2026-04-05 13:45:00	1	3	EGYVO	\N	0.02	t	\N
-98	1	201000000012	201000000008	2026-04-07 16:00:00	330	1	EGYVO	\N	33.00	t	\N
-99	1	201000000014	201000000002	2026-04-01 09:00:00	390	1	EGYVO	\N	39.00	t	\N
-100	1	201000000014	201000000004	2026-04-02 11:30:00	650	2	EGYVO	\N	32.50	t	\N
+98	1	201000000012	201000000008	2026-04-07 16:00:00	330	1	EGYVO	\N	0.60	t	\N
+99	1	201000000014	201000000002	2026-04-01 09:00:00	390	1	EGYVO	\N	0.70	t	\N
+100	1	201000000014	201000000004	2026-04-02 11:30:00	650	2	EGYVO	\N	0.00	t	\N
 101	1	201000000014	201000000006	2026-04-03 14:00:00	1	3	EGYVO	\N	0.02	t	\N
-102	1	201000000014	201000000008	2026-04-05 16:30:00	450	1	EGYVO	\N	45.00	t	\N
-103	1	201000000014	201000000010	2026-04-07 10:15:00	700	2	EGYVO	\N	35.00	t	\N
+102	1	201000000014	201000000008	2026-04-05 16:30:00	450	1	EGYVO	\N	0.80	t	\N
+103	1	201000000014	201000000010	2026-04-07 10:15:00	700	2	EGYVO	\N	0.00	t	\N
 104	1	201000000014	201000000002	2026-04-09 13:45:00	1	3	EGYVO	\N	0.02	t	\N
-105	2	201000000015	201000000002	2026-04-01 08:00:00	480	1	EGYVO	\N	24.00	t	\N
-106	2	201000000015	201000000004	2026-04-01 10:30:00	1200	2	EGYVO	\N	24.00	t	\N
+105	2	201000000015	201000000002	2026-04-01 08:00:00	480	1	EGYVO	\N	0.40	t	\N
+106	2	201000000015	201000000004	2026-04-01 10:30:00	1200	2	EGYVO	\N	0.00	t	\N
 107	2	201000000015	201000000006	2026-04-01 13:00:00	1	3	EGYVO	\N	0.01	t	\N
-108	2	201000000015	201000000008	2026-04-02 09:00:00	600	1	EGYVO	\N	30.00	t	\N
-109	2	201000000015	201000000010	2026-04-02 14:00:00	1500	2	EGYVO	\N	30.00	t	\N
+108	2	201000000015	201000000008	2026-04-02 09:00:00	600	1	EGYVO	\N	0.50	t	\N
+109	2	201000000015	201000000010	2026-04-02 14:00:00	1500	2	EGYVO	\N	0.00	t	\N
 110	2	201000000015	201000000012	2026-04-03 10:15:00	1	3	EGYVO	\N	0.01	t	\N
-111	2	201000000015	201000000002	2026-04-04 15:30:00	720	1	EGYVO	\N	36.00	t	\N
-112	2	201000000015	201000000016	2026-04-05 09:45:00	1800	2	EGYVO	\N	36.00	t	\N
-113	2	201000000015	201000000002	2026-04-20 10:00:00	240	5	EGYVO	FRANC	12.00	t	\N
-114	2	201000000015	201000000004	2026-04-20 14:30:00	400	6	EGYVO	FRANC	8.00	t	\N
-115	2	201000000015	201000000006	2026-04-21 09:00:00	1	7	EGYVO	FRANC	0.01	t	\N
-116	2	201000000016	201000000002	2026-04-01 09:30:00	600	1	EGYVO	\N	30.00	t	\N
-117	2	201000000016	201000000004	2026-04-01 12:00:00	1400	2	EGYVO	\N	28.00	t	\N
+111	2	201000000015	201000000002	2026-04-04 15:30:00	720	1	EGYVO	\N	0.60	t	\N
+112	2	201000000015	201000000016	2026-04-05 09:45:00	1800	2	EGYVO	\N	0.00	t	\N
+113	2	201000000015	201000000002	2026-04-20 10:00:00	240	5	EGYVO	FRANC	0.00	t	\N
+114	2	201000000015	201000000004	2026-04-20 14:30:00	400	6	EGYVO	FRANC	0.00	t	\N
+115	2	201000000015	201000000006	2026-04-21 09:00:00	1	7	EGYVO	FRANC	0.00	t	\N
+116	2	201000000016	201000000002	2026-04-01 09:30:00	600	1	EGYVO	\N	0.50	t	\N
+117	2	201000000016	201000000004	2026-04-01 12:00:00	1400	2	EGYVO	\N	0.00	t	\N
 118	2	201000000016	201000000006	2026-04-01 15:30:00	1	3	EGYVO	\N	0.01	t	\N
-119	2	201000000016	201000000008	2026-04-02 08:30:00	780	1	EGYVO	\N	39.00	t	\N
-120	2	201000000016	201000000010	2026-04-02 13:00:00	1600	2	EGYVO	\N	32.00	t	\N
+119	2	201000000016	201000000008	2026-04-02 08:30:00	780	1	EGYVO	\N	0.65	t	\N
+120	2	201000000016	201000000010	2026-04-02 13:00:00	1600	2	EGYVO	\N	0.00	t	\N
 121	2	201000000016	201000000012	2026-04-03 10:00:00	1	3	EGYVO	\N	0.01	t	\N
-122	2	201000000016	201000000014	2026-04-03 16:00:00	840	1	EGYVO	\N	42.00	t	\N
-123	2	201000000016	201000000002	2026-04-04 11:30:00	1800	2	EGYVO	\N	36.00	t	\N
-124	2	201000000017	201000000002	2026-04-01 10:00:00	300	1	EGYVO	\N	30.00	t	\N
-125	2	201000000017	201000000004	2026-04-02 12:30:00	600	2	EGYVO	\N	30.00	t	\N
+122	2	201000000016	201000000014	2026-04-03 16:00:00	840	1	EGYVO	\N	0.70	t	\N
+123	2	201000000016	201000000002	2026-04-04 11:30:00	1800	2	EGYVO	\N	0.00	t	\N
+124	2	201000000017	201000000002	2026-04-01 10:00:00	300	1	EGYVO	\N	0.50	t	\N
+125	2	201000000017	201000000004	2026-04-02 12:30:00	600	2	EGYVO	\N	0.00	t	\N
 126	2	201000000017	201000000006	2026-04-03 15:00:00	1	3	EGYVO	\N	0.02	t	\N
-127	2	201000000017	201000000008	2026-04-05 09:30:00	420	1	EGYVO	\N	42.00	t	\N
-128	2	201000000017	201000000010	2026-04-07 14:00:00	750	2	EGYVO	\N	37.50	t	\N
+127	2	201000000017	201000000008	2026-04-05 09:30:00	420	1	EGYVO	\N	0.70	t	\N
+128	2	201000000017	201000000010	2026-04-07 14:00:00	750	2	EGYVO	\N	0.00	t	\N
 129	2	201000000017	201000000002	2026-04-09 11:15:00	1	3	EGYVO	\N	0.02	t	\N
-193	1	201000000036	201090000000	2026-04-02 18:00:00	32768	2	EGYVO	\N	3276.80	t	\N
-194	1	201000000022	201090000000	2026-04-02 18:30:00	1	3	EGYVO	VODAFONE_UK	0.00	t	7
-195	1	201000000022	201090000000	2026-04-02 19:00:00	253	1	EGYVO	VODAFONE_UK	5.30	t	5
-196	1	201000000022	201090000000	2026-04-02 19:30:00	37888	2	EGYVO	\N	0.00	t	2
-197	1	201000000022	201090000000	2026-04-02 20:00:00	1	3	EGYVO	\N	0.00	t	3
-198	1	201000000007	201090000000	2026-04-02 20:30:00	135	1	EGYVO	\N	0.00	t	1
-199	1	201000000007	201090000000	2026-04-02 21:00:00	82944	2	EGYVO	\N	8294.40	t	\N
-200	1	201000000007	201090000000	2026-04-02 21:30:00	1	3	EGYVO	\N	0.00	t	3
-201	1	201000000007	201090000000	2026-04-02 22:00:00	42	1	EGYVO	\N	0.00	t	1
-202	1	201000000009	201090000000	2026-04-02 22:30:00	38912	2	EGYVO	\N	3891.20	t	\N
-203	1	201000000009	201090000000	2026-04-02 23:00:00	1	3	EGYVO	\N	0.00	t	3
-204	1	201000000009	201090000000	2026-04-02 23:30:00	160	1	EGYVO	VODAFONE_UK	32.00	t	\N
-205	1	201000000009	201090000000	2026-04-03 00:00:00	6144	2	EGYVO	\N	614.40	t	\N
-206	1	201000000033	201090000000	2026-04-03 00:30:00	1	3	EGYVO	\N	0.00	t	3
-207	1	201000000033	201090000000	2026-04-03 01:00:00	259	1	EGYVO	\N	0.00	t	1
-208	1	201000000033	201090000000	2026-04-03 01:30:00	92160	2	EGYVO	\N	9216.00	t	\N
-209	1	201000000033	201090000000	2026-04-03 02:00:00	1	3	EGYVO	\N	0.00	t	3
-210	1	201000000040	201090000000	2026-04-03 02:30:00	198	1	EGYVO	\N	0.00	t	1
-211	1	201000000040	201090000000	2026-04-03 03:00:00	92160	2	EGYVO	\N	9216.00	t	\N
-212	1	201000000040	201090000000	2026-04-03 03:30:00	1	3	EGYVO	\N	0.00	t	3
-213	1	201000000040	201090000000	2026-04-03 04:00:00	151	1	EGYVO	\N	0.00	t	1
-314	1	2010105100	201090000000	2026-04-01 10:20:00	75776	2	EGYVO	\N	6577.60	t	4
-315	1	2010105100	201090000000	2026-04-01 10:40:00	1	3	EGYVO	\N	0.00	t	3
-316	1	2010105100	201090000000	2026-04-01 11:00:00	314	1	EGYVO	VODAFONE_UK	62.80	t	\N
-317	1	2010105100	201090000000	2026-04-01 11:20:00	46080	2	EGYVO	\N	4608.00	t	\N
-318	1	2010105099	201090000000	2026-04-01 11:40:00	1	3	EGYVO	VODAFONE_UK	0.00	t	7
-319	1	2010105099	201090000000	2026-04-01 12:00:00	316	1	EGYVO	\N	0.00	t	4
-320	1	2010105099	201090000000	2026-04-01 12:20:00	71680	2	EGYVO	\N	2599.80	t	2
-321	1	2010105099	201090000000	2026-04-01 12:40:00	1	3	EGYVO	VODAFONE_UK	0.00	t	7
-322	1	2010105096	201090000000	2026-04-01 13:00:00	183	1	EGYVO	VODAFONE_UK	8.30	t	5
-323	1	2010105096	201090000000	2026-04-01 13:20:00	83968	2	EGYVO	\N	3198.40	t	2
-214	1	201000000037	201090000000	2026-04-03 04:30:00	72704	2	EGYVO	\N	7270.40	t	\N
-215	1	201000000037	201090000000	2026-04-03 05:00:00	1	3	EGYVO	\N	0.00	t	3
-216	1	201000000037	201090000000	2026-04-03 05:30:00	38	1	EGYVO	\N	0.00	t	1
-217	1	201000000037	201090000000	2026-04-03 06:00:00	78848	2	EGYVO	\N	7884.80	t	\N
-218	1	201000000030	201090000000	2026-04-03 06:30:00	1	3	EGYVO	\N	0.00	t	3
-219	1	201000000030	201090000000	2026-04-03 07:00:00	252	1	EGYVO	VODAFONE_UK	50.40	t	\N
-220	1	201000000030	201090000000	2026-04-03 07:30:00	81920	2	EGYVO	\N	8192.00	t	\N
-221	1	201000000030	201090000000	2026-04-03 08:00:00	1	3	EGYVO	\N	0.00	t	3
-222	1	201000000028	201090000000	2026-04-03 08:30:00	130	1	EGYVO	VODAFONE_UK	0.00	t	5
-223	1	201000000028	201090000000	2026-04-03 09:00:00	47104	2	EGYVO	\N	355.20	t	2
-224	1	201000000028	201090000000	2026-04-03 09:30:00	1	3	EGYVO	\N	0.00	t	3
-225	1	201000000028	201090000000	2026-04-03 10:00:00	92	1	EGYVO	\N	0.00	t	1
-226	1	201000000048	201090000000	2026-04-03 10:30:00	47104	2	EGYVO	\N	355.20	t	2
-227	1	201000000048	201090000000	2026-04-03 11:00:00	1	3	EGYVO	\N	0.00	t	3
-228	1	201000000048	201090000000	2026-04-03 11:30:00	102	1	EGYVO	\N	0.00	t	1
-229	1	201000000048	201090000000	2026-04-03 12:00:00	55296	2	EGYVO	VODAFONE_UK	2564.80	t	6
-230	1	201000000032	201090000000	2026-04-03 12:30:00	1	3	EGYVO	\N	0.00	t	3
-231	1	201000000032	201090000000	2026-04-03 13:00:00	323	1	EGYVO	\N	0.00	t	1
-232	1	201000000032	201090000000	2026-04-03 13:30:00	100352	2	EGYVO	\N	10035.20	t	\N
-233	1	201000000032	201090000000	2026-04-03 14:00:00	1	3	EGYVO	\N	0.00	t	3
-234	1	201000000020	201090000000	2026-04-03 14:30:00	327	1	EGYVO	\N	0.00	t	1
-235	1	201000000020	201090000000	2026-04-03 15:00:00	41984	2	EGYVO	VODAFONE_UK	4198.40	t	\N
-236	1	201000000020	201090000000	2026-04-03 15:30:00	1	3	EGYVO	\N	0.00	t	3
-237	1	201000000020	201090000000	2026-04-03 16:00:00	190	1	EGYVO	\N	0.00	t	1
-238	1	201000000015	201090000000	2026-04-03 16:30:00	23552	2	EGYVO	\N	71.04	t	2
-239	1	201000000015	201090000000	2026-04-03 17:00:00	1	3	EGYVO	VODAFONE_UK	0.00	t	7
-240	1	201000000015	201090000000	2026-04-03 17:30:00	224	1	EGYVO	\N	0.00	t	1
-241	1	201000000015	201090000000	2026-04-03 18:00:00	101376	2	EGYVO	\N	2027.52	t	\N
-242	1	201000000006	201090000000	2026-04-03 18:30:00	1	3	EGYVO	\N	0.00	t	4
-243	1	201000000006	201090000000	2026-04-03 19:00:00	187	1	EGYVO	\N	0.00	t	4
-244	1	201000000006	201090000000	2026-04-03 19:30:00	96256	2	EGYVO	\N	3822.20	t	2
-245	1	201000000006	201090000000	2026-04-03 20:00:00	1	3	EGYVO	\N	0.00	t	3
-246	1	201000000038	201090000000	2026-04-03 20:30:00	235	1	EGYVO	VODAFONE_UK	47.00	t	\N
-247	1	201000000038	201090000000	2026-04-03 21:00:00	83968	2	EGYVO	\N	8396.80	t	\N
-248	1	201000000038	201090000000	2026-04-03 21:30:00	1	3	EGYVO	\N	0.00	t	3
-249	1	201000000038	201090000000	2026-04-03 22:00:00	242	1	EGYVO	\N	0.00	t	1
-250	1	201000000003	201090000000	2026-04-03 22:30:00	35840	2	EGYVO	\N	3584.00	t	\N
-251	1	201000000003	201090000000	2026-04-03 23:00:00	1	3	EGYVO	\N	0.00	t	3
-252	1	201000000003	201090000000	2026-04-03 23:30:00	174	1	EGYVO	VODAFONE_UK	34.80	t	\N
-253	1	201000000003	201090000000	2026-04-04 00:00:00	15360	2	EGYVO	\N	1536.00	t	\N
-254	1	201000000024	201090000000	2026-04-04 00:30:00	1	3	EGYVO	VODAFONE_UK	0.00	t	7
-255	1	201000000024	201090000000	2026-04-04 01:00:00	108	1	EGYVO	VODAFONE_UK	0.00	t	5
-256	1	201000000024	201090000000	2026-04-04 01:30:00	26624	2	EGYVO	\N	0.00	t	2
-257	1	201000000024	201090000000	2026-04-04 02:00:00	1	3	EGYVO	\N	0.00	t	3
-258	1	201000000035	201090000000	2026-04-04 02:30:00	197	1	EGYVO	VODAFONE_UK	0.00	t	5
-259	1	201000000035	201090000000	2026-04-04 03:00:00	41984	2	EGYVO	\N	99.20	t	2
-260	1	201000000035	201090000000	2026-04-04 03:30:00	1	3	EGYVO	\N	0.00	t	3
-261	1	201000000035	201090000000	2026-04-04 04:00:00	52	1	EGYVO	\N	0.00	t	1
-262	1	201000000016	201090000000	2026-04-04 04:30:00	77824	2	EGYVO	\N	1156.48	t	2
-263	1	201000000016	201090000000	2026-04-04 05:00:00	1	3	EGYVO	VODAFONE_UK	0.00	t	7
-264	1	201000000016	201090000000	2026-04-04 05:30:00	264	1	EGYVO	\N	0.00	t	1
-265	1	201000000016	201090000000	2026-04-04 06:00:00	43008	2	EGYVO	\N	860.16	t	\N
-266	1	201000000046	201090000000	2026-04-04 06:30:00	1	3	EGYVO	\N	0.00	t	3
-267	1	201000000046	201090000000	2026-04-04 07:00:00	251	1	EGYVO	\N	0.00	t	1
-268	1	201000000046	201090000000	2026-04-04 07:30:00	73728	2	EGYVO	\N	7372.80	t	\N
-269	1	201000000046	201090000000	2026-04-04 08:00:00	1	3	EGYVO	\N	0.00	t	3
-270	1	201000000010	201090000000	2026-04-04 08:30:00	32	1	EGYVO	\N	0.00	t	4
-271	1	201000000010	201090000000	2026-04-04 09:00:00	41984	2	EGYVO	\N	1100.80	t	2
-272	1	201000000010	201090000000	2026-04-04 09:30:00	1	3	EGYVO	\N	0.00	t	3
-273	1	201000000010	201090000000	2026-04-04 10:00:00	227	1	EGYVO	VODAFONE_UK	12.70	t	5
-274	1	201000000031	201090000000	2026-04-04 10:30:00	29696	2	EGYVO	\N	0.00	t	2
-275	1	201000000031	201090000000	2026-04-04 11:00:00	1	3	EGYVO	\N	0.00	t	3
-276	1	201000000031	201090000000	2026-04-04 11:30:00	144	1	EGYVO	\N	0.00	t	1
-277	1	201000000031	201090000000	2026-04-04 12:00:00	51200	2	EGYVO	\N	2044.80	t	2
-278	1	201000000008	201090000000	2026-04-04 12:30:00	1	3	EGYVO	\N	0.00	t	4
-279	1	201000000008	201090000000	2026-04-04 13:00:00	131	1	EGYVO	\N	0.00	t	4
-280	1	201000000008	201090000000	2026-04-04 13:30:00	63488	2	EGYVO	\N	2181.00	t	2
-281	1	201000000008	201090000000	2026-04-04 14:00:00	1	3	EGYVO	\N	0.00	t	3
-282	1	201000000012	201090000000	2026-04-04 14:30:00	110	1	EGYVO	\N	0.00	t	4
-283	1	201000000012	201090000000	2026-04-04 15:00:00	47104	2	EGYVO	VODAFONE_UK	2255.20	t	6
-284	1	201000000012	201090000000	2026-04-04 15:30:00	1	3	EGYVO	\N	0.00	t	4
-285	1	201000000012	201090000000	2026-04-04 16:00:00	238	1	EGYVO	\N	0.00	t	4
-286	1	201000000025	201090000000	2026-04-04 16:30:00	25600	2	EGYVO	\N	0.00	t	2
-287	1	201000000025	201090000000	2026-04-04 17:00:00	1	3	EGYVO	\N	0.00	t	3
-288	1	201000000025	201090000000	2026-04-04 17:30:00	306	1	EGYVO	\N	0.00	t	1
-289	1	201000000025	201090000000	2026-04-04 18:00:00	102400	2	EGYVO	\N	1760.00	t	2
-290	1	201000000017	201090000000	2026-04-04 18:30:00	1	3	EGYVO	VODAFONE_UK	0.00	t	7
-291	1	201000000017	201090000000	2026-04-04 19:00:00	234	1	EGYVO	\N	0.00	t	4
-292	1	201000000017	201090000000	2026-04-04 19:30:00	62464	2	EGYVO	\N	2134.90	t	2
-293	1	201000000017	201090000000	2026-04-04 20:00:00	1	3	EGYVO	\N	0.00	t	3
-294	1	201000000039	201090000000	2026-04-04 20:30:00	307	1	EGYVO	VODAFONE_UK	61.40	t	\N
-295	1	201000000039	201090000000	2026-04-04 21:00:00	62464	2	EGYVO	\N	6246.40	t	\N
-296	1	201000000039	201090000000	2026-04-04 21:30:00	1	3	EGYVO	\N	0.00	t	3
-297	1	201000000039	201090000000	2026-04-04 22:00:00	282	1	EGYVO	VODAFONE_UK	56.40	t	\N
-298	1	201000000043	201090000000	2026-04-04 22:30:00	23552	2	EGYVO	\N	0.00	t	2
-299	1	201000000043	201090000000	2026-04-04 23:00:00	1	3	EGYVO	\N	0.00	t	3
-300	1	201000000043	201090000000	2026-04-04 23:30:00	58	1	EGYVO	VODAFONE_UK	0.00	t	5
-301	1	201000000043	201090000000	2026-04-05 00:00:00	59392	2	EGYVO	\N	858.88	t	2
-302	1	201000000029	201090000000	2026-04-05 00:30:00	1	3	EGYVO	\N	0.00	t	4
-303	1	201000000029	201090000000	2026-04-05 01:00:00	326	1	EGYVO	\N	0.00	t	4
-304	1	201000000029	201090000000	2026-04-05 01:30:00	82944	2	EGYVO	\N	865.42	t	2
-305	1	201000000029	201090000000	2026-04-05 02:00:00	1	3	EGYVO	\N	0.00	t	3
-306	1	201000000045	201090000000	2026-04-05 02:30:00	59	1	EGYVO	\N	0.00	t	4
-307	1	201000000045	201090000000	2026-04-05 03:00:00	24576	2	EGYVO	\N	0.00	t	2
-308	1	201000000045	201090000000	2026-04-05 03:30:00	1	3	EGYVO	\N	0.00	t	3
-309	1	201000000045	201090000000	2026-04-05 04:00:00	140	1	EGYVO	\N	0.00	t	1
-310	1	201000000021	201090000000	2026-04-05 04:30:00	96256	2	EGYVO	\N	1125.12	t	2
-311	1	201000000021	201090000000	2026-04-05 05:00:00	1	3	EGYVO	\N	0.00	t	3
-312	1	201000000021	201090000000	2026-04-05 05:30:00	319	1	EGYVO	\N	0.00	t	1
-313	1	201000000021	201090000000	2026-04-05 06:00:00	7168	2	EGYVO	\N	143.36	t	\N
-324	1	2010105096	201090000000	2026-04-01 13:40:00	1	3	EGYVO	\N	0.00	t	3
-325	1	2010105096	201090000000	2026-04-01 14:00:00	169	1	EGYVO	\N	0.00	t	1
-326	1	2010105095	201090000000	2026-04-01 14:20:00	87040	2	EGYVO	\N	3352.00	t	2
-327	1	2010105095	201090000000	2026-04-01 14:40:00	1	3	EGYVO	\N	0.00	t	3
-328	1	2010105095	201090000000	2026-04-01 15:00:00	97	1	EGYVO	\N	0.00	t	1
-329	1	2010105095	201090000000	2026-04-01 15:20:00	39936	2	EGYVO	\N	1996.80	t	\N
-330	1	2010105092	201090000000	2026-04-01 15:40:00	1	3	EGYVO	VODAFONE_UK	0.00	t	7
-331	1	2010105092	201090000000	2026-04-01 16:00:00	293	1	EGYVO	\N	0.00	t	4
-332	1	2010105092	201090000000	2026-04-01 16:20:00	70656	2	EGYVO	\N	2547.45	t	2
-333	1	2010105092	201090000000	2026-04-01 16:40:00	1	3	EGYVO	\N	0.00	t	3
-334	1	2010105090	201090000000	2026-04-01 17:00:00	152	1	EGYVO	\N	0.00	t	4
-335	1	2010105090	201090000000	2026-04-01 17:20:00	50176	2	EGYVO	\N	1016.40	t	2
-336	1	2010105090	201090000000	2026-04-01 17:40:00	1	3	EGYVO	\N	0.00	t	3
-337	1	2010105090	201090000000	2026-04-01 18:00:00	119	1	EGYVO	\N	0.00	t	1
-338	1	2010105087	201090000000	2026-04-01 18:20:00	83968	2	EGYVO	\N	3198.40	t	2
-339	1	2010105087	201090000000	2026-04-01 18:40:00	1	3	EGYVO	\N	0.00	t	3
-340	1	2010105087	201090000000	2026-04-01 19:00:00	152	1	EGYVO	\N	0.00	t	1
-341	1	2010105087	201090000000	2026-04-01 19:20:00	28672	2	EGYVO	\N	1433.60	t	\N
-342	1	2010105086	201090000000	2026-04-01 19:40:00	1	3	EGYVO	\N	0.00	t	4
-343	1	2010105086	201090000000	2026-04-01 20:00:00	195	1	EGYVO	\N	0.00	t	4
-344	1	2010105086	201090000000	2026-04-01 20:20:00	73728	2	EGYVO	\N	878.48	t	2
-345	1	2010105086	201090000000	2026-04-01 20:40:00	1	3	EGYVO	\N	0.00	t	3
-346	1	2010105085	201090000000	2026-04-01 21:00:00	245	1	EGYVO	\N	0.00	t	1
-347	1	2010105085	201090000000	2026-04-01 21:20:00	59392	2	EGYVO	\N	5939.20	t	\N
-348	1	2010105085	201090000000	2026-04-01 21:40:00	1	3	EGYVO	\N	0.00	t	3
-349	1	2010105085	201090000000	2026-04-01 22:00:00	289	1	EGYVO	\N	0.00	t	1
-350	1	2010105084	201090000000	2026-04-01 22:20:00	87040	2	EGYVO	\N	7704.00	t	4
-351	1	2010105084	201090000000	2026-04-01 22:40:00	1	3	EGYVO	\N	0.00	t	3
-352	1	2010105084	201090000000	2026-04-01 23:00:00	242	1	EGYVO	VODAFONE_UK	48.40	t	\N
-353	1	2010105084	201090000000	2026-04-01 23:20:00	74752	2	EGYVO	\N	7475.20	t	\N
-354	1	2010105080	201090000000	2026-04-01 23:40:00	1	3	EGYVO	\N	0.00	t	4
-355	1	2010105080	201090000000	2026-04-02 00:00:00	85	1	EGYVO	\N	0.00	t	4
-356	1	2010105080	201090000000	2026-04-02 00:20:00	88064	2	EGYVO	\N	2907.50	t	2
-357	1	2010105080	201090000000	2026-04-02 00:40:00	1	3	EGYVO	VODAFONE_UK	0.00	t	7
-358	1	2010105079	201090000000	2026-04-02 01:00:00	276	1	EGYVO	\N	0.00	t	4
-359	1	2010105079	201090000000	2026-04-02 01:20:00	62464	2	EGYVO	\N	2137.00	t	2
-360	1	2010105079	201090000000	2026-04-02 01:40:00	1	3	EGYVO	VODAFONE_UK	0.00	t	7
-361	1	2010105079	201090000000	2026-04-02 02:00:00	64	1	EGYVO	\N	0.00	t	1
-362	1	2010105077	201090000000	2026-04-02 02:20:00	90112	2	EGYVO	\N	8011.20	t	4
-363	1	2010105077	201090000000	2026-04-02 02:40:00	1	3	EGYVO	\N	0.00	t	3
-364	1	2010105077	201090000000	2026-04-02 03:00:00	71	1	EGYVO	\N	0.00	t	1
-365	1	2010105077	201090000000	2026-04-02 03:20:00	30720	2	EGYVO	\N	3072.00	t	\N
-366	1	2010105076	201090000000	2026-04-02 03:40:00	1	3	EGYVO	\N	0.00	t	4
-367	1	2010105076	201090000000	2026-04-02 04:00:00	246	1	EGYVO	\N	0.00	t	4
-368	1	2010105076	201090000000	2026-04-02 04:20:00	36864	2	EGYVO	\N	855.55	t	2
-369	1	2010105076	201090000000	2026-04-02 04:40:00	1	3	EGYVO	\N	0.00	t	3
-370	1	2010105075	201090000000	2026-04-02 05:00:00	178	1	EGYVO	VODAFONE_UK	7.80	t	5
-371	1	2010105075	201090000000	2026-04-02 05:20:00	29696	2	EGYVO	\N	0.00	t	2
-372	1	2010105075	201090000000	2026-04-02 05:40:00	1	3	EGYVO	\N	0.00	t	3
-373	1	2010105075	201090000000	2026-04-02 06:00:00	250	1	EGYVO	VODAFONE_UK	25.00	t	\N
-374	1	2010105072	201090000000	2026-04-02 06:20:00	67584	2	EGYVO	\N	6758.40	t	\N
-375	1	2010105072	201090000000	2026-04-02 06:40:00	1	3	EGYVO	\N	0.00	t	3
-376	1	2010105072	201090000000	2026-04-02 07:00:00	182	1	EGYVO	\N	0.00	t	1
-377	1	2010105072	201090000000	2026-04-02 07:20:00	18432	2	EGYVO	\N	1843.20	t	\N
-378	1	2010105071	201090000000	2026-04-02 07:40:00	1	3	EGYVO	\N	0.00	t	4
-379	1	2010105071	201090000000	2026-04-02 08:00:00	326	1	EGYVO	\N	0.00	t	4
-380	1	2010105071	201090000000	2026-04-02 08:20:00	16384	2	EGYVO	\N	0.00	t	4
-381	1	2010105071	201090000000	2026-04-02 08:40:00	1	3	EGYVO	\N	0.00	t	4
-382	1	2010105069	201090000000	2026-04-02 09:00:00	122	1	EGYVO	\N	0.00	t	4
-383	1	2010105069	201090000000	2026-04-02 09:20:00	60416	2	EGYVO	\N	2026.90	t	2
-384	1	2010105069	201090000000	2026-04-02 09:40:00	1	3	EGYVO	\N	0.00	t	3
-385	1	2010105069	201090000000	2026-04-02 10:00:00	96	1	EGYVO	\N	0.00	t	1
-386	1	2010105068	201090000000	2026-04-02 10:20:00	65536	2	EGYVO	\N	2276.80	t	2
-387	1	2010105068	201090000000	2026-04-02 10:40:00	1	3	EGYVO	\N	0.00	t	3
-388	1	2010105068	201090000000	2026-04-02 11:00:00	183	1	EGYVO	\N	0.00	t	1
-389	1	2010105068	201090000000	2026-04-02 11:20:00	44032	2	EGYVO	\N	2201.60	t	\N
-390	1	2010105065	201090000000	2026-04-02 11:40:00	1	3	EGYVO	\N	0.00	t	4
-391	1	2010105065	201090000000	2026-04-02 12:00:00	177	1	EGYVO	\N	0.00	t	4
-392	1	2010105065	201090000000	2026-04-02 12:20:00	98304	2	EGYVO	\N	3424.10	t	2
-393	1	2010105065	201090000000	2026-04-02 12:40:00	1	3	EGYVO	\N	0.00	t	3
-394	1	2010105064	201090000000	2026-04-02 13:00:00	135	1	EGYVO	\N	0.00	t	1
-395	1	2010105064	201090000000	2026-04-02 13:20:00	55296	2	EGYVO	\N	5529.60	t	\N
-396	1	2010105064	201090000000	2026-04-02 13:40:00	1	3	EGYVO	\N	0.00	t	3
-397	1	2010105064	201090000000	2026-04-02 14:00:00	297	1	EGYVO	\N	0.00	t	1
-398	1	2010105063	201090000000	2026-04-02 14:20:00	81920	2	EGYVO	\N	7192.00	t	4
-399	1	2010105063	201090000000	2026-04-02 14:40:00	1	3	EGYVO	\N	0.00	t	3
-400	1	2010105063	201090000000	2026-04-02 15:00:00	70	1	EGYVO	\N	0.00	t	1
-401	1	2010105063	201090000000	2026-04-02 15:20:00	94208	2	EGYVO	\N	9420.80	t	\N
-402	1	2010105062	201090000000	2026-04-02 15:40:00	1	3	EGYVO	\N	0.00	t	3
-403	1	2010105062	201090000000	2026-04-02 16:00:00	132	1	EGYVO	\N	0.00	t	1
-404	1	2010105062	201090000000	2026-04-02 16:20:00	66560	2	EGYVO	VODAFONE_UK	6656.00	t	\N
-405	1	2010105062	201090000000	2026-04-02 16:40:00	1	3	EGYVO	\N	0.00	t	3
-406	1	2010105061	201090000000	2026-04-02 17:00:00	270	1	EGYVO	\N	0.00	t	4
-407	1	2010105061	201090000000	2026-04-02 17:20:00	24576	2	EGYVO	VODAFONE_UK	2457.60	t	\N
-408	1	2010105061	201090000000	2026-04-02 17:40:00	1	3	EGYVO	\N	0.00	t	4
-409	1	2010105061	201090000000	2026-04-02 18:00:00	281	1	EGYVO	VODAFONE_UK	56.20	t	\N
-410	1	2010105059	201090000000	2026-04-02 18:20:00	96256	2	EGYVO	VODAFONE_UK	9625.60	t	\N
-411	1	2010105059	201090000000	2026-04-02 18:40:00	1	3	EGYVO	\N	0.00	t	4
-412	1	2010105059	201090000000	2026-04-02 19:00:00	256	1	EGYVO	\N	0.00	t	4
-413	1	2010105059	201090000000	2026-04-02 19:20:00	87040	2	EGYVO	\N	7729.70	t	4
-414	1	2010105057	201090000000	2026-04-02 19:40:00	1	3	EGYVO	\N	0.00	t	4
-415	1	2010105057	201090000000	2026-04-02 20:00:00	64	1	EGYVO	\N	0.00	t	4
-416	1	2010105057	201090000000	2026-04-02 20:20:00	67584	2	EGYVO	VODAFONE_UK	3279.20	t	6
-417	1	2010105057	201090000000	2026-04-02 20:40:00	1	3	EGYVO	\N	0.00	t	4
-418	1	2010105056	201090000000	2026-04-02 21:00:00	107	1	EGYVO	\N	0.00	t	4
-419	1	2010105056	201090000000	2026-04-02 21:20:00	84992	2	EGYVO	\N	2754.95	t	2
-420	1	2010105056	201090000000	2026-04-02 21:40:00	1	3	EGYVO	VODAFONE_UK	0.00	t	7
-421	1	2010105056	201090000000	2026-04-02 22:00:00	234	1	EGYVO	\N	0.00	t	1
-422	1	2010105055	201090000000	2026-04-02 22:20:00	82944	2	EGYVO	\N	7294.40	t	4
-423	1	2010105055	201090000000	2026-04-02 22:40:00	1	3	EGYVO	\N	0.00	t	3
-424	1	2010105055	201090000000	2026-04-02 23:00:00	45	1	EGYVO	\N	0.00	t	1
-425	1	2010105055	201090000000	2026-04-02 23:20:00	38912	2	EGYVO	\N	3891.20	t	\N
-426	1	2010105054	201090000000	2026-04-02 23:40:00	1	3	EGYVO	VODAFONE_UK	0.00	t	7
-427	1	2010105054	201090000000	2026-04-03 00:00:00	328	1	EGYVO	\N	0.00	t	4
-428	1	2010105054	201090000000	2026-04-03 00:20:00	90112	2	EGYVO	VODAFONE_UK	4405.60	t	6
-429	1	2010105054	201090000000	2026-04-03 00:40:00	1	3	EGYVO	\N	0.00	t	4
-430	1	2010105053	201090000000	2026-04-03 01:00:00	68	1	EGYVO	VODAFONE_UK	0.00	t	5
-431	1	2010105053	201090000000	2026-04-03 01:20:00	87040	2	EGYVO	\N	1340.80	t	2
-432	1	2010105053	201090000000	2026-04-03 01:40:00	1	3	EGYVO	VODAFONE_UK	0.00	t	7
-433	1	2010105053	201090000000	2026-04-03 02:00:00	33	1	EGYVO	\N	0.00	t	1
-434	1	2010105052	201090000000	2026-04-03 02:20:00	8192	2	EGYVO	VODAFONE_UK	123.84	t	6
-435	1	2010105052	201090000000	2026-04-03 02:40:00	1	3	EGYVO	VODAFONE_UK	0.00	t	7
-436	1	2010105052	201090000000	2026-04-03 03:00:00	229	1	EGYVO	VODAFONE_UK	6.45	t	5
-437	1	2010105052	201090000000	2026-04-03 03:20:00	89088	2	EGYVO	\N	1381.76	t	2
-438	1	2010105051	201090000000	2026-04-03 03:40:00	1	3	EGYVO	\N	0.00	t	4
-439	1	2010105051	201090000000	2026-04-03 04:00:00	200	1	EGYVO	\N	0.00	t	4
-440	1	2010105051	201090000000	2026-04-03 04:20:00	51200	2	EGYVO	\N	1070.05	t	2
-441	1	2010105051	201090000000	2026-04-03 04:40:00	1	3	EGYVO	\N	0.00	t	3
-442	1	2010105049	201090000000	2026-04-03 05:00:00	149	1	EGYVO	\N	0.00	t	1
-443	1	2010105049	201090000000	2026-04-03 05:20:00	78848	2	EGYVO	\N	7884.80	t	\N
-444	1	2010105049	201090000000	2026-04-03 05:40:00	1	3	EGYVO	\N	0.00	t	3
-445	1	2010105049	201090000000	2026-04-03 06:00:00	152	1	EGYVO	\N	0.00	t	1
-446	1	2010105045	201090000000	2026-04-03 06:20:00	44032	2	EGYVO	\N	3403.20	t	4
-447	1	2010105045	201090000000	2026-04-03 06:40:00	1	3	EGYVO	\N	0.00	t	3
-448	1	2010105045	201090000000	2026-04-03 07:00:00	177	1	EGYVO	\N	0.00	t	1
-449	1	2010105045	201090000000	2026-04-03 07:20:00	59392	2	EGYVO	\N	5939.20	t	\N
-450	1	2010105044	201090000000	2026-04-03 07:40:00	1	3	EGYVO	\N	0.00	t	4
-451	1	2010105044	201090000000	2026-04-03 08:00:00	95	1	EGYVO	\N	0.00	t	4
-452	1	2010105044	201090000000	2026-04-03 08:20:00	63488	2	EGYVO	\N	1679.20	t	2
-453	1	2010105044	201090000000	2026-04-03 08:40:00	1	3	EGYVO	\N	0.00	t	3
-454	1	2010105043	201090000000	2026-04-03 09:00:00	291	1	EGYVO	\N	0.00	t	1
-455	1	2010105043	201090000000	2026-04-03 09:20:00	72704	2	EGYVO	\N	7270.40	t	\N
-456	1	2010105043	201090000000	2026-04-03 09:40:00	1	3	EGYVO	\N	0.00	t	3
-457	1	2010105043	201090000000	2026-04-03 10:00:00	277	1	EGYVO	\N	0.00	t	1
-458	1	2010105042	201090000000	2026-04-03 10:20:00	32768	2	EGYVO	\N	638.40	t	2
-459	1	2010105042	201090000000	2026-04-03 10:40:00	1	3	EGYVO	\N	0.00	t	3
-460	1	2010105042	201090000000	2026-04-03 11:00:00	104	1	EGYVO	\N	0.00	t	1
-461	1	2010105042	201090000000	2026-04-03 11:20:00	19456	2	EGYVO	VODAFONE_UK	872.80	t	6
-462	1	2010105041	201090000000	2026-04-03 11:40:00	1	3	EGYVO	\N	0.00	t	4
-463	1	2010105041	201090000000	2026-04-03 12:00:00	52	1	EGYVO	\N	0.00	t	4
-464	1	2010105041	201090000000	2026-04-03 12:20:00	48128	2	EGYVO	\N	563.62	t	2
-465	1	2010105041	201090000000	2026-04-03 12:40:00	1	3	EGYVO	\N	0.00	t	3
-466	1	2010105040	201090000000	2026-04-03 13:00:00	105	1	EGYVO	\N	0.00	t	4
-467	1	2010105040	201090000000	2026-04-03 13:20:00	83968	2	EGYVO	\N	2703.65	t	2
-468	1	2010105040	201090000000	2026-04-03 13:40:00	1	3	EGYVO	\N	0.00	t	3
-469	1	2010105040	201090000000	2026-04-03 14:00:00	327	1	EGYVO	\N	0.00	t	1
-470	1	2010105038	201090000000	2026-04-03 14:20:00	93184	2	EGYVO	\N	3659.20	t	2
-471	1	2010105038	201090000000	2026-04-03 14:40:00	1	3	EGYVO	\N	0.00	t	3
-472	1	2010105038	201090000000	2026-04-03 15:00:00	49	1	EGYVO	\N	0.00	t	1
-473	1	2010105038	201090000000	2026-04-03 15:20:00	83968	2	EGYVO	\N	4198.40	t	\N
-474	1	2010105037	201090000000	2026-04-03 15:40:00	1	3	EGYVO	\N	0.00	t	4
-475	1	2010105037	201090000000	2026-04-03 16:00:00	93	1	EGYVO	\N	0.00	t	4
-476	1	2010105037	201090000000	2026-04-03 16:20:00	24576	2	EGYVO	\N	1467.00	t	4
-477	1	2010105037	201090000000	2026-04-03 16:40:00	1	3	EGYVO	\N	0.00	t	3
-478	1	2010105035	201090000000	2026-04-03 17:00:00	292	1	EGYVO	\N	0.00	t	4
-479	1	2010105035	201090000000	2026-04-03 17:20:00	10240	2	EGYVO	\N	53.20	t	4
-480	1	2010105035	201090000000	2026-04-03 17:40:00	1	3	EGYVO	\N	0.00	t	3
-481	1	2010105035	201090000000	2026-04-03 18:00:00	145	1	EGYVO	\N	0.00	t	1
-482	1	2010105034	201090000000	2026-04-03 18:20:00	97280	2	EGYVO	\N	1345.60	t	2
-483	1	2010105034	201090000000	2026-04-03 18:40:00	1	3	EGYVO	\N	0.00	t	3
-484	1	2010105034	201090000000	2026-04-03 19:00:00	209	1	EGYVO	\N	0.00	t	1
-485	1	2010105034	201090000000	2026-04-03 19:20:00	54272	2	EGYVO	\N	1085.44	t	\N
-486	1	2010105033	201090000000	2026-04-03 19:40:00	1	3	EGYVO	\N	0.00	t	4
-487	1	2010105033	201090000000	2026-04-03 20:00:00	282	1	EGYVO	\N	0.00	t	4
-488	1	2010105033	201090000000	2026-04-03 20:20:00	29696	2	EGYVO	\N	0.00	t	2
-489	1	2010105033	201090000000	2026-04-03 20:40:00	1	3	EGYVO	\N	0.00	t	3
-490	1	2010105032	201090000000	2026-04-03 21:00:00	223	1	EGYVO	\N	0.00	t	4
-491	1	2010105032	201090000000	2026-04-03 21:20:00	53248	2	EGYVO	VODAFONE_UK	2562.40	t	6
-492	1	2010105032	201090000000	2026-04-03 21:40:00	1	3	EGYVO	\N	0.00	t	4
-493	1	2010105032	201090000000	2026-04-03 22:00:00	190	1	EGYVO	\N	0.00	t	4
-494	1	2010105031	201090000000	2026-04-03 22:20:00	5120	2	EGYVO	VODAFONE_UK	156.00	t	6
-495	1	2010105031	201090000000	2026-04-03 22:40:00	1	3	EGYVO	\N	0.00	t	4
-496	1	2010105031	201090000000	2026-04-03 23:00:00	153	1	EGYVO	\N	0.00	t	4
-497	1	2010105031	201090000000	2026-04-03 23:20:00	94208	2	EGYVO	\N	3218.10	t	2
-498	1	2010105030	201090000000	2026-04-03 23:40:00	1	3	EGYVO	\N	0.00	t	4
-499	1	2010105030	201090000000	2026-04-04 00:00:00	291	1	EGYVO	\N	0.00	t	4
-500	1	2010105030	201090000000	2026-04-04 00:20:00	44032	2	EGYVO	\N	1216.20	t	2
-501	1	2010105030	201090000000	2026-04-04 00:40:00	1	3	EGYVO	\N	0.00	t	3
-502	1	2010105029	201090000000	2026-04-04 01:00:00	163	1	EGYVO	\N	0.00	t	4
-503	1	2010105029	201090000000	2026-04-04 01:20:00	34816	2	EGYVO	VODAFONE_UK	3481.60	t	\N
-504	1	2010105029	201090000000	2026-04-04 01:40:00	1	3	EGYVO	\N	0.00	t	4
-505	1	2010105029	201090000000	2026-04-04 02:00:00	56	1	EGYVO	\N	0.00	t	4
-506	1	2010105027	201090000000	2026-04-04 02:20:00	22528	2	EGYVO	VODAFONE_UK	1026.40	t	6
-507	1	2010105027	201090000000	2026-04-04 02:40:00	1	3	EGYVO	VODAFONE_UK	0.00	t	7
-508	1	2010105027	201090000000	2026-04-04 03:00:00	41	1	EGYVO	\N	0.00	t	4
-509	1	2010105027	201090000000	2026-04-04 03:20:00	7168	2	EGYVO	\N	0.00	t	4
-510	1	2010105026	201090000000	2026-04-04 03:40:00	1	3	EGYVO	\N	0.00	t	4
-511	1	2010105026	201090000000	2026-04-04 04:00:00	255	1	EGYVO	VODAFONE_UK	7.75	t	5
-512	1	2010105026	201090000000	2026-04-04 04:20:00	8192	2	EGYVO	\N	0.00	t	4
-513	1	2010105026	201090000000	2026-04-04 04:40:00	1	3	EGYVO	\N	0.00	t	4
-514	1	2010105023	201090000000	2026-04-04 05:00:00	58	1	EGYVO	\N	0.00	t	4
-515	1	2010105023	201090000000	2026-04-04 05:20:00	72704	2	EGYVO	\N	2138.10	t	2
-516	1	2010105023	201090000000	2026-04-04 05:40:00	1	3	EGYVO	\N	0.00	t	3
-517	1	2010105023	201090000000	2026-04-04 06:00:00	187	1	EGYVO	\N	0.00	t	1
-518	1	2010105022	201090000000	2026-04-04 06:20:00	72704	2	EGYVO	\N	7270.40	t	\N
-519	1	2010105022	201090000000	2026-04-04 06:40:00	1	3	EGYVO	\N	0.00	t	3
-520	1	2010105022	201090000000	2026-04-04 07:00:00	182	1	EGYVO	\N	0.00	t	1
-521	1	2010105022	201090000000	2026-04-04 07:20:00	7168	2	EGYVO	VODAFONE_UK	716.80	t	\N
-522	1	2010105021	201090000000	2026-04-04 07:40:00	1	3	EGYVO	\N	0.00	t	4
-523	1	2010105021	201090000000	2026-04-04 08:00:00	125	1	EGYVO	\N	0.00	t	4
-524	1	2010105021	201090000000	2026-04-04 08:20:00	45056	2	EGYVO	\N	3518.20	t	4
-525	1	2010105021	201090000000	2026-04-04 08:40:00	1	3	EGYVO	VODAFONE_UK	0.05	t	\N
-526	1	2010105020	201090000000	2026-04-04 09:00:00	328	1	EGYVO	VODAFONE_UK	22.80	t	5
-527	1	2010105020	201090000000	2026-04-04 09:20:00	92160	2	EGYVO	\N	3608.00	t	2
-528	1	2010105020	201090000000	2026-04-04 09:40:00	1	3	EGYVO	\N	0.00	t	3
-529	1	2010105020	201090000000	2026-04-04 10:00:00	234	1	EGYVO	\N	0.00	t	1
-530	1	2010105019	201090000000	2026-04-04 10:20:00	45056	2	EGYVO	\N	4505.60	t	\N
-531	1	2010105019	201090000000	2026-04-04 10:40:00	1	3	EGYVO	\N	0.00	t	3
-532	1	2010105019	201090000000	2026-04-04 11:00:00	301	1	EGYVO	\N	0.00	t	1
-533	1	2010105019	201090000000	2026-04-04 11:20:00	9216	2	EGYVO	\N	921.60	t	\N
-534	1	2010105018	201090000000	2026-04-04 11:40:00	1	3	EGYVO	\N	0.00	t	4
-535	1	2010105018	201090000000	2026-04-04 12:00:00	215	1	EGYVO	\N	0.00	t	4
-536	1	2010105018	201090000000	2026-04-04 12:20:00	65536	2	EGYVO	\N	2287.60	t	2
-537	1	2010105018	201090000000	2026-04-04 12:40:00	1	3	EGYVO	\N	0.00	t	3
-538	1	2010105016	201090000000	2026-04-04 13:00:00	37	1	EGYVO	\N	0.00	t	1
-539	1	2010105016	201090000000	2026-04-04 13:20:00	14336	2	EGYVO	\N	1433.60	t	\N
-540	1	2010105016	201090000000	2026-04-04 13:40:00	1	3	EGYVO	\N	0.00	t	3
-541	1	2010105016	201090000000	2026-04-04 14:00:00	106	1	EGYVO	\N	0.00	t	1
-542	1	2010105013	201090000000	2026-04-04 14:20:00	101376	2	EGYVO	\N	10137.60	t	\N
-543	1	2010105013	201090000000	2026-04-04 14:40:00	1	3	EGYVO	\N	0.00	t	3
-544	1	2010105013	201090000000	2026-04-04 15:00:00	71	1	EGYVO	\N	0.00	t	1
-545	1	2010105013	201090000000	2026-04-04 15:20:00	41984	2	EGYVO	\N	4198.40	t	\N
-546	1	2010105010	201090000000	2026-04-04 15:40:00	1	3	EGYVO	\N	0.00	t	4
-547	1	2010105010	201090000000	2026-04-04 16:00:00	34	1	EGYVO	\N	0.00	t	4
-548	1	2010105010	201090000000	2026-04-04 16:20:00	18432	2	EGYVO	VODAFONE_UK	328.64	t	6
-549	1	2010105010	201090000000	2026-04-04 16:40:00	1	3	EGYVO	\N	0.00	t	4
-550	1	2010105009	201090000000	2026-04-04 17:00:00	309	1	EGYVO	\N	0.00	t	4
-551	1	2010105009	201090000000	2026-04-04 17:20:00	86016	2	EGYVO	\N	7632.50	t	4
-552	1	2010105009	201090000000	2026-04-04 17:40:00	1	3	EGYVO	\N	0.00	t	3
-553	1	2010105009	201090000000	2026-04-04 18:00:00	179	1	EGYVO	VODAFONE_UK	35.80	t	\N
-554	1	2010105008	201090000000	2026-04-04 18:20:00	62464	2	EGYVO	\N	2123.20	t	2
-555	1	2010105008	201090000000	2026-04-04 18:40:00	1	3	EGYVO	VODAFONE_UK	0.00	t	7
-556	1	2010105008	201090000000	2026-04-04 19:00:00	264	1	EGYVO	\N	0.00	t	1
-557	1	2010105008	201090000000	2026-04-04 19:20:00	10240	2	EGYVO	\N	512.00	t	\N
-558	1	2010105006	201090000000	2026-04-04 19:40:00	1	3	EGYVO	\N	0.00	t	4
-559	1	2010105006	201090000000	2026-04-04 20:00:00	235	1	EGYVO	\N	0.00	t	4
-560	1	2010105006	201090000000	2026-04-04 20:20:00	83968	2	EGYVO	\N	7420.40	t	4
-561	1	2010105006	201090000000	2026-04-04 20:40:00	1	3	EGYVO	\N	0.00	t	3
-562	1	2010105005	201090000000	2026-04-04 21:00:00	243	1	EGYVO	\N	0.00	t	4
-563	1	2010105005	201090000000	2026-04-04 21:20:00	95232	2	EGYVO	\N	3273.75	t	2
-564	1	2010105005	201090000000	2026-04-04 21:40:00	1	3	EGYVO	\N	0.00	t	3
-565	1	2010105005	201090000000	2026-04-04 22:00:00	186	1	EGYVO	\N	0.00	t	1
-566	1	2010105004	201090000000	2026-04-04 22:20:00	52224	2	EGYVO	VODAFONE_UK	5222.40	t	\N
-567	1	2010105004	201090000000	2026-04-04 22:40:00	1	3	EGYVO	\N	0.00	t	4
-568	1	2010105004	201090000000	2026-04-04 23:00:00	49	1	EGYVO	\N	0.00	t	4
-569	1	2010105004	201090000000	2026-04-04 23:20:00	88064	2	EGYVO	\N	7811.40	t	4
-570	1	2010105003	201090000000	2026-04-04 23:40:00	1	3	EGYVO	\N	0.00	t	4
-571	1	2010105003	201090000000	2026-04-05 00:00:00	79	1	EGYVO	\N	0.00	t	4
-572	1	2010105003	201090000000	2026-04-05 00:20:00	15360	2	EGYVO	\N	544.00	t	4
-573	1	2010105003	201090000000	2026-04-05 00:40:00	1	3	EGYVO	VODAFONE_UK	0.05	t	\N
-574	1	201000000048	201090000000	2026-04-05 01:00:00	308	1	EGYVO	\N	0.00	t	1
-575	1	201000000048	201090000000	2026-04-05 01:20:00	44032	2	EGYVO	\N	2201.60	t	\N
-576	1	201000000048	201090000000	2026-04-05 01:40:00	1	3	EGYVO	\N	0.00	t	3
-577	1	201000000048	201090000000	2026-04-05 02:00:00	234	1	EGYVO	\N	0.00	t	1
-578	1	201000000047	201090000000	2026-04-05 02:20:00	10240	2	EGYVO	\N	204.80	t	\N
-579	1	201000000047	201090000000	2026-04-05 02:40:00	1	3	EGYVO	\N	0.00	t	3
-580	1	201000000047	201090000000	2026-04-05 03:00:00	131	1	EGYVO	VODAFONE_UK	0.00	t	5
-581	1	201000000047	201090000000	2026-04-05 03:20:00	46080	2	EGYVO	\N	921.60	t	\N
-582	1	201000000046	201090000000	2026-04-05 03:40:00	1	3	EGYVO	\N	0.00	t	3
-583	1	201000000046	201090000000	2026-04-05 04:00:00	195	1	EGYVO	\N	0.00	t	1
-584	1	201000000046	201090000000	2026-04-05 04:20:00	10240	2	EGYVO	\N	1024.00	t	\N
-585	1	201000000046	201090000000	2026-04-05 04:40:00	1	3	EGYVO	\N	0.00	t	3
-586	1	201000000045	201090000000	2026-04-05 05:00:00	73	1	EGYVO	\N	0.00	t	1
-587	1	201000000045	201090000000	2026-04-05 05:20:00	57344	2	EGYVO	\N	2098.95	t	2
-588	1	201000000045	201090000000	2026-04-05 05:40:00	1	3	EGYVO	VODAFONE_UK	0.00	t	7
-589	1	201000000045	201090000000	2026-04-05 06:00:00	110	1	EGYVO	VODAFONE_UK	0.00	t	5
-590	1	201000000044	201090000000	2026-04-05 06:20:00	78848	2	EGYVO	VODAFONE_UK	1496.96	t	6
-591	1	201000000044	201090000000	2026-04-05 06:40:00	1	3	EGYVO	\N	0.00	t	3
-592	1	201000000044	201090000000	2026-04-05 07:00:00	105	1	EGYVO	\N	0.00	t	1
-593	1	201000000044	201090000000	2026-04-05 07:20:00	36864	2	EGYVO	\N	737.28	t	\N
-594	1	201000000043	201090000000	2026-04-05 07:40:00	1	3	EGYVO	VODAFONE_UK	0.00	t	7
-595	1	201000000043	201090000000	2026-04-05 08:00:00	221	1	EGYVO	\N	0.00	t	1
-596	1	201000000043	201090000000	2026-04-05 08:20:00	30720	2	EGYVO	\N	614.40	t	\N
-597	1	201000000043	201090000000	2026-04-05 08:40:00	1	3	EGYVO	\N	0.00	t	3
-598	1	201000000042	201090000000	2026-04-05 09:00:00	265	1	EGYVO	\N	0.00	t	1
-599	1	201000000042	201090000000	2026-04-05 09:20:00	104448	2	EGYVO	\N	10444.80	t	\N
-600	1	201000000042	201090000000	2026-04-05 09:40:00	1	3	EGYVO	\N	0.00	t	3
-601	1	201000000042	201090000000	2026-04-05 10:00:00	110	1	EGYVO	\N	0.00	t	1
-602	1	201000000041	201090000000	2026-04-05 10:20:00	75776	2	EGYVO	\N	2212.75	t	2
-603	1	201000000041	201090000000	2026-04-05 10:40:00	1	3	EGYVO	\N	0.00	t	3
-604	1	201000000041	201090000000	2026-04-05 11:00:00	73	1	EGYVO	VODAFONE_UK	0.00	t	5
-605	1	201000000041	201090000000	2026-04-05 11:20:00	53248	2	EGYVO	\N	2662.40	t	\N
-606	1	201000000040	201090000000	2026-04-05 11:40:00	1	3	EGYVO	\N	0.00	t	3
-607	1	201000000040	201090000000	2026-04-05 12:00:00	326	1	EGYVO	\N	0.00	t	1
-608	1	201000000040	201090000000	2026-04-05 12:20:00	36864	2	EGYVO	\N	3686.40	t	\N
-609	1	201000000040	201090000000	2026-04-05 12:40:00	1	3	EGYVO	\N	0.00	t	3
-610	1	201000000039	201090000000	2026-04-05 13:00:00	185	1	EGYVO	\N	0.00	t	1
-611	1	201000000039	201090000000	2026-04-05 13:20:00	27648	2	EGYVO	\N	2764.80	t	\N
-612	1	201000000039	201090000000	2026-04-05 13:40:00	1	3	EGYVO	\N	0.00	t	3
-613	1	201000000039	201090000000	2026-04-05 14:00:00	186	1	EGYVO	\N	0.00	t	1
-614	1	201000000038	201090000000	2026-04-05 14:20:00	11264	2	EGYVO	\N	1126.40	t	\N
-615	1	201000000038	201090000000	2026-04-05 14:40:00	1	3	EGYVO	VODAFONE_UK	0.05	t	\N
-616	1	201000000038	201090000000	2026-04-05 15:00:00	310	1	EGYVO	\N	0.00	t	1
-617	1	201000000038	201090000000	2026-04-05 15:20:00	10240	2	EGYVO	\N	1024.00	t	\N
-618	1	201000000037	201090000000	2026-04-05 15:40:00	1	3	EGYVO	\N	0.00	t	3
-619	1	201000000037	201090000000	2026-04-05 16:00:00	75	1	EGYVO	\N	0.00	t	1
-620	1	201000000037	201090000000	2026-04-05 16:20:00	87040	2	EGYVO	\N	8704.00	t	\N
-621	1	201000000037	201090000000	2026-04-05 16:40:00	1	3	EGYVO	\N	0.00	t	3
-622	1	201000000036	201090000000	2026-04-05 17:00:00	44	1	EGYVO	\N	0.00	t	1
-623	1	201000000036	201090000000	2026-04-05 17:20:00	94208	2	EGYVO	\N	9420.80	t	\N
-624	1	201000000036	201090000000	2026-04-05 17:40:00	1	3	EGYVO	\N	0.00	t	3
-625	1	201000000036	201090000000	2026-04-05 18:00:00	59	1	EGYVO	\N	0.00	t	1
-626	1	201000000035	201090000000	2026-04-05 18:20:00	49152	2	EGYVO	\N	2457.60	t	\N
-627	1	201000000035	201090000000	2026-04-05 18:40:00	1	3	EGYVO	\N	0.00	t	3
-628	1	201000000035	201090000000	2026-04-05 19:00:00	287	1	EGYVO	VODAFONE_UK	28.40	t	5
-629	1	201000000035	201090000000	2026-04-05 19:20:00	97280	2	EGYVO	\N	4864.00	t	\N
-630	1	201000000034	201090000000	2026-04-05 19:40:00	1	3	EGYVO	\N	0.00	t	3
-631	1	201000000034	201090000000	2026-04-05 20:00:00	92	1	EGYVO	VODAFONE_UK	18.40	t	\N
-632	1	201000000034	201090000000	2026-04-05 20:20:00	32768	2	EGYVO	\N	3276.80	t	\N
-633	1	201000000034	201090000000	2026-04-05 20:40:00	1	3	EGYVO	\N	0.00	t	3
-634	1	201000000033	201090000000	2026-04-05 21:00:00	251	1	EGYVO	\N	0.00	t	1
-635	1	201000000033	201090000000	2026-04-05 21:20:00	105472	2	EGYVO	\N	10547.20	t	\N
-636	1	201000000033	201090000000	2026-04-05 21:40:00	1	3	EGYVO	\N	0.00	t	3
-637	1	201000000033	201090000000	2026-04-05 22:00:00	253	1	EGYVO	\N	0.00	t	1
-638	1	201000000032	201090000000	2026-04-05 22:20:00	52224	2	EGYVO	\N	5222.40	t	\N
-639	1	201000000032	201090000000	2026-04-05 22:40:00	1	3	EGYVO	VODAFONE_UK	0.05	t	\N
-640	1	201000000032	201090000000	2026-04-05 23:00:00	194	1	EGYVO	\N	0.00	t	1
-641	1	201000000032	201090000000	2026-04-05 23:20:00	78848	2	EGYVO	\N	7884.80	t	\N
-642	1	201000000031	201090000000	2026-04-05 23:40:00	1	3	EGYVO	\N	0.00	t	3
-643	1	201000000031	201090000000	2026-04-06 00:00:00	312	1	EGYVO	\N	0.00	t	1
-644	1	201000000031	201090000000	2026-04-06 00:20:00	99328	2	EGYVO	\N	4966.40	t	\N
-645	1	201000000031	201090000000	2026-04-06 00:40:00	1	3	EGYVO	\N	0.00	t	3
-646	1	201000000030	201090000000	2026-04-06 01:00:00	186	1	EGYVO	VODAFONE_UK	37.20	t	\N
-647	1	201000000030	201090000000	2026-04-06 01:20:00	54272	2	EGYVO	VODAFONE_UK	5427.20	t	\N
-648	1	201000000030	201090000000	2026-04-06 01:40:00	1	3	EGYVO	\N	0.00	t	3
-649	1	201000000030	201090000000	2026-04-06 02:00:00	31	1	EGYVO	VODAFONE_UK	6.20	t	\N
-650	1	201000000029	201090000000	2026-04-06 02:20:00	91136	2	EGYVO	\N	1822.72	t	\N
-651	1	201000000029	201090000000	2026-04-06 02:40:00	1	3	EGYVO	\N	0.00	t	3
-652	1	201000000029	201090000000	2026-04-06 03:00:00	230	1	EGYVO	\N	0.00	t	1
-653	1	201000000029	201090000000	2026-04-06 03:20:00	95232	2	EGYVO	\N	1904.64	t	\N
-654	1	201000000028	201090000000	2026-04-06 03:40:00	1	3	EGYVO	VODAFONE_UK	0.00	t	7
-655	1	201000000028	201090000000	2026-04-06 04:00:00	152	1	EGYVO	\N	0.00	t	1
-656	1	201000000028	201090000000	2026-04-06 04:20:00	106496	2	EGYVO	\N	5324.80	t	\N
-657	1	201000000028	201090000000	2026-04-06 04:40:00	1	3	EGYVO	\N	0.00	t	3
-658	1	201000000027	201090000000	2026-04-06 05:00:00	316	1	EGYVO	\N	0.00	t	1
-659	1	201000000027	201090000000	2026-04-06 05:20:00	9216	2	EGYVO	\N	184.32	t	\N
-660	1	201000000027	201090000000	2026-04-06 05:40:00	1	3	EGYVO	\N	0.00	t	3
-661	1	201000000027	201090000000	2026-04-06 06:00:00	231	1	EGYVO	\N	0.00	t	1
-662	1	201000000026	201090000000	2026-04-06 06:20:00	55296	2	EGYVO	\N	5529.60	t	\N
-663	1	201000000026	201090000000	2026-04-06 06:40:00	1	3	EGYVO	\N	0.00	t	3
-664	1	201000000026	201090000000	2026-04-06 07:00:00	108	1	EGYVO	\N	0.00	t	1
-665	1	201000000026	201090000000	2026-04-06 07:20:00	38912	2	EGYVO	\N	3891.20	t	\N
-666	1	201000000025	201090000000	2026-04-06 07:40:00	1	3	EGYVO	\N	0.00	t	3
-667	1	201000000025	201090000000	2026-04-06 08:00:00	225	1	EGYVO	\N	0.00	t	1
-668	1	201000000025	201090000000	2026-04-06 08:20:00	39936	2	EGYVO	VODAFONE_UK	758.72	t	6
-669	1	201000000025	201090000000	2026-04-06 08:40:00	1	3	EGYVO	\N	0.00	t	3
-670	1	201000000024	201090000000	2026-04-06 09:00:00	85	1	EGYVO	VODAFONE_UK	0.00	t	5
-671	1	201000000024	201090000000	2026-04-06 09:20:00	43008	2	EGYVO	\N	660.16	t	2
-672	1	201000000024	201090000000	2026-04-06 09:40:00	1	3	EGYVO	\N	0.00	t	3
-673	1	201000000024	201090000000	2026-04-06 10:00:00	323	1	EGYVO	\N	0.00	t	1
-674	1	201000000023	201090000000	2026-04-06 10:20:00	38912	2	EGYVO	\N	3891.20	t	\N
-675	1	201000000023	201090000000	2026-04-06 10:40:00	1	3	EGYVO	\N	0.00	t	3
-676	1	201000000023	201090000000	2026-04-06 11:00:00	273	1	EGYVO	\N	0.00	t	1
-677	1	201000000023	201090000000	2026-04-06 11:20:00	79872	2	EGYVO	\N	7987.20	t	\N
-678	1	201000000022	201090000000	2026-04-06 11:40:00	1	3	EGYVO	\N	0.00	t	3
-679	1	201000000022	201090000000	2026-04-06 12:00:00	201	1	EGYVO	\N	0.00	t	1
-680	1	201000000022	201090000000	2026-04-06 12:20:00	8192	2	EGYVO	\N	304.00	t	2
-681	1	201000000022	201090000000	2026-04-06 12:40:00	1	3	EGYVO	\N	0.00	t	3
-682	1	201000000021	201090000000	2026-04-06 13:00:00	54	1	EGYVO	\N	0.00	t	1
-683	1	201000000021	201090000000	2026-04-06 13:20:00	53248	2	EGYVO	VODAFONE_UK	1024.96	t	6
-684	1	201000000021	201090000000	2026-04-06 13:40:00	1	3	EGYVO	\N	0.00	t	3
-685	1	201000000021	201090000000	2026-04-06 14:00:00	190	1	EGYVO	\N	0.00	t	1
-686	1	201000000020	201090000000	2026-04-06 14:20:00	21504	2	EGYVO	\N	2150.40	t	\N
-687	1	201000000020	201090000000	2026-04-06 14:40:00	1	3	EGYVO	VODAFONE_UK	0.05	t	\N
-688	1	201000000020	201090000000	2026-04-06 15:00:00	279	1	EGYVO	VODAFONE_UK	55.80	t	\N
-689	1	201000000020	201090000000	2026-04-06 15:20:00	48128	2	EGYVO	\N	4812.80	t	\N
-690	1	201000000019	201090000000	2026-04-06 15:40:00	1	3	EGYVO	\N	0.00	t	4
-691	1	201000000019	201090000000	2026-04-06 16:00:00	41	1	EGYVO	VODAFONE_UK	0.00	t	5
-692	1	201000000019	201090000000	2026-04-06 16:20:00	6144	2	EGYVO	\N	0.00	t	4
-693	1	201000000019	201090000000	2026-04-06 16:40:00	1	3	EGYVO	\N	0.00	t	4
-694	1	201000000017	201090000000	2026-04-06 17:00:00	252	1	EGYVO	\N	0.00	t	1
-695	1	201000000017	201090000000	2026-04-06 17:20:00	103424	2	EGYVO	VODAFONE_UK	5071.20	t	6
-696	1	201000000017	201090000000	2026-04-06 17:40:00	1	3	EGYVO	\N	0.00	t	3
-697	1	201000000017	201090000000	2026-04-06 18:00:00	133	1	EGYVO	VODAFONE_UK	3.30	t	5
-698	1	201000000016	201090000000	2026-04-06 18:20:00	87040	2	EGYVO	\N	1740.80	t	\N
-699	1	201000000016	201090000000	2026-04-06 18:40:00	1	3	EGYVO	\N	0.00	t	3
-700	1	201000000016	201090000000	2026-04-06 19:00:00	48	1	EGYVO	\N	0.00	t	1
-701	1	201000000016	201090000000	2026-04-06 19:20:00	39936	2	EGYVO	\N	798.72	t	\N
-702	1	201000000015	201090000000	2026-04-06 19:40:00	1	3	EGYVO	\N	0.00	t	3
-703	1	201000000015	201090000000	2026-04-06 20:00:00	214	1	EGYVO	\N	0.00	t	1
-704	1	201000000015	201090000000	2026-04-06 20:20:00	86016	2	EGYVO	\N	1720.32	t	\N
-705	1	201000000015	201090000000	2026-04-06 20:40:00	1	3	EGYVO	\N	0.00	t	3
-706	1	201000000014	201090000000	2026-04-06 21:00:00	106	1	EGYVO	\N	0.00	t	4
-707	1	201000000014	201090000000	2026-04-06 21:20:00	20480	2	EGYVO	\N	440.60	t	2
-708	1	201000000014	201090000000	2026-04-06 21:40:00	1	3	EGYVO	\N	0.00	t	3
-709	1	201000000014	201090000000	2026-04-06 22:00:00	280	1	EGYVO	\N	0.00	t	1
-710	1	201000000012	201090000000	2026-04-06 22:20:00	20480	2	EGYVO	\N	41.45	t	2
-711	1	201000000012	201090000000	2026-04-06 22:40:00	1	3	EGYVO	VODAFONE_UK	0.00	t	7
-712	1	201000000012	201090000000	2026-04-06 23:00:00	219	1	EGYVO	\N	0.00	t	1
-713	1	201000000012	201090000000	2026-04-06 23:20:00	103424	2	EGYVO	\N	5171.20	t	\N
+294	1	201779264035	201090000000	2026-04-01 10:00:00	300	1	EGYVO	\N	0.00	t	4
+295	1	201779264035	201090000000	2026-04-01 10:00:00	300	1	EGYVO	\N	0.00	t	4
+296	1	201470237935	201090000000	2026-04-01 10:00:00	300	1	EGYVO	\N	0.00	t	1
+297	1	201470237935	201090000000	2026-04-01 10:00:00	300	1	EGYVO	\N	0.00	t	1
+298	1	201470237935	201090000000	2026-04-01 10:00:00	300	1	EGYVO	\N	0.00	t	1
+299	1	201802917632	201090000000	2026-04-01 10:00:00	300	1	EGYVO	\N	0.00	t	4
+300	1	201802917632	201090000000	2026-04-01 10:00:00	300	1	EGYVO	\N	0.00	t	4
+301	1	201802917632	201090000000	2026-04-01 10:00:00	300	1	EGYVO	\N	0.00	t	4
+302	1	201835042990	201090000000	2026-04-01 10:00:00	300	1	EGYVO	\N	0.00	t	4
+303	1	201835042990	201090000000	2026-04-01 10:00:00	300	1	EGYVO	\N	0.00	t	4
+304	1	201835042990	201090000000	2026-04-01 10:00:00	300	1	EGYVO	\N	0.00	t	4
+305	1	201462099679	201090000000	2026-04-01 10:00:00	300	1	EGYVO	\N	0.00	t	1
+306	1	201462099679	201090000000	2026-04-01 10:00:00	300	1	EGYVO	\N	0.00	t	1
+307	1	201462099679	201090000000	2026-04-01 10:00:00	300	1	EGYVO	\N	0.00	t	1
+308	1	201711745398	201090000000	2026-04-01 10:00:00	300	1	EGYVO	\N	0.00	t	4
+309	1	201711745398	201090000000	2026-04-01 10:00:00	300	1	EGYVO	\N	0.00	t	4
+310	1	201711745398	201090000000	2026-04-01 10:00:00	300	1	EGYVO	\N	0.00	t	4
+311	1	201273640490	201090000000	2026-04-01 10:00:00	300	1	EGYVO	\N	0.00	t	1
+312	1	201273640490	201090000000	2026-04-01 10:00:00	300	1	EGYVO	\N	0.00	t	1
+313	1	201273640490	201090000000	2026-04-01 10:00:00	300	1	EGYVO	\N	0.00	t	1
+314	1	201804307139	201090000000	2026-04-01 10:00:00	300	1	EGYVO	\N	0.00	t	1
+315	1	201804307139	201090000000	2026-04-01 10:00:00	300	1	EGYVO	\N	0.00	t	1
+316	1	201804307139	201090000000	2026-04-01 10:00:00	300	1	EGYVO	\N	0.00	t	1
+317	1	201659605961	201090000000	2026-04-01 10:00:00	300	1	EGYVO	\N	0.00	t	4
+318	1	201659605961	201090000000	2026-04-01 10:00:00	300	1	EGYVO	\N	0.00	t	4
+319	1	201659605961	201090000000	2026-04-01 10:00:00	300	1	EGYVO	\N	0.00	t	4
+320	1	201342567152	201090000000	2026-04-01 10:00:00	300	1	EGYVO	\N	0.00	t	4
+321	1	201342567152	201090000000	2026-04-01 10:00:00	300	1	EGYVO	\N	0.00	t	4
+322	1	201342567152	201090000000	2026-04-01 10:00:00	300	1	EGYVO	\N	0.00	t	4
+323	1	201301312298	201090000000	2026-04-01 10:00:00	300	1	EGYVO	\N	0.00	t	4
+324	1	201301312298	201090000000	2026-04-01 10:00:00	300	1	EGYVO	\N	0.00	t	4
+325	1	201301312298	201090000000	2026-04-01 10:00:00	300	1	EGYVO	\N	0.00	t	4
+326	1	201694166136	201090000000	2026-04-01 10:00:00	300	1	EGYVO	\N	0.00	t	1
+327	1	201694166136	201090000000	2026-04-01 10:00:00	300	1	EGYVO	\N	0.00	t	1
+328	1	201694166136	201090000000	2026-04-01 10:00:00	300	1	EGYVO	\N	0.00	t	1
+329	1	201825521770	201090000000	2026-04-01 10:00:00	300	1	EGYVO	\N	0.00	t	4
+330	1	201825521770	201090000000	2026-04-01 10:00:00	300	1	EGYVO	\N	0.00	t	4
+331	1	201825521770	201090000000	2026-04-01 10:00:00	300	1	EGYVO	\N	0.00	t	4
+332	1	201568724886	201090000000	2026-04-01 10:00:00	300	1	EGYVO	\N	0.00	t	1
+333	1	201568724886	201090000000	2026-04-01 10:00:00	300	1	EGYVO	\N	0.00	t	1
+334	1	201568724886	201090000000	2026-04-01 10:00:00	300	1	EGYVO	\N	0.00	t	1
+335	1	201330199728	201090000000	2026-04-01 10:00:00	300	1	EGYVO	\N	0.00	t	1
+336	1	201330199728	201090000000	2026-04-01 10:00:00	300	1	EGYVO	\N	0.00	t	1
+337	1	201330199728	201090000000	2026-04-01 10:00:00	300	1	EGYVO	\N	0.00	t	1
+338	1	201611131414	201090000000	2026-04-01 10:00:00	300	1	EGYVO	\N	0.00	t	4
+339	1	201611131414	201090000000	2026-04-01 10:00:00	300	1	EGYVO	\N	0.00	t	4
+340	1	201611131414	201090000000	2026-04-01 10:00:00	300	1	EGYVO	\N	0.00	t	4
+341	1	201949566929	201090000000	2026-04-01 10:00:00	300	1	EGYVO	\N	0.00	t	4
+342	1	201949566929	201090000000	2026-04-01 10:00:00	300	1	EGYVO	\N	0.00	t	4
+343	1	201949566929	201090000000	2026-04-01 10:00:00	300	1	EGYVO	\N	0.00	t	4
+344	1	201836162878	201090000000	2026-04-01 10:00:00	300	1	EGYVO	\N	0.00	t	4
+345	1	201836162878	201090000000	2026-04-01 10:00:00	300	1	EGYVO	\N	0.00	t	4
+346	1	201836162878	201090000000	2026-04-01 10:00:00	300	1	EGYVO	\N	0.00	t	4
+347	1	201984327233	201090000000	2026-04-01 10:00:00	300	1	EGYVO	\N	0.00	t	4
+348	1	201984327233	201090000000	2026-04-01 10:00:00	300	1	EGYVO	\N	0.00	t	4
+349	1	201984327233	201090000000	2026-04-01 10:00:00	300	1	EGYVO	\N	0.00	t	4
+350	1	201753036489	201090000000	2026-04-01 10:00:00	300	1	EGYVO	\N	0.00	t	1
+351	1	201753036489	201090000000	2026-04-01 10:00:00	300	1	EGYVO	\N	0.00	t	1
+352	1	201753036489	201090000000	2026-04-01 10:00:00	300	1	EGYVO	\N	0.00	t	1
+353	1	201233997401	201090000000	2026-04-01 10:00:00	300	1	EGYVO	\N	0.00	t	4
+354	1	201233997401	201090000000	2026-04-01 10:00:00	300	1	EGYVO	\N	0.00	t	4
+355	1	201233997401	201090000000	2026-04-01 10:00:00	300	1	EGYVO	\N	0.00	t	4
+356	1	201255851063	201090000000	2026-04-01 10:00:00	300	1	EGYVO	\N	0.00	t	4
+357	1	201255851063	201090000000	2026-04-01 10:00:00	300	1	EGYVO	\N	0.00	t	4
+358	1	201255851063	201090000000	2026-04-01 10:00:00	300	1	EGYVO	\N	0.00	t	4
+359	1	201211097847	201090000000	2026-04-01 10:00:00	300	1	EGYVO	\N	0.00	t	4
+360	1	201211097847	201090000000	2026-04-01 10:00:00	300	1	EGYVO	\N	0.00	t	4
+361	1	201211097847	201090000000	2026-04-01 10:00:00	300	1	EGYVO	\N	0.00	t	4
+362	1	201294741054	201090000000	2026-04-01 10:00:00	300	1	EGYVO	\N	0.00	t	1
+363	1	201294741054	201090000000	2026-04-01 10:00:00	300	1	EGYVO	\N	0.00	t	1
+364	1	201294741054	201090000000	2026-04-01 10:00:00	300	1	EGYVO	\N	0.00	t	1
+365	1	201988892685	201090000000	2026-04-01 10:00:00	300	1	EGYVO	\N	0.00	t	4
+366	1	201988892685	201090000000	2026-04-01 10:00:00	300	1	EGYVO	\N	0.00	t	4
+367	1	201988892685	201090000000	2026-04-01 10:00:00	300	1	EGYVO	\N	0.00	t	4
+368	1	201717769502	201090000000	2026-04-01 10:00:00	300	1	EGYVO	\N	0.00	t	1
+369	1	201717769502	201090000000	2026-04-01 10:00:00	300	1	EGYVO	\N	0.00	t	1
+370	1	201717769502	201090000000	2026-04-01 10:00:00	300	1	EGYVO	\N	0.00	t	1
+371	1	201656715920	201090000000	2026-04-01 10:00:00	300	1	EGYVO	\N	0.00	t	4
+372	1	201656715920	201090000000	2026-04-01 10:00:00	300	1	EGYVO	\N	0.00	t	4
+373	1	201656715920	201090000000	2026-04-01 10:00:00	300	1	EGYVO	\N	0.00	t	4
+374	1	201186352421	201090000000	2026-04-01 10:00:00	300	1	EGYVO	\N	0.00	t	4
+375	1	201186352421	201090000000	2026-04-01 10:00:00	300	1	EGYVO	\N	0.00	t	4
+376	1	201186352421	201090000000	2026-04-01 10:00:00	300	1	EGYVO	\N	0.00	t	4
+377	1	201420871936	201090000000	2026-04-01 10:00:00	300	1	EGYVO	\N	0.00	t	4
+378	1	201420871936	201090000000	2026-04-01 10:00:00	300	1	EGYVO	\N	0.00	t	4
+379	1	201420871936	201090000000	2026-04-01 10:00:00	300	1	EGYVO	\N	0.00	t	4
+380	1	201777264317	201090000000	2026-04-01 10:00:00	300	1	EGYVO	\N	0.00	t	4
+381	1	201777264317	201090000000	2026-04-01 10:00:00	300	1	EGYVO	\N	0.00	t	4
+382	1	201777264317	201090000000	2026-04-01 10:00:00	300	1	EGYVO	\N	0.00	t	4
+383	1	201362708743	201090000000	2026-04-01 10:00:00	300	1	EGYVO	\N	0.00	t	4
+384	1	201362708743	201090000000	2026-04-01 10:00:00	300	1	EGYVO	\N	0.00	t	4
+385	1	201362708743	201090000000	2026-04-01 10:00:00	300	1	EGYVO	\N	0.00	t	4
+386	1	201358767975	201090000000	2026-04-01 10:00:00	300	1	EGYVO	\N	0.00	t	1
+387	1	201358767975	201090000000	2026-04-01 10:00:00	300	1	EGYVO	\N	0.00	t	1
+388	1	201358767975	201090000000	2026-04-01 10:00:00	300	1	EGYVO	\N	0.00	t	1
+389	1	201758547932	201090000000	2026-04-01 10:00:00	300	1	EGYVO	\N	0.00	t	4
+390	1	201758547932	201090000000	2026-04-01 10:00:00	300	1	EGYVO	\N	0.00	t	4
+391	1	201758547932	201090000000	2026-04-01 10:00:00	300	1	EGYVO	\N	0.00	t	4
+392	1	201288445442	201090000000	2026-04-01 10:00:00	300	1	EGYVO	\N	0.00	t	1
+393	1	201288445442	201090000000	2026-04-01 10:00:00	300	1	EGYVO	\N	0.00	t	1
+394	1	201288445442	201090000000	2026-04-01 10:00:00	300	1	EGYVO	\N	0.00	t	1
+395	1	201419739858	201090000000	2026-04-01 10:00:00	300	1	EGYVO	\N	0.00	t	4
+396	1	201419739858	201090000000	2026-04-01 10:00:00	300	1	EGYVO	\N	0.00	t	4
+397	1	201419739858	201090000000	2026-04-01 10:00:00	300	1	EGYVO	\N	0.00	t	4
+398	1	201570066932	201090000000	2026-04-01 10:00:00	300	1	EGYVO	\N	0.00	t	4
+399	1	201570066932	201090000000	2026-04-01 10:00:00	300	1	EGYVO	\N	0.00	t	4
+400	1	201570066932	201090000000	2026-04-01 10:00:00	300	1	EGYVO	\N	0.00	t	4
+401	1	201198229833	201090000000	2026-04-01 10:00:00	300	1	EGYVO	\N	0.00	t	4
+402	1	201198229833	201090000000	2026-04-01 10:00:00	300	1	EGYVO	\N	0.00	t	4
+403	1	201198229833	201090000000	2026-04-01 10:00:00	300	1	EGYVO	\N	0.00	t	4
+404	1	201599166808	201090000000	2026-04-01 10:00:00	300	1	EGYVO	\N	0.00	t	4
+405	1	201599166808	201090000000	2026-04-01 10:00:00	300	1	EGYVO	\N	0.00	t	4
+406	1	201599166808	201090000000	2026-04-01 10:00:00	300	1	EGYVO	\N	0.00	t	4
+407	1	201947919413	201090000000	2026-04-01 10:00:00	300	1	EGYVO	\N	0.00	t	4
+408	1	201947919413	201090000000	2026-04-01 10:00:00	300	1	EGYVO	\N	0.00	t	4
+409	1	201947919413	201090000000	2026-04-01 10:00:00	300	1	EGYVO	\N	0.00	t	4
+410	1	201624427143	201090000000	2026-04-01 10:00:00	300	1	EGYVO	\N	0.00	t	4
+411	1	201624427143	201090000000	2026-04-01 10:00:00	300	1	EGYVO	\N	0.00	t	4
+412	1	201624427143	201090000000	2026-04-01 10:00:00	300	1	EGYVO	\N	0.00	t	4
+413	1	201274207034	201090000000	2026-04-01 10:00:00	300	1	EGYVO	\N	0.00	t	1
+414	1	201274207034	201090000000	2026-04-01 10:00:00	300	1	EGYVO	\N	0.00	t	1
+415	1	201274207034	201090000000	2026-04-01 10:00:00	300	1	EGYVO	\N	0.00	t	1
+416	1	201733342762	201090000000	2026-04-01 10:00:00	300	1	EGYVO	\N	0.00	t	4
+417	1	201733342762	201090000000	2026-04-01 10:00:00	300	1	EGYVO	\N	0.00	t	4
+418	1	201733342762	201090000000	2026-04-01 10:00:00	300	1	EGYVO	\N	0.00	t	4
+419	1	201311169287	201090000000	2026-04-01 10:00:00	300	1	EGYVO	\N	0.00	t	4
+420	1	201311169287	201090000000	2026-04-01 10:00:00	300	1	EGYVO	\N	0.00	t	4
+421	1	201311169287	201090000000	2026-04-01 10:00:00	300	1	EGYVO	\N	0.00	t	4
+422	1	201767489862	201090000000	2026-04-01 10:00:00	300	1	EGYVO	\N	0.00	t	1
+423	1	201767489862	201090000000	2026-04-01 10:00:00	300	1	EGYVO	\N	0.00	t	1
+424	1	201767489862	201090000000	2026-04-01 10:00:00	300	1	EGYVO	\N	0.00	t	1
+425	1	201903689006	201090000000	2026-04-01 10:00:00	300	1	EGYVO	\N	0.00	t	1
+426	1	201903689006	201090000000	2026-04-01 10:00:00	300	1	EGYVO	\N	0.00	t	1
+427	1	201903689006	201090000000	2026-04-01 10:00:00	300	1	EGYVO	\N	0.00	t	1
+428	1	201437218906	201090000000	2026-04-01 10:00:00	300	1	EGYVO	\N	0.00	t	4
+429	1	201437218906	201090000000	2026-04-01 10:00:00	300	1	EGYVO	\N	0.00	t	4
+430	1	201437218906	201090000000	2026-04-01 10:00:00	300	1	EGYVO	\N	0.00	t	4
+431	1	201828797537	201090000000	2026-04-01 10:00:00	300	1	EGYVO	\N	0.00	t	4
+432	1	201828797537	201090000000	2026-04-01 10:00:00	300	1	EGYVO	\N	0.00	t	4
+433	1	201828797537	201090000000	2026-04-01 10:00:00	300	1	EGYVO	\N	0.00	t	4
+434	1	201582165582	201090000000	2026-04-01 10:00:00	300	1	EGYVO	\N	0.00	t	4
+435	1	201582165582	201090000000	2026-04-01 10:00:00	300	1	EGYVO	\N	0.00	t	4
+436	1	201582165582	201090000000	2026-04-01 10:00:00	300	1	EGYVO	\N	0.00	t	4
+437	1	201443434524	201090000000	2026-04-01 10:00:00	300	1	EGYVO	\N	0.00	t	4
+438	1	201443434524	201090000000	2026-04-01 10:00:00	300	1	EGYVO	\N	0.00	t	4
+439	1	201443434524	201090000000	2026-04-01 10:00:00	300	1	EGYVO	\N	0.00	t	4
+440	1	201180758537	201090000000	2026-04-01 10:00:00	300	1	EGYVO	\N	0.00	t	4
+441	1	201180758537	201090000000	2026-04-01 10:00:00	300	1	EGYVO	\N	0.00	t	4
+442	1	201180758537	201090000000	2026-04-01 10:00:00	300	1	EGYVO	\N	0.00	t	4
+443	1	201251619033	201090000000	2026-04-01 10:00:00	300	1	EGYVO	\N	0.00	t	1
+444	1	201251619033	201090000000	2026-04-01 10:00:00	300	1	EGYVO	\N	0.00	t	1
+445	1	201251619033	201090000000	2026-04-01 10:00:00	300	1	EGYVO	\N	0.00	t	1
+446	1	201462924192	201090000000	2026-04-01 10:00:00	300	1	EGYVO	\N	0.00	t	1
+447	1	201462924192	201090000000	2026-04-01 10:00:00	300	1	EGYVO	\N	0.00	t	1
+448	1	201462924192	201090000000	2026-04-01 10:00:00	300	1	EGYVO	\N	0.00	t	1
+449	1	201000000001	201000000002	2026-04-01 10:00:00	120	1	EGYVO	\N	0.40	t	\N
 \.
 
 
 --
--- Data for Name: contract; Type: TABLE DATA; Schema: public; Owner: -
+-- Data for Name: contract; Type: TABLE DATA; Schema: public; Owner: zkhattab
 --
 
 COPY public.contract (id, user_account_id, rateplan_id, msisdn, status, credit_limit, available_credit) FROM stdin;
-1	2	1	201000000001	active	200.00	200.00
-2	3	2	201000000002	active	500.00	500.00
-3	4	1	201000000003	active	200.00	200.00
-4	5	2	201000000004	active	500.00	500.00
-5	6	1	201000000005	active	200.00	200.00
-6	7	2	201000000006	active	500.00	500.00
-7	8	1	201000000007	active	200.00	200.00
-8	9	2	201000000008	active	500.00	500.00
-9	10	1	201000000009	active	200.00	200.00
-10	11	2	201000000010	active	500.00	500.00
-11	12	1	201000000011	active	200.00	150.00
-12	13	2	201000000012	active	500.00	420.00
+49	50	3	201929443681	active	1000.00	1000.00
+50	51	1	201429981367	suspended	200.00	200.00
 13	14	1	201000000013	suspended	200.00	200.00
-14	15	2	201000000014	active	500.00	500.00
+51	52	3	201413480521	active	1000.00	1000.00
+52	53	3	201385628459	suspended	1000.00	1000.00
+53	54	1	201213799908	suspended	200.00	200.00
+54	55	2	201732646622	suspended	500.00	500.00
 18	19	1	201000000018	terminated	200.00	200.00
+10	11	2	201000000010	active	500.00	500.00
+9	10	1	201000000009	active	200.00	200.00
+8	9	2	201000000008	active	500.00	500.00
+7	8	1	201000000007	active	200.00	200.00
+6	7	2	201000000006	active	500.00	500.00
+5	6	1	201000000005	active	200.00	200.00
+4	5	2	201000000004	active	500.00	500.00
+3	4	1	201000000003	active	200.00	200.00
+55	56	1	201544098306	suspended	200.00	200.00
+56	57	2	201100488135	active	500.00	500.00
+57	58	1	201619259144	suspended	200.00	200.00
+58	59	3	201921537400	active	1000.00	1000.00
+59	60	2	201766068173	active	500.00	500.00
+60	61	1	201596567886	suspended_debt	200.00	200.00
+61	62	1	201577029209	active	200.00	200.00
+62	63	1	201807282720	suspended	200.00	200.00
+63	64	2	201286932142	active	500.00	500.00
+64	65	2	201164642038	suspended	500.00	500.00
+65	66	1	201676533855	terminated	200.00	200.00
+66	67	2	201383276193	suspended	500.00	500.00
+67	68	1	201570152514	suspended	200.00	200.00
+68	69	1	201807868584	active	200.00	200.00
+69	70	2	201971560057	active	500.00	500.00
+70	71	3	201840246205	active	1000.00	1000.00
+71	72	2	201684075608	active	500.00	500.00
+72	73	2	201577199236	suspended	500.00	500.00
+73	74	1	201974393501	active	200.00	200.00
+74	75	2	201198754346	active	500.00	500.00
+75	76	2	201407381378	active	500.00	500.00
+76	77	1	201937787633	suspended	200.00	200.00
+2	3	2	201000000002	active	500.00	496.82
+77	78	2	201612484713	suspended	500.00	500.00
+78	79	2	201323801663	suspended	500.00	500.00
+79	80	3	201526237308	active	1000.00	1000.00
+80	81	3	201554543248	active	1000.00	1000.00
+81	82	1	201776684616	active	200.00	200.00
+82	83	1	201367791331	active	200.00	200.00
+83	84	1	201718702362	active	200.00	200.00
+84	85	3	201212911963	active	1000.00	1000.00
+85	86	2	201220083435	suspended	500.00	500.00
+86	87	3	201232465204	active	1000.00	1000.00
+87	88	1	201998010690	active	200.00	200.00
+88	89	1	201659706181	active	200.00	200.00
+89	90	2	201547174916	active	500.00	500.00
+90	91	1	201252951019	suspended	200.00	200.00
+91	92	2	201710876578	suspended	500.00	500.00
+92	93	3	201590865366	suspended_debt	1000.00	1000.00
+93	94	1	201471555986	active	200.00	200.00
+94	95	2	201649117498	active	500.00	500.00
+95	96	1	201264979417	suspended	200.00	200.00
+96	97	1	201653069004	active	200.00	200.00
+97	98	2	201779264035	active	500.00	500.00
+98	99	1	201470237935	active	200.00	200.00
+99	100	2	201802917632	active	500.00	500.00
+100	101	2	201835042990	active	500.00	500.00
+101	102	1	201462099679	active	200.00	200.00
+102	103	2	201411625546	active	500.00	500.00
+103	104	3	201829056999	suspended	1000.00	1000.00
+104	105	2	201711745398	active	500.00	500.00
+105	106	1	201267326529	suspended	200.00	200.00
+106	107	2	201135432749	suspended	500.00	500.00
+107	108	2	201495133161	suspended	500.00	500.00
+108	109	1	201273640490	active	200.00	200.00
+109	110	3	201934864215	suspended_debt	1000.00	1000.00
+110	111	1	201836494481	active	200.00	200.00
+111	112	2	201763896489	terminated	500.00	500.00
+112	113	1	201804307139	active	200.00	200.00
+113	114	2	201659605961	active	500.00	500.00
+114	115	2	201958741292	active	500.00	500.00
+115	116	2	201342567152	active	500.00	500.00
+116	117	2	201301312298	active	500.00	500.00
+117	118	1	201722845880	terminated	200.00	200.00
+118	119	1	201694166136	active	200.00	200.00
+119	120	2	201837084004	suspended	500.00	500.00
+120	121	2	201825521770	active	500.00	500.00
+121	122	3	201874881544	terminated	1000.00	1000.00
+122	123	1	201568724886	active	200.00	200.00
+123	124	1	201330199728	active	200.00	200.00
+124	125	2	201611131414	active	500.00	500.00
+125	126	2	201949566929	active	500.00	500.00
+126	127	2	201836162878	active	500.00	500.00
+127	128	1	201369118737	active	200.00	200.00
+128	129	3	201813057806	suspended_debt	1000.00	1000.00
+129	130	2	201984327233	active	500.00	500.00
+130	131	1	201753036489	active	200.00	200.00
+131	132	1	201110623838	active	200.00	200.00
+132	133	2	201233997401	active	500.00	500.00
+133	134	1	201250407138	suspended_debt	200.00	200.00
+134	135	2	201924975793	suspended	500.00	500.00
+135	136	1	201671686439	suspended	200.00	200.00
+136	137	2	201255851063	active	500.00	500.00
+137	138	2	201529398002	suspended	500.00	500.00
+138	139	2	201670552123	suspended	500.00	500.00
+139	140	2	201211097847	active	500.00	500.00
+140	141	1	201729276105	suspended	200.00	200.00
+141	142	1	201294741054	active	200.00	200.00
+142	143	2	201988892685	active	500.00	500.00
+33	34	1	201000000033	active	300.00	300.00
+32	33	3	201000000032	active	300.00	300.00
+31	32	2	201000000031	active	300.00	300.00
+30	31	2	201000000030	active	300.00	300.00
+143	144	1	201717769502	active	200.00	200.00
+144	145	2	201239535883	suspended	500.00	500.00
+145	146	2	201656715920	active	500.00	500.00
+146	147	2	201186352421	active	500.00	500.00
+147	148	2	201960970378	suspended	500.00	500.00
+148	149	2	201923881590	suspended	500.00	500.00
+149	150	2	201420871936	active	500.00	500.00
+150	151	3	201253193055	suspended	1000.00	1000.00
+151	152	3	201777264317	active	1000.00	1000.00
+152	153	3	201362708743	active	1000.00	1000.00
+153	154	1	201358767975	active	200.00	200.00
+154	155	1	201703206322	suspended_debt	200.00	200.00
+155	156	2	201758547932	active	500.00	500.00
+156	157	2	201608773241	suspended	500.00	500.00
+157	158	2	201564960450	suspended	500.00	500.00
+158	159	1	201946970409	suspended	200.00	200.00
+159	160	3	201558289515	suspended	1000.00	1000.00
+160	161	1	201288445442	active	200.00	200.00
+161	162	2	201419739858	active	500.00	500.00
+162	163	2	201720430298	suspended	500.00	500.00
+163	164	2	201667897495	suspended	500.00	500.00
+164	165	2	201570066932	active	500.00	500.00
+165	166	3	201198229833	active	1000.00	1000.00
+166	167	2	201976853507	suspended	500.00	500.00
+167	168	2	201161552590	suspended	500.00	500.00
+168	169	2	201599166808	active	500.00	500.00
+169	170	2	201947919413	active	500.00	500.00
+170	171	2	201624427143	active	500.00	500.00
+171	172	3	201121918717	active	1000.00	1000.00
+172	173	1	201868108276	suspended_debt	200.00	200.00
+19	20	3	201000000019	active	300.00	300.00
+20	21	3	201000000020	active	300.00	300.00
+21	22	2	201000000021	active	300.00	300.00
 22	23	2	201000000022	active	300.00	300.00
-23	24	1	201000000023	active	300.00	300.00
+23	24	2	201000000023	active	300.00	300.00
 24	25	3	201000000024	active	300.00	300.00
 25	26	3	201000000025	active	300.00	300.00
-28	29	2	201000000028	active	300.00	300.00
+26	27	3	201000000026	active	300.00	300.00
+27	28	3	201000000027	active	300.00	300.00
+28	29	3	201000000028	active	300.00	300.00
 29	30	3	201000000029	active	300.00	300.00
-30	31	1	201000000030	active	300.00	300.00
-31	32	2	201000000031	active	300.00	300.00
-32	33	1	201000000032	active	300.00	300.00
-33	34	1	201000000033	active	300.00	300.00
-34	35	1	201000000034	active	300.00	300.00
-35	36	2	201000000035	active	300.00	300.00
-37	38	1	201000000037	active	300.00	300.00
-38	39	1	201000000038	active	300.00	300.00
-39	40	1	201000000039	active	300.00	300.00
-40	41	1	201000000040	active	300.00	300.00
-41	42	2	201000000041	active	300.00	300.00
-42	43	1	201000000042	active	300.00	300.00
-43	44	3	201000000043	active	300.00	300.00
-44	45	3	201000000044	active	300.00	300.00
-48	49	2	201000000048	active	300.00	300.00
-47	48	3	201000000047	active	300.00	300.00
-46	47	1	201000000046	active	300.00	300.00
-45	46	2	201000000045	active	300.00	300.00
+173	174	1	201274207034	active	200.00	200.00
+174	175	1	201130706955	suspended	200.00	200.00
+175	176	2	201733342762	active	500.00	500.00
+176	177	2	201311169287	active	500.00	500.00
+177	178	1	201820941846	suspended_debt	200.00	200.00
+178	179	1	201767489862	active	200.00	200.00
+11	12	1	201000000011	active	200.00	200.00
+12	13	2	201000000012	active	500.00	500.00
+14	15	2	201000000014	active	500.00	500.00
+15	16	3	201000000015	active	1000.00	1000.00
 16	17	3	201000000016	active	1000.00	1000.00
 17	18	2	201000000017	active	500.00	500.00
+48	49	1	201000000048	active	300.00	300.00
+47	48	1	201000000047	active	300.00	300.00
+46	47	2	201000000046	active	300.00	300.00
+45	46	3	201000000045	active	300.00	300.00
+44	45	2	201000000044	active	300.00	300.00
+43	44	3	201000000043	active	300.00	300.00
+42	43	3	201000000042	active	300.00	300.00
+41	42	3	201000000041	active	300.00	300.00
+40	41	2	201000000040	active	300.00	300.00
+39	40	3	201000000039	active	300.00	300.00
+38	39	2	201000000038	active	300.00	300.00
+37	38	1	201000000037	active	300.00	300.00
 36	37	1	201000000036	active	300.00	300.00
-19	20	2	201000000019	active	300.00	300.00
-15	16	3	201000000015	active	1000.00	1000.00
-20	21	1	201000000020	active	300.00	300.00
-51	52	1	2010105001	suspended_debt	200.00	200.00
-52	53	1	2010105002	suspended	200.00	200.00
-53	54	1	2010105003	active	200.00	200.00
-54	55	1	2010105004	active	200.00	200.00
-56	57	1	2010105006	active	200.00	200.00
-57	58	2	2010105007	suspended	500.00	500.00
-58	59	2	2010105008	active	500.00	500.00
-59	60	1	2010105009	active	200.00	200.00
-60	61	3	2010105010	active	1000.00	1000.00
-61	62	1	2010105011	suspended	200.00	200.00
-62	63	3	2010105012	suspended	1000.00	1000.00
-63	64	1	2010105013	active	200.00	200.00
-64	65	1	2010105014	suspended	200.00	200.00
-65	66	2	2010105015	suspended	500.00	500.00
-66	67	1	2010105016	active	200.00	200.00
-67	68	1	2010105017	terminated	200.00	200.00
-68	69	2	2010105018	active	500.00	500.00
-69	70	1	2010105019	active	200.00	200.00
-70	71	2	2010105020	active	500.00	500.00
-71	72	1	2010105021	active	200.00	200.00
-72	73	1	2010105022	active	200.00	200.00
-73	74	2	2010105023	active	500.00	500.00
-74	75	2	2010105024	suspended	500.00	500.00
-75	76	2	2010105025	suspended	500.00	500.00
-76	77	3	2010105026	active	1000.00	1000.00
-77	78	2	2010105027	active	500.00	500.00
-78	79	1	2010105028	suspended_debt	200.00	200.00
-79	80	1	2010105029	active	200.00	200.00
-80	81	2	2010105030	active	500.00	500.00
-81	82	2	2010105031	active	500.00	500.00
-82	83	2	2010105032	active	500.00	500.00
-83	84	2	2010105033	active	500.00	500.00
-84	85	3	2010105034	active	1000.00	1000.00
-85	86	1	2010105035	active	200.00	200.00
-86	87	2	2010105036	suspended	500.00	500.00
-87	88	1	2010105037	active	200.00	200.00
-88	89	2	2010105038	active	500.00	500.00
-89	90	3	2010105039	suspended	1000.00	1000.00
-90	91	2	2010105040	active	500.00	500.00
-91	92	3	2010105041	active	1000.00	1000.00
-92	93	2	2010105042	active	500.00	500.00
-93	94	1	2010105043	active	200.00	200.00
-94	95	2	2010105044	active	500.00	500.00
-95	96	1	2010105045	active	200.00	200.00
-96	97	2	2010105046	suspended	500.00	500.00
-97	98	1	2010105047	suspended	200.00	200.00
-26	27	1	201000000026	active	300.00	300.00
-55	56	2	2010105005	active	500.00	500.00
-27	28	3	201000000027	active	300.00	300.00
-21	22	3	201000000021	active	300.00	300.00
-98	99	1	2010105048	suspended	200.00	200.00
-99	100	1	2010105049	active	200.00	200.00
-100	101	2	2010105050	suspended	500.00	500.00
-101	102	2	2010105051	active	500.00	500.00
-102	103	3	2010105052	active	1000.00	1000.00
-103	104	3	2010105053	active	1000.00	1000.00
-104	105	2	2010105054	active	500.00	500.00
-105	106	1	2010105055	active	200.00	200.00
-106	107	2	2010105056	active	500.00	500.00
-107	108	2	2010105057	active	500.00	500.00
-108	109	1	2010105058	suspended	200.00	200.00
-109	110	1	2010105059	active	200.00	200.00
-110	111	2	2010105060	suspended_debt	500.00	500.00
-111	112	1	2010105061	active	200.00	200.00
-112	113	1	2010105062	active	200.00	200.00
-113	114	1	2010105063	active	200.00	200.00
-114	115	1	2010105064	active	200.00	200.00
-115	116	2	2010105065	active	500.00	500.00
-116	117	1	2010105066	suspended	200.00	200.00
-117	118	2	2010105067	suspended	500.00	500.00
-118	119	2	2010105068	active	500.00	500.00
-119	120	2	2010105069	active	500.00	500.00
-120	121	1	2010105070	suspended	200.00	200.00
-121	122	2	2010105071	active	500.00	500.00
-122	123	1	2010105072	active	200.00	200.00
-123	124	2	2010105073	suspended_debt	500.00	500.00
-124	125	3	2010105074	suspended_debt	1000.00	1000.00
-125	126	2	2010105075	active	500.00	500.00
-126	127	2	2010105076	active	500.00	500.00
-127	128	1	2010105077	active	200.00	200.00
-128	129	1	2010105078	suspended	200.00	200.00
-129	130	2	2010105079	active	500.00	500.00
-130	131	2	2010105080	active	500.00	500.00
-131	132	3	2010105081	suspended_debt	1000.00	1000.00
-132	133	2	2010105082	suspended	500.00	500.00
-133	134	2	2010105083	suspended	500.00	500.00
-134	135	1	2010105084	active	200.00	200.00
-135	136	1	2010105085	active	200.00	200.00
-136	137	3	2010105086	active	1000.00	1000.00
-137	138	2	2010105087	active	500.00	500.00
-138	139	1	2010105088	suspended	200.00	200.00
-139	140	3	2010105089	suspended	1000.00	1000.00
-140	141	2	2010105090	active	500.00	500.00
-141	142	1	2010105091	suspended	200.00	200.00
-142	143	2	2010105092	active	500.00	500.00
-143	144	2	2010105093	suspended	500.00	500.00
-144	145	1	2010105094	suspended_debt	200.00	200.00
-145	146	2	2010105095	active	500.00	500.00
-146	147	2	2010105096	active	500.00	500.00
-147	148	1	2010105097	suspended_debt	200.00	200.00
-148	149	3	2010105098	suspended	1000.00	1000.00
-149	150	2	2010105099	active	500.00	500.00
-150	151	1	2010105100	active	200.00	200.00
-151	152	1	201099999999	active	200.00	200.00
-152	152	1	201099999998	active	200.00	200.00
+35	36	3	201000000035	active	300.00	300.00
+34	35	1	201000000034	active	300.00	300.00
+179	180	2	201359892851	suspended	500.00	500.00
+180	181	1	201903689006	active	200.00	200.00
+181	182	1	201225081536	suspended	200.00	200.00
+182	183	1	201113312729	suspended	200.00	200.00
+183	184	3	201651964318	suspended_debt	1000.00	1000.00
+184	185	3	201437218906	active	1000.00	1000.00
+185	186	1	201455334792	active	200.00	200.00
+186	187	3	201828797537	active	1000.00	1000.00
+187	188	2	201560098469	suspended	500.00	500.00
+188	189	3	201582165582	active	1000.00	1000.00
+189	190	1	201299910713	suspended	200.00	200.00
+190	191	3	201443434524	active	1000.00	1000.00
+191	192	2	201180758537	active	500.00	500.00
+192	193	1	201251619033	active	200.00	200.00
+193	194	2	201908287013	suspended_debt	500.00	500.00
+194	195	3	201374939723	suspended	1000.00	1000.00
+195	196	2	201529519265	suspended	500.00	500.00
+196	197	1	201462924192	active	200.00	200.00
+197	198	2	201378613554	suspended	500.00	500.00
+198	199	2	201291077573	suspended	500.00	500.00
+1	2	1	201000000001	active	200.00	199.60
 \.
 
 
 --
--- Data for Name: contract_addon; Type: TABLE DATA; Schema: public; Owner: -
+-- Data for Name: contract_addon; Type: TABLE DATA; Schema: public; Owner: zkhattab
 --
 
 COPY public.contract_addon (id, contract_id, service_package_id, purchased_date, expiry_date, is_active, price_paid) FROM stdin;
-1	53	4	2026-04-28	2026-04-30	t	0.00
-2	54	4	2026-04-28	2026-04-30	t	0.00
-3	55	4	2026-04-28	2026-04-30	t	0.00
-4	56	4	2026-04-28	2026-04-30	t	0.00
-5	59	4	2026-04-28	2026-04-30	t	0.00
-6	60	4	2026-04-28	2026-04-30	t	0.00
-7	71	4	2026-04-28	2026-04-30	t	0.00
-8	73	4	2026-04-28	2026-04-30	t	0.00
-9	79	4	2026-04-28	2026-04-30	t	0.00
-10	81	4	2026-04-28	2026-04-30	t	0.00
-11	82	4	2026-04-28	2026-04-30	t	0.00
-12	83	4	2026-04-28	2026-04-30	t	0.00
-13	84	4	2026-04-28	2026-04-30	t	0.00
-14	85	4	2026-04-28	2026-04-30	t	0.00
-15	87	4	2026-04-28	2026-04-30	t	0.00
-16	90	4	2026-04-28	2026-04-30	t	0.00
-17	94	4	2026-04-28	2026-04-30	t	0.00
-18	95	4	2026-04-28	2026-04-30	t	0.00
-19	101	4	2026-04-28	2026-04-30	t	0.00
-20	104	4	2026-04-28	2026-04-30	t	0.00
-21	105	4	2026-04-28	2026-04-30	t	0.00
-22	106	4	2026-04-28	2026-04-30	t	0.00
-23	107	4	2026-04-28	2026-04-30	t	0.00
-24	109	4	2026-04-28	2026-04-30	t	0.00
-25	111	4	2026-04-28	2026-04-30	t	0.00
-26	113	4	2026-04-28	2026-04-30	t	0.00
-27	115	4	2026-04-28	2026-04-30	t	0.00
-28	121	4	2026-04-28	2026-04-30	t	0.00
-29	125	4	2026-04-28	2026-04-30	t	0.00
-30	127	4	2026-04-28	2026-04-30	t	0.00
-31	130	4	2026-04-28	2026-04-30	t	0.00
-32	134	4	2026-04-28	2026-04-30	t	0.00
-33	136	4	2026-04-28	2026-04-30	t	0.00
-34	140	4	2026-04-28	2026-04-30	t	0.00
-35	150	4	2026-04-28	2026-04-30	t	0.00
 \.
 
 
 --
--- Data for Name: contract_consumption; Type: TABLE DATA; Schema: public; Owner: -
+-- Data for Name: contract_consumption; Type: TABLE DATA; Schema: public; Owner: zkhattab
 --
 
 COPY public.contract_consumption (contract_id, service_package_id, rateplan_id, starting_date, ending_date, consumed, quota_limit, is_billed, bill_id) FROM stdin;
-1	3	1	2026-04-28	2026-04-30	0.0000	500.0000	f	\N
-2	5	2	2026-04-28	2026-04-30	0.0000	100.0000	f	\N
-2	6	2	2026-04-28	2026-04-30	0.0000	2000.0000	f	\N
-2	7	2	2026-04-28	2026-04-30	0.0000	100.0000	f	\N
-3	1	1	2026-04-28	2026-04-30	0.0000	2000.0000	f	\N
-4	3	2	2026-04-28	2026-04-30	0.0000	500.0000	f	\N
-4	5	2	2026-04-28	2026-04-30	0.0000	100.0000	f	\N
-4	6	2	2026-04-28	2026-04-30	0.0000	2000.0000	f	\N
-6	1	2	2026-04-28	2026-04-30	0.0000	2000.0000	f	\N
-6	5	2	2026-04-28	2026-04-30	0.0000	100.0000	f	\N
-6	6	2	2026-04-28	2026-04-30	0.0000	2000.0000	f	\N
-6	7	2	2026-04-28	2026-04-30	0.0000	100.0000	f	\N
-8	1	2	2026-04-28	2026-04-30	0.0000	2000.0000	f	\N
-8	5	2	2026-04-28	2026-04-30	0.0000	100.0000	f	\N
-8	6	2	2026-04-28	2026-04-30	0.0000	2000.0000	f	\N
-8	7	2	2026-04-28	2026-04-30	0.0000	100.0000	f	\N
-9	1	1	2026-04-28	2026-04-30	0.0000	2000.0000	f	\N
-10	1	2	2026-04-28	2026-04-30	0.0000	2000.0000	f	\N
-10	6	2	2026-04-28	2026-04-30	0.0000	2000.0000	f	\N
-10	7	2	2026-04-28	2026-04-30	0.0000	100.0000	f	\N
-11	1	1	2026-04-28	2026-04-30	0.0000	2000.0000	f	\N
-12	3	2	2026-04-28	2026-04-30	0.0000	500.0000	f	\N
-12	5	2	2026-04-28	2026-04-30	0.0000	100.0000	f	\N
-14	5	2	2026-04-28	2026-04-30	0.0000	100.0000	f	\N
-14	6	2	2026-04-28	2026-04-30	0.0000	2000.0000	f	\N
-14	7	2	2026-04-28	2026-04-30	0.0000	100.0000	f	\N
-15	5	3	2026-04-28	2026-04-30	0.0000	100.0000	f	\N
-15	6	3	2026-04-28	2026-04-30	0.0000	2000.0000	f	\N
-16	5	3	2026-04-28	2026-04-30	0.0000	100.0000	f	\N
-16	6	3	2026-04-28	2026-04-30	0.0000	2000.0000	f	\N
-19	1	2	2026-04-28	2026-04-30	0.0000	2000.0000	f	\N
-19	2	2	2026-04-28	2026-04-30	0.0000	10000.0000	f	\N
-19	3	2	2026-04-28	2026-04-30	0.0000	500.0000	f	\N
-19	4	2	2026-04-28	2026-04-30	0.0000	10000.0000	f	\N
-19	5	2	2026-04-28	2026-04-30	0.0000	100.0000	f	\N
-19	7	2	2026-04-28	2026-04-30	0.0000	100.0000	f	\N
-20	1	1	2026-04-28	2026-04-30	0.0000	2000.0000	f	\N
-20	3	1	2026-04-28	2026-04-30	0.0000	500.0000	f	\N
-21	5	3	2026-04-28	2026-04-30	0.0000	100.0000	f	\N
-21	7	3	2026-04-28	2026-04-30	0.0000	100.0000	f	\N
-22	6	2	2026-04-28	2026-04-30	0.0000	2000.0000	f	\N
-22	7	2	2026-04-28	2026-04-30	0.0000	100.0000	f	\N
-24	6	3	2026-04-28	2026-04-30	0.0000	2000.0000	f	\N
-24	7	3	2026-04-28	2026-04-30	0.0000	100.0000	f	\N
-25	5	3	2026-04-28	2026-04-30	0.0000	100.0000	f	\N
-25	7	3	2026-04-28	2026-04-30	0.0000	100.0000	f	\N
-27	5	3	2026-04-28	2026-04-30	0.0000	100.0000	f	\N
-27	6	3	2026-04-28	2026-04-30	0.0000	2000.0000	f	\N
-27	7	3	2026-04-28	2026-04-30	0.0000	100.0000	f	\N
-28	6	2	2026-04-28	2026-04-30	0.0000	2000.0000	f	\N
-29	5	3	2026-04-28	2026-04-30	0.0000	100.0000	f	\N
-29	6	3	2026-04-28	2026-04-30	0.0000	2000.0000	f	\N
-29	7	3	2026-04-28	2026-04-30	0.0000	100.0000	f	\N
-30	1	1	2026-04-28	2026-04-30	0.0000	2000.0000	f	\N
-31	1	2	2026-04-28	2026-04-30	0.0000	2000.0000	f	\N
-31	3	2	2026-04-28	2026-04-30	0.0000	500.0000	f	\N
-31	5	2	2026-04-28	2026-04-30	0.0000	100.0000	f	\N
-31	6	2	2026-04-28	2026-04-30	0.0000	2000.0000	f	\N
-31	7	2	2026-04-28	2026-04-30	0.0000	100.0000	f	\N
-32	1	1	2026-04-28	2026-04-30	0.0000	2000.0000	f	\N
-32	3	1	2026-04-28	2026-04-30	0.0000	500.0000	f	\N
-33	1	1	2026-04-28	2026-04-30	0.0000	2000.0000	f	\N
-33	3	1	2026-04-28	2026-04-30	0.0000	500.0000	f	\N
-34	1	1	2026-04-28	2026-04-30	0.0000	2000.0000	f	\N
-30	3	1	2026-04-28	2026-04-30	1.0000	500.0000	f	\N
-29	3	3	2026-04-28	2026-04-30	1.0000	500.0000	f	\N
-29	1	3	2026-04-28	2026-04-30	230.0000	2000.0000	f	\N
-28	7	2	2026-04-28	2026-04-30	1.0000	100.0000	f	\N
-28	1	2	2026-04-28	2026-04-30	152.0000	2000.0000	f	\N
-28	3	2	2026-04-28	2026-04-30	1.0000	500.0000	f	\N
-27	3	3	2026-04-28	2026-04-30	1.0000	500.0000	f	\N
-27	1	3	2026-04-28	2026-04-30	547.0000	2000.0000	f	\N
-26	3	1	2026-04-28	2026-04-30	1.0000	500.0000	f	\N
-26	1	1	2026-04-28	2026-04-30	108.0000	2000.0000	f	\N
-25	1	3	2026-04-28	2026-04-30	225.0000	2000.0000	f	\N
-25	6	3	2026-04-28	2026-04-30	2000.0000	2000.0000	f	\N
-25	3	3	2026-04-28	2026-04-30	2.0000	500.0000	f	\N
-24	2	3	2026-04-28	2026-04-30	10000.0000	10000.0000	f	\N
-24	3	3	2026-04-28	2026-04-30	1.0000	500.0000	f	\N
-24	1	3	2026-04-28	2026-04-30	323.0000	2000.0000	f	\N
-23	3	1	2026-04-28	2026-04-30	1.0000	500.0000	f	\N
-23	1	1	2026-04-28	2026-04-30	273.0000	2000.0000	f	\N
-22	1	2	2026-04-28	2026-04-30	201.0000	2000.0000	f	\N
-22	3	2	2026-04-28	2026-04-30	2.0000	500.0000	f	\N
-21	6	3	2026-04-28	2026-04-30	2000.0000	2000.0000	f	\N
-21	3	3	2026-04-28	2026-04-30	1.0000	500.0000	f	\N
-21	1	3	2026-04-28	2026-04-30	244.0000	2000.0000	f	\N
-17	1	2	2026-04-28	2026-04-30	252.0000	2000.0000	f	\N
-17	6	2	2026-04-28	2026-04-30	2000.0000	2000.0000	f	\N
-17	5	2	2026-04-28	2026-04-30	100.0000	100.0000	f	\N
-16	3	3	2026-04-28	2026-04-30	1.0000	500.0000	f	\N
-15	3	3	2026-04-28	2026-04-30	2.0000	500.0000	f	\N
-14	2	2	2026-04-28	2026-04-30	10000.0000	10000.0000	f	\N
-14	3	2	2026-04-28	2026-04-30	1.0000	500.0000	f	\N
-14	1	2	2026-04-28	2026-04-30	280.0000	2000.0000	f	\N
-34	3	1	2026-04-28	2026-04-30	0.0000	500.0000	f	\N
-35	1	2	2026-04-28	2026-04-30	0.0000	2000.0000	f	\N
-35	3	2	2026-04-28	2026-04-30	0.0000	500.0000	f	\N
-35	6	2	2026-04-28	2026-04-30	0.0000	2000.0000	f	\N
-35	7	2	2026-04-28	2026-04-30	0.0000	100.0000	f	\N
-36	1	1	2026-04-28	2026-04-30	0.0000	2000.0000	f	\N
-36	3	1	2026-04-28	2026-04-30	0.0000	500.0000	f	\N
-37	1	1	2026-04-28	2026-04-30	0.0000	2000.0000	f	\N
-37	3	1	2026-04-28	2026-04-30	0.0000	500.0000	f	\N
-38	1	1	2026-04-28	2026-04-30	0.0000	2000.0000	f	\N
-38	3	1	2026-04-28	2026-04-30	0.0000	500.0000	f	\N
-39	1	1	2026-04-28	2026-04-30	0.0000	2000.0000	f	\N
-39	3	1	2026-04-28	2026-04-30	0.0000	500.0000	f	\N
-40	1	1	2026-04-28	2026-04-30	0.0000	2000.0000	f	\N
-40	3	1	2026-04-28	2026-04-30	0.0000	500.0000	f	\N
-41	1	2	2026-04-28	2026-04-30	0.0000	2000.0000	f	\N
-41	3	2	2026-04-28	2026-04-30	0.0000	500.0000	f	\N
-41	5	2	2026-04-28	2026-04-30	0.0000	100.0000	f	\N
-41	6	2	2026-04-28	2026-04-30	0.0000	2000.0000	f	\N
-41	7	2	2026-04-28	2026-04-30	0.0000	100.0000	f	\N
-42	1	1	2026-04-28	2026-04-30	0.0000	2000.0000	f	\N
-42	3	1	2026-04-28	2026-04-30	0.0000	500.0000	f	\N
-43	1	3	2026-04-28	2026-04-30	0.0000	2000.0000	f	\N
-43	3	3	2026-04-28	2026-04-30	0.0000	500.0000	f	\N
-43	5	3	2026-04-28	2026-04-30	0.0000	100.0000	f	\N
-43	6	3	2026-04-28	2026-04-30	0.0000	2000.0000	f	\N
-43	7	3	2026-04-28	2026-04-30	0.0000	100.0000	f	\N
-44	1	3	2026-04-28	2026-04-30	0.0000	2000.0000	f	\N
-44	3	3	2026-04-28	2026-04-30	0.0000	500.0000	f	\N
-44	5	3	2026-04-28	2026-04-30	0.0000	100.0000	f	\N
-44	7	3	2026-04-28	2026-04-30	0.0000	100.0000	f	\N
-45	1	2	2026-04-28	2026-04-30	0.0000	2000.0000	f	\N
-45	3	2	2026-04-28	2026-04-30	0.0000	500.0000	f	\N
-45	6	2	2026-04-28	2026-04-30	0.0000	2000.0000	f	\N
-45	7	2	2026-04-28	2026-04-30	0.0000	100.0000	f	\N
-46	1	1	2026-04-28	2026-04-30	0.0000	2000.0000	f	\N
-46	3	1	2026-04-28	2026-04-30	0.0000	500.0000	f	\N
-47	1	3	2026-04-28	2026-04-30	0.0000	2000.0000	f	\N
-47	3	3	2026-04-28	2026-04-30	0.0000	500.0000	f	\N
-47	6	3	2026-04-28	2026-04-30	0.0000	2000.0000	f	\N
-47	7	3	2026-04-28	2026-04-30	0.0000	100.0000	f	\N
-48	1	2	2026-04-28	2026-04-30	0.0000	2000.0000	f	\N
-48	3	2	2026-04-28	2026-04-30	0.0000	500.0000	f	\N
-48	5	2	2026-04-28	2026-04-30	0.0000	100.0000	f	\N
-48	7	2	2026-04-28	2026-04-30	0.0000	100.0000	f	\N
-1	1	1	2026-03-01	2026-03-31	310.0000	1000.0000	t	17
-1	3	1	2026-03-01	2026-03-31	42.0000	100.0000	t	17
-1	1	1	2026-04-01	2026-04-30	350.0000	0.0000	t	33
-1	3	1	2026-04-01	2026-04-30	45.0000	0.0000	t	33
-2	1	2	2026-04-01	2026-04-30	620.0000	0.0000	t	34
-2	2	2	2026-04-01	2026-04-30	2100.0000	0.0000	t	34
-2	3	2	2026-04-01	2026-04-30	85.0000	0.0000	t	34
-2	4	2	2026-04-01	2026-04-30	50.0000	0.0000	t	34
-2	5	2	2026-04-01	2026-04-30	120.0000	0.0000	t	34
-2	6	2	2026-04-01	2026-04-30	400.0000	0.0000	t	34
-2	7	2	2026-04-01	2026-04-30	30.0000	0.0000	t	34
-3	1	1	2026-04-01	2026-04-30	180.0000	0.0000	t	35
-3	3	1	2026-04-01	2026-04-30	22.0000	0.0000	t	35
-4	1	2	2026-04-01	2026-04-30	480.0000	0.0000	t	36
-4	2	2	2026-04-01	2026-04-30	1800.0000	0.0000	t	36
-4	3	2	2026-04-01	2026-04-30	65.0000	0.0000	t	36
-4	4	2	2026-04-01	2026-04-30	30.0000	0.0000	t	36
-4	5	2	2026-04-01	2026-04-30	0.0000	100.0000	t	36
-4	6	2	2026-04-01	2026-04-30	0.0000	2000.0000	t	36
-4	7	2	2026-04-01	2026-04-30	0.0000	100.0000	t	36
-5	1	1	2026-04-01	2026-04-30	95.0000	0.0000	t	37
-5	3	1	2026-04-01	2026-04-30	12.0000	0.0000	t	37
-6	1	2	2026-04-01	2026-04-30	750.0000	0.0000	t	38
-6	2	2	2026-04-01	2026-04-30	3200.0000	0.0000	t	38
-6	3	2	2026-04-01	2026-04-30	110.0000	0.0000	t	38
-6	4	2	2026-04-01	2026-04-30	50.0000	0.0000	t	38
-6	5	2	2026-04-01	2026-04-30	0.0000	100.0000	t	38
-6	6	2	2026-04-01	2026-04-30	0.0000	2000.0000	t	38
-6	7	2	2026-04-01	2026-04-30	0.0000	100.0000	t	38
-7	1	1	2026-04-01	2026-04-30	210.0000	0.0000	t	39
-7	3	1	2026-04-01	2026-04-30	18.0000	0.0000	t	39
-8	1	2	2026-04-01	2026-04-30	390.0000	0.0000	t	40
-8	2	2	2026-04-01	2026-04-30	1500.0000	0.0000	t	40
-8	3	2	2026-04-01	2026-04-30	55.0000	0.0000	t	40
-8	4	2	2026-04-01	2026-04-30	20.0000	0.0000	t	40
-8	5	2	2026-04-01	2026-04-30	0.0000	100.0000	t	40
-8	6	2	2026-04-01	2026-04-30	0.0000	2000.0000	t	40
-8	7	2	2026-04-01	2026-04-30	0.0000	100.0000	t	40
-9	1	1	2026-04-01	2026-04-30	140.0000	0.0000	t	41
-9	3	1	2026-04-01	2026-04-30	8.0000	0.0000	t	41
-10	1	2	2026-04-01	2026-04-30	510.0000	0.0000	t	42
-10	2	2	2026-04-01	2026-04-30	2400.0000	0.0000	t	42
-10	3	2	2026-04-01	2026-04-30	75.0000	0.0000	t	42
-10	4	2	2026-04-01	2026-04-30	40.0000	0.0000	t	42
-10	5	2	2026-04-01	2026-04-30	0.0000	100.0000	t	42
-10	6	2	2026-04-01	2026-04-30	0.0000	2000.0000	t	42
-10	7	2	2026-04-01	2026-04-30	0.0000	100.0000	t	42
-11	1	1	2026-04-01	2026-04-30	980.0000	0.0000	t	43
-11	3	1	2026-04-01	2026-04-30	190.0000	0.0000	t	43
-12	1	2	2026-04-01	2026-04-30	290.0000	0.0000	t	44
-12	2	2	2026-04-01	2026-04-30	900.0000	0.0000	t	44
-12	3	2	2026-04-01	2026-04-30	35.0000	0.0000	t	44
-12	4	2	2026-04-01	2026-04-30	15.0000	0.0000	t	44
-12	5	2	2026-04-01	2026-04-30	0.0000	100.0000	t	44
-12	6	2	2026-04-01	2026-04-30	0.0000	2000.0000	t	44
-12	7	2	2026-04-01	2026-04-30	0.0000	100.0000	t	44
-47	5	3	2026-04-28	2026-04-30	31.0000	100.0000	f	\N
-45	2	2	2026-04-28	2026-04-30	10000.0000	10000.0000	f	\N
-45	5	2	2026-04-28	2026-04-30	10.0000	100.0000	f	\N
-44	6	3	2026-04-28	2026-04-30	2000.0000	2000.0000	f	\N
-41	4	2	2026-04-28	2026-04-30	10000.0000	10000.0000	f	\N
-41	2	2	2026-04-28	2026-04-30	10000.0000	10000.0000	f	\N
-14	1	2	2026-04-01	2026-04-30	430.0000	0.0000	t	45
-14	2	2	2026-04-01	2026-04-30	1200.0000	0.0000	t	45
-14	3	2	2026-04-01	2026-04-30	60.0000	0.0000	t	45
-14	4	2	2026-04-01	2026-04-30	25.0000	0.0000	t	45
-14	5	2	2026-04-01	2026-04-30	0.0000	100.0000	t	45
-14	6	2	2026-04-01	2026-04-30	0.0000	2000.0000	t	45
-14	7	2	2026-04-01	2026-04-30	0.0000	100.0000	t	45
-15	1	3	2026-04-01	2026-04-30	820.0000	0.0000	t	46
-15	2	3	2026-04-01	2026-04-30	3800.0000	0.0000	t	46
-15	3	3	2026-04-01	2026-04-30	145.0000	0.0000	t	46
-15	4	3	2026-04-01	2026-04-30	50.0000	0.0000	t	46
-15	5	3	2026-04-01	2026-04-30	80.0000	0.0000	t	46
-15	6	3	2026-04-01	2026-04-30	320.0000	0.0000	t	46
-15	7	3	2026-04-01	2026-04-30	20.0000	0.0000	t	46
-16	1	3	2026-04-01	2026-04-30	950.0000	0.0000	t	47
-16	2	3	2026-04-01	2026-04-30	4900.0000	0.0000	t	47
-16	3	3	2026-04-01	2026-04-30	180.0000	0.0000	t	47
-16	4	3	2026-04-01	2026-04-30	50.0000	0.0000	t	47
-16	5	3	2026-04-01	2026-04-30	0.0000	100.0000	t	47
-16	6	3	2026-04-01	2026-04-30	0.0000	2000.0000	t	47
-16	7	3	2026-04-01	2026-04-30	0.0000	100.0000	t	47
-17	1	2	2026-04-01	2026-04-30	340.0000	0.0000	t	48
-17	2	2	2026-04-01	2026-04-30	1100.0000	0.0000	t	48
-17	3	2	2026-04-01	2026-04-30	48.0000	0.0000	t	48
-17	4	2	2026-04-01	2026-04-30	10.0000	0.0000	t	48
-17	5	2	2026-04-01	2026-04-30	0.0000	100.0000	t	48
-17	6	2	2026-04-01	2026-04-30	0.0000	2000.0000	t	48
-17	7	2	2026-04-01	2026-04-30	0.0000	100.0000	t	48
-21	5	3	2026-04-01	2026-04-30	0.0000	100.0000	t	79
-21	6	3	2026-04-01	2026-04-30	0.0000	2000.0000	t	79
-21	7	3	2026-04-01	2026-04-30	0.0000	100.0000	t	79
-22	1	2	2026-04-01	2026-04-30	0.0000	2000.0000	t	80
-22	6	2	2026-04-01	2026-04-30	0.0000	2000.0000	t	80
-24	1	3	2026-04-01	2026-04-30	0.0000	2000.0000	t	82
-24	6	3	2026-04-01	2026-04-30	0.0000	2000.0000	t	82
-25	5	3	2026-04-01	2026-04-30	0.0000	100.0000	t	83
-25	6	3	2026-04-01	2026-04-30	0.0000	2000.0000	t	83
-25	7	3	2026-04-01	2026-04-30	0.0000	100.0000	t	83
+10	5	2	2026-04-01	2026-04-30	0.0000	100.0000	t	33
+10	6	2	2026-04-01	2026-04-30	0.0000	2000.0000	t	33
+10	7	2	2026-04-01	2026-04-30	0.0000	100.0000	t	33
+10	1	2	2026-04-01	2026-04-30	510.0000	2000.0000	t	33
+9	1	1	2026-04-01	2026-04-30	140.0000	2000.0000	t	34
+8	5	2	2026-04-01	2026-04-30	0.0000	100.0000	t	35
+8	6	2	2026-04-01	2026-04-30	0.0000	2000.0000	t	35
+8	7	2	2026-04-01	2026-04-30	0.0000	100.0000	t	35
+8	1	2	2026-04-01	2026-04-30	390.0000	2000.0000	t	35
+7	1	1	2026-04-01	2026-04-30	210.0000	2000.0000	t	36
+6	5	2	2026-04-01	2026-04-30	0.0000	100.0000	t	37
+6	6	2	2026-04-01	2026-04-30	0.0000	2000.0000	t	37
+6	7	2	2026-04-01	2026-04-30	0.0000	100.0000	t	37
+6	1	2	2026-04-01	2026-04-30	750.0000	2000.0000	t	37
+5	1	1	2026-04-01	2026-04-30	95.0000	2000.0000	t	38
+4	5	2	2026-04-01	2026-04-30	0.0000	100.0000	t	39
+4	6	2	2026-04-01	2026-04-30	0.0000	2000.0000	t	39
+4	7	2	2026-04-01	2026-04-30	0.0000	100.0000	t	39
+4	1	2	2026-04-01	2026-04-30	480.0000	2000.0000	t	39
+3	1	1	2026-04-01	2026-04-30	180.0000	2000.0000	t	40
+17	5	2	2026-04-01	2026-04-30	0.0000	100.0000	t	73
+17	6	2	2026-04-01	2026-04-30	0.0000	2000.0000	t	73
+17	7	2	2026-04-01	2026-04-30	0.0000	100.0000	t	73
+17	1	2	2026-04-01	2026-04-30	340.0000	2000.0000	t	73
+16	5	3	2026-04-01	2026-04-30	0.0000	100.0000	t	74
+16	6	3	2026-04-01	2026-04-30	0.0000	2000.0000	t	74
+16	7	3	2026-04-01	2026-04-30	0.0000	100.0000	t	74
+16	1	3	2026-04-01	2026-04-30	950.0000	2000.0000	t	74
+15	1	3	2026-04-01	2026-04-30	820.0000	2000.0000	t	75
+14	5	2	2026-04-01	2026-04-30	0.0000	100.0000	t	76
+14	6	2	2026-04-01	2026-04-30	0.0000	2000.0000	t	76
+14	7	2	2026-04-01	2026-04-30	0.0000	100.0000	t	76
+14	1	2	2026-04-01	2026-04-30	430.0000	2000.0000	t	76
+12	5	2	2026-04-01	2026-04-30	0.0000	100.0000	t	77
+12	6	2	2026-04-01	2026-04-30	0.0000	2000.0000	t	77
+12	7	2	2026-04-01	2026-04-30	0.0000	100.0000	t	77
+12	1	2	2026-04-01	2026-04-30	290.0000	2000.0000	t	77
+11	1	1	2026-04-01	2026-04-30	980.0000	2000.0000	t	78
+33	1	1	2026-04-01	2026-04-30	0.0000	2000.0000	f	\N
+33	3	1	2026-04-01	2026-04-30	0.0000	500.0000	f	\N
+32	1	3	2026-04-01	2026-04-30	0.0000	2000.0000	f	\N
+32	2	3	2026-04-01	2026-04-30	0.0000	10000.0000	f	\N
+32	3	3	2026-04-01	2026-04-30	0.0000	500.0000	f	\N
+32	4	3	2026-04-01	2026-04-30	0.0000	10000.0000	f	\N
+32	5	3	2026-04-01	2026-04-30	0.0000	100.0000	f	\N
+32	6	3	2026-04-01	2026-04-30	0.0000	2000.0000	f	\N
+32	7	3	2026-04-01	2026-04-30	0.0000	100.0000	f	\N
+31	1	2	2026-04-01	2026-04-30	0.0000	2000.0000	f	\N
+31	2	2	2026-04-01	2026-04-30	0.0000	10000.0000	f	\N
+31	3	2	2026-04-01	2026-04-30	0.0000	500.0000	f	\N
+31	4	2	2026-04-01	2026-04-30	0.0000	10000.0000	f	\N
 31	5	2	2026-04-01	2026-04-30	0.0000	100.0000	f	\N
 31	6	2	2026-04-01	2026-04-30	0.0000	2000.0000	f	\N
 31	7	2	2026-04-01	2026-04-30	0.0000	100.0000	f	\N
-35	6	2	2026-04-01	2026-04-30	0.0000	2000.0000	f	\N
-35	7	2	2026-04-01	2026-04-30	0.0000	100.0000	f	\N
-41	1	2	2026-04-01	2026-04-30	0.0000	2000.0000	f	\N
-41	6	2	2026-04-01	2026-04-30	0.0000	2000.0000	f	\N
-41	7	2	2026-04-01	2026-04-30	0.0000	100.0000	f	\N
+30	1	2	2026-04-01	2026-04-30	0.0000	2000.0000	f	\N
+30	2	2	2026-04-01	2026-04-30	0.0000	10000.0000	f	\N
+30	3	2	2026-04-01	2026-04-30	0.0000	500.0000	f	\N
+30	4	2	2026-04-01	2026-04-30	0.0000	10000.0000	f	\N
+1	1	1	2026-04-29	2026-04-30	0.0000	2000.0000	f	\N
+1	3	1	2026-04-29	2026-04-30	0.0000	500.0000	f	\N
+2	1	2	2026-04-29	2026-04-30	0.0000	2000.0000	f	\N
+2	2	2	2026-04-29	2026-04-30	0.0000	10000.0000	f	\N
+2	3	2	2026-04-29	2026-04-30	0.0000	500.0000	f	\N
+2	4	2	2026-04-29	2026-04-30	0.0000	10000.0000	f	\N
+2	5	2	2026-04-29	2026-04-30	0.0000	100.0000	f	\N
+2	6	2	2026-04-29	2026-04-30	0.0000	2000.0000	f	\N
+2	7	2	2026-04-29	2026-04-30	0.0000	100.0000	f	\N
+3	1	1	2026-04-29	2026-04-30	0.0000	2000.0000	f	\N
+3	3	1	2026-04-29	2026-04-30	0.0000	500.0000	f	\N
+4	1	2	2026-04-29	2026-04-30	0.0000	2000.0000	f	\N
+4	2	2	2026-04-29	2026-04-30	0.0000	10000.0000	f	\N
+4	3	2	2026-04-29	2026-04-30	0.0000	500.0000	f	\N
+4	4	2	2026-04-29	2026-04-30	0.0000	10000.0000	f	\N
+4	5	2	2026-04-29	2026-04-30	0.0000	100.0000	f	\N
+4	6	2	2026-04-29	2026-04-30	0.0000	2000.0000	f	\N
+4	7	2	2026-04-29	2026-04-30	0.0000	100.0000	f	\N
+5	1	1	2026-04-29	2026-04-30	0.0000	2000.0000	f	\N
+5	3	1	2026-04-29	2026-04-30	0.0000	500.0000	f	\N
+6	1	2	2026-04-29	2026-04-30	0.0000	2000.0000	f	\N
+6	2	2	2026-04-29	2026-04-30	0.0000	10000.0000	f	\N
+6	3	2	2026-04-29	2026-04-30	0.0000	500.0000	f	\N
+6	4	2	2026-04-29	2026-04-30	0.0000	10000.0000	f	\N
+6	5	2	2026-04-29	2026-04-30	0.0000	100.0000	f	\N
+6	6	2	2026-04-29	2026-04-30	0.0000	2000.0000	f	\N
+6	7	2	2026-04-29	2026-04-30	0.0000	100.0000	f	\N
+7	1	1	2026-04-29	2026-04-30	0.0000	2000.0000	f	\N
+7	3	1	2026-04-29	2026-04-30	0.0000	500.0000	f	\N
+8	1	2	2026-04-29	2026-04-30	0.0000	2000.0000	f	\N
+8	2	2	2026-04-29	2026-04-30	0.0000	10000.0000	f	\N
+8	3	2	2026-04-29	2026-04-30	0.0000	500.0000	f	\N
+8	4	2	2026-04-29	2026-04-30	0.0000	10000.0000	f	\N
+8	5	2	2026-04-29	2026-04-30	0.0000	100.0000	f	\N
+8	6	2	2026-04-29	2026-04-30	0.0000	2000.0000	f	\N
+8	7	2	2026-04-29	2026-04-30	0.0000	100.0000	f	\N
+9	1	1	2026-04-29	2026-04-30	0.0000	2000.0000	f	\N
+9	3	1	2026-04-29	2026-04-30	0.0000	500.0000	f	\N
+30	5	2	2026-04-01	2026-04-30	0.0000	100.0000	f	\N
+30	6	2	2026-04-01	2026-04-30	0.0000	2000.0000	f	\N
+30	7	2	2026-04-01	2026-04-30	0.0000	100.0000	f	\N
+19	1	3	2026-04-01	2026-04-30	0.0000	2000.0000	f	\N
+19	2	3	2026-04-01	2026-04-30	0.0000	10000.0000	f	\N
+19	3	3	2026-04-01	2026-04-30	0.0000	500.0000	f	\N
+19	4	3	2026-04-01	2026-04-30	0.0000	10000.0000	f	\N
+19	5	3	2026-04-01	2026-04-30	0.0000	100.0000	f	\N
+19	6	3	2026-04-01	2026-04-30	0.0000	2000.0000	f	\N
+19	7	3	2026-04-01	2026-04-30	0.0000	100.0000	f	\N
+20	1	3	2026-04-01	2026-04-30	0.0000	2000.0000	f	\N
+20	2	3	2026-04-01	2026-04-30	0.0000	10000.0000	f	\N
+20	3	3	2026-04-01	2026-04-30	0.0000	500.0000	f	\N
+20	4	3	2026-04-01	2026-04-30	0.0000	10000.0000	f	\N
+20	5	3	2026-04-01	2026-04-30	0.0000	100.0000	f	\N
+20	6	3	2026-04-01	2026-04-30	0.0000	2000.0000	f	\N
+20	7	3	2026-04-01	2026-04-30	0.0000	100.0000	f	\N
+21	1	2	2026-04-01	2026-04-30	0.0000	2000.0000	f	\N
+21	2	2	2026-04-01	2026-04-30	0.0000	10000.0000	f	\N
+21	3	2	2026-04-01	2026-04-30	0.0000	500.0000	f	\N
+21	4	2	2026-04-01	2026-04-30	0.0000	10000.0000	f	\N
+21	5	2	2026-04-01	2026-04-30	0.0000	100.0000	f	\N
+10	1	2	2026-04-29	2026-04-30	0.0000	2000.0000	f	\N
+10	2	2	2026-04-29	2026-04-30	0.0000	10000.0000	f	\N
+10	3	2	2026-04-29	2026-04-30	0.0000	500.0000	f	\N
+10	4	2	2026-04-29	2026-04-30	0.0000	10000.0000	f	\N
+10	5	2	2026-04-29	2026-04-30	0.0000	100.0000	f	\N
+10	6	2	2026-04-29	2026-04-30	0.0000	2000.0000	f	\N
+10	7	2	2026-04-29	2026-04-30	0.0000	100.0000	f	\N
+11	1	1	2026-04-29	2026-04-30	0.0000	2000.0000	f	\N
+11	3	1	2026-04-29	2026-04-30	0.0000	500.0000	f	\N
+12	1	2	2026-04-29	2026-04-30	0.0000	2000.0000	f	\N
+12	2	2	2026-04-29	2026-04-30	0.0000	10000.0000	f	\N
+12	3	2	2026-04-29	2026-04-30	0.0000	500.0000	f	\N
+12	4	2	2026-04-29	2026-04-30	0.0000	10000.0000	f	\N
+12	5	2	2026-04-29	2026-04-30	0.0000	100.0000	f	\N
+12	6	2	2026-04-29	2026-04-30	0.0000	2000.0000	f	\N
+12	7	2	2026-04-29	2026-04-30	0.0000	100.0000	f	\N
+14	1	2	2026-04-29	2026-04-30	0.0000	2000.0000	f	\N
+14	2	2	2026-04-29	2026-04-30	0.0000	10000.0000	f	\N
+14	3	2	2026-04-29	2026-04-30	0.0000	500.0000	f	\N
+14	4	2	2026-04-29	2026-04-30	0.0000	10000.0000	f	\N
+14	5	2	2026-04-29	2026-04-30	0.0000	100.0000	f	\N
+14	6	2	2026-04-29	2026-04-30	0.0000	2000.0000	f	\N
+14	7	2	2026-04-29	2026-04-30	0.0000	100.0000	f	\N
+15	1	3	2026-04-29	2026-04-30	0.0000	2000.0000	f	\N
+15	2	3	2026-04-29	2026-04-30	0.0000	10000.0000	f	\N
+15	3	3	2026-04-29	2026-04-30	0.0000	500.0000	f	\N
+15	4	3	2026-04-29	2026-04-30	0.0000	10000.0000	f	\N
+15	5	3	2026-04-29	2026-04-30	0.0000	100.0000	f	\N
+15	6	3	2026-04-29	2026-04-30	0.0000	2000.0000	f	\N
+15	7	3	2026-04-29	2026-04-30	0.0000	100.0000	f	\N
+16	1	3	2026-04-29	2026-04-30	0.0000	2000.0000	f	\N
+16	2	3	2026-04-29	2026-04-30	0.0000	10000.0000	f	\N
+16	3	3	2026-04-29	2026-04-30	0.0000	500.0000	f	\N
+16	4	3	2026-04-29	2026-04-30	0.0000	10000.0000	f	\N
+16	5	3	2026-04-29	2026-04-30	0.0000	100.0000	f	\N
+16	6	3	2026-04-29	2026-04-30	0.0000	2000.0000	f	\N
+16	7	3	2026-04-29	2026-04-30	0.0000	100.0000	f	\N
+17	1	2	2026-04-29	2026-04-30	0.0000	2000.0000	f	\N
+17	2	2	2026-04-29	2026-04-30	0.0000	10000.0000	f	\N
+17	3	2	2026-04-29	2026-04-30	0.0000	500.0000	f	\N
+17	4	2	2026-04-29	2026-04-30	0.0000	10000.0000	f	\N
+17	5	2	2026-04-29	2026-04-30	0.0000	100.0000	f	\N
+17	6	2	2026-04-29	2026-04-30	0.0000	2000.0000	f	\N
+17	7	2	2026-04-29	2026-04-30	0.0000	100.0000	f	\N
+19	1	3	2026-04-29	2026-04-30	0.0000	2000.0000	f	\N
+19	2	3	2026-04-29	2026-04-30	0.0000	10000.0000	f	\N
+19	3	3	2026-04-29	2026-04-30	0.0000	500.0000	f	\N
+19	4	3	2026-04-29	2026-04-30	0.0000	10000.0000	f	\N
+19	5	3	2026-04-29	2026-04-30	0.0000	100.0000	f	\N
+19	6	3	2026-04-29	2026-04-30	0.0000	2000.0000	f	\N
+19	7	3	2026-04-29	2026-04-30	0.0000	100.0000	f	\N
+20	1	3	2026-04-29	2026-04-30	0.0000	2000.0000	f	\N
+20	2	3	2026-04-29	2026-04-30	0.0000	10000.0000	f	\N
+20	3	3	2026-04-29	2026-04-30	0.0000	500.0000	f	\N
+20	4	3	2026-04-29	2026-04-30	0.0000	10000.0000	f	\N
+20	5	3	2026-04-29	2026-04-30	0.0000	100.0000	f	\N
+20	6	3	2026-04-29	2026-04-30	0.0000	2000.0000	f	\N
+20	7	3	2026-04-29	2026-04-30	0.0000	100.0000	f	\N
+21	1	2	2026-04-29	2026-04-30	0.0000	2000.0000	f	\N
+21	2	2	2026-04-29	2026-04-30	0.0000	10000.0000	f	\N
+21	3	2	2026-04-29	2026-04-30	0.0000	500.0000	f	\N
+21	4	2	2026-04-29	2026-04-30	0.0000	10000.0000	f	\N
+21	5	2	2026-04-29	2026-04-30	0.0000	100.0000	f	\N
+21	6	2	2026-04-29	2026-04-30	0.0000	2000.0000	f	\N
+21	7	2	2026-04-29	2026-04-30	0.0000	100.0000	f	\N
+22	1	2	2026-04-29	2026-04-30	0.0000	2000.0000	f	\N
+22	2	2	2026-04-29	2026-04-30	0.0000	10000.0000	f	\N
+22	3	2	2026-04-29	2026-04-30	0.0000	500.0000	f	\N
+22	4	2	2026-04-29	2026-04-30	0.0000	10000.0000	f	\N
+22	5	2	2026-04-29	2026-04-30	0.0000	100.0000	f	\N
+22	6	2	2026-04-29	2026-04-30	0.0000	2000.0000	f	\N
+22	7	2	2026-04-29	2026-04-30	0.0000	100.0000	f	\N
+23	1	2	2026-04-29	2026-04-30	0.0000	2000.0000	f	\N
+23	2	2	2026-04-29	2026-04-30	0.0000	10000.0000	f	\N
+23	3	2	2026-04-29	2026-04-30	0.0000	500.0000	f	\N
+23	4	2	2026-04-29	2026-04-30	0.0000	10000.0000	f	\N
+23	5	2	2026-04-29	2026-04-30	0.0000	100.0000	f	\N
+23	6	2	2026-04-29	2026-04-30	0.0000	2000.0000	f	\N
+23	7	2	2026-04-29	2026-04-30	0.0000	100.0000	f	\N
+24	1	3	2026-04-29	2026-04-30	0.0000	2000.0000	f	\N
+24	2	3	2026-04-29	2026-04-30	0.0000	10000.0000	f	\N
+24	3	3	2026-04-29	2026-04-30	0.0000	500.0000	f	\N
+24	4	3	2026-04-29	2026-04-30	0.0000	10000.0000	f	\N
+24	5	3	2026-04-29	2026-04-30	0.0000	100.0000	f	\N
+24	6	3	2026-04-29	2026-04-30	0.0000	2000.0000	f	\N
+24	7	3	2026-04-29	2026-04-30	0.0000	100.0000	f	\N
+25	1	3	2026-04-29	2026-04-30	0.0000	2000.0000	f	\N
+25	2	3	2026-04-29	2026-04-30	0.0000	10000.0000	f	\N
+25	3	3	2026-04-29	2026-04-30	0.0000	500.0000	f	\N
+25	4	3	2026-04-29	2026-04-30	0.0000	10000.0000	f	\N
+25	5	3	2026-04-29	2026-04-30	0.0000	100.0000	f	\N
+25	6	3	2026-04-29	2026-04-30	0.0000	2000.0000	f	\N
+25	7	3	2026-04-29	2026-04-30	0.0000	100.0000	f	\N
+26	1	3	2026-04-29	2026-04-30	0.0000	2000.0000	f	\N
+26	2	3	2026-04-29	2026-04-30	0.0000	10000.0000	f	\N
+26	3	3	2026-04-29	2026-04-30	0.0000	500.0000	f	\N
+26	4	3	2026-04-29	2026-04-30	0.0000	10000.0000	f	\N
+26	5	3	2026-04-29	2026-04-30	0.0000	100.0000	f	\N
+26	6	3	2026-04-29	2026-04-30	0.0000	2000.0000	f	\N
+26	7	3	2026-04-29	2026-04-30	0.0000	100.0000	f	\N
+27	1	3	2026-04-29	2026-04-30	0.0000	2000.0000	f	\N
+27	2	3	2026-04-29	2026-04-30	0.0000	10000.0000	f	\N
+27	3	3	2026-04-29	2026-04-30	0.0000	500.0000	f	\N
+27	4	3	2026-04-29	2026-04-30	0.0000	10000.0000	f	\N
+27	5	3	2026-04-29	2026-04-30	0.0000	100.0000	f	\N
+27	6	3	2026-04-29	2026-04-30	0.0000	2000.0000	f	\N
+27	7	3	2026-04-29	2026-04-30	0.0000	100.0000	f	\N
+28	1	3	2026-04-29	2026-04-30	0.0000	2000.0000	f	\N
+28	2	3	2026-04-29	2026-04-30	0.0000	10000.0000	f	\N
+28	3	3	2026-04-29	2026-04-30	0.0000	500.0000	f	\N
+28	4	3	2026-04-29	2026-04-30	0.0000	10000.0000	f	\N
+28	5	3	2026-04-29	2026-04-30	0.0000	100.0000	f	\N
+28	6	3	2026-04-29	2026-04-30	0.0000	2000.0000	f	\N
+28	7	3	2026-04-29	2026-04-30	0.0000	100.0000	f	\N
+29	1	3	2026-04-29	2026-04-30	0.0000	2000.0000	f	\N
+29	2	3	2026-04-29	2026-04-30	0.0000	10000.0000	f	\N
+29	3	3	2026-04-29	2026-04-30	0.0000	500.0000	f	\N
+29	4	3	2026-04-29	2026-04-30	0.0000	10000.0000	f	\N
+29	5	3	2026-04-29	2026-04-30	0.0000	100.0000	f	\N
+29	6	3	2026-04-29	2026-04-30	0.0000	2000.0000	f	\N
+29	7	3	2026-04-29	2026-04-30	0.0000	100.0000	f	\N
+30	1	2	2026-04-29	2026-04-30	0.0000	2000.0000	f	\N
+30	2	2	2026-04-29	2026-04-30	0.0000	10000.0000	f	\N
+30	3	2	2026-04-29	2026-04-30	0.0000	500.0000	f	\N
+30	4	2	2026-04-29	2026-04-30	0.0000	10000.0000	f	\N
+30	5	2	2026-04-29	2026-04-30	0.0000	100.0000	f	\N
+30	6	2	2026-04-29	2026-04-30	0.0000	2000.0000	f	\N
+30	7	2	2026-04-29	2026-04-30	0.0000	100.0000	f	\N
+31	1	2	2026-04-29	2026-04-30	0.0000	2000.0000	f	\N
+31	2	2	2026-04-29	2026-04-30	0.0000	10000.0000	f	\N
+31	3	2	2026-04-29	2026-04-30	0.0000	500.0000	f	\N
+31	4	2	2026-04-29	2026-04-30	0.0000	10000.0000	f	\N
+31	5	2	2026-04-29	2026-04-30	0.0000	100.0000	f	\N
+31	6	2	2026-04-29	2026-04-30	0.0000	2000.0000	f	\N
+31	7	2	2026-04-29	2026-04-30	0.0000	100.0000	f	\N
+32	1	3	2026-04-29	2026-04-30	0.0000	2000.0000	f	\N
+32	2	3	2026-04-29	2026-04-30	0.0000	10000.0000	f	\N
+32	3	3	2026-04-29	2026-04-30	0.0000	500.0000	f	\N
+32	4	3	2026-04-29	2026-04-30	0.0000	10000.0000	f	\N
+32	5	3	2026-04-29	2026-04-30	0.0000	100.0000	f	\N
+32	6	3	2026-04-29	2026-04-30	0.0000	2000.0000	f	\N
+32	7	3	2026-04-29	2026-04-30	0.0000	100.0000	f	\N
+33	1	1	2026-04-29	2026-04-30	0.0000	2000.0000	f	\N
+33	3	1	2026-04-29	2026-04-30	0.0000	500.0000	f	\N
+34	1	1	2026-04-29	2026-04-30	0.0000	2000.0000	f	\N
+34	3	1	2026-04-29	2026-04-30	0.0000	500.0000	f	\N
+35	1	3	2026-04-29	2026-04-30	0.0000	2000.0000	f	\N
+35	2	3	2026-04-29	2026-04-30	0.0000	10000.0000	f	\N
+35	3	3	2026-04-29	2026-04-30	0.0000	500.0000	f	\N
+35	4	3	2026-04-29	2026-04-30	0.0000	10000.0000	f	\N
+35	5	3	2026-04-29	2026-04-30	0.0000	100.0000	f	\N
+35	6	3	2026-04-29	2026-04-30	0.0000	2000.0000	f	\N
+35	7	3	2026-04-29	2026-04-30	0.0000	100.0000	f	\N
+36	1	1	2026-04-29	2026-04-30	0.0000	2000.0000	f	\N
+36	3	1	2026-04-29	2026-04-30	0.0000	500.0000	f	\N
+37	1	1	2026-04-29	2026-04-30	0.0000	2000.0000	f	\N
+37	3	1	2026-04-29	2026-04-30	0.0000	500.0000	f	\N
+38	1	2	2026-04-29	2026-04-30	0.0000	2000.0000	f	\N
+38	2	2	2026-04-29	2026-04-30	0.0000	10000.0000	f	\N
+38	3	2	2026-04-29	2026-04-30	0.0000	500.0000	f	\N
+38	4	2	2026-04-29	2026-04-30	0.0000	10000.0000	f	\N
+38	5	2	2026-04-29	2026-04-30	0.0000	100.0000	f	\N
+38	6	2	2026-04-29	2026-04-30	0.0000	2000.0000	f	\N
+38	7	2	2026-04-29	2026-04-30	0.0000	100.0000	f	\N
+39	1	3	2026-04-29	2026-04-30	0.0000	2000.0000	f	\N
+39	2	3	2026-04-29	2026-04-30	0.0000	10000.0000	f	\N
+39	3	3	2026-04-29	2026-04-30	0.0000	500.0000	f	\N
+39	4	3	2026-04-29	2026-04-30	0.0000	10000.0000	f	\N
+39	5	3	2026-04-29	2026-04-30	0.0000	100.0000	f	\N
+39	6	3	2026-04-29	2026-04-30	0.0000	2000.0000	f	\N
+39	7	3	2026-04-29	2026-04-30	0.0000	100.0000	f	\N
+40	1	2	2026-04-29	2026-04-30	0.0000	2000.0000	f	\N
+40	2	2	2026-04-29	2026-04-30	0.0000	10000.0000	f	\N
+40	3	2	2026-04-29	2026-04-30	0.0000	500.0000	f	\N
+40	4	2	2026-04-29	2026-04-30	0.0000	10000.0000	f	\N
+40	5	2	2026-04-29	2026-04-30	0.0000	100.0000	f	\N
+40	6	2	2026-04-29	2026-04-30	0.0000	2000.0000	f	\N
+40	7	2	2026-04-29	2026-04-30	0.0000	100.0000	f	\N
+41	1	3	2026-04-29	2026-04-30	0.0000	2000.0000	f	\N
+41	2	3	2026-04-29	2026-04-30	0.0000	10000.0000	f	\N
+41	3	3	2026-04-29	2026-04-30	0.0000	500.0000	f	\N
+41	4	3	2026-04-29	2026-04-30	0.0000	10000.0000	f	\N
+41	5	3	2026-04-29	2026-04-30	0.0000	100.0000	f	\N
+41	6	3	2026-04-29	2026-04-30	0.0000	2000.0000	f	\N
+41	7	3	2026-04-29	2026-04-30	0.0000	100.0000	f	\N
+42	1	3	2026-04-29	2026-04-30	0.0000	2000.0000	f	\N
+42	2	3	2026-04-29	2026-04-30	0.0000	10000.0000	f	\N
+42	3	3	2026-04-29	2026-04-30	0.0000	500.0000	f	\N
+42	4	3	2026-04-29	2026-04-30	0.0000	10000.0000	f	\N
+42	5	3	2026-04-29	2026-04-30	0.0000	100.0000	f	\N
+42	6	3	2026-04-29	2026-04-30	0.0000	2000.0000	f	\N
+42	7	3	2026-04-29	2026-04-30	0.0000	100.0000	f	\N
+43	1	3	2026-04-29	2026-04-30	0.0000	2000.0000	f	\N
+43	2	3	2026-04-29	2026-04-30	0.0000	10000.0000	f	\N
+43	3	3	2026-04-29	2026-04-30	0.0000	500.0000	f	\N
+43	4	3	2026-04-29	2026-04-30	0.0000	10000.0000	f	\N
+43	5	3	2026-04-29	2026-04-30	0.0000	100.0000	f	\N
+43	6	3	2026-04-29	2026-04-30	0.0000	2000.0000	f	\N
+43	7	3	2026-04-29	2026-04-30	0.0000	100.0000	f	\N
+44	1	2	2026-04-29	2026-04-30	0.0000	2000.0000	f	\N
+44	2	2	2026-04-29	2026-04-30	0.0000	10000.0000	f	\N
+44	3	2	2026-04-29	2026-04-30	0.0000	500.0000	f	\N
+44	4	2	2026-04-29	2026-04-30	0.0000	10000.0000	f	\N
+44	5	2	2026-04-29	2026-04-30	0.0000	100.0000	f	\N
+44	6	2	2026-04-29	2026-04-30	0.0000	2000.0000	f	\N
+44	7	2	2026-04-29	2026-04-30	0.0000	100.0000	f	\N
+45	1	3	2026-04-29	2026-04-30	0.0000	2000.0000	f	\N
+45	2	3	2026-04-29	2026-04-30	0.0000	10000.0000	f	\N
+45	3	3	2026-04-29	2026-04-30	0.0000	500.0000	f	\N
+45	4	3	2026-04-29	2026-04-30	0.0000	10000.0000	f	\N
+45	5	3	2026-04-29	2026-04-30	0.0000	100.0000	f	\N
+45	6	3	2026-04-29	2026-04-30	0.0000	2000.0000	f	\N
+45	7	3	2026-04-29	2026-04-30	0.0000	100.0000	f	\N
+46	1	2	2026-04-29	2026-04-30	0.0000	2000.0000	f	\N
+46	2	2	2026-04-29	2026-04-30	0.0000	10000.0000	f	\N
+46	3	2	2026-04-29	2026-04-30	0.0000	500.0000	f	\N
+46	4	2	2026-04-29	2026-04-30	0.0000	10000.0000	f	\N
+46	5	2	2026-04-29	2026-04-30	0.0000	100.0000	f	\N
+46	6	2	2026-04-29	2026-04-30	0.0000	2000.0000	f	\N
+46	7	2	2026-04-29	2026-04-30	0.0000	100.0000	f	\N
+47	1	1	2026-04-29	2026-04-30	0.0000	2000.0000	f	\N
+47	3	1	2026-04-29	2026-04-30	0.0000	500.0000	f	\N
+48	1	1	2026-04-29	2026-04-30	0.0000	2000.0000	f	\N
+48	3	1	2026-04-29	2026-04-30	0.0000	500.0000	f	\N
+1	1	1	2026-03-01	2026-03-31	310.0000	1000.0000	t	17
+1	3	1	2026-03-01	2026-03-31	42.0000	100.0000	t	17
+21	6	2	2026-04-01	2026-04-30	0.0000	2000.0000	f	\N
+21	7	2	2026-04-01	2026-04-30	0.0000	100.0000	f	\N
+22	1	2	2026-04-01	2026-04-30	0.0000	2000.0000	f	\N
+22	2	2	2026-04-01	2026-04-30	0.0000	10000.0000	f	\N
+22	3	2	2026-04-01	2026-04-30	0.0000	500.0000	f	\N
+22	4	2	2026-04-01	2026-04-30	0.0000	10000.0000	f	\N
+22	5	2	2026-04-01	2026-04-30	0.0000	100.0000	f	\N
+22	6	2	2026-04-01	2026-04-30	0.0000	2000.0000	f	\N
+22	7	2	2026-04-01	2026-04-30	0.0000	100.0000	f	\N
+23	1	2	2026-04-01	2026-04-30	0.0000	2000.0000	f	\N
+23	2	2	2026-04-01	2026-04-30	0.0000	10000.0000	f	\N
+23	3	2	2026-04-01	2026-04-30	0.0000	500.0000	f	\N
+23	4	2	2026-04-01	2026-04-30	0.0000	10000.0000	f	\N
+23	5	2	2026-04-01	2026-04-30	0.0000	100.0000	f	\N
+10	2	2	2026-04-01	2026-04-30	2400.0000	10000.0000	t	33
+10	3	2	2026-04-01	2026-04-30	75.0000	500.0000	t	33
+10	4	2	2026-04-01	2026-04-30	40.0000	10000.0000	t	33
+9	3	1	2026-04-01	2026-04-30	8.0000	500.0000	t	34
+8	2	2	2026-04-01	2026-04-30	1500.0000	10000.0000	t	35
+8	3	2	2026-04-01	2026-04-30	55.0000	500.0000	t	35
+8	4	2	2026-04-01	2026-04-30	20.0000	10000.0000	t	35
+7	3	1	2026-04-01	2026-04-30	18.0000	500.0000	t	36
+6	2	2	2026-04-01	2026-04-30	3200.0000	10000.0000	t	37
+6	3	2	2026-04-01	2026-04-30	110.0000	500.0000	t	37
+6	4	2	2026-04-01	2026-04-30	50.0000	10000.0000	t	37
+5	3	1	2026-04-01	2026-04-30	12.0000	500.0000	t	38
+4	2	2	2026-04-01	2026-04-30	1800.0000	10000.0000	t	39
+4	3	2	2026-04-01	2026-04-30	65.0000	500.0000	t	39
+4	4	2	2026-04-01	2026-04-30	30.0000	10000.0000	t	39
+3	3	1	2026-04-01	2026-04-30	22.0000	500.0000	t	40
+1	1	1	2026-04-01	2026-04-30	350.0000	2000.0000	t	41
+1	3	1	2026-04-01	2026-04-30	45.0000	500.0000	t	41
+2	1	2	2026-04-01	2026-04-30	620.0000	2000.0000	t	42
+2	2	2	2026-04-01	2026-04-30	2100.0000	10000.0000	t	42
+2	3	2	2026-04-01	2026-04-30	85.0000	500.0000	t	42
+2	4	2	2026-04-01	2026-04-30	50.0000	10000.0000	t	42
+2	5	2	2026-04-01	2026-04-30	120.0000	100.0000	t	42
+2	6	2	2026-04-01	2026-04-30	400.0000	2000.0000	t	42
+2	7	2	2026-04-01	2026-04-30	30.0000	100.0000	t	42
+17	2	2	2026-04-01	2026-04-30	1100.0000	10000.0000	t	73
+17	3	2	2026-04-01	2026-04-30	48.0000	500.0000	t	73
+17	4	2	2026-04-01	2026-04-30	10.0000	10000.0000	t	73
+16	2	3	2026-04-01	2026-04-30	4900.0000	10000.0000	t	74
+16	3	3	2026-04-01	2026-04-30	180.0000	500.0000	t	74
+16	4	3	2026-04-01	2026-04-30	50.0000	10000.0000	t	74
+15	2	3	2026-04-01	2026-04-30	3800.0000	10000.0000	t	75
+15	3	3	2026-04-01	2026-04-30	145.0000	500.0000	t	75
+15	4	3	2026-04-01	2026-04-30	50.0000	10000.0000	t	75
+15	5	3	2026-04-01	2026-04-30	80.0000	100.0000	t	75
+15	6	3	2026-04-01	2026-04-30	320.0000	2000.0000	t	75
+15	7	3	2026-04-01	2026-04-30	20.0000	100.0000	t	75
+14	2	2	2026-04-01	2026-04-30	1200.0000	10000.0000	t	76
+14	3	2	2026-04-01	2026-04-30	60.0000	500.0000	t	76
+14	4	2	2026-04-01	2026-04-30	25.0000	10000.0000	t	76
+12	2	2	2026-04-01	2026-04-30	900.0000	10000.0000	t	77
+12	3	2	2026-04-01	2026-04-30	35.0000	500.0000	t	77
+12	4	2	2026-04-01	2026-04-30	15.0000	10000.0000	t	77
+11	3	1	2026-04-01	2026-04-30	190.0000	500.0000	t	78
+23	6	2	2026-04-01	2026-04-30	0.0000	2000.0000	f	\N
+23	7	2	2026-04-01	2026-04-30	0.0000	100.0000	f	\N
+24	1	3	2026-04-01	2026-04-30	0.0000	2000.0000	f	\N
+24	2	3	2026-04-01	2026-04-30	0.0000	10000.0000	f	\N
+24	3	3	2026-04-01	2026-04-30	0.0000	500.0000	f	\N
+24	4	3	2026-04-01	2026-04-30	0.0000	10000.0000	f	\N
+24	5	3	2026-04-01	2026-04-30	0.0000	100.0000	f	\N
+24	6	3	2026-04-01	2026-04-30	0.0000	2000.0000	f	\N
+24	7	3	2026-04-01	2026-04-30	0.0000	100.0000	f	\N
+25	1	3	2026-04-01	2026-04-30	0.0000	2000.0000	f	\N
+25	2	3	2026-04-01	2026-04-30	0.0000	10000.0000	f	\N
+25	3	3	2026-04-01	2026-04-30	0.0000	500.0000	f	\N
+25	4	3	2026-04-01	2026-04-30	0.0000	10000.0000	f	\N
+25	5	3	2026-04-01	2026-04-30	0.0000	100.0000	f	\N
+25	6	3	2026-04-01	2026-04-30	0.0000	2000.0000	f	\N
+25	7	3	2026-04-01	2026-04-30	0.0000	100.0000	f	\N
+26	1	3	2026-04-01	2026-04-30	0.0000	2000.0000	f	\N
+26	2	3	2026-04-01	2026-04-30	0.0000	10000.0000	f	\N
+26	3	3	2026-04-01	2026-04-30	0.0000	500.0000	f	\N
+26	4	3	2026-04-01	2026-04-30	0.0000	10000.0000	f	\N
+26	5	3	2026-04-01	2026-04-30	0.0000	100.0000	f	\N
+26	6	3	2026-04-01	2026-04-30	0.0000	2000.0000	f	\N
+26	7	3	2026-04-01	2026-04-30	0.0000	100.0000	f	\N
+27	1	3	2026-04-01	2026-04-30	0.0000	2000.0000	f	\N
+27	2	3	2026-04-01	2026-04-30	0.0000	10000.0000	f	\N
+27	3	3	2026-04-01	2026-04-30	0.0000	500.0000	f	\N
+27	4	3	2026-04-01	2026-04-30	0.0000	10000.0000	f	\N
+27	5	3	2026-04-01	2026-04-30	0.0000	100.0000	f	\N
+27	6	3	2026-04-01	2026-04-30	0.0000	2000.0000	f	\N
+27	7	3	2026-04-01	2026-04-30	0.0000	100.0000	f	\N
+28	1	3	2026-04-01	2026-04-30	0.0000	2000.0000	f	\N
+28	2	3	2026-04-01	2026-04-30	0.0000	10000.0000	f	\N
+28	3	3	2026-04-01	2026-04-30	0.0000	500.0000	f	\N
+28	4	3	2026-04-01	2026-04-30	0.0000	10000.0000	f	\N
+28	5	3	2026-04-01	2026-04-30	0.0000	100.0000	f	\N
+28	6	3	2026-04-01	2026-04-30	0.0000	2000.0000	f	\N
+28	7	3	2026-04-01	2026-04-30	0.0000	100.0000	f	\N
+29	1	3	2026-04-01	2026-04-30	0.0000	2000.0000	f	\N
+29	2	3	2026-04-01	2026-04-30	0.0000	10000.0000	f	\N
+29	3	3	2026-04-01	2026-04-30	0.0000	500.0000	f	\N
+29	4	3	2026-04-01	2026-04-30	0.0000	10000.0000	f	\N
+29	5	3	2026-04-01	2026-04-30	0.0000	100.0000	f	\N
+29	6	3	2026-04-01	2026-04-30	0.0000	2000.0000	f	\N
+29	7	3	2026-04-01	2026-04-30	0.0000	100.0000	f	\N
+48	1	1	2026-04-01	2026-04-30	0.0000	2000.0000	f	\N
+48	3	1	2026-04-01	2026-04-30	0.0000	500.0000	f	\N
+47	1	1	2026-04-01	2026-04-30	0.0000	2000.0000	f	\N
+47	3	1	2026-04-01	2026-04-30	0.0000	500.0000	f	\N
+46	1	2	2026-04-01	2026-04-30	0.0000	2000.0000	f	\N
+46	2	2	2026-04-01	2026-04-30	0.0000	10000.0000	f	\N
+46	3	2	2026-04-01	2026-04-30	0.0000	500.0000	f	\N
+46	4	2	2026-04-01	2026-04-30	0.0000	10000.0000	f	\N
+46	5	2	2026-04-01	2026-04-30	0.0000	100.0000	f	\N
+46	6	2	2026-04-01	2026-04-30	0.0000	2000.0000	f	\N
+46	7	2	2026-04-01	2026-04-30	0.0000	100.0000	f	\N
+45	1	3	2026-04-01	2026-04-30	0.0000	2000.0000	f	\N
+45	2	3	2026-04-01	2026-04-30	0.0000	10000.0000	f	\N
+45	3	3	2026-04-01	2026-04-30	0.0000	500.0000	f	\N
+45	4	3	2026-04-01	2026-04-30	0.0000	10000.0000	f	\N
+45	5	3	2026-04-01	2026-04-30	0.0000	100.0000	f	\N
+45	6	3	2026-04-01	2026-04-30	0.0000	2000.0000	f	\N
+45	7	3	2026-04-01	2026-04-30	0.0000	100.0000	f	\N
+44	1	2	2026-04-01	2026-04-30	0.0000	2000.0000	f	\N
+44	2	2	2026-04-01	2026-04-30	0.0000	10000.0000	f	\N
+44	3	2	2026-04-01	2026-04-30	0.0000	500.0000	f	\N
+44	4	2	2026-04-01	2026-04-30	0.0000	10000.0000	f	\N
+44	5	2	2026-04-01	2026-04-30	0.0000	100.0000	f	\N
+44	6	2	2026-04-01	2026-04-30	0.0000	2000.0000	f	\N
+44	7	2	2026-04-01	2026-04-30	0.0000	100.0000	f	\N
+43	1	3	2026-04-01	2026-04-30	0.0000	2000.0000	f	\N
+43	2	3	2026-04-01	2026-04-30	0.0000	10000.0000	f	\N
+43	3	3	2026-04-01	2026-04-30	0.0000	500.0000	f	\N
+43	4	3	2026-04-01	2026-04-30	0.0000	10000.0000	f	\N
+43	5	3	2026-04-01	2026-04-30	0.0000	100.0000	f	\N
 43	6	3	2026-04-01	2026-04-30	0.0000	2000.0000	f	\N
-44	5	3	2026-04-01	2026-04-30	0.0000	100.0000	f	\N
-44	7	3	2026-04-01	2026-04-30	0.0000	100.0000	f	\N
-48	5	2	2026-04-01	2026-04-30	0.0000	100.0000	f	\N
-48	7	2	2026-04-01	2026-04-30	0.0000	100.0000	f	\N
-47	1	3	2026-04-01	2026-04-30	0.0000	2000.0000	f	\N
-47	6	3	2026-04-01	2026-04-30	0.0000	2000.0000	f	\N
-45	6	2	2026-04-01	2026-04-30	0.0000	2000.0000	f	\N
-19	1	2	2026-04-01	2026-04-30	0.0000	2000.0000	f	\N
-19	2	2	2026-04-01	2026-04-30	0.0000	10000.0000	f	\N
-19	3	2	2026-04-01	2026-04-30	0.0000	500.0000	f	\N
-19	7	2	2026-04-01	2026-04-30	0.0000	100.0000	f	\N
-44	4	3	2026-04-01	2026-04-30	10000.0000	10000.0000	f	\N
-44	4	3	2026-04-28	2026-04-30	10000.0000	10000.0000	f	\N
-44	2	3	2026-04-01	2026-04-30	10000.0000	10000.0000	f	\N
-44	2	3	2026-04-28	2026-04-30	10000.0000	10000.0000	f	\N
-47	7	3	2026-04-01	2026-04-30	1.0000	100.0000	f	\N
-27	5	3	2026-04-01	2026-04-30	0.0000	100.0000	t	85
-47	4	3	2026-04-01	2026-04-30	10000.0000	10000.0000	f	\N
-47	4	3	2026-04-28	2026-04-30	10000.0000	10000.0000	f	\N
-47	2	3	2026-04-01	2026-04-30	10000.0000	10000.0000	f	\N
-47	2	3	2026-04-28	2026-04-30	10000.0000	10000.0000	f	\N
-27	6	3	2026-04-01	2026-04-30	0.0000	2000.0000	t	85
-27	7	3	2026-04-01	2026-04-30	0.0000	100.0000	t	85
-28	6	2	2026-04-01	2026-04-30	0.0000	2000.0000	t	86
-28	7	2	2026-04-01	2026-04-30	0.0000	100.0000	t	86
-29	1	3	2026-04-01	2026-04-30	0.0000	2000.0000	t	87
-29	5	3	2026-04-01	2026-04-30	0.0000	100.0000	t	87
-29	6	3	2026-04-01	2026-04-30	0.0000	2000.0000	t	87
-29	7	3	2026-04-01	2026-04-30	0.0000	100.0000	t	87
-30	1	1	2026-04-01	2026-04-30	0.0000	2000.0000	t	88
-47	5	3	2026-04-01	2026-04-30	100.0000	100.0000	f	\N
-45	7	2	2026-04-01	2026-04-30	1.0000	100.0000	f	\N
-45	5	2	2026-04-01	2026-04-30	100.0000	100.0000	f	\N
-44	6	3	2026-04-01	2026-04-30	2000.0000	2000.0000	f	\N
-44	3	3	2026-04-01	2026-04-30	2.0000	500.0000	f	\N
-44	1	3	2026-04-01	2026-04-30	171.0000	2000.0000	f	\N
-43	7	3	2026-04-01	2026-04-30	1.0000	100.0000	f	\N
-43	1	3	2026-04-01	2026-04-30	221.0000	2000.0000	f	\N
-42	3	1	2026-04-01	2026-04-30	1.0000	500.0000	f	\N
-41	2	2	2026-04-01	2026-04-30	10000.0000	10000.0000	f	\N
-41	3	2	2026-04-01	2026-04-30	1.0000	500.0000	f	\N
-41	5	2	2026-04-01	2026-04-30	73.0000	100.0000	f	\N
-39	1	1	2026-04-01	2026-04-30	371.0000	2000.0000	f	\N
-19	5	2	2026-04-01	2026-04-30	41.0000	100.0000	f	\N
-22	7	2	2026-04-01	2026-04-30	1.0000	100.0000	t	80
-22	5	2	2026-04-01	2026-04-30	100.0000	100.0000	t	80
-27	4	3	2026-04-28	2026-04-30	10000.0000	10000.0000	f	\N
-27	2	3	2026-04-28	2026-04-30	10000.0000	10000.0000	f	\N
-1	1	1	2026-04-28	2026-04-30	233.0000	2000.0000	f	\N
-11	3	1	2026-04-28	2026-04-30	1.0000	500.0000	f	\N
-34	1	1	2026-04-01	2026-04-30	461.0000	2000.0000	f	\N
-19	6	2	2026-04-01	2026-04-30	2000.0000	2000.0000	f	\N
-19	6	2	2026-04-28	2026-04-30	2000.0000	2000.0000	f	\N
-22	4	2	2026-04-01	2026-04-30	10000.0000	10000.0000	t	80
-22	2	2	2026-04-01	2026-04-30	10000.0000	10000.0000	t	80
-5	1	1	2026-04-28	2026-04-30	88.0000	2000.0000	f	\N
-5	3	1	2026-04-28	2026-04-30	1.0000	500.0000	f	\N
-4	4	2	2026-04-28	2026-04-30	10000.0000	10000.0000	f	\N
-4	2	2	2026-04-28	2026-04-30	10000.0000	10000.0000	f	\N
-4	7	2	2026-04-28	2026-04-30	1.0000	100.0000	f	\N
-4	1	2	2026-04-28	2026-04-30	212.0000	2000.0000	f	\N
-2	4	2	2026-04-28	2026-04-30	10000.0000	10000.0000	f	\N
-2	2	2	2026-04-28	2026-04-30	10000.0000	10000.0000	f	\N
-2	3	2	2026-04-28	2026-04-30	1.0000	500.0000	f	\N
-2	1	2	2026-04-28	2026-04-30	252.0000	2000.0000	f	\N
-22	5	2	2026-04-28	2026-04-30	100.0000	100.0000	f	\N
-22	4	2	2026-04-28	2026-04-30	10000.0000	10000.0000	f	\N
-7	3	1	2026-04-28	2026-04-30	1.0000	500.0000	f	\N
-7	1	1	2026-04-28	2026-04-30	177.0000	2000.0000	f	\N
-9	3	1	2026-04-28	2026-04-30	1.0000	500.0000	f	\N
-48	3	2	2026-04-01	2026-04-30	2.0000	500.0000	f	\N
-28	5	2	2026-04-28	2026-04-30	30.0000	100.0000	f	\N
-28	4	2	2026-04-28	2026-04-30	10000.0000	10000.0000	f	\N
-28	2	2	2026-04-28	2026-04-30	10000.0000	10000.0000	f	\N
-48	4	2	2026-04-01	2026-04-30	10000.0000	10000.0000	f	\N
-48	4	2	2026-04-28	2026-04-30	10000.0000	10000.0000	f	\N
-48	2	2	2026-04-01	2026-04-30	10000.0000	10000.0000	f	\N
-48	2	2	2026-04-28	2026-04-30	10000.0000	10000.0000	f	\N
-48	6	2	2026-04-01	2026-04-30	2000.0000	2000.0000	f	\N
-48	6	2	2026-04-28	2026-04-30	2000.0000	2000.0000	f	\N
-32	3	1	2026-04-01	2026-04-30	2.0000	500.0000	f	\N
-48	1	2	2026-04-01	2026-04-30	644.0000	2000.0000	f	\N
-15	4	3	2026-04-28	2026-04-30	10000.0000	10000.0000	f	\N
-15	2	3	2026-04-28	2026-04-30	10000.0000	10000.0000	f	\N
-15	7	3	2026-04-28	2026-04-30	1.0000	100.0000	f	\N
-22	3	2	2026-04-01	2026-04-30	1.0000	500.0000	t	80
-6	4	2	2026-04-28	2026-04-30	10000.0000	10000.0000	f	\N
-6	2	2	2026-04-28	2026-04-30	10000.0000	10000.0000	f	\N
-6	3	2	2026-04-28	2026-04-30	1.0000	500.0000	f	\N
-38	3	1	2026-04-01	2026-04-30	1.0000	500.0000	f	\N
-3	3	1	2026-04-28	2026-04-30	1.0000	500.0000	f	\N
-24	4	3	2026-04-28	2026-04-30	10000.0000	10000.0000	f	\N
-35	5	2	2026-04-01	2026-04-30	100.0000	100.0000	f	\N
-35	4	2	2026-04-01	2026-04-30	10000.0000	10000.0000	f	\N
-35	4	2	2026-04-28	2026-04-30	10000.0000	10000.0000	f	\N
-35	2	2	2026-04-01	2026-04-30	10000.0000	10000.0000	f	\N
-35	2	2	2026-04-28	2026-04-30	10000.0000	10000.0000	f	\N
-35	1	2	2026-04-01	2026-04-30	52.0000	2000.0000	f	\N
-16	4	3	2026-04-28	2026-04-30	10000.0000	10000.0000	f	\N
-16	2	3	2026-04-28	2026-04-30	10000.0000	10000.0000	f	\N
-16	7	3	2026-04-28	2026-04-30	1.0000	100.0000	f	\N
-23	1	1	2026-04-01	2026-04-30	107.0000	2000.0000	t	81
-23	3	1	2026-04-01	2026-04-30	2.0000	500.0000	t	81
-24	7	3	2026-04-01	2026-04-30	1.0000	100.0000	t	82
-24	5	3	2026-04-01	2026-04-30	100.0000	100.0000	t	82
-24	4	3	2026-04-01	2026-04-30	10000.0000	10000.0000	t	82
-24	2	3	2026-04-01	2026-04-30	6624.0000	10000.0000	t	82
-24	3	3	2026-04-01	2026-04-30	1.0000	500.0000	t	82
-26	1	1	2026-04-01	2026-04-30	97.0000	2000.0000	t	84
-26	3	1	2026-04-01	2026-04-30	1.0000	500.0000	t	84
-27	4	3	2026-04-01	2026-04-30	10000.0000	10000.0000	t	85
-27	2	3	2026-04-01	2026-04-30	10000.0000	10000.0000	t	85
-27	3	3	2026-04-01	2026-04-30	1.0000	500.0000	t	85
-27	1	3	2026-04-01	2026-04-30	251.0000	2000.0000	t	85
-47	3	3	2026-04-01	2026-04-30	2.0000	500.0000	f	\N
-46	1	1	2026-04-01	2026-04-30	446.0000	2000.0000	f	\N
-42	1	1	2026-04-01	2026-04-30	517.0000	2000.0000	f	\N
-41	4	2	2026-04-01	2026-04-30	10000.0000	10000.0000	f	\N
-40	1	1	2026-04-01	2026-04-30	675.0000	2000.0000	f	\N
-40	3	1	2026-04-01	2026-04-30	3.0000	500.0000	f	\N
-38	1	1	2026-04-01	2026-04-30	552.0000	2000.0000	f	\N
-37	1	1	2026-04-01	2026-04-30	113.0000	2000.0000	f	\N
-37	3	1	2026-04-01	2026-04-30	3.0000	500.0000	f	\N
-36	3	1	2026-04-01	2026-04-30	2.0000	500.0000	f	\N
-36	1	1	2026-04-01	2026-04-30	272.0000	2000.0000	f	\N
-35	3	2	2026-04-01	2026-04-30	2.0000	500.0000	f	\N
-35	5	2	2026-04-28	2026-04-30	100.0000	100.0000	f	\N
-34	3	1	2026-04-01	2026-04-30	3.0000	500.0000	f	\N
-33	3	1	2026-04-01	2026-04-30	3.0000	500.0000	f	\N
-10	4	2	2026-04-28	2026-04-30	10000.0000	10000.0000	f	\N
-10	2	2	2026-04-28	2026-04-30	10000.0000	10000.0000	f	\N
-10	3	2	2026-04-28	2026-04-30	1.0000	500.0000	f	\N
-10	5	2	2026-04-28	2026-04-30	100.0000	100.0000	f	\N
-31	4	2	2026-04-01	2026-04-30	10000.0000	10000.0000	f	\N
-31	4	2	2026-04-28	2026-04-30	10000.0000	10000.0000	f	\N
-31	2	2	2026-04-01	2026-04-30	10000.0000	10000.0000	f	\N
-31	2	2	2026-04-28	2026-04-30	10000.0000	10000.0000	f	\N
-53	1	1	2026-04-01	2026-04-30	0.0000	2000.0000	t	90
-8	4	2	2026-04-28	2026-04-30	10000.0000	10000.0000	f	\N
-8	2	2	2026-04-28	2026-04-30	10000.0000	10000.0000	f	\N
-8	3	2	2026-04-28	2026-04-30	1.0000	500.0000	f	\N
-12	6	2	2026-04-28	2026-04-30	2000.0000	2000.0000	f	\N
-53	3	1	2026-04-01	2026-04-30	0.0000	500.0000	t	90
-25	4	3	2026-04-28	2026-04-30	10000.0000	10000.0000	f	\N
-25	2	3	2026-04-28	2026-04-30	10000.0000	10000.0000	f	\N
-17	7	2	2026-04-28	2026-04-30	1.0000	100.0000	f	\N
-17	4	2	2026-04-28	2026-04-30	10000.0000	10000.0000	f	\N
-17	2	2	2026-04-28	2026-04-30	10000.0000	10000.0000	f	\N
-43	4	3	2026-04-01	2026-04-30	10000.0000	10000.0000	f	\N
-43	4	3	2026-04-28	2026-04-30	10000.0000	10000.0000	f	\N
-43	5	3	2026-04-01	2026-04-30	58.0000	100.0000	f	\N
-43	2	3	2026-04-01	2026-04-30	10000.0000	10000.0000	f	\N
-43	2	3	2026-04-28	2026-04-30	10000.0000	10000.0000	f	\N
-29	4	3	2026-04-28	2026-04-30	10000.0000	10000.0000	f	\N
-29	2	3	2026-04-28	2026-04-30	10000.0000	10000.0000	f	\N
-45	4	2	2026-04-01	2026-04-30	10000.0000	10000.0000	f	\N
-45	4	2	2026-04-28	2026-04-30	10000.0000	10000.0000	f	\N
-45	3	2	2026-04-01	2026-04-30	1.0000	500.0000	f	\N
-21	4	3	2026-04-28	2026-04-30	10000.0000	10000.0000	f	\N
-21	2	3	2026-04-28	2026-04-30	10000.0000	10000.0000	f	\N
-21	4	3	2026-04-01	2026-04-30	10000.0000	10000.0000	t	79
-21	2	3	2026-04-01	2026-04-30	10000.0000	10000.0000	t	79
-21	3	3	2026-04-01	2026-04-30	1.0000	500.0000	t	79
-21	1	3	2026-04-01	2026-04-30	319.0000	2000.0000	t	79
-25	4	3	2026-04-01	2026-04-30	10000.0000	10000.0000	t	83
-25	2	3	2026-04-01	2026-04-30	10000.0000	10000.0000	t	83
-25	3	3	2026-04-01	2026-04-30	1.0000	500.0000	t	83
-25	1	3	2026-04-01	2026-04-30	306.0000	2000.0000	t	83
-28	5	2	2026-04-01	2026-04-30	100.0000	100.0000	t	86
-28	4	2	2026-04-01	2026-04-30	10000.0000	10000.0000	t	86
-28	2	2	2026-04-01	2026-04-30	10000.0000	10000.0000	t	86
-28	3	2	2026-04-01	2026-04-30	1.0000	500.0000	t	86
-28	1	2	2026-04-01	2026-04-30	92.0000	2000.0000	t	86
-29	4	3	2026-04-01	2026-04-30	10000.0000	10000.0000	t	87
-29	2	3	2026-04-01	2026-04-30	10000.0000	10000.0000	t	87
-29	3	3	2026-04-01	2026-04-30	1.0000	500.0000	t	87
-30	3	1	2026-04-01	2026-04-30	2.0000	500.0000	t	88
-20	1	1	2026-04-01	2026-04-30	517.0000	2000.0000	t	89
-20	3	1	2026-04-01	2026-04-30	1.0000	500.0000	t	89
-54	1	1	2026-04-01	2026-04-30	0.0000	2000.0000	t	91
-54	3	1	2026-04-01	2026-04-30	0.0000	500.0000	t	91
-55	5	2	2026-04-01	2026-04-30	0.0000	100.0000	t	92
-55	6	2	2026-04-01	2026-04-30	0.0000	2000.0000	t	92
-55	7	2	2026-04-01	2026-04-30	0.0000	100.0000	t	92
-56	1	1	2026-04-01	2026-04-30	0.0000	2000.0000	t	93
-58	3	2	2026-04-01	2026-04-30	0.0000	500.0000	t	94
-58	5	2	2026-04-01	2026-04-30	0.0000	100.0000	t	94
-58	6	2	2026-04-01	2026-04-30	0.0000	2000.0000	t	94
-59	1	1	2026-04-01	2026-04-30	0.0000	2000.0000	t	95
-60	1	3	2026-04-01	2026-04-30	0.0000	2000.0000	t	96
-60	2	3	2026-04-01	2026-04-30	0.0000	10000.0000	t	96
-60	3	3	2026-04-01	2026-04-30	0.0000	500.0000	t	96
-60	5	3	2026-04-01	2026-04-30	0.0000	100.0000	t	96
-60	7	3	2026-04-01	2026-04-30	0.0000	100.0000	t	96
-68	1	2	2026-04-01	2026-04-30	0.0000	2000.0000	t	99
-68	5	2	2026-04-01	2026-04-30	0.0000	100.0000	t	99
-68	6	2	2026-04-01	2026-04-30	0.0000	2000.0000	t	99
-68	7	2	2026-04-01	2026-04-30	0.0000	100.0000	t	99
-70	6	2	2026-04-01	2026-04-30	0.0000	2000.0000	t	101
-70	7	2	2026-04-01	2026-04-30	0.0000	100.0000	t	101
-71	1	1	2026-04-01	2026-04-30	0.0000	2000.0000	t	102
-71	3	1	2026-04-01	2026-04-30	0.0000	500.0000	t	102
-73	2	2	2026-04-01	2026-04-30	10000.0000	10000.0000	t	104
-73	5	2	2026-04-01	2026-04-30	0.0000	100.0000	t	104
-73	6	2	2026-04-01	2026-04-30	0.0000	2000.0000	t	104
-73	7	2	2026-04-01	2026-04-30	0.0000	100.0000	t	104
-76	1	3	2026-04-01	2026-04-30	0.0000	2000.0000	t	105
-76	2	3	2026-04-01	2026-04-30	0.0000	10000.0000	t	105
-76	3	3	2026-04-01	2026-04-30	0.0000	500.0000	t	105
-76	6	3	2026-04-01	2026-04-30	0.0000	2000.0000	t	105
-76	7	3	2026-04-01	2026-04-30	0.0000	100.0000	t	105
-77	1	2	2026-04-01	2026-04-30	0.0000	2000.0000	t	106
-77	2	2	2026-04-01	2026-04-30	0.0000	10000.0000	t	106
-77	3	2	2026-04-01	2026-04-30	0.0000	500.0000	t	106
-77	5	2	2026-04-01	2026-04-30	0.0000	100.0000	t	106
-79	1	1	2026-04-01	2026-04-30	0.0000	2000.0000	t	107
-79	3	1	2026-04-01	2026-04-30	0.0000	500.0000	t	107
-80	1	2	2026-04-01	2026-04-30	0.0000	2000.0000	t	108
-80	5	2	2026-04-01	2026-04-30	0.0000	100.0000	t	108
-80	6	2	2026-04-01	2026-04-30	0.0000	2000.0000	t	108
-80	7	2	2026-04-01	2026-04-30	0.0000	100.0000	t	108
-81	1	2	2026-04-01	2026-04-30	0.0000	2000.0000	t	109
-81	3	2	2026-04-01	2026-04-30	0.0000	500.0000	t	109
-81	5	2	2026-04-01	2026-04-30	0.0000	100.0000	t	109
-81	7	2	2026-04-01	2026-04-30	0.0000	100.0000	t	109
-82	1	2	2026-04-01	2026-04-30	0.0000	2000.0000	t	110
-82	2	2	2026-04-01	2026-04-30	0.0000	10000.0000	t	110
-82	3	2	2026-04-01	2026-04-30	0.0000	500.0000	t	110
-82	5	2	2026-04-01	2026-04-30	0.0000	100.0000	t	110
-82	7	2	2026-04-01	2026-04-30	0.0000	100.0000	t	110
-83	1	2	2026-04-01	2026-04-30	0.0000	2000.0000	t	111
-83	5	2	2026-04-01	2026-04-30	0.0000	100.0000	t	111
-83	6	2	2026-04-01	2026-04-30	0.0000	2000.0000	t	111
-83	7	2	2026-04-01	2026-04-30	0.0000	100.0000	t	111
-84	5	3	2026-04-01	2026-04-30	0.0000	100.0000	t	112
-84	6	3	2026-04-01	2026-04-30	0.0000	2000.0000	t	112
-84	7	3	2026-04-01	2026-04-30	0.0000	100.0000	t	112
-87	1	1	2026-04-01	2026-04-30	0.0000	2000.0000	t	114
-88	5	2	2026-04-01	2026-04-30	0.0000	100.0000	t	115
-88	6	2	2026-04-01	2026-04-30	0.0000	2000.0000	t	115
-88	7	2	2026-04-01	2026-04-30	0.0000	100.0000	t	115
-90	5	2	2026-04-01	2026-04-30	0.0000	100.0000	t	116
-90	6	2	2026-04-01	2026-04-30	0.0000	2000.0000	t	116
-90	7	2	2026-04-01	2026-04-30	0.0000	100.0000	t	116
-91	1	3	2026-04-01	2026-04-30	0.0000	2000.0000	t	117
-91	5	3	2026-04-01	2026-04-30	0.0000	100.0000	t	117
-91	6	3	2026-04-01	2026-04-30	0.0000	2000.0000	t	117
-91	7	3	2026-04-01	2026-04-30	0.0000	100.0000	t	117
-92	5	2	2026-04-01	2026-04-30	0.0000	100.0000	t	118
-92	7	2	2026-04-01	2026-04-30	0.0000	100.0000	t	118
-94	1	2	2026-04-01	2026-04-30	0.0000	2000.0000	t	120
-94	5	2	2026-04-01	2026-04-30	0.0000	100.0000	t	120
-94	6	2	2026-04-01	2026-04-30	0.0000	2000.0000	t	120
-94	7	2	2026-04-01	2026-04-30	0.0000	100.0000	t	120
-99	3	1	2026-04-01	2026-04-30	1.0000	500.0000	t	122
-101	1	2	2026-04-01	2026-04-30	0.0000	2000.0000	t	123
-101	2	2	2026-04-01	2026-04-30	10000.0000	10000.0000	t	123
-101	3	2	2026-04-01	2026-04-30	1.0000	500.0000	t	123
-101	4	2	2026-04-01	2026-04-30	20000.0000	20000.0000	t	123
-101	5	2	2026-04-01	2026-04-30	0.0000	100.0000	t	123
-102	1	3	2026-04-01	2026-04-30	0.0000	2000.0000	t	124
-102	3	3	2026-04-01	2026-04-30	0.0000	500.0000	t	124
-103	3	3	2026-04-01	2026-04-30	0.0000	500.0000	t	125
-103	6	3	2026-04-01	2026-04-30	0.0000	2000.0000	t	125
-104	1	2	2026-04-01	2026-04-30	0.0000	2000.0000	t	126
-104	2	2	2026-04-01	2026-04-30	0.0000	10000.0000	t	126
-104	3	2	2026-04-01	2026-04-30	0.0000	500.0000	t	126
-104	5	2	2026-04-01	2026-04-30	0.0000	100.0000	t	126
-106	3	2	2026-04-01	2026-04-30	0.0000	500.0000	t	128
-106	5	2	2026-04-01	2026-04-30	0.0000	100.0000	t	128
-106	6	2	2026-04-01	2026-04-30	0.0000	2000.0000	t	128
-107	1	2	2026-04-01	2026-04-30	0.0000	2000.0000	t	129
-107	2	2	2026-04-01	2026-04-30	0.0000	10000.0000	t	129
-107	3	2	2026-04-01	2026-04-30	0.0000	500.0000	t	129
-107	5	2	2026-04-01	2026-04-30	0.0000	100.0000	t	129
-107	7	2	2026-04-01	2026-04-30	0.0000	100.0000	t	129
-109	1	1	2026-04-01	2026-04-30	0.0000	2000.0000	t	130
-109	3	1	2026-04-01	2026-04-30	0.0000	500.0000	t	130
-111	1	1	2026-04-01	2026-04-30	0.0000	2000.0000	t	131
-111	3	1	2026-04-01	2026-04-30	0.0000	500.0000	t	131
-115	1	2	2026-04-01	2026-04-30	0.0000	2000.0000	t	135
-115	5	2	2026-04-01	2026-04-30	0.0000	100.0000	t	135
-115	6	2	2026-04-01	2026-04-30	0.0000	2000.0000	t	135
-115	7	2	2026-04-01	2026-04-30	0.0000	100.0000	t	135
-118	5	2	2026-04-01	2026-04-30	0.0000	100.0000	t	136
-118	6	2	2026-04-01	2026-04-30	0.0000	2000.0000	t	136
-118	7	2	2026-04-01	2026-04-30	0.0000	100.0000	t	136
-119	5	2	2026-04-01	2026-04-30	0.0000	100.0000	t	137
-119	6	2	2026-04-01	2026-04-30	0.0000	2000.0000	t	137
-119	7	2	2026-04-01	2026-04-30	0.0000	100.0000	t	137
-121	1	2	2026-04-01	2026-04-30	0.0000	2000.0000	t	138
-121	2	2	2026-04-01	2026-04-30	0.0000	10000.0000	t	138
-121	3	2	2026-04-01	2026-04-30	0.0000	500.0000	t	138
-121	5	2	2026-04-01	2026-04-30	0.0000	100.0000	t	138
-121	6	2	2026-04-01	2026-04-30	0.0000	2000.0000	t	138
-121	7	2	2026-04-01	2026-04-30	0.0000	100.0000	t	138
-125	1	2	2026-04-01	2026-04-30	0.0000	2000.0000	t	140
-125	6	2	2026-04-01	2026-04-30	0.0000	2000.0000	t	140
-125	7	2	2026-04-01	2026-04-30	0.0000	100.0000	t	140
-126	1	2	2026-04-01	2026-04-30	0.0000	2000.0000	t	141
-126	5	2	2026-04-01	2026-04-30	0.0000	100.0000	t	141
-126	6	2	2026-04-01	2026-04-30	0.0000	2000.0000	t	141
-126	7	2	2026-04-01	2026-04-30	0.0000	100.0000	t	141
-129	3	2	2026-04-01	2026-04-30	0.0000	500.0000	t	143
-129	5	2	2026-04-01	2026-04-30	0.0000	100.0000	t	143
-129	6	2	2026-04-01	2026-04-30	0.0000	2000.0000	t	143
-130	1	2	2026-04-01	2026-04-30	0.0000	2000.0000	t	144
-130	2	2	2026-04-01	2026-04-30	10000.0000	10000.0000	t	144
-130	3	2	2026-04-01	2026-04-30	0.0000	500.0000	t	144
-130	4	2	2026-04-01	2026-04-30	20000.0000	20000.0000	t	144
-130	5	2	2026-04-01	2026-04-30	0.0000	100.0000	t	144
-130	6	2	2026-04-01	2026-04-30	0.0000	2000.0000	t	144
-130	7	2	2026-04-01	2026-04-30	1.0000	100.0000	t	144
-134	1	1	2026-04-01	2026-04-30	0.0000	2000.0000	t	145
-121	4	2	2026-04-01	2026-04-30	16712.0000	20000.0000	t	138
-122	3	1	2026-04-01	2026-04-30	1.0000	500.0000	t	139
-122	1	1	2026-04-01	2026-04-30	182.0000	2000.0000	t	139
-125	5	2	2026-04-01	2026-04-30	100.0000	100.0000	t	140
-125	4	2	2026-04-01	2026-04-30	20000.0000	20000.0000	t	140
-125	2	2	2026-04-01	2026-04-30	9696.0000	10000.0000	t	140
-125	3	2	2026-04-01	2026-04-30	1.0000	500.0000	t	140
-126	4	2	2026-04-01	2026-04-30	10000.0000	10000.0000	t	141
-126	2	2	2026-04-01	2026-04-30	10000.0000	10000.0000	t	141
-126	3	2	2026-04-01	2026-04-30	1.0000	500.0000	t	141
-127	4	1	2026-04-01	2026-04-30	10000.0000	10000.0000	t	142
-127	3	1	2026-04-01	2026-04-30	1.0000	500.0000	t	142
-127	1	1	2026-04-01	2026-04-30	71.0000	2000.0000	t	142
-129	4	2	2026-04-01	2026-04-30	10000.0000	10000.0000	t	143
-129	2	2	2026-04-01	2026-04-30	10000.0000	10000.0000	t	143
-129	7	2	2026-04-01	2026-04-30	1.0000	100.0000	t	143
-129	1	2	2026-04-01	2026-04-30	64.0000	2000.0000	t	143
-134	3	1	2026-04-01	2026-04-30	1.0000	500.0000	t	145
-134	4	1	2026-04-01	2026-04-30	10000.0000	10000.0000	t	145
-135	1	1	2026-04-01	2026-04-30	534.0000	2000.0000	t	146
-135	3	1	2026-04-01	2026-04-30	1.0000	500.0000	t	146
-136	1	3	2026-04-01	2026-04-30	0.0000	2000.0000	t	147
-136	2	3	2026-04-01	2026-04-30	10000.0000	10000.0000	t	147
-136	3	3	2026-04-01	2026-04-30	1.0000	500.0000	t	147
-136	4	3	2026-04-01	2026-04-30	20000.0000	20000.0000	t	147
-136	5	3	2026-04-01	2026-04-30	0.0000	100.0000	t	147
-136	6	3	2026-04-01	2026-04-30	0.0000	2000.0000	t	147
-136	7	3	2026-04-01	2026-04-30	0.0000	100.0000	t	147
-137	1	2	2026-04-01	2026-04-30	152.0000	2000.0000	t	148
-137	2	2	2026-04-01	2026-04-30	10000.0000	10000.0000	t	148
-137	3	2	2026-04-01	2026-04-30	1.0000	500.0000	t	148
-137	4	2	2026-04-01	2026-04-30	10000.0000	10000.0000	t	148
-137	5	2	2026-04-01	2026-04-30	0.0000	100.0000	t	148
-137	6	2	2026-04-01	2026-04-30	0.0000	2000.0000	t	148
-137	7	2	2026-04-01	2026-04-30	0.0000	100.0000	t	148
-140	1	2	2026-04-01	2026-04-30	119.0000	2000.0000	t	149
-140	2	2	2026-04-01	2026-04-30	10000.0000	10000.0000	t	149
-140	3	2	2026-04-01	2026-04-30	1.0000	500.0000	t	149
-140	4	2	2026-04-01	2026-04-30	20000.0000	20000.0000	t	149
-140	5	2	2026-04-01	2026-04-30	0.0000	100.0000	t	149
-140	6	2	2026-04-01	2026-04-30	0.0000	2000.0000	t	149
-140	7	2	2026-04-01	2026-04-30	0.0000	100.0000	t	149
-142	1	2	2026-04-01	2026-04-30	0.0000	2000.0000	t	150
-142	2	2	2026-04-01	2026-04-30	10000.0000	10000.0000	t	150
-77	6	2	2026-04-01	2026-04-30	2000.0000	2000.0000	t	106
-77	7	2	2026-04-01	2026-04-30	1.0000	100.0000	t	106
-79	4	1	2026-04-01	2026-04-30	220.0000	10000.0000	t	107
-80	4	2	2026-04-01	2026-04-30	10000.0000	10000.0000	t	108
-80	2	2	2026-04-01	2026-04-30	10000.0000	10000.0000	t	108
-80	3	2	2026-04-01	2026-04-30	1.0000	500.0000	t	108
-81	6	2	2026-04-01	2026-04-30	2000.0000	2000.0000	t	109
-81	4	2	2026-04-01	2026-04-30	20000.0000	20000.0000	t	109
-81	2	2	2026-04-01	2026-04-30	10000.0000	10000.0000	t	109
-82	4	2	2026-04-01	2026-04-30	414.0000	20000.0000	t	110
-82	6	2	2026-04-01	2026-04-30	2000.0000	2000.0000	t	110
-83	4	2	2026-04-01	2026-04-30	20000.0000	20000.0000	t	111
-83	2	2	2026-04-01	2026-04-30	9979.0000	10000.0000	t	111
-83	3	2	2026-04-01	2026-04-30	1.0000	500.0000	t	111
-84	4	3	2026-04-01	2026-04-30	20000.0000	20000.0000	t	112
-84	2	3	2026-04-01	2026-04-30	10000.0000	10000.0000	t	112
-84	3	3	2026-04-01	2026-04-30	1.0000	500.0000	t	112
-84	1	3	2026-04-01	2026-04-30	209.0000	2000.0000	t	112
-85	4	1	2026-04-01	2026-04-30	10000.0000	10000.0000	t	113
-85	3	1	2026-04-01	2026-04-30	1.0000	500.0000	t	113
-85	1	1	2026-04-01	2026-04-30	145.0000	2000.0000	t	113
-87	4	1	2026-04-01	2026-04-30	10000.0000	10000.0000	t	114
-87	3	1	2026-04-01	2026-04-30	1.0000	500.0000	t	114
-88	4	2	2026-04-01	2026-04-30	10000.0000	10000.0000	t	115
-88	2	2	2026-04-01	2026-04-30	10000.0000	10000.0000	t	115
-88	3	2	2026-04-01	2026-04-30	1.0000	500.0000	t	115
-88	1	2	2026-04-01	2026-04-30	49.0000	2000.0000	t	115
-90	4	2	2026-04-01	2026-04-30	20000.0000	20000.0000	t	116
-90	2	2	2026-04-01	2026-04-30	10000.0000	10000.0000	t	116
-71	4	1	2026-04-01	2026-04-30	10000.0000	10000.0000	t	102
-72	3	1	2026-04-01	2026-04-30	1.0000	500.0000	t	103
-72	1	1	2026-04-01	2026-04-30	182.0000	2000.0000	t	103
-73	4	2	2026-04-01	2026-04-30	20000.0000	20000.0000	t	104
-73	3	2	2026-04-01	2026-04-30	1.0000	500.0000	t	104
-73	1	2	2026-04-01	2026-04-30	187.0000	2000.0000	t	104
-76	4	3	2026-04-01	2026-04-30	8194.0000	10000.0000	t	105
-46	3	1	2026-04-01	2026-04-30	4.0000	500.0000	f	\N
-45	1	2	2026-04-01	2026-04-30	213.0000	2000.0000	f	\N
-45	2	2	2026-04-01	2026-04-30	10000.0000	10000.0000	f	\N
-43	3	3	2026-04-01	2026-04-30	2.0000	500.0000	f	\N
-39	3	1	2026-04-01	2026-04-30	2.0000	500.0000	f	\N
-33	1	1	2026-04-01	2026-04-30	763.0000	2000.0000	f	\N
-32	1	1	2026-04-01	2026-04-30	517.0000	2000.0000	f	\N
-31	1	2	2026-04-01	2026-04-30	456.0000	2000.0000	f	\N
-31	3	2	2026-04-01	2026-04-30	3.0000	500.0000	f	\N
-24	5	3	2026-04-28	2026-04-30	93.0000	100.0000	f	\N
-22	2	2	2026-04-28	2026-04-30	10000.0000	10000.0000	f	\N
-76	5	3	2026-04-01	2026-04-30	100.0000	100.0000	t	105
-19	4	2	2026-04-01	2026-04-30	6309.0000	10000.0000	f	\N
-17	3	2	2026-04-28	2026-04-30	2.0000	500.0000	f	\N
-16	1	3	2026-04-28	2026-04-30	312.0000	2000.0000	f	\N
-15	1	3	2026-04-28	2026-04-30	438.0000	2000.0000	f	\N
-14	4	2	2026-04-28	2026-04-30	10000.0000	10000.0000	f	\N
-12	4	2	2026-04-28	2026-04-30	10000.0000	10000.0000	f	\N
-12	2	2	2026-04-28	2026-04-30	10000.0000	10000.0000	f	\N
-12	7	2	2026-04-28	2026-04-30	1.0000	100.0000	f	\N
-12	1	2	2026-04-28	2026-04-30	219.0000	2000.0000	f	\N
-53	4	1	2026-04-01	2026-04-30	10000.0000	10000.0000	t	90
-54	4	1	2026-04-01	2026-04-30	10000.0000	10000.0000	t	91
-55	1	2	2026-04-01	2026-04-30	186.0000	2000.0000	t	92
-55	2	2	2026-04-01	2026-04-30	10000.0000	10000.0000	t	92
-55	3	2	2026-04-01	2026-04-30	1.0000	500.0000	t	92
-55	4	2	2026-04-01	2026-04-30	20000.0000	20000.0000	t	92
-56	3	1	2026-04-01	2026-04-30	1.0000	500.0000	t	93
-56	4	1	2026-04-01	2026-04-30	10000.0000	10000.0000	t	93
-58	1	2	2026-04-01	2026-04-30	264.0000	2000.0000	t	94
-58	2	2	2026-04-01	2026-04-30	10000.0000	10000.0000	t	94
-58	4	2	2026-04-01	2026-04-30	10000.0000	10000.0000	t	94
-58	7	2	2026-04-01	2026-04-30	1.0000	100.0000	t	94
-59	4	1	2026-04-01	2026-04-30	10000.0000	10000.0000	t	95
-59	3	1	2026-04-01	2026-04-30	1.0000	500.0000	t	95
-60	4	3	2026-04-01	2026-04-30	36.0000	20000.0000	t	96
-60	6	3	2026-04-01	2026-04-30	2000.0000	2000.0000	t	96
-63	3	1	2026-04-01	2026-04-30	1.0000	500.0000	t	97
-63	1	1	2026-04-01	2026-04-30	71.0000	2000.0000	t	97
-66	1	1	2026-04-01	2026-04-30	143.0000	2000.0000	t	98
-66	3	1	2026-04-01	2026-04-30	1.0000	500.0000	t	98
-68	4	2	2026-04-01	2026-04-30	10000.0000	10000.0000	t	99
-68	2	2	2026-04-01	2026-04-30	10000.0000	10000.0000	t	99
-68	3	2	2026-04-01	2026-04-30	1.0000	500.0000	t	99
-69	3	1	2026-04-01	2026-04-30	1.0000	500.0000	t	100
-69	1	1	2026-04-01	2026-04-30	301.0000	2000.0000	t	100
-70	5	2	2026-04-01	2026-04-30	100.0000	100.0000	t	101
-70	4	2	2026-04-01	2026-04-30	10000.0000	10000.0000	t	101
-70	2	2	2026-04-01	2026-04-30	10000.0000	10000.0000	t	101
-70	3	2	2026-04-01	2026-04-30	1.0000	500.0000	t	101
-70	1	2	2026-04-01	2026-04-30	234.0000	2000.0000	t	101
-77	4	2	2026-04-01	2026-04-30	7209.0000	10000.0000	t	106
-90	3	2	2026-04-01	2026-04-30	1.0000	500.0000	t	116
-90	1	2	2026-04-01	2026-04-30	327.0000	2000.0000	t	116
-91	4	3	2026-04-01	2026-04-30	10000.0000	10000.0000	t	117
-91	2	3	2026-04-01	2026-04-30	10000.0000	10000.0000	t	117
-91	3	3	2026-04-01	2026-04-30	1.0000	500.0000	t	117
-92	4	2	2026-04-01	2026-04-30	10000.0000	10000.0000	t	118
-92	2	2	2026-04-01	2026-04-30	10000.0000	10000.0000	t	118
-92	3	2	2026-04-01	2026-04-30	1.0000	500.0000	t	118
-92	1	2	2026-04-01	2026-04-30	104.0000	2000.0000	t	118
-92	6	2	2026-04-01	2026-04-30	2000.0000	2000.0000	t	118
-93	1	1	2026-04-01	2026-04-30	568.0000	2000.0000	t	119
-93	3	1	2026-04-01	2026-04-30	1.0000	500.0000	t	119
-94	4	2	2026-04-01	2026-04-30	20000.0000	20000.0000	t	120
-94	2	2	2026-04-01	2026-04-30	10000.0000	10000.0000	t	120
-94	3	2	2026-04-01	2026-04-30	1.0000	500.0000	t	120
-95	4	1	2026-04-01	2026-04-30	10000.0000	10000.0000	t	121
-95	3	1	2026-04-01	2026-04-30	1.0000	500.0000	t	121
-95	1	1	2026-04-01	2026-04-30	177.0000	2000.0000	t	121
-99	1	1	2026-04-01	2026-04-30	301.0000	2000.0000	t	122
-101	6	2	2026-04-01	2026-04-30	0.0000	2000.0000	t	123
-101	7	2	2026-04-01	2026-04-30	0.0000	100.0000	t	123
-102	6	3	2026-04-01	2026-04-30	2000.0000	2000.0000	t	124
-102	7	3	2026-04-01	2026-04-30	1.0000	100.0000	t	124
-102	5	3	2026-04-01	2026-04-30	100.0000	100.0000	t	124
-102	4	3	2026-04-01	2026-04-30	10000.0000	10000.0000	t	124
-102	2	3	2026-04-01	2026-04-30	10000.0000	10000.0000	t	124
-103	5	3	2026-04-01	2026-04-30	68.0000	100.0000	t	125
-103	4	3	2026-04-01	2026-04-30	10000.0000	10000.0000	t	125
-103	2	3	2026-04-01	2026-04-30	10000.0000	10000.0000	t	125
-103	7	3	2026-04-01	2026-04-30	1.0000	100.0000	t	125
-103	1	3	2026-04-01	2026-04-30	33.0000	2000.0000	t	125
-104	7	2	2026-04-01	2026-04-30	1.0000	100.0000	t	126
-104	4	2	2026-04-01	2026-04-30	329.0000	20000.0000	t	126
-104	6	2	2026-04-01	2026-04-30	2000.0000	2000.0000	t	126
-105	4	1	2026-04-01	2026-04-30	10000.0000	10000.0000	t	127
-105	3	1	2026-04-01	2026-04-30	1.0000	500.0000	t	127
-105	1	1	2026-04-01	2026-04-30	45.0000	2000.0000	t	127
-106	4	2	2026-04-01	2026-04-30	20000.0000	20000.0000	t	128
-106	2	2	2026-04-01	2026-04-30	10000.0000	10000.0000	t	128
-106	7	2	2026-04-01	2026-04-30	1.0000	100.0000	t	128
-106	1	2	2026-04-01	2026-04-30	234.0000	2000.0000	t	128
-107	4	2	2026-04-01	2026-04-30	66.0000	20000.0000	t	129
-107	6	2	2026-04-01	2026-04-30	2000.0000	2000.0000	t	129
-109	4	1	2026-04-01	2026-04-30	10000.0000	10000.0000	t	130
-111	4	1	2026-04-01	2026-04-30	271.0000	10000.0000	t	131
-112	3	1	2026-04-01	2026-04-30	2.0000	500.0000	t	132
-112	1	1	2026-04-01	2026-04-30	132.0000	2000.0000	t	132
-113	4	1	2026-04-01	2026-04-30	10000.0000	10000.0000	t	133
-113	3	1	2026-04-01	2026-04-30	1.0000	500.0000	t	133
-113	1	1	2026-04-01	2026-04-30	70.0000	2000.0000	t	133
-114	1	1	2026-04-01	2026-04-30	432.0000	2000.0000	t	134
-114	3	1	2026-04-01	2026-04-30	1.0000	500.0000	t	134
-115	4	2	2026-04-01	2026-04-30	20000.0000	20000.0000	t	135
-115	2	2	2026-04-01	2026-04-30	10000.0000	10000.0000	t	135
-115	3	2	2026-04-01	2026-04-30	1.0000	500.0000	t	135
-118	4	2	2026-04-01	2026-04-30	10000.0000	10000.0000	t	136
-118	2	2	2026-04-01	2026-04-30	10000.0000	10000.0000	t	136
-118	3	2	2026-04-01	2026-04-30	1.0000	500.0000	t	136
-118	1	2	2026-04-01	2026-04-30	183.0000	2000.0000	t	136
-119	4	2	2026-04-01	2026-04-30	10000.0000	10000.0000	t	137
-119	2	2	2026-04-01	2026-04-30	10000.0000	10000.0000	t	137
-119	3	2	2026-04-01	2026-04-30	1.0000	500.0000	t	137
-119	1	2	2026-04-01	2026-04-30	96.0000	2000.0000	t	137
-142	3	2	2026-04-01	2026-04-30	1.0000	500.0000	t	150
-142	4	2	2026-04-01	2026-04-30	10000.0000	10000.0000	t	150
-142	5	2	2026-04-01	2026-04-30	0.0000	100.0000	t	150
-142	6	2	2026-04-01	2026-04-30	0.0000	2000.0000	t	150
-142	7	2	2026-04-01	2026-04-30	1.0000	100.0000	t	150
-145	1	2	2026-04-01	2026-04-30	97.0000	2000.0000	t	151
-145	2	2	2026-04-01	2026-04-30	10000.0000	10000.0000	t	151
-145	3	2	2026-04-01	2026-04-30	1.0000	500.0000	t	151
-145	4	2	2026-04-01	2026-04-30	10000.0000	10000.0000	t	151
-145	5	2	2026-04-01	2026-04-30	0.0000	100.0000	t	151
-145	6	2	2026-04-01	2026-04-30	0.0000	2000.0000	t	151
-145	7	2	2026-04-01	2026-04-30	0.0000	100.0000	t	151
-146	1	2	2026-04-01	2026-04-30	169.0000	2000.0000	t	152
-146	2	2	2026-04-01	2026-04-30	10000.0000	10000.0000	t	152
-146	3	2	2026-04-01	2026-04-30	1.0000	500.0000	t	152
-146	4	2	2026-04-01	2026-04-30	10000.0000	10000.0000	t	152
-146	5	2	2026-04-01	2026-04-30	100.0000	100.0000	t	152
-146	6	2	2026-04-01	2026-04-30	0.0000	2000.0000	t	152
-146	7	2	2026-04-01	2026-04-30	0.0000	100.0000	t	152
-149	1	2	2026-04-01	2026-04-30	0.0000	2000.0000	t	153
-149	2	2	2026-04-01	2026-04-30	10000.0000	10000.0000	t	153
-149	3	2	2026-04-01	2026-04-30	0.0000	500.0000	t	153
-149	4	2	2026-04-01	2026-04-30	10000.0000	10000.0000	t	153
-149	5	2	2026-04-01	2026-04-30	0.0000	100.0000	t	153
-149	6	2	2026-04-01	2026-04-30	0.0000	2000.0000	t	153
-149	7	2	2026-04-01	2026-04-30	2.0000	100.0000	t	153
-150	1	1	2026-04-01	2026-04-30	0.0000	2000.0000	t	154
-150	3	1	2026-04-01	2026-04-30	1.0000	500.0000	t	154
-150	4	1	2026-04-01	2026-04-30	10000.0000	10000.0000	t	154
+43	7	3	2026-04-01	2026-04-30	0.0000	100.0000	f	\N
+42	1	3	2026-04-01	2026-04-30	0.0000	2000.0000	f	\N
+42	2	3	2026-04-01	2026-04-30	0.0000	10000.0000	f	\N
+42	3	3	2026-04-01	2026-04-30	0.0000	500.0000	f	\N
+42	4	3	2026-04-01	2026-04-30	0.0000	10000.0000	f	\N
+42	5	3	2026-04-01	2026-04-30	0.0000	100.0000	f	\N
+42	6	3	2026-04-01	2026-04-30	0.0000	2000.0000	f	\N
+42	7	3	2026-04-01	2026-04-30	0.0000	100.0000	f	\N
+41	1	3	2026-04-01	2026-04-30	0.0000	2000.0000	f	\N
+41	2	3	2026-04-01	2026-04-30	0.0000	10000.0000	f	\N
+41	3	3	2026-04-01	2026-04-30	0.0000	500.0000	f	\N
+41	4	3	2026-04-01	2026-04-30	0.0000	10000.0000	f	\N
+41	5	3	2026-04-01	2026-04-30	0.0000	100.0000	f	\N
+41	6	3	2026-04-01	2026-04-30	0.0000	2000.0000	f	\N
+41	7	3	2026-04-01	2026-04-30	0.0000	100.0000	f	\N
+40	1	2	2026-04-01	2026-04-30	0.0000	2000.0000	f	\N
+40	2	2	2026-04-01	2026-04-30	0.0000	10000.0000	f	\N
+40	3	2	2026-04-01	2026-04-30	0.0000	500.0000	f	\N
+40	4	2	2026-04-01	2026-04-30	0.0000	10000.0000	f	\N
+40	5	2	2026-04-01	2026-04-30	0.0000	100.0000	f	\N
+40	6	2	2026-04-01	2026-04-30	0.0000	2000.0000	f	\N
+40	7	2	2026-04-01	2026-04-30	0.0000	100.0000	f	\N
+39	1	3	2026-04-01	2026-04-30	0.0000	2000.0000	f	\N
+39	2	3	2026-04-01	2026-04-30	0.0000	10000.0000	f	\N
+39	3	3	2026-04-01	2026-04-30	0.0000	500.0000	f	\N
+39	4	3	2026-04-01	2026-04-30	0.0000	10000.0000	f	\N
+39	5	3	2026-04-01	2026-04-30	0.0000	100.0000	f	\N
+39	6	3	2026-04-01	2026-04-30	0.0000	2000.0000	f	\N
+39	7	3	2026-04-01	2026-04-30	0.0000	100.0000	f	\N
+38	1	2	2026-04-01	2026-04-30	0.0000	2000.0000	f	\N
+38	2	2	2026-04-01	2026-04-30	0.0000	10000.0000	f	\N
+38	3	2	2026-04-01	2026-04-30	0.0000	500.0000	f	\N
+38	4	2	2026-04-01	2026-04-30	0.0000	10000.0000	f	\N
+38	5	2	2026-04-01	2026-04-30	0.0000	100.0000	f	\N
+38	6	2	2026-04-01	2026-04-30	0.0000	2000.0000	f	\N
+38	7	2	2026-04-01	2026-04-30	0.0000	100.0000	f	\N
+37	1	1	2026-04-01	2026-04-30	0.0000	2000.0000	f	\N
+37	3	1	2026-04-01	2026-04-30	0.0000	500.0000	f	\N
+36	1	1	2026-04-01	2026-04-30	0.0000	2000.0000	f	\N
+36	3	1	2026-04-01	2026-04-30	0.0000	500.0000	f	\N
+35	1	3	2026-04-01	2026-04-30	0.0000	2000.0000	f	\N
+35	2	3	2026-04-01	2026-04-30	0.0000	10000.0000	f	\N
+35	3	3	2026-04-01	2026-04-30	0.0000	500.0000	f	\N
+35	4	3	2026-04-01	2026-04-30	0.0000	10000.0000	f	\N
+35	5	3	2026-04-01	2026-04-30	0.0000	100.0000	f	\N
+35	6	3	2026-04-01	2026-04-30	0.0000	2000.0000	f	\N
+35	7	3	2026-04-01	2026-04-30	0.0000	100.0000	f	\N
+34	1	1	2026-04-01	2026-04-30	0.0000	2000.0000	f	\N
+34	3	1	2026-04-01	2026-04-30	0.0000	500.0000	f	\N
+49	1	3	2026-04-01	2026-04-30	0.0000	2000.0000	t	273
+49	2	3	2026-04-01	2026-04-30	0.0000	10000.0000	t	273
+49	3	3	2026-04-01	2026-04-30	0.0000	500.0000	t	273
+49	4	3	2026-04-01	2026-04-30	15.0000	10000.0000	t	273
+49	5	3	2026-04-01	2026-04-30	0.0000	100.0000	t	273
+49	6	3	2026-04-01	2026-04-30	0.0000	2000.0000	t	273
+49	7	3	2026-04-01	2026-04-30	0.0000	100.0000	t	273
+51	1	3	2026-04-01	2026-04-30	0.0000	2000.0000	t	275
+51	2	3	2026-04-01	2026-04-30	0.0000	10000.0000	t	275
+51	3	3	2026-04-01	2026-04-30	0.0000	500.0000	t	275
+51	4	3	2026-04-01	2026-04-30	15.0000	10000.0000	t	275
+51	5	3	2026-04-01	2026-04-30	0.0000	100.0000	t	275
+51	6	3	2026-04-01	2026-04-30	0.0000	2000.0000	t	275
+51	7	3	2026-04-01	2026-04-30	0.0000	100.0000	t	275
+56	1	2	2026-04-01	2026-04-30	0.0000	2000.0000	t	280
+56	2	2	2026-04-01	2026-04-30	0.0000	10000.0000	t	280
+56	3	2	2026-04-01	2026-04-30	0.0000	500.0000	t	280
+56	4	2	2026-04-01	2026-04-30	15.0000	10000.0000	t	280
+56	5	2	2026-04-01	2026-04-30	0.0000	100.0000	t	280
+56	6	2	2026-04-01	2026-04-30	0.0000	2000.0000	t	280
+69	3	2	2026-04-01	2026-04-30	0.0000	500.0000	t	292
+69	4	2	2026-04-01	2026-04-30	15.0000	10000.0000	t	292
+69	5	2	2026-04-01	2026-04-30	0.0000	100.0000	t	292
+69	6	2	2026-04-01	2026-04-30	0.0000	2000.0000	t	292
+69	7	2	2026-04-01	2026-04-30	0.0000	100.0000	t	292
+70	1	3	2026-04-01	2026-04-30	0.0000	2000.0000	t	293
+70	2	3	2026-04-01	2026-04-30	0.0000	10000.0000	t	293
+70	3	3	2026-04-01	2026-04-30	0.0000	500.0000	t	293
+70	4	3	2026-04-01	2026-04-30	15.0000	10000.0000	t	293
+70	5	3	2026-04-01	2026-04-30	0.0000	100.0000	t	293
+70	6	3	2026-04-01	2026-04-30	0.0000	2000.0000	t	293
+70	7	3	2026-04-01	2026-04-30	0.0000	100.0000	t	293
+71	1	2	2026-04-01	2026-04-30	0.0000	2000.0000	t	294
+71	2	2	2026-04-01	2026-04-30	0.0000	10000.0000	t	294
+71	3	2	2026-04-01	2026-04-30	0.0000	500.0000	t	294
+71	4	2	2026-04-01	2026-04-30	15.0000	10000.0000	t	294
+71	5	2	2026-04-01	2026-04-30	0.0000	100.0000	t	294
+71	6	2	2026-04-01	2026-04-30	0.0000	2000.0000	t	294
+71	7	2	2026-04-01	2026-04-30	0.0000	100.0000	t	294
+73	1	1	2026-04-01	2026-04-30	15.0000	2000.0000	t	296
+73	3	1	2026-04-01	2026-04-30	0.0000	500.0000	t	296
+74	1	2	2026-04-01	2026-04-30	0.0000	2000.0000	t	297
+74	2	2	2026-04-01	2026-04-30	0.0000	10000.0000	t	297
+74	3	2	2026-04-01	2026-04-30	0.0000	500.0000	t	297
+74	4	2	2026-04-01	2026-04-30	15.0000	10000.0000	t	297
+74	5	2	2026-04-01	2026-04-30	0.0000	100.0000	t	297
+74	6	2	2026-04-01	2026-04-30	0.0000	2000.0000	t	297
+74	7	2	2026-04-01	2026-04-30	0.0000	100.0000	t	297
+75	1	2	2026-04-01	2026-04-30	0.0000	2000.0000	t	298
+75	2	2	2026-04-01	2026-04-30	0.0000	10000.0000	t	298
+75	3	2	2026-04-01	2026-04-30	0.0000	500.0000	t	298
+75	4	2	2026-04-01	2026-04-30	15.0000	10000.0000	t	298
+75	5	2	2026-04-01	2026-04-30	0.0000	100.0000	t	298
+75	6	2	2026-04-01	2026-04-30	0.0000	2000.0000	t	298
+75	7	2	2026-04-01	2026-04-30	0.0000	100.0000	t	298
+94	3	2	2026-04-01	2026-04-30	0.0000	500.0000	t	317
+94	4	2	2026-04-01	2026-04-30	15.0000	10000.0000	t	317
+94	5	2	2026-04-01	2026-04-30	0.0000	100.0000	t	317
+94	6	2	2026-04-01	2026-04-30	0.0000	2000.0000	t	317
+94	7	2	2026-04-01	2026-04-30	0.0000	100.0000	t	317
+96	1	1	2026-04-01	2026-04-30	15.0000	2000.0000	t	319
+96	3	1	2026-04-01	2026-04-30	0.0000	500.0000	t	319
+97	1	2	2026-04-01	2026-04-30	0.0000	2000.0000	t	320
+97	2	2	2026-04-01	2026-04-30	0.0000	10000.0000	t	320
+97	3	2	2026-04-01	2026-04-30	0.0000	500.0000	t	320
+97	4	2	2026-04-01	2026-04-30	15.0000	10000.0000	t	320
+97	5	2	2026-04-01	2026-04-30	0.0000	100.0000	t	320
+97	6	2	2026-04-01	2026-04-30	0.0000	2000.0000	t	320
+97	7	2	2026-04-01	2026-04-30	0.0000	100.0000	t	320
+98	1	1	2026-04-01	2026-04-30	15.0000	2000.0000	t	321
+98	3	1	2026-04-01	2026-04-30	0.0000	500.0000	t	321
+99	1	2	2026-04-01	2026-04-30	0.0000	2000.0000	t	322
+99	2	2	2026-04-01	2026-04-30	0.0000	10000.0000	t	322
+99	3	2	2026-04-01	2026-04-30	0.0000	500.0000	t	322
+99	4	2	2026-04-01	2026-04-30	15.0000	10000.0000	t	322
+99	5	2	2026-04-01	2026-04-30	0.0000	100.0000	t	322
+99	6	2	2026-04-01	2026-04-30	0.0000	2000.0000	t	322
+99	7	2	2026-04-01	2026-04-30	0.0000	100.0000	t	322
+100	1	2	2026-04-01	2026-04-30	0.0000	2000.0000	t	323
+100	2	2	2026-04-01	2026-04-30	0.0000	10000.0000	t	323
+100	3	2	2026-04-01	2026-04-30	0.0000	500.0000	t	323
+100	4	2	2026-04-01	2026-04-30	15.0000	10000.0000	t	323
+100	5	2	2026-04-01	2026-04-30	0.0000	100.0000	t	323
+100	6	2	2026-04-01	2026-04-30	0.0000	2000.0000	t	323
+100	7	2	2026-04-01	2026-04-30	0.0000	100.0000	t	323
+101	1	1	2026-04-01	2026-04-30	15.0000	2000.0000	t	324
+101	3	1	2026-04-01	2026-04-30	0.0000	500.0000	t	324
+102	1	2	2026-04-01	2026-04-30	0.0000	2000.0000	t	325
+102	2	2	2026-04-01	2026-04-30	0.0000	10000.0000	t	325
+102	3	2	2026-04-01	2026-04-30	0.0000	500.0000	t	325
+102	4	2	2026-04-01	2026-04-30	0.0000	10000.0000	t	325
+102	5	2	2026-04-01	2026-04-30	0.0000	100.0000	t	325
+102	6	2	2026-04-01	2026-04-30	0.0000	2000.0000	t	325
+102	7	2	2026-04-01	2026-04-30	0.0000	100.0000	t	325
+118	3	1	2026-04-01	2026-04-30	0.0000	500.0000	t	339
+118	1	1	2026-04-01	2026-04-30	15.0000	2000.0000	t	339
+120	1	2	2026-04-01	2026-04-30	0.0000	2000.0000	t	341
+120	2	2	2026-04-01	2026-04-30	0.0000	10000.0000	t	341
+120	3	2	2026-04-01	2026-04-30	0.0000	500.0000	t	341
+120	4	2	2026-04-01	2026-04-30	15.0000	10000.0000	t	341
+120	5	2	2026-04-01	2026-04-30	0.0000	100.0000	t	341
+120	6	2	2026-04-01	2026-04-30	0.0000	2000.0000	t	341
+120	7	2	2026-04-01	2026-04-30	0.0000	100.0000	t	341
+122	1	1	2026-04-01	2026-04-30	15.0000	2000.0000	t	342
+122	3	1	2026-04-01	2026-04-30	0.0000	500.0000	t	342
+123	1	1	2026-04-01	2026-04-30	15.0000	2000.0000	t	343
+123	3	1	2026-04-01	2026-04-30	0.0000	500.0000	t	343
+124	1	2	2026-04-01	2026-04-30	0.0000	2000.0000	t	344
+124	2	2	2026-04-01	2026-04-30	0.0000	10000.0000	t	344
+124	3	2	2026-04-01	2026-04-30	0.0000	500.0000	t	344
+124	4	2	2026-04-01	2026-04-30	15.0000	10000.0000	t	344
+124	5	2	2026-04-01	2026-04-30	0.0000	100.0000	t	344
+124	6	2	2026-04-01	2026-04-30	0.0000	2000.0000	t	344
+124	7	2	2026-04-01	2026-04-30	0.0000	100.0000	t	344
+125	1	2	2026-04-01	2026-04-30	0.0000	2000.0000	t	345
+125	2	2	2026-04-01	2026-04-30	0.0000	10000.0000	t	345
+125	3	2	2026-04-01	2026-04-30	0.0000	500.0000	t	345
+125	4	2	2026-04-01	2026-04-30	15.0000	10000.0000	t	345
+125	5	2	2026-04-01	2026-04-30	0.0000	100.0000	t	345
+125	6	2	2026-04-01	2026-04-30	0.0000	2000.0000	t	345
+125	7	2	2026-04-01	2026-04-30	0.0000	100.0000	t	345
+126	1	2	2026-04-01	2026-04-30	0.0000	2000.0000	t	346
+126	2	2	2026-04-01	2026-04-30	0.0000	10000.0000	t	346
+126	3	2	2026-04-01	2026-04-30	0.0000	500.0000	t	346
+126	4	2	2026-04-01	2026-04-30	15.0000	10000.0000	t	346
+126	5	2	2026-04-01	2026-04-30	0.0000	100.0000	t	346
+126	6	2	2026-04-01	2026-04-30	0.0000	2000.0000	t	346
+126	7	2	2026-04-01	2026-04-30	0.0000	100.0000	t	346
+127	1	1	2026-04-01	2026-04-30	0.0000	2000.0000	t	347
+127	3	1	2026-04-01	2026-04-30	0.0000	500.0000	t	347
+129	1	2	2026-04-01	2026-04-30	0.0000	2000.0000	t	349
+129	2	2	2026-04-01	2026-04-30	0.0000	10000.0000	t	349
+129	3	2	2026-04-01	2026-04-30	0.0000	500.0000	t	349
+129	4	2	2026-04-01	2026-04-30	15.0000	10000.0000	t	349
+129	5	2	2026-04-01	2026-04-30	0.0000	100.0000	t	349
+143	1	1	2026-04-01	2026-04-30	15.0000	2000.0000	t	363
+145	1	2	2026-04-01	2026-04-30	0.0000	2000.0000	t	365
+145	2	2	2026-04-01	2026-04-30	0.0000	10000.0000	t	365
+145	3	2	2026-04-01	2026-04-30	0.0000	500.0000	t	365
+145	4	2	2026-04-01	2026-04-30	15.0000	10000.0000	t	365
+145	5	2	2026-04-01	2026-04-30	0.0000	100.0000	t	365
+145	6	2	2026-04-01	2026-04-30	0.0000	2000.0000	t	365
+145	7	2	2026-04-01	2026-04-30	0.0000	100.0000	t	365
+146	1	2	2026-04-01	2026-04-30	0.0000	2000.0000	t	366
+146	2	2	2026-04-01	2026-04-30	0.0000	10000.0000	t	366
+146	3	2	2026-04-01	2026-04-30	0.0000	500.0000	t	366
+146	4	2	2026-04-01	2026-04-30	15.0000	10000.0000	t	366
+146	5	2	2026-04-01	2026-04-30	0.0000	100.0000	t	366
+146	6	2	2026-04-01	2026-04-30	0.0000	2000.0000	t	366
+146	7	2	2026-04-01	2026-04-30	0.0000	100.0000	t	366
+149	1	2	2026-04-01	2026-04-30	0.0000	2000.0000	t	369
+149	2	2	2026-04-01	2026-04-30	0.0000	10000.0000	t	369
+149	3	2	2026-04-01	2026-04-30	0.0000	500.0000	t	369
+149	4	2	2026-04-01	2026-04-30	15.0000	10000.0000	t	369
+149	5	2	2026-04-01	2026-04-30	0.0000	100.0000	t	369
+149	6	2	2026-04-01	2026-04-30	0.0000	2000.0000	t	369
+149	7	2	2026-04-01	2026-04-30	0.0000	100.0000	t	369
+151	1	3	2026-04-01	2026-04-30	0.0000	2000.0000	t	371
+151	2	3	2026-04-01	2026-04-30	0.0000	10000.0000	t	371
+151	3	3	2026-04-01	2026-04-30	0.0000	500.0000	t	371
+151	4	3	2026-04-01	2026-04-30	15.0000	10000.0000	t	371
+151	5	3	2026-04-01	2026-04-30	0.0000	100.0000	t	371
+151	6	3	2026-04-01	2026-04-30	0.0000	2000.0000	t	371
+151	7	3	2026-04-01	2026-04-30	0.0000	100.0000	t	371
+152	1	3	2026-04-01	2026-04-30	0.0000	2000.0000	t	372
+152	2	3	2026-04-01	2026-04-30	0.0000	10000.0000	t	372
+152	3	3	2026-04-01	2026-04-30	0.0000	500.0000	t	372
+152	4	3	2026-04-01	2026-04-30	15.0000	10000.0000	t	372
+152	5	3	2026-04-01	2026-04-30	0.0000	100.0000	t	372
+152	6	3	2026-04-01	2026-04-30	0.0000	2000.0000	t	372
+152	7	3	2026-04-01	2026-04-30	0.0000	100.0000	t	372
+153	1	1	2026-04-01	2026-04-30	15.0000	2000.0000	t	373
+153	3	1	2026-04-01	2026-04-30	0.0000	500.0000	t	373
+56	7	2	2026-04-01	2026-04-30	0.0000	100.0000	t	280
+58	1	3	2026-04-01	2026-04-30	0.0000	2000.0000	t	282
+58	2	3	2026-04-01	2026-04-30	0.0000	10000.0000	t	282
+58	3	3	2026-04-01	2026-04-30	0.0000	500.0000	t	282
+58	4	3	2026-04-01	2026-04-30	15.0000	10000.0000	t	282
+58	5	3	2026-04-01	2026-04-30	0.0000	100.0000	t	282
+58	6	3	2026-04-01	2026-04-30	0.0000	2000.0000	t	282
+58	7	3	2026-04-01	2026-04-30	0.0000	100.0000	t	282
+59	1	2	2026-04-01	2026-04-30	0.0000	2000.0000	t	283
+59	2	2	2026-04-01	2026-04-30	0.0000	10000.0000	t	283
+59	3	2	2026-04-01	2026-04-30	0.0000	500.0000	t	283
+59	4	2	2026-04-01	2026-04-30	15.0000	10000.0000	t	283
+59	5	2	2026-04-01	2026-04-30	0.0000	100.0000	t	283
+59	6	2	2026-04-01	2026-04-30	0.0000	2000.0000	t	283
+59	7	2	2026-04-01	2026-04-30	0.0000	100.0000	t	283
+185	1	1	2026-04-01	2026-04-30	0.0000	2000.0000	f	\N
+185	3	1	2026-04-01	2026-04-30	0.0000	500.0000	f	\N
+186	1	3	2026-04-01	2026-04-30	0.0000	2000.0000	f	\N
+186	2	3	2026-04-01	2026-04-30	0.0000	10000.0000	f	\N
+186	3	3	2026-04-01	2026-04-30	0.0000	500.0000	f	\N
+186	5	3	2026-04-01	2026-04-30	0.0000	100.0000	f	\N
+186	6	3	2026-04-01	2026-04-30	0.0000	2000.0000	f	\N
+186	7	3	2026-04-01	2026-04-30	0.0000	100.0000	f	\N
+61	1	1	2026-04-01	2026-04-30	15.0000	2000.0000	t	285
+61	3	1	2026-04-01	2026-04-30	0.0000	500.0000	t	285
+186	4	3	2026-04-01	2026-04-30	15.0000	10000.0000	f	\N
+188	1	3	2026-04-01	2026-04-30	0.0000	2000.0000	f	\N
+188	2	3	2026-04-01	2026-04-30	0.0000	10000.0000	f	\N
+188	3	3	2026-04-01	2026-04-30	0.0000	500.0000	f	\N
+188	5	3	2026-04-01	2026-04-30	0.0000	100.0000	f	\N
+188	6	3	2026-04-01	2026-04-30	0.0000	2000.0000	f	\N
+188	7	3	2026-04-01	2026-04-30	0.0000	100.0000	f	\N
+63	1	2	2026-04-01	2026-04-30	0.0000	2000.0000	t	287
+63	2	2	2026-04-01	2026-04-30	0.0000	10000.0000	t	287
+188	4	3	2026-04-01	2026-04-30	15.0000	10000.0000	f	\N
+190	1	3	2026-04-01	2026-04-30	0.0000	2000.0000	f	\N
+190	2	3	2026-04-01	2026-04-30	0.0000	10000.0000	f	\N
+190	3	3	2026-04-01	2026-04-30	0.0000	500.0000	f	\N
+190	5	3	2026-04-01	2026-04-30	0.0000	100.0000	f	\N
+190	6	3	2026-04-01	2026-04-30	0.0000	2000.0000	f	\N
+190	7	3	2026-04-01	2026-04-30	0.0000	100.0000	f	\N
+63	3	2	2026-04-01	2026-04-30	0.0000	500.0000	t	287
+63	4	2	2026-04-01	2026-04-30	0.0000	10000.0000	t	287
+190	4	3	2026-04-01	2026-04-30	15.0000	10000.0000	f	\N
+191	1	2	2026-04-01	2026-04-30	0.0000	2000.0000	f	\N
+191	2	2	2026-04-01	2026-04-30	0.0000	10000.0000	f	\N
+191	3	2	2026-04-01	2026-04-30	0.0000	500.0000	f	\N
+191	5	2	2026-04-01	2026-04-30	0.0000	100.0000	f	\N
+191	6	2	2026-04-01	2026-04-30	0.0000	2000.0000	f	\N
+191	7	2	2026-04-01	2026-04-30	0.0000	100.0000	f	\N
+63	5	2	2026-04-01	2026-04-30	0.0000	100.0000	t	287
+63	6	2	2026-04-01	2026-04-30	0.0000	2000.0000	t	287
+191	4	2	2026-04-01	2026-04-30	15.0000	10000.0000	f	\N
+192	3	1	2026-04-01	2026-04-30	0.0000	500.0000	f	\N
+63	7	2	2026-04-01	2026-04-30	0.0000	100.0000	t	287
+68	1	1	2026-04-01	2026-04-30	15.0000	2000.0000	t	291
+192	1	1	2026-04-01	2026-04-30	15.0000	2000.0000	f	\N
+196	3	1	2026-04-01	2026-04-30	0.0000	500.0000	f	\N
+68	3	1	2026-04-01	2026-04-30	0.0000	500.0000	t	291
+69	1	2	2026-04-01	2026-04-30	0.0000	2000.0000	t	292
+196	1	1	2026-04-01	2026-04-30	15.0000	2000.0000	f	\N
+69	2	2	2026-04-01	2026-04-30	0.0000	10000.0000	t	292
+79	1	3	2026-04-01	2026-04-30	0.0000	2000.0000	t	302
+79	2	3	2026-04-01	2026-04-30	0.0000	10000.0000	t	302
+79	3	3	2026-04-01	2026-04-30	0.0000	500.0000	t	302
+79	4	3	2026-04-01	2026-04-30	15.0000	10000.0000	t	302
+79	5	3	2026-04-01	2026-04-30	0.0000	100.0000	t	302
+79	6	3	2026-04-01	2026-04-30	0.0000	2000.0000	t	302
+79	7	3	2026-04-01	2026-04-30	0.0000	100.0000	t	302
+80	1	3	2026-04-01	2026-04-30	0.0000	2000.0000	t	303
+80	2	3	2026-04-01	2026-04-30	0.0000	10000.0000	t	303
+80	3	3	2026-04-01	2026-04-30	0.0000	500.0000	t	303
+80	4	3	2026-04-01	2026-04-30	15.0000	10000.0000	t	303
+80	5	3	2026-04-01	2026-04-30	0.0000	100.0000	t	303
+80	6	3	2026-04-01	2026-04-30	0.0000	2000.0000	t	303
+80	7	3	2026-04-01	2026-04-30	0.0000	100.0000	t	303
+81	1	1	2026-04-01	2026-04-30	15.0000	2000.0000	t	304
+81	3	1	2026-04-01	2026-04-30	0.0000	500.0000	t	304
+82	1	1	2026-04-01	2026-04-30	0.0000	2000.0000	t	305
+82	3	1	2026-04-01	2026-04-30	0.0000	500.0000	t	305
+83	1	1	2026-04-01	2026-04-30	15.0000	2000.0000	t	306
+83	3	1	2026-04-01	2026-04-30	0.0000	500.0000	t	306
+84	1	3	2026-04-01	2026-04-30	0.0000	2000.0000	t	307
+84	2	3	2026-04-01	2026-04-30	0.0000	10000.0000	t	307
+84	3	3	2026-04-01	2026-04-30	0.0000	500.0000	t	307
+84	4	3	2026-04-01	2026-04-30	0.0000	10000.0000	t	307
+84	5	3	2026-04-01	2026-04-30	0.0000	100.0000	t	307
+84	6	3	2026-04-01	2026-04-30	0.0000	2000.0000	t	307
+84	7	3	2026-04-01	2026-04-30	0.0000	100.0000	t	307
+86	1	3	2026-04-01	2026-04-30	0.0000	2000.0000	t	309
+86	2	3	2026-04-01	2026-04-30	0.0000	10000.0000	t	309
+86	3	3	2026-04-01	2026-04-30	0.0000	500.0000	t	309
+86	4	3	2026-04-01	2026-04-30	15.0000	10000.0000	t	309
+86	5	3	2026-04-01	2026-04-30	0.0000	100.0000	t	309
+86	6	3	2026-04-01	2026-04-30	0.0000	2000.0000	t	309
+86	7	3	2026-04-01	2026-04-30	0.0000	100.0000	t	309
+87	1	1	2026-04-01	2026-04-30	0.0000	2000.0000	t	310
+87	3	1	2026-04-01	2026-04-30	0.0000	500.0000	t	310
+88	1	1	2026-04-01	2026-04-30	15.0000	2000.0000	t	311
+88	3	1	2026-04-01	2026-04-30	0.0000	500.0000	t	311
+89	1	2	2026-04-01	2026-04-30	0.0000	2000.0000	t	312
+89	2	2	2026-04-01	2026-04-30	0.0000	10000.0000	t	312
+89	3	2	2026-04-01	2026-04-30	0.0000	500.0000	t	312
+89	4	2	2026-04-01	2026-04-30	0.0000	10000.0000	t	312
+89	5	2	2026-04-01	2026-04-30	0.0000	100.0000	t	312
+89	6	2	2026-04-01	2026-04-30	0.0000	2000.0000	t	312
+89	7	2	2026-04-01	2026-04-30	0.0000	100.0000	t	312
+93	1	1	2026-04-01	2026-04-30	0.0000	2000.0000	t	316
+93	3	1	2026-04-01	2026-04-30	0.0000	500.0000	t	316
+94	1	2	2026-04-01	2026-04-30	0.0000	2000.0000	t	317
+94	2	2	2026-04-01	2026-04-30	0.0000	10000.0000	t	317
+104	1	2	2026-04-01	2026-04-30	0.0000	2000.0000	t	327
+104	2	2	2026-04-01	2026-04-30	0.0000	10000.0000	t	327
+104	3	2	2026-04-01	2026-04-30	0.0000	500.0000	t	327
+104	4	2	2026-04-01	2026-04-30	15.0000	10000.0000	t	327
+104	5	2	2026-04-01	2026-04-30	0.0000	100.0000	t	327
+104	6	2	2026-04-01	2026-04-30	0.0000	2000.0000	t	327
+104	7	2	2026-04-01	2026-04-30	0.0000	100.0000	t	327
+108	1	1	2026-04-01	2026-04-30	15.0000	2000.0000	t	331
+108	3	1	2026-04-01	2026-04-30	0.0000	500.0000	t	331
+110	1	1	2026-04-01	2026-04-30	0.0000	2000.0000	t	333
+110	3	1	2026-04-01	2026-04-30	0.0000	500.0000	t	333
+112	1	1	2026-04-01	2026-04-30	15.0000	2000.0000	t	334
+112	3	1	2026-04-01	2026-04-30	0.0000	500.0000	t	334
+113	1	2	2026-04-01	2026-04-30	0.0000	2000.0000	t	335
+113	2	2	2026-04-01	2026-04-30	0.0000	10000.0000	t	335
+113	3	2	2026-04-01	2026-04-30	0.0000	500.0000	t	335
+113	4	2	2026-04-01	2026-04-30	15.0000	10000.0000	t	335
+113	5	2	2026-04-01	2026-04-30	0.0000	100.0000	t	335
+113	6	2	2026-04-01	2026-04-30	0.0000	2000.0000	t	335
+113	7	2	2026-04-01	2026-04-30	0.0000	100.0000	t	335
+114	1	2	2026-04-01	2026-04-30	0.0000	2000.0000	t	336
+114	2	2	2026-04-01	2026-04-30	0.0000	10000.0000	t	336
+114	3	2	2026-04-01	2026-04-30	0.0000	500.0000	t	336
+114	4	2	2026-04-01	2026-04-30	0.0000	10000.0000	t	336
+114	5	2	2026-04-01	2026-04-30	0.0000	100.0000	t	336
+114	6	2	2026-04-01	2026-04-30	0.0000	2000.0000	t	336
+114	7	2	2026-04-01	2026-04-30	0.0000	100.0000	t	336
+115	1	2	2026-04-01	2026-04-30	0.0000	2000.0000	t	337
+115	2	2	2026-04-01	2026-04-30	0.0000	10000.0000	t	337
+115	3	2	2026-04-01	2026-04-30	0.0000	500.0000	t	337
+115	4	2	2026-04-01	2026-04-30	15.0000	10000.0000	t	337
+115	5	2	2026-04-01	2026-04-30	0.0000	100.0000	t	337
+115	6	2	2026-04-01	2026-04-30	0.0000	2000.0000	t	337
+115	7	2	2026-04-01	2026-04-30	0.0000	100.0000	t	337
+116	1	2	2026-04-01	2026-04-30	0.0000	2000.0000	t	338
+116	2	2	2026-04-01	2026-04-30	0.0000	10000.0000	t	338
+116	3	2	2026-04-01	2026-04-30	0.0000	500.0000	t	338
+116	4	2	2026-04-01	2026-04-30	15.0000	10000.0000	t	338
+116	5	2	2026-04-01	2026-04-30	0.0000	100.0000	t	338
+116	6	2	2026-04-01	2026-04-30	0.0000	2000.0000	t	338
+116	7	2	2026-04-01	2026-04-30	0.0000	100.0000	t	338
+129	6	2	2026-04-01	2026-04-30	0.0000	2000.0000	t	349
+129	7	2	2026-04-01	2026-04-30	0.0000	100.0000	t	349
+130	1	1	2026-04-01	2026-04-30	15.0000	2000.0000	t	350
+130	3	1	2026-04-01	2026-04-30	0.0000	500.0000	t	350
+131	1	1	2026-04-01	2026-04-30	0.0000	2000.0000	t	351
+131	3	1	2026-04-01	2026-04-30	0.0000	500.0000	t	351
+132	1	2	2026-04-01	2026-04-30	0.0000	2000.0000	t	352
+132	2	2	2026-04-01	2026-04-30	0.0000	10000.0000	t	352
+132	3	2	2026-04-01	2026-04-30	0.0000	500.0000	t	352
+132	4	2	2026-04-01	2026-04-30	15.0000	10000.0000	t	352
+132	5	2	2026-04-01	2026-04-30	0.0000	100.0000	t	352
+132	6	2	2026-04-01	2026-04-30	0.0000	2000.0000	t	352
+132	7	2	2026-04-01	2026-04-30	0.0000	100.0000	t	352
+136	1	2	2026-04-01	2026-04-30	0.0000	2000.0000	t	356
+136	2	2	2026-04-01	2026-04-30	0.0000	10000.0000	t	356
+136	3	2	2026-04-01	2026-04-30	0.0000	500.0000	t	356
+136	4	2	2026-04-01	2026-04-30	15.0000	10000.0000	t	356
+136	5	2	2026-04-01	2026-04-30	0.0000	100.0000	t	356
+136	6	2	2026-04-01	2026-04-30	0.0000	2000.0000	t	356
+136	7	2	2026-04-01	2026-04-30	0.0000	100.0000	t	356
+139	1	2	2026-04-01	2026-04-30	0.0000	2000.0000	t	359
+139	2	2	2026-04-01	2026-04-30	0.0000	10000.0000	t	359
+139	3	2	2026-04-01	2026-04-30	0.0000	500.0000	t	359
+139	4	2	2026-04-01	2026-04-30	15.0000	10000.0000	t	359
+139	5	2	2026-04-01	2026-04-30	0.0000	100.0000	t	359
+139	6	2	2026-04-01	2026-04-30	0.0000	2000.0000	t	359
+139	7	2	2026-04-01	2026-04-30	0.0000	100.0000	t	359
+141	1	1	2026-04-01	2026-04-30	15.0000	2000.0000	t	361
+141	3	1	2026-04-01	2026-04-30	0.0000	500.0000	t	361
+142	1	2	2026-04-01	2026-04-30	0.0000	2000.0000	t	362
+142	2	2	2026-04-01	2026-04-30	0.0000	10000.0000	t	362
+142	3	2	2026-04-01	2026-04-30	0.0000	500.0000	t	362
+142	4	2	2026-04-01	2026-04-30	15.0000	10000.0000	t	362
+142	5	2	2026-04-01	2026-04-30	0.0000	100.0000	t	362
+142	6	2	2026-04-01	2026-04-30	0.0000	2000.0000	t	362
+142	7	2	2026-04-01	2026-04-30	0.0000	100.0000	t	362
+143	3	1	2026-04-01	2026-04-30	0.0000	500.0000	t	363
+155	1	2	2026-04-01	2026-04-30	0.0000	2000.0000	t	375
+155	2	2	2026-04-01	2026-04-30	0.0000	10000.0000	t	375
+155	3	2	2026-04-01	2026-04-30	0.0000	500.0000	t	375
+155	4	2	2026-04-01	2026-04-30	15.0000	10000.0000	t	375
+155	5	2	2026-04-01	2026-04-30	0.0000	100.0000	t	375
+155	6	2	2026-04-01	2026-04-30	0.0000	2000.0000	t	375
+155	7	2	2026-04-01	2026-04-30	0.0000	100.0000	t	375
+160	1	1	2026-04-01	2026-04-30	15.0000	2000.0000	t	380
+160	3	1	2026-04-01	2026-04-30	0.0000	500.0000	t	380
+161	1	2	2026-04-01	2026-04-30	0.0000	2000.0000	t	381
+161	2	2	2026-04-01	2026-04-30	0.0000	10000.0000	t	381
+161	3	2	2026-04-01	2026-04-30	0.0000	500.0000	t	381
+161	4	2	2026-04-01	2026-04-30	15.0000	10000.0000	t	381
+161	5	2	2026-04-01	2026-04-30	0.0000	100.0000	t	381
+161	6	2	2026-04-01	2026-04-30	0.0000	2000.0000	t	381
+161	7	2	2026-04-01	2026-04-30	0.0000	100.0000	t	381
+164	1	2	2026-04-01	2026-04-30	0.0000	2000.0000	t	384
+164	2	2	2026-04-01	2026-04-30	0.0000	10000.0000	t	384
+164	3	2	2026-04-01	2026-04-30	0.0000	500.0000	t	384
+164	4	2	2026-04-01	2026-04-30	15.0000	10000.0000	t	384
+164	5	2	2026-04-01	2026-04-30	0.0000	100.0000	t	384
+164	6	2	2026-04-01	2026-04-30	0.0000	2000.0000	t	384
+164	7	2	2026-04-01	2026-04-30	0.0000	100.0000	t	384
+165	1	3	2026-04-01	2026-04-30	0.0000	2000.0000	t	385
+165	2	3	2026-04-01	2026-04-30	0.0000	10000.0000	t	385
+165	3	3	2026-04-01	2026-04-30	0.0000	500.0000	t	385
+165	4	3	2026-04-01	2026-04-30	15.0000	10000.0000	t	385
+165	5	3	2026-04-01	2026-04-30	0.0000	100.0000	t	385
+165	6	3	2026-04-01	2026-04-30	0.0000	2000.0000	t	385
+165	7	3	2026-04-01	2026-04-30	0.0000	100.0000	t	385
+168	1	2	2026-04-01	2026-04-30	0.0000	2000.0000	t	388
+168	2	2	2026-04-01	2026-04-30	0.0000	10000.0000	t	388
+168	3	2	2026-04-01	2026-04-30	0.0000	500.0000	t	388
+168	4	2	2026-04-01	2026-04-30	15.0000	10000.0000	t	388
+168	5	2	2026-04-01	2026-04-30	0.0000	100.0000	t	388
+168	6	2	2026-04-01	2026-04-30	0.0000	2000.0000	t	388
+168	7	2	2026-04-01	2026-04-30	0.0000	100.0000	t	388
+169	1	2	2026-04-01	2026-04-30	0.0000	2000.0000	t	389
+169	2	2	2026-04-01	2026-04-30	0.0000	10000.0000	t	389
+169	3	2	2026-04-01	2026-04-30	0.0000	500.0000	t	389
+169	5	2	2026-04-01	2026-04-30	0.0000	100.0000	t	389
+169	6	2	2026-04-01	2026-04-30	0.0000	2000.0000	t	389
+169	7	2	2026-04-01	2026-04-30	0.0000	100.0000	t	389
+169	4	2	2026-04-01	2026-04-30	15.0000	10000.0000	t	389
+170	1	2	2026-04-01	2026-04-30	0.0000	2000.0000	t	390
+170	2	2	2026-04-01	2026-04-30	0.0000	10000.0000	t	390
+170	3	2	2026-04-01	2026-04-30	0.0000	500.0000	t	390
+170	4	2	2026-04-01	2026-04-30	15.0000	10000.0000	t	390
+170	5	2	2026-04-01	2026-04-30	0.0000	100.0000	t	390
+170	6	2	2026-04-01	2026-04-30	0.0000	2000.0000	t	390
+170	7	2	2026-04-01	2026-04-30	0.0000	100.0000	t	390
+171	1	3	2026-04-01	2026-04-30	0.0000	2000.0000	t	391
+171	2	3	2026-04-01	2026-04-30	0.0000	10000.0000	t	391
+171	3	3	2026-04-01	2026-04-30	0.0000	500.0000	t	391
+171	4	3	2026-04-01	2026-04-30	0.0000	10000.0000	t	391
+171	5	3	2026-04-01	2026-04-30	0.0000	100.0000	t	391
+171	6	3	2026-04-01	2026-04-30	0.0000	2000.0000	t	391
+171	7	3	2026-04-01	2026-04-30	0.0000	100.0000	t	391
+173	1	1	2026-04-01	2026-04-30	15.0000	2000.0000	t	393
+173	3	1	2026-04-01	2026-04-30	0.0000	500.0000	t	393
+175	1	2	2026-04-01	2026-04-30	0.0000	2000.0000	t	395
+175	2	2	2026-04-01	2026-04-30	0.0000	10000.0000	t	395
+175	3	2	2026-04-01	2026-04-30	0.0000	500.0000	t	395
+175	4	2	2026-04-01	2026-04-30	15.0000	10000.0000	t	395
+175	5	2	2026-04-01	2026-04-30	0.0000	100.0000	t	395
+175	6	2	2026-04-01	2026-04-30	0.0000	2000.0000	t	395
+175	7	2	2026-04-01	2026-04-30	0.0000	100.0000	t	395
+176	1	2	2026-04-01	2026-04-30	0.0000	2000.0000	t	396
+176	2	2	2026-04-01	2026-04-30	0.0000	10000.0000	t	396
+176	3	2	2026-04-01	2026-04-30	0.0000	500.0000	t	396
+176	4	2	2026-04-01	2026-04-30	15.0000	10000.0000	t	396
+176	5	2	2026-04-01	2026-04-30	0.0000	100.0000	t	396
+176	6	2	2026-04-01	2026-04-30	0.0000	2000.0000	t	396
+176	7	2	2026-04-01	2026-04-30	0.0000	100.0000	t	396
+178	1	1	2026-04-01	2026-04-30	15.0000	2000.0000	t	398
+178	3	1	2026-04-01	2026-04-30	0.0000	500.0000	t	398
+180	1	1	2026-04-01	2026-04-30	15.0000	2000.0000	t	400
+180	3	1	2026-04-01	2026-04-30	0.0000	500.0000	t	400
+184	1	3	2026-04-01	2026-04-30	0.0000	2000.0000	t	404
+184	2	3	2026-04-01	2026-04-30	0.0000	10000.0000	t	404
+184	3	3	2026-04-01	2026-04-30	0.0000	500.0000	t	404
+184	4	3	2026-04-01	2026-04-30	15.0000	10000.0000	t	404
+184	5	3	2026-04-01	2026-04-30	0.0000	100.0000	t	404
+184	6	3	2026-04-01	2026-04-30	0.0000	2000.0000	t	404
+184	7	3	2026-04-01	2026-04-30	0.0000	100.0000	t	404
 \.
 
 
 --
--- Data for Name: file; Type: TABLE DATA; Schema: public; Owner: -
+-- Data for Name: file; Type: TABLE DATA; Schema: public; Owner: zkhattab
 --
 
 COPY public.file (id, parsed_flag, file_path) FROM stdin;
 1	t	/tmp/cdr_april_batch1.csv
 2	t	/tmp/cdr_april_batch2.csv
+6	t	master_test.cdr
 \.
 
 
 --
--- Data for Name: invoice; Type: TABLE DATA; Schema: public; Owner: -
+-- Data for Name: invoice; Type: TABLE DATA; Schema: public; Owner: zkhattab
 --
 
 COPY public.invoice (id, bill_id, pdf_path, generation_date) FROM stdin;
-1	1	/invoices/feb26_contract1.pdf	2026-04-28 18:30:20.990344
-2	2	/invoices/feb26_contract2.pdf	2026-04-28 18:30:20.990344
-3	3	/invoices/feb26_contract3.pdf	2026-04-28 18:30:20.990344
-4	4	/invoices/feb26_contract4.pdf	2026-04-28 18:30:20.990344
-5	5	/invoices/feb26_contract5.pdf	2026-04-28 18:30:20.990344
-6	6	/invoices/feb26_contract6.pdf	2026-04-28 18:30:20.990344
-7	7	/invoices/feb26_contract7.pdf	2026-04-28 18:30:20.990344
-8	8	/invoices/feb26_contract8.pdf	2026-04-28 18:30:20.990344
-9	9	/invoices/feb26_contract9.pdf	2026-04-28 18:30:20.990344
-10	10	/invoices/feb26_contract10.pdf	2026-04-28 18:30:20.990344
-11	11	/invoices/feb26_contract11.pdf	2026-04-28 18:30:20.990344
-12	12	/invoices/feb26_contract12.pdf	2026-04-28 18:30:20.990344
-13	13	/invoices/feb26_contract14.pdf	2026-04-28 18:30:20.990344
-14	14	/invoices/feb26_contract15.pdf	2026-04-28 18:30:20.990344
-15	15	/invoices/feb26_contract16.pdf	2026-04-28 18:30:20.990344
-16	16	/invoices/feb26_contract17.pdf	2026-04-28 18:30:20.990344
-17	17	/invoices/mar26_contract1.pdf	2026-04-28 18:30:20.990344
-18	18	/invoices/mar26_contract2.pdf	2026-04-28 18:30:20.990344
-19	158	processed/invoices/Bill_158.pdf	2026-04-28 18:43:16.404446
+1	1	/invoices/feb26_contract1.pdf	2026-04-29 07:41:23.397932
+2	2	/invoices/feb26_contract2.pdf	2026-04-29 07:41:23.397932
+3	3	/invoices/feb26_contract3.pdf	2026-04-29 07:41:23.397932
+4	4	/invoices/feb26_contract4.pdf	2026-04-29 07:41:23.397932
+5	5	/invoices/feb26_contract5.pdf	2026-04-29 07:41:23.397932
+6	6	/invoices/feb26_contract6.pdf	2026-04-29 07:41:23.397932
+7	7	/invoices/feb26_contract7.pdf	2026-04-29 07:41:23.397932
+8	8	/invoices/feb26_contract8.pdf	2026-04-29 07:41:23.397932
+9	9	/invoices/feb26_contract9.pdf	2026-04-29 07:41:23.397932
+10	10	/invoices/feb26_contract10.pdf	2026-04-29 07:41:23.397932
+11	11	/invoices/feb26_contract11.pdf	2026-04-29 07:41:23.397932
+12	12	/invoices/feb26_contract12.pdf	2026-04-29 07:41:23.397932
+13	13	/invoices/feb26_contract14.pdf	2026-04-29 07:41:23.397932
+14	14	/invoices/feb26_contract15.pdf	2026-04-29 07:41:23.397932
+15	15	/invoices/feb26_contract16.pdf	2026-04-29 07:41:23.397932
+16	16	/invoices/feb26_contract17.pdf	2026-04-29 07:41:23.397932
+17	17	/invoices/mar26_contract1.pdf	2026-04-29 07:41:23.397932
+18	18	/invoices/mar26_contract2.pdf	2026-04-29 07:41:23.397932
+19	33	/app/processed/invoices/Bill_33.pdf	2026-04-29 04:53:40.383916
+20	34	/app/processed/invoices/Bill_34.pdf	2026-04-29 04:53:40.466212
+21	35	/app/processed/invoices/Bill_35.pdf	2026-04-29 04:53:40.549582
+22	36	/app/processed/invoices/Bill_36.pdf	2026-04-29 04:53:40.608886
+23	37	/app/processed/invoices/Bill_37.pdf	2026-04-29 04:53:40.68567
+24	38	/app/processed/invoices/Bill_38.pdf	2026-04-29 04:53:40.735917
+25	39	/app/processed/invoices/Bill_39.pdf	2026-04-29 04:53:40.794805
+26	40	/app/processed/invoices/Bill_40.pdf	2026-04-29 04:53:40.837967
+27	41	/app/processed/invoices/Bill_41.pdf	2026-04-29 04:53:40.898779
+28	43	/app/processed/invoices/Bill_43.pdf	2026-04-29 04:53:40.971321
+29	44	/app/processed/invoices/Bill_44.pdf	2026-04-29 04:53:41.010237
+30	45	/app/processed/invoices/Bill_45.pdf	2026-04-29 04:53:41.039811
+31	46	/app/processed/invoices/Bill_46.pdf	2026-04-29 04:53:41.073356
+32	47	/app/processed/invoices/Bill_47.pdf	2026-04-29 04:53:41.105977
+33	48	/app/processed/invoices/Bill_48.pdf	2026-04-29 04:53:41.144319
+34	49	/app/processed/invoices/Bill_49.pdf	2026-04-29 04:53:41.188514
+35	50	/app/processed/invoices/Bill_50.pdf	2026-04-29 04:53:41.225143
+36	51	/app/processed/invoices/Bill_51.pdf	2026-04-29 04:53:41.267669
+37	52	/app/processed/invoices/Bill_52.pdf	2026-04-29 04:53:41.302365
+38	53	/app/processed/invoices/Bill_53.pdf	2026-04-29 04:53:41.338945
+39	54	/app/processed/invoices/Bill_54.pdf	2026-04-29 04:53:41.374701
+40	55	/app/processed/invoices/Bill_55.pdf	2026-04-29 04:53:41.406937
+41	56	/app/processed/invoices/Bill_56.pdf	2026-04-29 04:53:41.437227
+42	57	/app/processed/invoices/Bill_57.pdf	2026-04-29 04:53:41.471572
+43	58	/app/processed/invoices/Bill_58.pdf	2026-04-29 04:53:41.502378
+44	59	/app/processed/invoices/Bill_59.pdf	2026-04-29 04:53:41.540069
+45	60	/app/processed/invoices/Bill_60.pdf	2026-04-29 04:53:41.571358
+46	61	/app/processed/invoices/Bill_61.pdf	2026-04-29 04:53:41.604397
+47	62	/app/processed/invoices/Bill_62.pdf	2026-04-29 04:53:41.636951
+48	63	/app/processed/invoices/Bill_63.pdf	2026-04-29 04:53:41.675199
+49	64	/app/processed/invoices/Bill_64.pdf	2026-04-29 04:53:41.705227
+50	65	/app/processed/invoices/Bill_65.pdf	2026-04-29 04:53:41.738729
+51	66	/app/processed/invoices/Bill_66.pdf	2026-04-29 04:53:41.764964
+52	67	/app/processed/invoices/Bill_67.pdf	2026-04-29 04:53:41.812597
+53	68	/app/processed/invoices/Bill_68.pdf	2026-04-29 04:53:41.840545
+54	69	/app/processed/invoices/Bill_69.pdf	2026-04-29 04:53:41.869658
+55	70	/app/processed/invoices/Bill_70.pdf	2026-04-29 04:53:41.899492
+56	71	/app/processed/invoices/Bill_71.pdf	2026-04-29 04:53:41.925865
+57	72	/app/processed/invoices/Bill_72.pdf	2026-04-29 04:53:41.954581
+58	73	/app/processed/invoices/Bill_73.pdf	2026-04-29 04:53:41.993719
+59	74	/app/processed/invoices/Bill_74.pdf	2026-04-29 04:53:42.026813
+60	76	/app/processed/invoices/Bill_76.pdf	2026-04-29 04:53:42.074693
+61	77	/app/processed/invoices/Bill_77.pdf	2026-04-29 04:53:42.107802
+62	78	/app/processed/invoices/Bill_78.pdf	2026-04-29 04:53:42.137677
 \.
 
 
 --
--- Data for Name: msisdn_pool; Type: TABLE DATA; Schema: public; Owner: -
+-- Data for Name: msisdn_pool; Type: TABLE DATA; Schema: public; Owner: zkhattab
 --
 
 COPY public.msisdn_pool (id, msisdn, is_available) FROM stdin;
@@ -4510,122 +4971,172 @@ COPY public.msisdn_pool (id, msisdn, is_available) FROM stdin;
 46	201000000046	f
 47	201000000047	f
 48	201000000048	f
-100	2010105001	f
-101	2010105002	f
-102	2010105003	f
-103	2010105004	f
-104	2010105005	f
-105	2010105006	f
-106	2010105007	f
-107	2010105008	f
-108	2010105009	f
-109	2010105010	f
-110	2010105011	f
-111	2010105012	f
-112	2010105013	f
-113	2010105014	f
-114	2010105015	f
-115	2010105016	f
-116	2010105017	f
-117	2010105018	f
-118	2010105019	f
-119	2010105020	f
-120	2010105021	f
-121	2010105022	f
-122	2010105023	f
-123	2010105024	f
-124	2010105025	f
-125	2010105026	f
-126	2010105027	f
-127	2010105028	f
-128	2010105029	f
-129	2010105030	f
-130	2010105031	f
-131	2010105032	f
-132	2010105033	f
-133	2010105034	f
-134	2010105035	f
-135	2010105036	f
-136	2010105037	f
-137	2010105038	f
-138	2010105039	f
-139	2010105040	f
-140	2010105041	f
-141	2010105042	f
-142	2010105043	f
-143	2010105044	f
-144	2010105045	f
-145	2010105046	f
-146	2010105047	f
-147	2010105048	f
-148	2010105049	f
-149	2010105050	f
-150	2010105051	f
-151	2010105052	f
-152	2010105053	f
-153	2010105054	f
-154	2010105055	f
-155	2010105056	f
-156	2010105057	f
-157	2010105058	f
-158	2010105059	f
-159	2010105060	f
-160	2010105061	f
-161	2010105062	f
-162	2010105063	f
-163	2010105064	f
-164	2010105065	f
-165	2010105066	f
-166	2010105067	f
-167	2010105068	f
-168	2010105069	f
-169	2010105070	f
-170	2010105071	f
-171	2010105072	f
-172	2010105073	f
-173	2010105074	f
-174	2010105075	f
-175	2010105076	f
-176	2010105077	f
-177	2010105078	f
-178	2010105079	f
-179	2010105080	f
-180	2010105081	f
-181	2010105082	f
-182	2010105083	f
-183	2010105084	f
-184	2010105085	f
-185	2010105086	f
-186	2010105087	f
-187	2010105088	f
-188	2010105089	f
-189	2010105090	f
-190	2010105091	f
-191	2010105092	f
-192	2010105093	f
-193	2010105094	f
-194	2010105095	f
-195	2010105096	f
-196	2010105097	f
-197	2010105098	f
-198	2010105099	f
-199	2010105100	f
+100	201929443681	f
+101	201429981367	f
+102	201413480521	f
+103	201385628459	f
+104	201213799908	f
+105	201732646622	f
+106	201544098306	f
+107	201100488135	f
+108	201619259144	f
+109	201921537400	f
+110	201766068173	f
+111	201596567886	f
+112	201577029209	f
+113	201807282720	f
+114	201286932142	f
+115	201164642038	f
+116	201676533855	f
+117	201383276193	f
+118	201570152514	f
+119	201807868584	f
+120	201971560057	f
+121	201840246205	f
+122	201684075608	f
+123	201577199236	f
+124	201974393501	f
+125	201198754346	f
+126	201407381378	f
+127	201937787633	f
+128	201612484713	f
+129	201323801663	f
+130	201526237308	f
+131	201554543248	f
+132	201776684616	f
+133	201367791331	f
+134	201718702362	f
+135	201212911963	f
+136	201220083435	f
+137	201232465204	f
+138	201998010690	f
+139	201659706181	f
+140	201547174916	f
+141	201252951019	f
+142	201710876578	f
+143	201590865366	f
+144	201471555986	f
+145	201649117498	f
+146	201264979417	f
+147	201653069004	f
+148	201779264035	f
+149	201470237935	f
+150	201802917632	f
+151	201835042990	f
+152	201462099679	f
+153	201411625546	f
+154	201829056999	f
+155	201711745398	f
+156	201267326529	f
+157	201135432749	f
+158	201495133161	f
+159	201273640490	f
+160	201934864215	f
+161	201836494481	f
+162	201763896489	f
+163	201804307139	f
+164	201659605961	f
+165	201958741292	f
+166	201342567152	f
+167	201301312298	f
+168	201722845880	f
+169	201694166136	f
+170	201837084004	f
+171	201825521770	f
+172	201874881544	f
+173	201568724886	f
+174	201330199728	f
+175	201611131414	f
+176	201949566929	f
+177	201836162878	f
+178	201369118737	f
+179	201813057806	f
+180	201984327233	f
+181	201753036489	f
+182	201110623838	f
+183	201233997401	f
+184	201250407138	f
+185	201924975793	f
+186	201671686439	f
+187	201255851063	f
+188	201529398002	f
+189	201670552123	f
+190	201211097847	f
+191	201729276105	f
+192	201294741054	f
+193	201988892685	f
+194	201717769502	f
+195	201239535883	f
+196	201656715920	f
+197	201186352421	f
+198	201960970378	f
+199	201923881590	f
+200	201420871936	f
+201	201253193055	f
+202	201777264317	f
+203	201362708743	f
+204	201358767975	f
+205	201703206322	f
+206	201758547932	f
+207	201608773241	f
+208	201564960450	f
+209	201946970409	f
+210	201558289515	f
+211	201288445442	f
+212	201419739858	f
+213	201720430298	f
+214	201667897495	f
+215	201570066932	f
+216	201198229833	f
+217	201976853507	f
+218	201161552590	f
+219	201599166808	f
+220	201947919413	f
+221	201624427143	f
+222	201121918717	f
+223	201868108276	f
+224	201274207034	f
+225	201130706955	f
+226	201733342762	f
+227	201311169287	f
+228	201820941846	f
+229	201767489862	f
+230	201359892851	f
+231	201903689006	f
+232	201225081536	f
+233	201113312729	f
+234	201651964318	f
+235	201437218906	f
+236	201455334792	f
+237	201828797537	f
+238	201560098469	f
+239	201582165582	f
+240	201299910713	f
+241	201443434524	f
+242	201180758537	f
+243	201251619033	f
+244	201908287013	f
+245	201374939723	f
+246	201529519265	f
+247	201462924192	f
+248	201378613554	f
+249	201291077573	f
 \.
 
 
 --
--- Data for Name: rateplan; Type: TABLE DATA; Schema: public; Owner: -
+-- Data for Name: rateplan; Type: TABLE DATA; Schema: public; Owner: zkhattab
 --
 
-COPY public.rateplan (id, name, ror_data, ror_voice, ror_sms, price) FROM stdin;
-1	Basic	0.10	0.20	0.05	75.00
-2	Premium Gold	0.05	0.10	0.02	370.00
-3	Elite Enterprise	0.02	0.05	0.01	950.00
+COPY public.rateplan (id, name, ror_data, ror_voice, ror_sms, ror_roaming_data, ror_roaming_voice, ror_roaming_sms, price) FROM stdin;
+1	Basic	0.10	0.20	0.05	\N	\N	\N	75.00
+2	Premium Gold	0.05	0.10	0.02	\N	\N	\N	370.00
+3	Elite Enterprise	0.02	0.05	0.01	\N	\N	\N	950.00
 \.
 
 
 --
--- Data for Name: rateplan_service_package; Type: TABLE DATA; Schema: public; Owner: -
+-- Data for Name: rateplan_service_package; Type: TABLE DATA; Schema: public; Owner: zkhattab
 --
 
 COPY public.rateplan_service_package (rateplan_id, service_package_id) FROM stdin;
@@ -4649,126 +5160,33 @@ COPY public.rateplan_service_package (rateplan_id, service_package_id) FROM stdi
 
 
 --
--- Data for Name: ror_contract; Type: TABLE DATA; Schema: public; Owner: -
+-- Data for Name: ror_contract; Type: TABLE DATA; Schema: public; Owner: zkhattab
 --
 
-COPY public.ror_contract (contract_id, rateplan_id, data, voice, sms, roaming_voice, roaming_data, roaming_sms, bill_id) FROM stdin;
-13	1	0	0	0	0.00	0.00	0.00	\N
-18	1	0	0	0	0.00	0.00	0.00	\N
-1	1	4608	492	0	0.00	0.00	0.10	33
-11	1	7066	408	0	63.00	0.00	0.00	43
-5	1	2560	72	0	19.40	0.00	0.00	37
-4	2	4993	132	0	0.00	0.00	0.00	36
-2	2	2851	183	0	30.00	25.00	0.02	34
-7	1	8294	120	0	0.00	0.00	0.00	39
-9	1	4505	66	0	32.00	0.00	0.00	41
-6	2	3965	240	0	0.00	0.00	0.00	38
-3	1	5120	126	0	34.80	0.00	0.00	35
-10	2	1221	138	0	12.70	0.00	0.00	42
-8	2	2252	111	0	0.00	0.00	0.00	40
-12	2	5240	60	0	0.00	2255.20	0.00	44
-56	1	7420	0	0	0.00	0.00	0.00	93
-58	2	2635	0	0	0.00	0.00	0.00	94
-59	1	7633	0	0	35.80	0.00	0.00	95
-60	3	\N	\N	\N	0.00	328.64	0.00	96
-19	2	\N	\N	\N	0.00	4561.60	0.00	\N
-63	1	14336	0	0	0.00	0.00	0.00	97
-66	1	1434	0	0	0.00	0.00	0.00	98
-68	2	2288	0	0	0.00	0.00	0.00	99
-69	1	5428	0	0	0.00	0.00	0.00	100
-70	2	\N	\N	\N	22.80	0.00	0.00	101
-71	1	3518	0	0	0.00	0.00	0.05	102
-72	1	7270	0	0	0.00	716.80	0.00	103
-73	2	2138	0	0	0.00	0.00	0.00	104
-76	3	\N	\N	\N	7.75	0.00	0.00	105
-77	2	\N	\N	\N	0.00	1026.40	0.00	106
-79	1	\N	\N	\N	0.00	3481.60	0.00	107
-80	2	1216	0	0	0.00	0.00	0.00	108
-81	2	\N	\N	\N	0.00	156.00	0.00	109
-82	2	\N	\N	\N	0.00	2562.40	0.00	110
-84	3	2431	0	0	0.00	0.00	0.00	112
-85	1	53	0	0	0.00	0.00	0.00	113
-87	1	1467	0	0	0.00	0.00	0.00	114
-88	2	7857	0	0	0.00	0.00	0.00	115
-90	2	2704	0	0	0.00	0.00	0.00	116
-91	3	564	0	0	0.00	0.00	0.00	117
-92	2	638	0	0	0.00	872.80	0.00	118
-93	1	7270	0	0	0.00	0.00	0.00	119
-94	2	1679	0	0	0.00	0.00	0.00	120
-95	1	9342	0	0	0.00	0.00	0.00	121
-99	1	7885	0	0	0.00	0.00	0.00	122
-101	2	1070	0	0	0.00	0.00	0.00	123
-102	3	\N	\N	\N	6.45	123.84	0.00	124
-103	3	1341	0	0	0.00	0.00	0.00	125
-104	2	\N	\N	\N	0.00	4405.60	0.00	126
-105	1	11185	0	0	0.00	0.00	0.00	127
-106	2	2755	0	0	0.00	0.00	0.00	128
-107	2	\N	\N	\N	0.00	3279.20	0.00	129
-109	1	\N	\N	\N	0.00	9625.60	0.00	130
-111	1	\N	\N	\N	56.20	2457.60	0.00	131
-112	1	\N	\N	\N	0.00	6656.00	0.00	132
-113	1	16613	0	0	0.00	0.00	0.00	133
-114	1	5530	0	0	0.00	0.00	0.00	134
-115	2	3424	0	0	0.00	0.00	0.00	135
-118	2	4479	0	0	0.00	0.00	0.00	136
-119	2	2027	0	0	0.00	0.00	0.00	137
-122	1	8601	0	0	0.00	0.00	0.00	139
-125	2	\N	\N	\N	32.80	0.00	0.00	140
-126	2	856	0	0	0.00	0.00	0.00	141
-127	1	11083	0	0	0.00	0.00	0.00	142
-129	2	2137	0	0	0.00	0.00	0.00	143
-130	2	2908	0	0	0.00	0.00	0.00	144
-134	1	15179	0	0	48.40	0.00	0.00	145
-135	1	5939	0	0	0.00	0.00	0.00	146
-136	3	878	0	0	0.00	0.00	0.00	147
-137	2	4632	0	0	0.00	0.00	0.00	148
-140	2	1016	0	0	0.00	0.00	0.00	149
-142	2	2547	0	0	0.00	0.00	0.00	150
-145	2	5349	0	0	0.00	0.00	0.00	151
-48	2	2557	0	0	0.00	2564.80	0.00	\N
-47	3	1808	0	0	0.00	0.00	0.00	\N
-46	1	8397	0	0	0.00	0.00	0.00	\N
-45	2	2099	0	0	0.00	0.00	0.00	\N
-44	3	2251	0	0	0.00	1496.96	0.00	\N
-43	3	1473	0	0	0.00	0.00	0.00	\N
-42	1	17613	0	0	37.00	0.00	0.05	\N
-41	2	4875	0	0	0.00	0.00	0.00	\N
-40	1	12902	0	0	0.00	0.00	0.00	\N
-39	1	\N	\N	\N	117.80	0.00	0.00	\N
-38	1	\N	\N	\N	47.00	0.00	0.05	\N
-37	1	23859	0	0	0.00	0.00	0.00	\N
-36	1	19968	0	0	0.00	0.00	0.00	\N
-35	2	7421	0	0	28.40	0.00	0.00	\N
-34	1	8192	0	0	18.40	0.00	0.00	\N
-33	1	19763	0	0	0.00	0.00	0.00	\N
-32	1	23142	0	0	0.00	0.00	0.05	\N
-31	2	7011	0	0	0.00	0.00	0.00	\N
-30	1	\N	\N	\N	93.80	5427.20	0.00	88
-29	3	4593	0	0	0.00	0.00	0.00	87
-28	2	5680	0	0	0.00	0.00	0.00	86
-27	3	1822	0	0	0.00	0.00	0.00	85
-26	1	\N	\N	\N	0.00	0.00	0.05	84
-25	3	1760	0	0	0.00	758.72	0.00	83
-24	3	660	0	0	0.00	0.00	0.00	\N
-23	1	\N	\N	\N	0.00	7884.80	0.00	81
-22	2	\N	\N	\N	5.30	0.00	0.00	80
-21	3	1268	0	0	0.00	1024.96	0.00	79
-20	1	\N	\N	\N	55.80	4198.40	0.05	89
-17	2	2203	72	0	3.30	5071.20	0.00	48
-16	3	4672	111	0	0.00	0.00	0.00	47
-15	3	3909	90	0	12.00	8.00	0.01	46
-14	2	509	84	0	0.00	0.00	0.00	45
-53	1	544	0	0	0.00	0.00	0.05	90
-54	1	\N	\N	\N	0.00	5222.40	0.00	91
-55	2	3274	0	0	0.00	0.00	0.00	92
-146	2	\N	\N	\N	8.30	0.00	0.00	152
-149	2	2600	0	0	0.00	0.00	0.00	153
-150	1	11186	0	0	62.80	0.00	0.00	154
+COPY public.ror_contract (contract_id, rateplan_id, starting_date, data, voice, sms, roaming_voice, roaming_data, roaming_sms, bill_id) FROM stdin;
+6	2	2026-04-01	2850	40.00	3	0.00	0	0	37
+5	1	2026-04-01	0	7.00	2	0.00	0	0	38
+4	2	2026-04-01	2100	22.00	2	0.00	0	0	39
+3	1	2026-04-01	0	11.00	2	0.00	0	0	40
+2	2	2026-04-01	3050	31.00	4	5.00	500	1	42
+1	1	2026-04-01	0	45.00	6	0.00	0	0	41
+13	1	2026-04-01	0	0.00	0	0.00	0	0	272
+18	1	2026-04-01	0	0.00	0	0.00	0	0	\N
+10	2	2026-04-01	2400	23.00	2	0.00	0	0	33
+9	1	2026-04-01	0	6.00	2	0.00	0	0	34
+8	2	2026-04-01	1400	19.00	2	0.00	0	0	35
+7	1	2026-04-01	0	10.00	2	0.00	0	0	36
+17	2	2026-04-01	1350	12.00	2	0.00	0	0	73
+16	3	2026-04-01	4820	37.00	2	0.00	0	0	74
+15	3	2026-04-01	4500	30.00	2	4.00	400	1	75
+14	2	2026-04-01	1350	15.00	2	0.00	0	0	76
+12	2	2026-04-01	550	11.00	1	0.00	0	0	77
+11	1	2026-04-01	0	34.00	4	0.00	0	0	78
 \.
 
 
 --
--- Data for Name: service_package; Type: TABLE DATA; Schema: public; Owner: -
+-- Data for Name: service_package; Type: TABLE DATA; Schema: public; Owner: zkhattab
 --
 
 COPY public.service_package (id, name, type, amount, priority, price, is_roaming, description) FROM stdin;
@@ -4783,165 +5201,214 @@ COPY public.service_package (id, name, type, amount, priority, price, is_roaming
 
 
 --
--- Data for Name: user_account; Type: TABLE DATA; Schema: public; Owner: -
+-- Data for Name: user_account; Type: TABLE DATA; Schema: public; Owner: zkhattab
 --
 
 COPY public.user_account (id, username, password, role, name, email, address, birthdate) FROM stdin;
-1	admin	admin123	admin	System Admin	admin@fmrz.com	HQ Cairo	1985-01-01
-2	alice	password1	customer	Alice Smith	alice@gmail.com	123 Main St	1990-01-01
-3	bob	password2	customer	Bob Johnson	bob@gmail.com	456 Elm St	1985-05-15
-4	carol	password3	customer	Carol White	carol@gmail.com	789 Oak Ave	1992-03-10
-5	david	password4	customer	David Brown	david@gmail.com	321 Pine Rd	1988-07-22
-6	eva	password5	customer	Eva Green	eva@gmail.com	654 Maple Dr	1995-11-05
-7	frank	password6	customer	Frank Miller	frank@gmail.com	987 Cedar Ln	1983-02-18
-8	grace	password7	customer	Grace Lee	grace@gmail.com	147 Birch Blvd	1991-09-30
-9	henry	password8	customer	Henry Wilson	henry@gmail.com	258 Walnut St	1987-04-14
-10	iris	password9	customer	Iris Taylor	iris@gmail.com	369 Spruce Ave	1993-06-25
-11	jack	password10	customer	Jack Davis	jack@gmail.com	741 Ash Ct	1986-12-03
-12	karen	password11	customer	Karen Martinez	karen@gmail.com	852 Elm Pl	1994-08-17
-13	leo	password12	customer	Leo Anderson	leo@gmail.com	963 Oak St	1989-01-29
-14	mia	password13	customer	Mia Thomas	mia@gmail.com	159 Pine Ave	1996-05-08
-15	noah	password14	customer	Noah Jackson	noah@gmail.com	267 Maple Rd	1984-10-21
-16	olivia	password15	customer	Olivia Harris	olivia@gmail.com	348 Cedar Dr	1997-03-15
-17	paul	password16	customer	Paul Clark	paul@gmail.com	426 Birch Ln	1982-07-04
-18	quinn	password17	customer	Quinn Lewis	quinn@gmail.com	537 Walnut Blvd	1998-11-19
-19	rachel	password18	customer	Rachel Walker	rachel@gmail.com	648 Spruce St	1981-02-27
-20	amir_101	123456	customer	Amir Gaber	amir.gaber11@fmrz-telecom.com	80 Makram Ebeid, Luxor	2005-11-07
-21	sara_102	123456	customer	Sara Hassan	sara.hassan12@fmrz-telecom.com	70 Abbas El Akkad, Alexandria	1999-12-28
-22	sara_103	123456	customer	Sara Nasr	sara.nasr13@fmrz-telecom.com	65 Cornish Rd, Cairo	1995-12-30
-23	mona_104	123456	customer	Mona Zaki	mona.zaki14@fmrz-telecom.com	91 El-Nasr St, Mansoura	1994-11-26
-24	layla_105	123456	customer	Layla Khattab	layla.khattab15@fmrz-telecom.com	15 Tahrir Sq, Mansoura	1991-04-15
-25	amir_106	123456	customer	Amir Ezzat	amir.ezzat16@fmrz-telecom.com	32 Makram Ebeid, Giza	2010-08-11
-26	hassan_107	123456	customer	Hassan Soliman	hassan.soliman17@fmrz-telecom.com	28 Tahrir Sq, Suez	2002-07-14
-27	ziad_108	123456	customer	Ziad Khattab	ziad.khattab18@fmrz-telecom.com	25 Cornish Rd, Mansoura	2004-01-04
-28	mohamed_109	123456	customer	Mohamed Soliman	mohamed.soliman19@fmrz-telecom.com	27 Cornish Rd, Cairo	1987-10-22
-29	youssef_110	123456	customer	Youssef Fouad	youssef.fouad20@fmrz-telecom.com	71 Gameat El Dowal, Giza	1989-11-25
-30	fatma_111	123456	customer	Fatma Fouad	fatma.fouad21@fmrz-telecom.com	41 Tahrir Sq, Cairo	1995-07-01
-31	sara_112	123456	customer	Sara Soliman	sara.soliman22@fmrz-telecom.com	54 Makram Ebeid, Alexandria	2006-12-15
-32	ibrahim_113	123456	customer	Ibrahim Gaber	ibrahim.gaber23@fmrz-telecom.com	37 Tahrir Sq, Giza	1990-06-01
-33	amir_114	123456	customer	Amir Nasr	amir.nasr24@fmrz-telecom.com	46 Tahrir Sq, Giza	1985-09-15
-34	salma_115	123456	customer	Salma Soliman	salma.soliman25@fmrz-telecom.com	99 El-Nasr St, Mansoura	2011-01-18
-35	amir_116	123456	customer	Amir Mansour	amir.mansour26@fmrz-telecom.com	85 Tahrir Sq, Cairo	1994-07-23
-36	mona_117	123456	customer	Mona Hassan	mona.hassan27@fmrz-telecom.com	34 Cornish Rd, Mansoura	2007-05-30
-37	youssef_118	123456	customer	Youssef Fouad	youssef.fouad28@fmrz-telecom.com	99 Makram Ebeid, Luxor	2002-02-03
-38	ahmed_119	123456	customer	Ahmed Salem	ahmed.salem29@fmrz-telecom.com	35 Makram Ebeid, Luxor	1999-08-05
-39	hassan_120	123456	customer	Hassan Wahba	hassan.wahba30@fmrz-telecom.com	22 Makram Ebeid, Alexandria	2003-08-15
-40	nour_121	123456	customer	Nour Ezzat	nour.ezzat31@fmrz-telecom.com	71 Cornish Rd, Alexandria	1998-07-09
-41	sara_122	123456	customer	Sara Soliman	sara.soliman32@fmrz-telecom.com	39 Abbas El Akkad, Luxor	2005-12-10
-42	hassan_123	123456	customer	Hassan Khattab	hassan.khattab33@fmrz-telecom.com	56 El-Nasr St, Giza	2009-08-04
-43	hassan_124	123456	customer	Hassan Said	hassan.said34@fmrz-telecom.com	32 Tahrir Sq, Giza	1990-05-08
-44	ahmed_125	123456	customer	Ahmed Soliman	ahmed.soliman35@fmrz-telecom.com	90 Abbas El Akkad, Cairo	1988-09-08
-45	nour_126	123456	customer	Nour Mansour	nour.mansour36@fmrz-telecom.com	69 Tahrir Sq, Alexandria	1999-03-22
-46	ahmed_127	123456	customer	Ahmed Zaki	ahmed.zaki37@fmrz-telecom.com	30 Gameat El Dowal, Mansoura	2001-08-25
-47	mohamed_128	123456	customer	Mohamed Mansour	mohamed.mansour38@fmrz-telecom.com	79 Cornish Rd, Cairo	2006-03-06
-48	omar_129	123456	customer	Omar Fouad	omar.fouad39@fmrz-telecom.com	60 Cornish Rd, Cairo	2005-11-12
-49	mona_130	123456	customer	Mona Nasr	mona.nasr40@fmrz-telecom.com	96 El-Nasr St, Giza	2005-07-12
-52	layla_2001	password123	customer	Layla Hassan	layla_2001@fmrz-telecom.com	26 Cornish Rd, Hurghada	1999-12-22
-53	ahmed_2002	password123	customer	Ahmed Gaber	ahmed_2002@fmrz-telecom.com	27 Zamalek Dr, Suez	1975-07-23
-54	mona_2003	password123	customer	Mona Gaber	mona_2003@fmrz-telecom.com	57 Cornish Rd, Luxor	1981-02-02
-55	omar_2004	password123	customer	Omar Said	omar_2004@fmrz-telecom.com	78 El-Nasr St, Mansoura	1991-06-24
-56	mariam_2005	password123	customer	Mariam Soliman	mariam_2005@fmrz-telecom.com	29 Cornish Rd, Aswan	2005-01-29
-57	layla_2006	password123	customer	Layla Salem	layla_2006@fmrz-telecom.com	42 Gameat El Dowal, Giza	2007-02-26
-58	omar_2007	password123	customer	Omar Said	omar_2007@fmrz-telecom.com	17 Cornish Rd, Cairo	2009-10-15
-59	ziad_2008	password123	customer	Ziad Wahba	ziad_2008@fmrz-telecom.com	88 El-Nasr St, Suez	1994-09-03
-60	tarek_2009	password123	customer	Tarek Salem	tarek_2009@fmrz-telecom.com	86 Gameat El Dowal, Giza	2007-03-25
-61	tarek_2010	password123	customer	Tarek Gaber	tarek_2010@fmrz-telecom.com	41 Gameat El Dowal, Aswan	1987-08-25
-62	mohamed_2011	password123	customer	Mohamed Said	mohamed_2011@fmrz-telecom.com	17 Abbas El Akkad, Giza	2001-11-02
-63	fatma_2012	password123	customer	Fatma Soliman	fatma_2012@fmrz-telecom.com	93 Tahrir Sq, Giza	2009-05-29
-64	salma_2013	password123	customer	Salma Moussa	salma_2013@fmrz-telecom.com	39 9th Street, Suez	1975-12-05
-65	ziad_2014	password123	customer	Ziad Hassan	ziad_2014@fmrz-telecom.com	92 Maadi St, Suez	1980-10-26
-66	mohamed_2015	password123	customer	Mohamed Nasr	mohamed_2015@fmrz-telecom.com	24 Tahrir Sq, Suez	1977-01-15
-67	amir_2016	password123	customer	Amir Wahba	amir_2016@fmrz-telecom.com	45 El-Nasr St, Aswan	1987-03-05
-68	dina_2017	password123	customer	Dina Hassan	dina_2017@fmrz-telecom.com	31 Cornish Rd, Hurghada	1974-11-25
-69	layla_2018	password123	customer	Layla Salem	layla_2018@fmrz-telecom.com	10 Tahrir Sq, Giza	2003-10-05
-70	ziad_2019	password123	customer	Ziad Moussa	ziad_2019@fmrz-telecom.com	29 Cornish Rd, Cairo	2000-07-30
-71	ahmed_2020	password123	customer	Ahmed Salem	ahmed_2020@fmrz-telecom.com	90 Tahrir Sq, Hurghada	1974-03-06
-72	mohamed_2021	password123	customer	Mohamed Zaki	mohamed_2021@fmrz-telecom.com	73 Maadi St, Hurghada	1975-10-22
-73	youssef_2022	password123	customer	Youssef Badawi	youssef_2022@fmrz-telecom.com	45 Zamalek Dr, Hurghada	1973-12-31
-74	khaled_2023	password123	customer	Khaled Zaki	khaled_2023@fmrz-telecom.com	61 Tahrir Sq, Suez	1985-06-28
-75	sara_2024	password123	customer	Sara Wahba	sara_2024@fmrz-telecom.com	99 9th Street, Mansoura	2004-07-12
-76	ahmed_2025	password123	customer	Ahmed Wahba	ahmed_2025@fmrz-telecom.com	95 El-Nasr St, Aswan	1976-12-02
-77	ahmed_2026	password123	customer	Ahmed Said	ahmed_2026@fmrz-telecom.com	13 El-Nasr St, Aswan	1993-02-12
-78	ahmed_2027	password123	customer	Ahmed Fouad	ahmed_2027@fmrz-telecom.com	32 Tahrir Sq, Giza	1980-09-03
-79	dina_2028	password123	customer	Dina Badawi	dina_2028@fmrz-telecom.com	28 Abbas El Akkad, Giza	1971-07-21
-80	ibrahim_2029	password123	customer	Ibrahim Said	ibrahim_2029@fmrz-telecom.com	73 Maadi St, Hurghada	2000-08-01
-81	tarek_2030	password123	customer	Tarek Khattab	tarek_2030@fmrz-telecom.com	51 Makram Ebeid, Aswan	1988-04-02
-82	tarek_2031	password123	customer	Tarek Khattab	tarek_2031@fmrz-telecom.com	84 Zamalek Dr, Suez	1979-02-08
-83	dina_2032	password123	customer	Dina Zaki	dina_2032@fmrz-telecom.com	76 Gameat El Dowal, Luxor	1977-12-31
-84	dina_2033	password123	customer	Dina Said	dina_2033@fmrz-telecom.com	12 Abbas El Akkad, Cairo	1982-07-27
-85	mariam_2034	password123	customer	Mariam Said	mariam_2034@fmrz-telecom.com	96 Gameat El Dowal, Hurghada	2004-09-06
-86	fatma_2035	password123	customer	Fatma Hamad	fatma_2035@fmrz-telecom.com	27 9th Street, Mansoura	1980-12-18
-87	omar_2036	password123	customer	Omar Salem	omar_2036@fmrz-telecom.com	85 Makram Ebeid, Alexandria	2010-01-27
-88	youssef_2037	password123	customer	Youssef Gaber	youssef_2037@fmrz-telecom.com	78 Gameat El Dowal, Mansoura	1980-07-26
-89	ibrahim_2038	password123	customer	Ibrahim Hassan	ibrahim_2038@fmrz-telecom.com	87 Maadi St, Aswan	1978-09-07
-90	mariam_2039	password123	customer	Mariam Khattab	mariam_2039@fmrz-telecom.com	36 Makram Ebeid, Aswan	1976-08-01
-91	tarek_2040	password123	customer	Tarek Soliman	tarek_2040@fmrz-telecom.com	30 Abbas El Akkad, Mansoura	1977-12-15
-92	dina_2041	password123	customer	Dina Zaki	dina_2041@fmrz-telecom.com	55 Makram Ebeid, Alexandria	2006-10-19
-93	salma_2042	password123	customer	Salma Wahba	salma_2042@fmrz-telecom.com	83 Gameat El Dowal, Aswan	2002-01-19
-94	fatma_2043	password123	customer	Fatma Said	fatma_2043@fmrz-telecom.com	26 Tahrir Sq, Alexandria	1980-07-27
-95	hassan_2044	password123	customer	Hassan Fouad	hassan_2044@fmrz-telecom.com	41 El-Nasr St, Suez	1976-07-17
-96	fatma_2045	password123	customer	Fatma Ezzat	fatma_2045@fmrz-telecom.com	22 Gameat El Dowal, Luxor	1982-09-24
-97	omar_2046	password123	customer	Omar Said	omar_2046@fmrz-telecom.com	79 Gameat El Dowal, Aswan	1996-01-06
-98	ibrahim_2047	password123	customer	Ibrahim Ezzat	ibrahim_2047@fmrz-telecom.com	29 9th Street, Mansoura	2008-06-02
-99	mona_2048	password123	customer	Mona Khattab	mona_2048@fmrz-telecom.com	13 Gameat El Dowal, Alexandria	1976-08-10
-100	dina_2049	password123	customer	Dina Fouad	dina_2049@fmrz-telecom.com	45 Makram Ebeid, Giza	2008-04-14
-101	ahmed_2050	password123	customer	Ahmed Badawi	ahmed_2050@fmrz-telecom.com	83 Cornish Rd, Alexandria	1991-12-10
-102	salma_2051	password123	customer	Salma Hamad	salma_2051@fmrz-telecom.com	19 Abbas El Akkad, Luxor	1977-10-15
-103	hala_2052	password123	customer	Hala Hassan	hala_2052@fmrz-telecom.com	63 Cornish Rd, Mansoura	1982-03-17
-104	sameh_2053	password123	customer	Sameh Ezzat	sameh_2053@fmrz-telecom.com	19 9th Street, Cairo	1993-04-12
-105	mariam_2054	password123	customer	Mariam Gaber	mariam_2054@fmrz-telecom.com	76 Abbas El Akkad, Luxor	1988-09-15
-106	fatma_2055	password123	customer	Fatma Gaber	fatma_2055@fmrz-telecom.com	50 Cornish Rd, Mansoura	2000-11-13
-107	amir_2056	password123	customer	Amir Said	amir_2056@fmrz-telecom.com	62 El-Nasr St, Alexandria	1978-11-14
-108	nour_2057	password123	customer	Nour Gaber	nour_2057@fmrz-telecom.com	69 Abbas El Akkad, Luxor	1982-12-19
-109	tarek_2058	password123	customer	Tarek Fouad	tarek_2058@fmrz-telecom.com	33 El-Nasr St, Cairo	1997-03-03
-110	ibrahim_2059	password123	customer	Ibrahim Khattab	ibrahim_2059@fmrz-telecom.com	69 Zamalek Dr, Mansoura	1994-07-09
-111	tarek_2060	password123	customer	Tarek Moussa	tarek_2060@fmrz-telecom.com	53 Cornish Rd, Luxor	1975-10-07
-112	ahmed_2061	password123	customer	Ahmed Gaber	ahmed_2061@fmrz-telecom.com	13 Gameat El Dowal, Mansoura	1973-07-28
-113	hala_2062	password123	customer	Hala Gaber	hala_2062@fmrz-telecom.com	62 Tahrir Sq, Aswan	1999-01-27
-114	layla_2063	password123	customer	Layla Said	layla_2063@fmrz-telecom.com	58 Makram Ebeid, Mansoura	1972-10-29
-115	khaled_2064	password123	customer	Khaled Mansour	khaled_2064@fmrz-telecom.com	64 Makram Ebeid, Mansoura	1997-05-10
-116	mona_2065	password123	customer	Mona Wahba	mona_2065@fmrz-telecom.com	14 Tahrir Sq, Suez	1977-04-27
-117	sara_2066	password123	customer	Sara Mansour	sara_2066@fmrz-telecom.com	54 Gameat El Dowal, Giza	1995-06-28
-118	hala_2067	password123	customer	Hala Moussa	hala_2067@fmrz-telecom.com	20 Makram Ebeid, Mansoura	1972-11-22
-119	khaled_2068	password123	customer	Khaled Ezzat	khaled_2068@fmrz-telecom.com	38 Tahrir Sq, Aswan	1975-05-17
-120	nour_2069	password123	customer	Nour Nasr	nour_2069@fmrz-telecom.com	90 Tahrir Sq, Suez	1973-01-18
-121	mohamed_2070	password123	customer	Mohamed Hamad	mohamed_2070@fmrz-telecom.com	99 Abbas El Akkad, Mansoura	2009-08-31
-122	sameh_2071	password123	customer	Sameh Khattab	sameh_2071@fmrz-telecom.com	52 Gameat El Dowal, Mansoura	1986-10-23
-123	hala_2072	password123	customer	Hala Hassan	hala_2072@fmrz-telecom.com	14 Tahrir Sq, Luxor	1993-10-08
-124	sara_2073	password123	customer	Sara Moussa	sara_2073@fmrz-telecom.com	96 Cornish Rd, Suez	2005-04-11
-125	ziad_2074	password123	customer	Ziad Fouad	ziad_2074@fmrz-telecom.com	63 Cornish Rd, Giza	1970-04-29
-126	mona_2075	password123	customer	Mona Ezzat	mona_2075@fmrz-telecom.com	95 Tahrir Sq, Cairo	2002-05-11
-127	tarek_2076	password123	customer	Tarek Badawi	tarek_2076@fmrz-telecom.com	92 Abbas El Akkad, Alexandria	2002-02-10
-128	nour_2077	password123	customer	Nour Ezzat	nour_2077@fmrz-telecom.com	55 Zamalek Dr, Aswan	1989-08-25
-129	ziad_2078	password123	customer	Ziad Mansour	ziad_2078@fmrz-telecom.com	15 Tahrir Sq, Hurghada	2004-03-29
-130	nour_2079	password123	customer	Nour Ezzat	nour_2079@fmrz-telecom.com	71 Makram Ebeid, Aswan	1973-12-28
-131	mona_2080	password123	customer	Mona Hassan	mona_2080@fmrz-telecom.com	68 9th Street, Suez	1996-04-04
-132	mona_2081	password123	customer	Mona Hamad	mona_2081@fmrz-telecom.com	37 Tahrir Sq, Giza	2007-08-05
-133	youssef_2082	password123	customer	Youssef Gaber	youssef_2082@fmrz-telecom.com	47 Zamalek Dr, Hurghada	1976-05-18
-134	tarek_2083	password123	customer	Tarek Hassan	tarek_2083@fmrz-telecom.com	38 El-Nasr St, Cairo	2010-10-20
-135	mohamed_2084	password123	customer	Mohamed Khattab	mohamed_2084@fmrz-telecom.com	80 Zamalek Dr, Suez	2000-01-09
-136	omar_2085	password123	customer	Omar Badawi	omar_2085@fmrz-telecom.com	64 9th Street, Aswan	1970-05-06
-137	omar_2086	password123	customer	Omar Hamad	omar_2086@fmrz-telecom.com	16 Maadi St, Alexandria	1987-10-01
-138	mariam_2087	password123	customer	Mariam Said	mariam_2087@fmrz-telecom.com	13 Zamalek Dr, Aswan	1985-05-28
-139	sara_2088	password123	customer	Sara Gaber	sara_2088@fmrz-telecom.com	98 9th Street, Hurghada	1973-01-28
-140	khaled_2089	password123	customer	Khaled Fouad	khaled_2089@fmrz-telecom.com	48 Cornish Rd, Suez	2009-07-11
-141	mona_2090	password123	customer	Mona Fouad	mona_2090@fmrz-telecom.com	71 9th Street, Hurghada	1988-03-06
-142	nour_2091	password123	customer	Nour Khattab	nour_2091@fmrz-telecom.com	60 Zamalek Dr, Hurghada	1996-05-08
-143	mohamed_2092	password123	customer	Mohamed Khattab	mohamed_2092@fmrz-telecom.com	59 El-Nasr St, Alexandria	1993-08-03
-144	fatma_2093	password123	customer	Fatma Hassan	fatma_2093@fmrz-telecom.com	88 Makram Ebeid, Suez	1989-02-06
-145	omar_2094	password123	customer	Omar Moussa	omar_2094@fmrz-telecom.com	67 Makram Ebeid, Mansoura	2003-04-06
-146	mohamed_2095	password123	customer	Mohamed Soliman	mohamed_2095@fmrz-telecom.com	26 El-Nasr St, Mansoura	1990-12-01
-147	mohamed_2096	password123	customer	Mohamed Badawi	mohamed_2096@fmrz-telecom.com	98 Maadi St, Alexandria	1971-05-07
-148	mona_2097	password123	customer	Mona Zaki	mona_2097@fmrz-telecom.com	63 El-Nasr St, Cairo	2007-12-04
-149	ziad_2098	password123	customer	Ziad Moussa	ziad_2098@fmrz-telecom.com	29 Gameat El Dowal, Mansoura	1997-05-08
-150	mona_2099	password123	customer	Mona Soliman	mona_2099@fmrz-telecom.com	34 Tahrir Sq, Aswan	1978-07-03
-151	amir_2100	password123	customer	Amir Salem	amir_2100@fmrz-telecom.com	48 Cornish Rd, Suez	1978-09-03
-152	testuser_auto	pass	customer	Test User	test@test.com	\N	\N
+1	admin	123456	admin	System Admin	admin@fmrz.com	HQ Cairo	1985-01-01
+2	alice	123456	customer	Alice Smith	alice@gmail.com	123 Main St	1990-01-01
+3	bob	123456	customer	Bob Johnson	bob@gmail.com	456 Elm St	1985-05-15
+4	carol	123456	customer	Carol White	carol@gmail.com	789 Oak Ave	1992-03-10
+5	david	123456	customer	David Brown	david@gmail.com	321 Pine Rd	1988-07-22
+6	eva	123456	customer	Eva Green	eva@gmail.com	654 Maple Dr	1995-11-05
+7	frank	123456	customer	Frank Miller	frank@gmail.com	987 Cedar Ln	1983-02-18
+8	grace	123456	customer	Grace Lee	grace@gmail.com	147 Birch Blvd	1991-09-30
+9	henry	123456	customer	Henry Wilson	henry@gmail.com	258 Walnut St	1987-04-14
+10	iris	123456	customer	Iris Taylor	iris@gmail.com	369 Spruce Ave	1993-06-25
+11	jack	123456	customer	Jack Davis	jack@gmail.com	741 Ash Ct	1986-12-03
+12	karen	123456	customer	Karen Martinez	karen@gmail.com	852 Elm Pl	1994-08-17
+13	leo	123456	customer	Leo Anderson	leo@gmail.com	963 Oak St	1989-01-29
+14	mia	123456	customer	Mia Thomas	mia@gmail.com	159 Pine Ave	1996-05-08
+15	noah	123456	customer	Noah Jackson	noah@gmail.com	267 Maple Rd	1984-10-21
+16	olivia	123456	customer	Olivia Harris	olivia@gmail.com	348 Cedar Dr	1997-03-15
+17	paul	123456	customer	Paul Clark	paul@gmail.com	426 Birch Ln	1982-07-04
+18	quinn	123456	customer	Quinn Lewis	quinn@gmail.com	537 Walnut Blvd	1998-11-19
+19	rachel	123456	customer	Rachel Walker	rachel@gmail.com	648 Spruce St	1981-02-27
+20	mariam_101	123456	customer	Mariam Hassan	mariam.hassan11@fmrz-telecom.com	70 El-Nasr St, Cairo	2009-12-29
+21	sara_102	123456	customer	Sara Hassan	sara.hassan12@fmrz-telecom.com	44 Cornish Rd, Suez	2009-08-25
+22	amir_103	123456	customer	Amir Mansour	amir.mansour13@fmrz-telecom.com	38 Tahrir Sq, Cairo	1990-08-12
+23	hassan_104	123456	customer	Hassan Soliman	hassan.soliman14@fmrz-telecom.com	32 Gameat El Dowal, Giza	1986-05-25
+24	layla_105	123456	customer	Layla Hassan	layla.hassan15@fmrz-telecom.com	49 Makram Ebeid, Cairo	2005-12-29
+25	hassan_106	123456	customer	Hassan Khattab	hassan.khattab16@fmrz-telecom.com	52 Tahrir Sq, Suez	2003-08-23
+26	fatma_107	123456	customer	Fatma Wahba	fatma.wahba17@fmrz-telecom.com	83 9th Street, Luxor	2008-12-23
+27	ahmed_108	123456	customer	Ahmed Said	ahmed.said18@fmrz-telecom.com	44 Cornish Rd, Mansoura	2000-10-04
+28	youssef_109	123456	customer	Youssef Gaber	youssef.gaber19@fmrz-telecom.com	13 Tahrir Sq, Giza	1992-08-23
+29	nour_110	123456	customer	Nour Gaber	nour.gaber20@fmrz-telecom.com	45 El-Nasr St, Cairo	1986-06-10
+30	mariam_111	123456	customer	Mariam Hassan	mariam.hassan21@fmrz-telecom.com	33 9th Street, Luxor	1990-05-10
+31	salma_112	123456	customer	Salma Fouad	salma.fouad22@fmrz-telecom.com	61 9th Street, Cairo	1988-11-04
+32	fatma_113	123456	customer	Fatma Wahba	fatma.wahba23@fmrz-telecom.com	15 Tahrir Sq, Cairo	1991-04-01
+33	hassan_114	123456	customer	Hassan Gaber	hassan.gaber24@fmrz-telecom.com	71 Cornish Rd, Alexandria	2010-03-05
+34	sara_115	123456	customer	Sara Nasr	sara.nasr25@fmrz-telecom.com	56 El-Nasr St, Cairo	2010-08-14
+35	omar_116	123456	customer	Omar Zaki	omar.zaki26@fmrz-telecom.com	52 Cornish Rd, Cairo	2009-12-30
+36	mohamed_117	123456	customer	Mohamed Wahba	mohamed.wahba27@fmrz-telecom.com	25 Cornish Rd, Cairo	2002-05-19
+37	mohamed_118	123456	customer	Mohamed Gaber	mohamed.gaber28@fmrz-telecom.com	52 Abbas El Akkad, Giza	1994-10-29
+38	omar_119	123456	customer	Omar Fouad	omar.fouad29@fmrz-telecom.com	94 Makram Ebeid, Mansoura	1997-10-03
+39	ziad_120	123456	customer	Ziad Zaki	ziad.zaki30@fmrz-telecom.com	69 Abbas El Akkad, Alexandria	1986-06-22
+40	mohamed_121	123456	customer	Mohamed Said	mohamed.said31@fmrz-telecom.com	51 Makram Ebeid, Mansoura	2000-10-13
+41	youssef_122	123456	customer	Youssef Mansour	youssef.mansour32@fmrz-telecom.com	57 Gameat El Dowal, Luxor	1986-08-06
+42	ziad_123	123456	customer	Ziad Ezzat	ziad.ezzat33@fmrz-telecom.com	18 Gameat El Dowal, Luxor	1985-01-22
+43	salma_124	123456	customer	Salma Nasr	salma.nasr34@fmrz-telecom.com	10 Cornish Rd, Alexandria	1996-12-23
+44	sara_125	123456	customer	Sara Khattab	sara.khattab35@fmrz-telecom.com	76 Cornish Rd, Mansoura	1999-04-19
+45	ziad_126	123456	customer	Ziad Ezzat	ziad.ezzat36@fmrz-telecom.com	44 Gameat El Dowal, Suez	1997-01-20
+46	ibrahim_127	123456	customer	Ibrahim Fouad	ibrahim.fouad37@fmrz-telecom.com	67 Tahrir Sq, Cairo	1999-11-08
+47	amir_128	123456	customer	Amir Salem	amir.salem38@fmrz-telecom.com	13 Abbas El Akkad, Cairo	1998-10-30
+48	ibrahim_129	123456	customer	Ibrahim Ezzat	ibrahim.ezzat39@fmrz-telecom.com	93 Gameat El Dowal, Luxor	2001-05-05
+49	omar_130	123456	customer	Omar Zaki	omar.zaki40@fmrz-telecom.com	10 Cornish Rd, Alexandria	1994-03-04
+50	ibrahim_1_3525	123456	customer	Ibrahim Nasr	ibrahim_1_3525@fmrz-telecom.com	45 Zamalek Dr, Alexandria	1976-07-02
+51	fatma_2_8697	123456	customer	Fatma Mansour	fatma_2_8697@fmrz-telecom.com	68 El-Nasr St, Alexandria	2009-09-24
+52	sameh_3_1930	123456	customer	Sameh Hamad	sameh_3_1930@fmrz-telecom.com	37 Cornish Rd, Alexandria	1988-10-08
+53	nour_4_4435	123456	customer	Nour Khattab	nour_4_4435@fmrz-telecom.com	96 Tahrir Sq, Aswan	1972-02-12
+54	tarek_5_1871	123456	customer	Tarek Fouad	tarek_5_1871@fmrz-telecom.com	66 Cornish Rd, Cairo	1979-05-10
+55	fatma_6_6120	123456	customer	Fatma Wahba	fatma_6_6120@fmrz-telecom.com	41 Gameat El Dowal, Aswan	2001-10-24
+56	mona_7_3194	123456	customer	Mona Said	mona_7_3194@fmrz-telecom.com	23 9th Street, Suez	1983-09-04
+57	nour_8_4436	123456	customer	Nour Fouad	nour_8_4436@fmrz-telecom.com	87 Zamalek Dr, Alexandria	1989-03-05
+58	mohamed_9_7332	123456	customer	Mohamed Ezzat	mohamed_9_7332@fmrz-telecom.com	11 Gameat El Dowal, Hurghada	1984-11-26
+59	ibrahim_10_8724	123456	customer	Ibrahim Khattab	ibrahim_10_8724@fmrz-telecom.com	76 Maadi St, Mansoura	1983-05-02
+60	hala_11_1501	123456	customer	Hala Hamad	hala_11_1501@fmrz-telecom.com	35 Tahrir Sq, Mansoura	1997-03-28
+61	tarek_12_6137	123456	customer	Tarek Hamad	tarek_12_6137@fmrz-telecom.com	93 Cornish Rd, Mansoura	2003-07-02
+62	ahmed_13_5784	123456	customer	Ahmed Salem	ahmed_13_5784@fmrz-telecom.com	32 Maadi St, Hurghada	1990-06-14
+63	mona_14_5706	123456	customer	Mona Khattab	mona_14_5706@fmrz-telecom.com	84 Zamalek Dr, Aswan	1985-07-19
+64	amir_15_7104	123456	customer	Amir Soliman	amir_15_7104@fmrz-telecom.com	41 El-Nasr St, Suez	1996-06-29
+65	salma_16_9030	123456	customer	Salma Salem	salma_16_9030@fmrz-telecom.com	15 Tahrir Sq, Suez	1985-07-16
+66	dina_17_1929	123456	customer	Dina Gaber	dina_17_1929@fmrz-telecom.com	35 Abbas El Akkad, Mansoura	2006-11-30
+67	layla_18_3453	123456	customer	Layla Soliman	layla_18_3453@fmrz-telecom.com	44 Maadi St, Giza	1993-10-16
+68	hassan_19_9307	123456	customer	Hassan Wahba	hassan_19_9307@fmrz-telecom.com	78 Tahrir Sq, Luxor	2010-07-01
+69	fatma_20_8705	123456	customer	Fatma Gaber	fatma_20_8705@fmrz-telecom.com	51 9th Street, Mansoura	1998-08-29
+70	hala_21_6029	123456	customer	Hala Hassan	hala_21_6029@fmrz-telecom.com	43 Zamalek Dr, Cairo	1975-11-23
+71	tarek_22_4121	123456	customer	Tarek Fouad	tarek_22_4121@fmrz-telecom.com	17 Abbas El Akkad, Mansoura	2002-04-21
+72	hala_23_2424	123456	customer	Hala Badawi	hala_23_2424@fmrz-telecom.com	43 El-Nasr St, Giza	1986-02-27
+73	sara_24_3625	123456	customer	Sara Fouad	sara_24_3625@fmrz-telecom.com	97 Cornish Rd, Luxor	1973-12-31
+74	nour_25_1457	123456	customer	Nour Fouad	nour_25_1457@fmrz-telecom.com	84 Zamalek Dr, Luxor	1974-09-27
+75	amir_26_6229	123456	customer	Amir Hassan	amir_26_6229@fmrz-telecom.com	64 Zamalek Dr, Aswan	2003-07-03
+76	fatma_27_7307	123456	customer	Fatma Nasr	fatma_27_7307@fmrz-telecom.com	60 Cornish Rd, Hurghada	1996-09-13
+77	mohamed_28_8092	123456	customer	Mohamed Salem	mohamed_28_8092@fmrz-telecom.com	88 Abbas El Akkad, Mansoura	1983-01-12
+78	ibrahim_29_1687	123456	customer	Ibrahim Nasr	ibrahim_29_1687@fmrz-telecom.com	48 Maadi St, Hurghada	1984-02-07
+79	dina_30_9602	123456	customer	Dina Fouad	dina_30_9602@fmrz-telecom.com	35 El-Nasr St, Cairo	1990-02-06
+80	mariam_31_3716	123456	customer	Mariam Badawi	mariam_31_3716@fmrz-telecom.com	43 Gameat El Dowal, Cairo	2007-12-11
+81	omar_32_9321	123456	customer	Omar Moussa	omar_32_9321@fmrz-telecom.com	62 9th Street, Giza	2009-08-06
+82	mohamed_33_1576	123456	customer	Mohamed Badawi	mohamed_33_1576@fmrz-telecom.com	49 Tahrir Sq, Aswan	1985-11-10
+83	dina_34_7244	123456	customer	Dina Soliman	dina_34_7244@fmrz-telecom.com	20 Gameat El Dowal, Alexandria	1998-10-08
+84	sara_35_7060	123456	customer	Sara Zaki	sara_35_7060@fmrz-telecom.com	10 Abbas El Akkad, Giza	1997-01-18
+85	ahmed_36_6304	123456	customer	Ahmed Wahba	ahmed_36_6304@fmrz-telecom.com	77 Makram Ebeid, Mansoura	1979-08-03
+86	omar_37_8299	123456	customer	Omar Soliman	omar_37_8299@fmrz-telecom.com	21 El-Nasr St, Mansoura	2004-11-21
+87	mariam_38_1699	123456	customer	Mariam Zaki	mariam_38_1699@fmrz-telecom.com	44 Gameat El Dowal, Suez	1998-12-05
+88	sameh_39_1263	123456	customer	Sameh Khattab	sameh_39_1263@fmrz-telecom.com	22 Maadi St, Suez	1984-11-25
+89	hala_40_9534	123456	customer	Hala Salem	hala_40_9534@fmrz-telecom.com	70 Zamalek Dr, Alexandria	2004-10-25
+90	sara_41_6447	123456	customer	Sara Moussa	sara_41_6447@fmrz-telecom.com	24 Cornish Rd, Aswan	1980-08-22
+91	youssef_42_4718	123456	customer	Youssef Hassan	youssef_42_4718@fmrz-telecom.com	96 Abbas El Akkad, Cairo	1999-03-06
+92	hala_43_8895	123456	customer	Hala Said	hala_43_8895@fmrz-telecom.com	29 Cornish Rd, Mansoura	1971-01-10
+93	tarek_44_6238	123456	customer	Tarek Hamad	tarek_44_6238@fmrz-telecom.com	73 Maadi St, Luxor	1972-11-20
+94	mohamed_45_3772	123456	customer	Mohamed Moussa	mohamed_45_3772@fmrz-telecom.com	34 Gameat El Dowal, Aswan	2009-01-15
+95	mohamed_46_6346	123456	customer	Mohamed Fouad	mohamed_46_6346@fmrz-telecom.com	48 9th Street, Hurghada	1982-12-03
+96	salma_47_8366	123456	customer	Salma Said	salma_47_8366@fmrz-telecom.com	97 Gameat El Dowal, Hurghada	1976-12-11
+97	nour_48_4755	123456	customer	Nour Hassan	nour_48_4755@fmrz-telecom.com	84 Tahrir Sq, Aswan	1975-10-19
+98	dina_49_7775	123456	customer	Dina Badawi	dina_49_7775@fmrz-telecom.com	17 Maadi St, Alexandria	1981-01-24
+99	ziad_50_3862	123456	customer	Ziad Moussa	ziad_50_3862@fmrz-telecom.com	93 Cornish Rd, Suez	1976-01-08
+100	youssef_51_8718	123456	customer	Youssef Soliman	youssef_51_8718@fmrz-telecom.com	24 Maadi St, Luxor	1976-12-24
+101	ibrahim_52_2582	123456	customer	Ibrahim Nasr	ibrahim_52_2582@fmrz-telecom.com	37 Makram Ebeid, Cairo	1990-03-02
+102	mariam_53_1069	123456	customer	Mariam Zaki	mariam_53_1069@fmrz-telecom.com	91 El-Nasr St, Mansoura	1971-11-13
+103	amir_54_5984	123456	customer	Amir Zaki	amir_54_5984@fmrz-telecom.com	27 Abbas El Akkad, Alexandria	1995-08-11
+104	sameh_55_1992	123456	customer	Sameh Mansour	sameh_55_1992@fmrz-telecom.com	71 Gameat El Dowal, Mansoura	2001-07-31
+105	youssef_56_5287	123456	customer	Youssef Gaber	youssef_56_5287@fmrz-telecom.com	12 Maadi St, Aswan	2008-02-15
+106	amir_57_7608	123456	customer	Amir Hamad	amir_57_7608@fmrz-telecom.com	23 Gameat El Dowal, Aswan	1999-02-15
+107	ibrahim_58_6723	123456	customer	Ibrahim Fouad	ibrahim_58_6723@fmrz-telecom.com	24 Abbas El Akkad, Alexandria	2008-11-03
+108	omar_59_1757	123456	customer	Omar Moussa	omar_59_1757@fmrz-telecom.com	66 Zamalek Dr, Giza	2008-01-26
+109	hassan_60_4251	123456	customer	Hassan Salem	hassan_60_4251@fmrz-telecom.com	80 Cornish Rd, Alexandria	2007-03-11
+110	ziad_61_7037	123456	customer	Ziad Said	ziad_61_7037@fmrz-telecom.com	18 Maadi St, Luxor	1975-12-31
+111	tarek_62_6738	123456	customer	Tarek Moussa	tarek_62_6738@fmrz-telecom.com	39 Zamalek Dr, Giza	1977-04-27
+112	youssef_63_7881	123456	customer	Youssef Khattab	youssef_63_7881@fmrz-telecom.com	46 Maadi St, Aswan	1998-02-07
+113	layla_64_4905	123456	customer	Layla Said	layla_64_4905@fmrz-telecom.com	77 9th Street, Mansoura	2000-06-12
+114	youssef_65_5969	123456	customer	Youssef Hassan	youssef_65_5969@fmrz-telecom.com	64 Abbas El Akkad, Hurghada	2005-10-19
+115	tarek_66_8915	123456	customer	Tarek Ezzat	tarek_66_8915@fmrz-telecom.com	77 Tahrir Sq, Luxor	2000-11-01
+116	sameh_67_2439	123456	customer	Sameh Gaber	sameh_67_2439@fmrz-telecom.com	46 Tahrir Sq, Alexandria	2003-06-28
+117	tarek_68_6104	123456	customer	Tarek Mansour	tarek_68_6104@fmrz-telecom.com	54 Gameat El Dowal, Aswan	1986-01-28
+118	omar_69_9442	123456	customer	Omar Fouad	omar_69_9442@fmrz-telecom.com	42 Cornish Rd, Alexandria	1973-06-02
+119	layla_70_8631	123456	customer	Layla Said	layla_70_8631@fmrz-telecom.com	80 Abbas El Akkad, Suez	1983-03-03
+120	nour_71_4592	123456	customer	Nour Fouad	nour_71_4592@fmrz-telecom.com	50 Cornish Rd, Luxor	1992-02-20
+121	layla_72_3804	123456	customer	Layla Hamad	layla_72_3804@fmrz-telecom.com	91 9th Street, Giza	2001-06-10
+122	fatma_73_1550	123456	customer	Fatma Khattab	fatma_73_1550@fmrz-telecom.com	44 Zamalek Dr, Cairo	1983-07-11
+123	mona_74_1775	123456	customer	Mona Salem	mona_74_1775@fmrz-telecom.com	24 Gameat El Dowal, Luxor	1998-02-14
+124	dina_75_5832	123456	customer	Dina Soliman	dina_75_5832@fmrz-telecom.com	52 9th Street, Suez	1991-12-19
+125	hala_76_2976	123456	customer	Hala Badawi	hala_76_2976@fmrz-telecom.com	35 Tahrir Sq, Alexandria	1973-11-08
+126	salma_77_7765	123456	customer	Salma Soliman	salma_77_7765@fmrz-telecom.com	40 Tahrir Sq, Aswan	1979-03-27
+127	nour_78_9767	123456	customer	Nour Ezzat	nour_78_9767@fmrz-telecom.com	81 El-Nasr St, Alexandria	1986-12-09
+128	sameh_79_2950	123456	customer	Sameh Soliman	sameh_79_2950@fmrz-telecom.com	82 9th Street, Luxor	1992-11-23
+129	fatma_80_4277	123456	customer	Fatma Mansour	fatma_80_4277@fmrz-telecom.com	89 Cornish Rd, Alexandria	1971-12-19
+130	khaled_81_2897	123456	customer	Khaled Said	khaled_81_2897@fmrz-telecom.com	63 Gameat El Dowal, Mansoura	2008-04-22
+131	amir_82_2007	123456	customer	Amir Moussa	amir_82_2007@fmrz-telecom.com	29 Zamalek Dr, Hurghada	1983-08-23
+132	sara_83_1265	123456	customer	Sara Fouad	sara_83_1265@fmrz-telecom.com	51 Cornish Rd, Giza	1988-08-13
+133	omar_84_8080	123456	customer	Omar Mansour	omar_84_8080@fmrz-telecom.com	57 Cornish Rd, Hurghada	1997-11-10
+134	mohamed_85_9426	123456	customer	Mohamed Said	mohamed_85_9426@fmrz-telecom.com	98 Gameat El Dowal, Mansoura	1992-09-16
+135	sameh_86_2604	123456	customer	Sameh Hamad	sameh_86_2604@fmrz-telecom.com	59 Maadi St, Giza	2004-03-10
+136	layla_87_8647	123456	customer	Layla Ezzat	layla_87_8647@fmrz-telecom.com	91 Abbas El Akkad, Luxor	1987-07-19
+137	ibrahim_88_9578	123456	customer	Ibrahim Badawi	ibrahim_88_9578@fmrz-telecom.com	96 9th Street, Mansoura	1978-02-28
+138	mohamed_89_1171	123456	customer	Mohamed Wahba	mohamed_89_1171@fmrz-telecom.com	54 El-Nasr St, Alexandria	1991-07-28
+139	layla_90_1644	123456	customer	Layla Salem	layla_90_1644@fmrz-telecom.com	71 Maadi St, Hurghada	1999-11-19
+140	ziad_91_2690	123456	customer	Ziad Ezzat	ziad_91_2690@fmrz-telecom.com	26 9th Street, Alexandria	1993-06-17
+141	amir_92_4580	123456	customer	Amir Fouad	amir_92_4580@fmrz-telecom.com	61 El-Nasr St, Mansoura	1972-10-21
+142	hala_93_4119	123456	customer	Hala Wahba	hala_93_4119@fmrz-telecom.com	10 Cornish Rd, Giza	1987-02-02
+143	sara_94_8093	123456	customer	Sara Said	sara_94_8093@fmrz-telecom.com	41 Cornish Rd, Mansoura	1975-06-11
+144	layla_95_3389	123456	customer	Layla Wahba	layla_95_3389@fmrz-telecom.com	55 Cornish Rd, Mansoura	2011-01-06
+145	ahmed_96_5481	123456	customer	Ahmed Khattab	ahmed_96_5481@fmrz-telecom.com	52 Maadi St, Hurghada	2008-04-25
+146	mohamed_97_1987	123456	customer	Mohamed Hamad	mohamed_97_1987@fmrz-telecom.com	30 Makram Ebeid, Giza	1973-03-16
+147	mohamed_98_8694	123456	customer	Mohamed Zaki	mohamed_98_8694@fmrz-telecom.com	74 El-Nasr St, Suez	1974-08-04
+148	sara_99_1155	123456	customer	Sara Hassan	sara_99_1155@fmrz-telecom.com	81 Abbas El Akkad, Suez	1997-04-29
+149	hassan_100_2472	123456	customer	Hassan Salem	hassan_100_2472@fmrz-telecom.com	81 Makram Ebeid, Luxor	1986-12-15
+150	ibrahim_101_8140	123456	customer	Ibrahim Fouad	ibrahim_101_8140@fmrz-telecom.com	94 Makram Ebeid, Hurghada	1991-01-06
+151	mohamed_102_4463	123456	customer	Mohamed Salem	mohamed_102_4463@fmrz-telecom.com	33 Cornish Rd, Suez	1973-01-15
+152	layla_103_7870	123456	customer	Layla Hamad	layla_103_7870@fmrz-telecom.com	71 Zamalek Dr, Suez	1971-09-08
+153	mariam_104_5953	123456	customer	Mariam Mansour	mariam_104_5953@fmrz-telecom.com	23 Gameat El Dowal, Luxor	1970-04-05
+154	nour_105_2416	123456	customer	Nour Khattab	nour_105_2416@fmrz-telecom.com	10 Maadi St, Mansoura	2004-03-26
+155	tarek_106_9854	123456	customer	Tarek Mansour	tarek_106_9854@fmrz-telecom.com	40 Cornish Rd, Mansoura	1988-10-11
+156	amir_107_7835	123456	customer	Amir Soliman	amir_107_7835@fmrz-telecom.com	74 Abbas El Akkad, Mansoura	1985-07-04
+157	khaled_108_7898	123456	customer	Khaled Wahba	khaled_108_7898@fmrz-telecom.com	28 Cornish Rd, Mansoura	2006-08-04
+158	nour_109_1301	123456	customer	Nour Soliman	nour_109_1301@fmrz-telecom.com	19 Tahrir Sq, Cairo	1996-07-31
+159	ahmed_110_3678	123456	customer	Ahmed Said	ahmed_110_3678@fmrz-telecom.com	51 El-Nasr St, Aswan	1980-05-13
+160	mona_111_8967	123456	customer	Mona Mansour	mona_111_8967@fmrz-telecom.com	20 Cornish Rd, Suez	2001-12-25
+161	youssef_112_3279	123456	customer	Youssef Ezzat	youssef_112_3279@fmrz-telecom.com	91 Cornish Rd, Suez	1993-09-13
+162	mona_113_7915	123456	customer	Mona Fouad	mona_113_7915@fmrz-telecom.com	45 Zamalek Dr, Aswan	2004-03-20
+163	fatma_114_4522	123456	customer	Fatma Mansour	fatma_114_4522@fmrz-telecom.com	34 9th Street, Mansoura	1991-01-14
+164	salma_115_3081	123456	customer	Salma Soliman	salma_115_3081@fmrz-telecom.com	58 Zamalek Dr, Alexandria	1979-12-31
+165	mona_116_6306	123456	customer	Mona Wahba	mona_116_6306@fmrz-telecom.com	93 Gameat El Dowal, Suez	2006-08-13
+166	sara_117_4054	123456	customer	Sara Fouad	sara_117_4054@fmrz-telecom.com	75 9th Street, Aswan	1988-08-10
+167	amir_118_6453	123456	customer	Amir Salem	amir_118_6453@fmrz-telecom.com	67 Makram Ebeid, Cairo	1991-01-14
+168	nour_119_9616	123456	customer	Nour Said	nour_119_9616@fmrz-telecom.com	49 Gameat El Dowal, Mansoura	1988-05-21
+169	sameh_120_7479	123456	customer	Sameh Moussa	sameh_120_7479@fmrz-telecom.com	84 Tahrir Sq, Hurghada	1970-10-16
+170	mona_121_4784	123456	customer	Mona Moussa	mona_121_4784@fmrz-telecom.com	93 Zamalek Dr, Mansoura	2007-11-08
+171	omar_122_3388	123456	customer	Omar Soliman	omar_122_3388@fmrz-telecom.com	69 Tahrir Sq, Aswan	1999-06-20
+172	youssef_123_6807	123456	customer	Youssef Mansour	youssef_123_6807@fmrz-telecom.com	43 Makram Ebeid, Suez	1976-04-26
+173	ziad_124_2642	123456	customer	Ziad Hassan	ziad_124_2642@fmrz-telecom.com	13 Zamalek Dr, Cairo	2008-01-29
+174	dina_125_2842	123456	customer	Dina Wahba	dina_125_2842@fmrz-telecom.com	61 Makram Ebeid, Alexandria	1996-08-18
+175	hassan_126_9755	123456	customer	Hassan Khattab	hassan_126_9755@fmrz-telecom.com	50 9th Street, Luxor	2002-12-28
+176	fatma_127_9045	123456	customer	Fatma Salem	fatma_127_9045@fmrz-telecom.com	81 El-Nasr St, Luxor	1974-10-19
+177	mohamed_128_1487	123456	customer	Mohamed Zaki	mohamed_128_1487@fmrz-telecom.com	94 Makram Ebeid, Luxor	1989-10-21
+178	mariam_129_1852	123456	customer	Mariam Soliman	mariam_129_1852@fmrz-telecom.com	37 Zamalek Dr, Suez	2004-08-20
+179	salma_130_5259	123456	customer	Salma Ezzat	salma_130_5259@fmrz-telecom.com	26 9th Street, Giza	2006-10-03
+180	mariam_131_7163	123456	customer	Mariam Said	mariam_131_7163@fmrz-telecom.com	54 Maadi St, Cairo	2005-04-21
+181	mohamed_132_9495	123456	customer	Mohamed Wahba	mohamed_132_9495@fmrz-telecom.com	97 El-Nasr St, Mansoura	1988-10-22
+182	tarek_133_1780	123456	customer	Tarek Moussa	tarek_133_1780@fmrz-telecom.com	85 Zamalek Dr, Hurghada	1973-01-05
+183	dina_134_8006	123456	customer	Dina Fouad	dina_134_8006@fmrz-telecom.com	34 Zamalek Dr, Suez	1994-10-20
+184	omar_135_8315	123456	customer	Omar Hamad	omar_135_8315@fmrz-telecom.com	44 Tahrir Sq, Mansoura	2007-06-21
+185	khaled_136_1124	123456	customer	Khaled Zaki	khaled_136_1124@fmrz-telecom.com	77 Maadi St, Luxor	1973-06-02
+186	dina_137_8574	123456	customer	Dina Said	dina_137_8574@fmrz-telecom.com	70 Cornish Rd, Mansoura	1998-03-04
+187	mohamed_138_7743	123456	customer	Mohamed Nasr	mohamed_138_7743@fmrz-telecom.com	22 Zamalek Dr, Aswan	2003-02-09
+188	sameh_139_5888	123456	customer	Sameh Khattab	sameh_139_5888@fmrz-telecom.com	59 Cornish Rd, Suez	2007-10-09
+189	youssef_140_4328	123456	customer	Youssef Ezzat	youssef_140_4328@fmrz-telecom.com	74 Makram Ebeid, Suez	1998-12-14
+190	nour_141_1442	123456	customer	Nour Moussa	nour_141_1442@fmrz-telecom.com	14 9th Street, Suez	2003-11-30
+191	layla_142_1029	123456	customer	Layla Zaki	layla_142_1029@fmrz-telecom.com	94 9th Street, Alexandria	1994-09-30
+192	khaled_143_8884	123456	customer	Khaled Salem	khaled_143_8884@fmrz-telecom.com	79 Zamalek Dr, Cairo	1990-05-30
+193	nour_144_4948	123456	customer	Nour Moussa	nour_144_4948@fmrz-telecom.com	17 Tahrir Sq, Mansoura	1997-07-19
+194	omar_145_1130	123456	customer	Omar Hassan	omar_145_1130@fmrz-telecom.com	52 Zamalek Dr, Giza	1981-01-22
+195	ziad_146_3232	123456	customer	Ziad Ezzat	ziad_146_3232@fmrz-telecom.com	43 9th Street, Hurghada	2000-12-11
+196	fatma_147_9993	123456	customer	Fatma Badawi	fatma_147_9993@fmrz-telecom.com	83 Makram Ebeid, Alexandria	1977-02-09
+197	sara_148_4702	123456	customer	Sara Nasr	sara_148_4702@fmrz-telecom.com	27 El-Nasr St, Hurghada	2010-05-23
+198	amir_149_4518	123456	customer	Amir Hassan	amir_149_4518@fmrz-telecom.com	76 El-Nasr St, Cairo	1984-08-02
+199	hassan_150_6297	123456	customer	Hassan Hamad	hassan_150_6297@fmrz-telecom.com	89 Gameat El Dowal, Suez	2002-02-24
 \.
 
 
 --
--- Data for Name: v_msisdn; Type: TABLE DATA; Schema: public; Owner: -
+-- Data for Name: v_msisdn; Type: TABLE DATA; Schema: public; Owner: zkhattab
 --
 
 COPY public.v_msisdn (msisdn) FROM stdin;
@@ -4949,77 +5416,77 @@ COPY public.v_msisdn (msisdn) FROM stdin;
 
 
 --
--- Name: bill_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+-- Name: bill_id_seq; Type: SEQUENCE SET; Schema: public; Owner: zkhattab
 --
 
-SELECT pg_catalog.setval('public.bill_id_seq', 158, true);
-
-
---
--- Name: cdr_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
---
-
-SELECT pg_catalog.setval('public.cdr_id_seq', 713, true);
+SELECT pg_catalog.setval('public.bill_id_seq', 404, true);
 
 
 --
--- Name: contract_addon_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+-- Name: cdr_id_seq; Type: SEQUENCE SET; Schema: public; Owner: zkhattab
 --
 
-SELECT pg_catalog.setval('public.contract_addon_id_seq', 35, true);
-
-
---
--- Name: contract_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
---
-
-SELECT pg_catalog.setval('public.contract_id_seq', 152, true);
+SELECT pg_catalog.setval('public.cdr_id_seq', 449, true);
 
 
 --
--- Name: file_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+-- Name: contract_addon_id_seq; Type: SEQUENCE SET; Schema: public; Owner: zkhattab
 --
 
-SELECT pg_catalog.setval('public.file_id_seq', 2, true);
-
-
---
--- Name: invoice_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
---
-
-SELECT pg_catalog.setval('public.invoice_id_seq', 19, true);
+SELECT pg_catalog.setval('public.contract_addon_id_seq', 1, false);
 
 
 --
--- Name: msisdn_pool_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+-- Name: contract_id_seq; Type: SEQUENCE SET; Schema: public; Owner: zkhattab
 --
 
-SELECT pg_catalog.setval('public.msisdn_pool_id_seq', 199, true);
+SELECT pg_catalog.setval('public.contract_id_seq', 199, true);
 
 
 --
--- Name: rateplan_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+-- Name: file_id_seq; Type: SEQUENCE SET; Schema: public; Owner: zkhattab
+--
+
+SELECT pg_catalog.setval('public.file_id_seq', 6, true);
+
+
+--
+-- Name: invoice_id_seq; Type: SEQUENCE SET; Schema: public; Owner: zkhattab
+--
+
+SELECT pg_catalog.setval('public.invoice_id_seq', 62, true);
+
+
+--
+-- Name: msisdn_pool_id_seq; Type: SEQUENCE SET; Schema: public; Owner: zkhattab
+--
+
+SELECT pg_catalog.setval('public.msisdn_pool_id_seq', 249, true);
+
+
+--
+-- Name: rateplan_id_seq; Type: SEQUENCE SET; Schema: public; Owner: zkhattab
 --
 
 SELECT pg_catalog.setval('public.rateplan_id_seq', 3, true);
 
 
 --
--- Name: service_package_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+-- Name: service_package_id_seq; Type: SEQUENCE SET; Schema: public; Owner: zkhattab
 --
 
 SELECT pg_catalog.setval('public.service_package_id_seq', 7, true);
 
 
 --
--- Name: user_account_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+-- Name: user_account_id_seq; Type: SEQUENCE SET; Schema: public; Owner: zkhattab
 --
 
-SELECT pg_catalog.setval('public.user_account_id_seq', 152, true);
+SELECT pg_catalog.setval('public.user_account_id_seq', 200, true);
 
 
 --
--- Name: bill bill_contract_id_billing_period_start_key; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: bill bill_contract_id_billing_period_start_key; Type: CONSTRAINT; Schema: public; Owner: zkhattab
 --
 
 ALTER TABLE ONLY public.bill
@@ -5027,7 +5494,7 @@ ALTER TABLE ONLY public.bill
 
 
 --
--- Name: bill bill_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: bill bill_pkey; Type: CONSTRAINT; Schema: public; Owner: zkhattab
 --
 
 ALTER TABLE ONLY public.bill
@@ -5035,7 +5502,7 @@ ALTER TABLE ONLY public.bill
 
 
 --
--- Name: cdr cdr_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: cdr cdr_pkey; Type: CONSTRAINT; Schema: public; Owner: zkhattab
 --
 
 ALTER TABLE ONLY public.cdr
@@ -5043,7 +5510,7 @@ ALTER TABLE ONLY public.cdr
 
 
 --
--- Name: contract_addon contract_addon_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: contract_addon contract_addon_pkey; Type: CONSTRAINT; Schema: public; Owner: zkhattab
 --
 
 ALTER TABLE ONLY public.contract_addon
@@ -5051,7 +5518,7 @@ ALTER TABLE ONLY public.contract_addon
 
 
 --
--- Name: contract_consumption contract_consumption_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: contract_consumption contract_consumption_pkey; Type: CONSTRAINT; Schema: public; Owner: zkhattab
 --
 
 ALTER TABLE ONLY public.contract_consumption
@@ -5059,7 +5526,7 @@ ALTER TABLE ONLY public.contract_consumption
 
 
 --
--- Name: contract contract_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: contract contract_pkey; Type: CONSTRAINT; Schema: public; Owner: zkhattab
 --
 
 ALTER TABLE ONLY public.contract
@@ -5067,7 +5534,7 @@ ALTER TABLE ONLY public.contract
 
 
 --
--- Name: file file_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: file file_pkey; Type: CONSTRAINT; Schema: public; Owner: zkhattab
 --
 
 ALTER TABLE ONLY public.file
@@ -5075,15 +5542,15 @@ ALTER TABLE ONLY public.file
 
 
 --
--- Name: invoice invoice_bill_id_unique; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: invoice invoice_bill_id_key; Type: CONSTRAINT; Schema: public; Owner: zkhattab
 --
 
 ALTER TABLE ONLY public.invoice
-    ADD CONSTRAINT invoice_bill_id_unique UNIQUE (bill_id);
+    ADD CONSTRAINT invoice_bill_id_key UNIQUE (bill_id);
 
 
 --
--- Name: invoice invoice_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: invoice invoice_pkey; Type: CONSTRAINT; Schema: public; Owner: zkhattab
 --
 
 ALTER TABLE ONLY public.invoice
@@ -5091,7 +5558,7 @@ ALTER TABLE ONLY public.invoice
 
 
 --
--- Name: msisdn_pool msisdn_pool_msisdn_key; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: msisdn_pool msisdn_pool_msisdn_key; Type: CONSTRAINT; Schema: public; Owner: zkhattab
 --
 
 ALTER TABLE ONLY public.msisdn_pool
@@ -5099,7 +5566,7 @@ ALTER TABLE ONLY public.msisdn_pool
 
 
 --
--- Name: msisdn_pool msisdn_pool_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: msisdn_pool msisdn_pool_pkey; Type: CONSTRAINT; Schema: public; Owner: zkhattab
 --
 
 ALTER TABLE ONLY public.msisdn_pool
@@ -5107,7 +5574,7 @@ ALTER TABLE ONLY public.msisdn_pool
 
 
 --
--- Name: rateplan rateplan_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: rateplan rateplan_pkey; Type: CONSTRAINT; Schema: public; Owner: zkhattab
 --
 
 ALTER TABLE ONLY public.rateplan
@@ -5115,7 +5582,7 @@ ALTER TABLE ONLY public.rateplan
 
 
 --
--- Name: rateplan_service_package rateplan_service_package_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: rateplan_service_package rateplan_service_package_pkey; Type: CONSTRAINT; Schema: public; Owner: zkhattab
 --
 
 ALTER TABLE ONLY public.rateplan_service_package
@@ -5123,15 +5590,15 @@ ALTER TABLE ONLY public.rateplan_service_package
 
 
 --
--- Name: ror_contract ror_contract_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: ror_contract ror_contract_pkey; Type: CONSTRAINT; Schema: public; Owner: zkhattab
 --
 
 ALTER TABLE ONLY public.ror_contract
-    ADD CONSTRAINT ror_contract_pkey PRIMARY KEY (contract_id, rateplan_id);
+    ADD CONSTRAINT ror_contract_pkey PRIMARY KEY (contract_id, rateplan_id, starting_date);
 
 
 --
--- Name: service_package service_package_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: service_package service_package_pkey; Type: CONSTRAINT; Schema: public; Owner: zkhattab
 --
 
 ALTER TABLE ONLY public.service_package
@@ -5139,7 +5606,7 @@ ALTER TABLE ONLY public.service_package
 
 
 --
--- Name: user_account user_account_email_key; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: user_account user_account_email_key; Type: CONSTRAINT; Schema: public; Owner: zkhattab
 --
 
 ALTER TABLE ONLY public.user_account
@@ -5147,7 +5614,7 @@ ALTER TABLE ONLY public.user_account
 
 
 --
--- Name: user_account user_account_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: user_account user_account_pkey; Type: CONSTRAINT; Schema: public; Owner: zkhattab
 --
 
 ALTER TABLE ONLY public.user_account
@@ -5155,7 +5622,7 @@ ALTER TABLE ONLY public.user_account
 
 
 --
--- Name: user_account user_account_username_key; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: user_account user_account_username_key; Type: CONSTRAINT; Schema: public; Owner: zkhattab
 --
 
 ALTER TABLE ONLY public.user_account
@@ -5163,112 +5630,112 @@ ALTER TABLE ONLY public.user_account
 
 
 --
--- Name: contract_msisdn_active_idx; Type: INDEX; Schema: public; Owner: -
+-- Name: contract_msisdn_active_idx; Type: INDEX; Schema: public; Owner: zkhattab
 --
 
 CREATE UNIQUE INDEX contract_msisdn_active_idx ON public.contract USING btree (msisdn) WHERE (status <> 'terminated'::public.contract_status);
 
 
 --
--- Name: idx_addon_active; Type: INDEX; Schema: public; Owner: -
+-- Name: idx_addon_active; Type: INDEX; Schema: public; Owner: zkhattab
 --
 
 CREATE INDEX idx_addon_active ON public.contract_addon USING btree (contract_id, is_active);
 
 
 --
--- Name: idx_addon_contract; Type: INDEX; Schema: public; Owner: -
+-- Name: idx_addon_contract; Type: INDEX; Schema: public; Owner: zkhattab
 --
 
 CREATE INDEX idx_addon_contract ON public.contract_addon USING btree (contract_id);
 
 
 --
--- Name: idx_bill_billing_date; Type: INDEX; Schema: public; Owner: -
+-- Name: idx_bill_billing_date; Type: INDEX; Schema: public; Owner: zkhattab
 --
 
 CREATE INDEX idx_bill_billing_date ON public.bill USING btree (billing_date);
 
 
 --
--- Name: idx_bill_contract; Type: INDEX; Schema: public; Owner: -
+-- Name: idx_bill_contract; Type: INDEX; Schema: public; Owner: zkhattab
 --
 
 CREATE INDEX idx_bill_contract ON public.bill USING btree (contract_id);
 
 
 --
--- Name: idx_cdr_dial_a; Type: INDEX; Schema: public; Owner: -
+-- Name: idx_cdr_dial_a; Type: INDEX; Schema: public; Owner: zkhattab
 --
 
 CREATE INDEX idx_cdr_dial_a ON public.cdr USING btree (dial_a);
 
 
 --
--- Name: idx_cdr_file_id; Type: INDEX; Schema: public; Owner: -
+-- Name: idx_cdr_file_id; Type: INDEX; Schema: public; Owner: zkhattab
 --
 
 CREATE INDEX idx_cdr_file_id ON public.cdr USING btree (file_id);
 
 
 --
--- Name: idx_cdr_rated_flag; Type: INDEX; Schema: public; Owner: -
+-- Name: idx_cdr_rated_flag; Type: INDEX; Schema: public; Owner: zkhattab
 --
 
 CREATE INDEX idx_cdr_rated_flag ON public.cdr USING btree (rated_flag);
 
 
 --
--- Name: idx_contract_user_account; Type: INDEX; Schema: public; Owner: -
+-- Name: idx_contract_user_account; Type: INDEX; Schema: public; Owner: zkhattab
 --
 
 CREATE INDEX idx_contract_user_account ON public.contract USING btree (user_account_id);
 
 
 --
--- Name: idx_invoice_bill; Type: INDEX; Schema: public; Owner: -
+-- Name: idx_invoice_bill; Type: INDEX; Schema: public; Owner: zkhattab
 --
 
 CREATE INDEX idx_invoice_bill ON public.invoice USING btree (bill_id);
 
 
 --
--- Name: cdr trg_auto_initialize_consumption; Type: TRIGGER; Schema: public; Owner: -
+-- Name: cdr trg_auto_initialize_consumption; Type: TRIGGER; Schema: public; Owner: zkhattab
 --
 
 CREATE TRIGGER trg_auto_initialize_consumption BEFORE INSERT ON public.cdr FOR EACH ROW EXECUTE FUNCTION public.auto_initialize_consumption();
 
 
 --
--- Name: cdr trg_auto_rate_cdr; Type: TRIGGER; Schema: public; Owner: -
+-- Name: cdr trg_auto_rate_cdr; Type: TRIGGER; Schema: public; Owner: zkhattab
 --
 
 CREATE TRIGGER trg_auto_rate_cdr AFTER INSERT ON public.cdr FOR EACH ROW EXECUTE FUNCTION public.auto_rate_cdr();
 
 
 --
--- Name: bill trg_bill_inserted; Type: TRIGGER; Schema: public; Owner: -
+-- Name: bill trg_bill_inserted; Type: TRIGGER; Schema: public; Owner: zkhattab
 --
 
 CREATE TRIGGER trg_bill_inserted AFTER INSERT ON public.bill FOR EACH ROW EXECUTE FUNCTION public.notify_bill_generation();
 
 
 --
--- Name: bill trg_bill_payment; Type: TRIGGER; Schema: public; Owner: -
+-- Name: bill trg_bill_payment; Type: TRIGGER; Schema: public; Owner: zkhattab
 --
 
 CREATE TRIGGER trg_bill_payment AFTER UPDATE ON public.bill FOR EACH ROW EXECUTE FUNCTION public.trg_restore_credit_on_payment();
 
 
 --
--- Name: cdr trg_cdr_validate_contract; Type: TRIGGER; Schema: public; Owner: -
+-- Name: cdr trg_cdr_validate_contract; Type: TRIGGER; Schema: public; Owner: zkhattab
 --
 
 CREATE TRIGGER trg_cdr_validate_contract BEFORE INSERT ON public.cdr FOR EACH ROW EXECUTE FUNCTION public.validate_cdr_contract();
 
 
 --
--- Name: bill bill_contract_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: bill bill_contract_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: zkhattab
 --
 
 ALTER TABLE ONLY public.bill
@@ -5276,7 +5743,7 @@ ALTER TABLE ONLY public.bill
 
 
 --
--- Name: cdr cdr_file_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: cdr cdr_file_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: zkhattab
 --
 
 ALTER TABLE ONLY public.cdr
@@ -5284,7 +5751,7 @@ ALTER TABLE ONLY public.cdr
 
 
 --
--- Name: cdr cdr_service_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: cdr cdr_service_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: zkhattab
 --
 
 ALTER TABLE ONLY public.cdr
@@ -5292,7 +5759,7 @@ ALTER TABLE ONLY public.cdr
 
 
 --
--- Name: contract_addon contract_addon_contract_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: contract_addon contract_addon_contract_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: zkhattab
 --
 
 ALTER TABLE ONLY public.contract_addon
@@ -5300,7 +5767,7 @@ ALTER TABLE ONLY public.contract_addon
 
 
 --
--- Name: contract_addon contract_addon_service_package_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: contract_addon contract_addon_service_package_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: zkhattab
 --
 
 ALTER TABLE ONLY public.contract_addon
@@ -5308,7 +5775,7 @@ ALTER TABLE ONLY public.contract_addon
 
 
 --
--- Name: contract_consumption contract_consumption_bill_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: contract_consumption contract_consumption_bill_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: zkhattab
 --
 
 ALTER TABLE ONLY public.contract_consumption
@@ -5316,7 +5783,7 @@ ALTER TABLE ONLY public.contract_consumption
 
 
 --
--- Name: contract_consumption contract_consumption_contract_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: contract_consumption contract_consumption_contract_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: zkhattab
 --
 
 ALTER TABLE ONLY public.contract_consumption
@@ -5324,7 +5791,7 @@ ALTER TABLE ONLY public.contract_consumption
 
 
 --
--- Name: contract_consumption contract_consumption_rateplan_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: contract_consumption contract_consumption_rateplan_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: zkhattab
 --
 
 ALTER TABLE ONLY public.contract_consumption
@@ -5332,7 +5799,7 @@ ALTER TABLE ONLY public.contract_consumption
 
 
 --
--- Name: contract_consumption contract_consumption_service_package_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: contract_consumption contract_consumption_service_package_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: zkhattab
 --
 
 ALTER TABLE ONLY public.contract_consumption
@@ -5340,7 +5807,7 @@ ALTER TABLE ONLY public.contract_consumption
 
 
 --
--- Name: contract contract_rateplan_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: contract contract_rateplan_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: zkhattab
 --
 
 ALTER TABLE ONLY public.contract
@@ -5348,7 +5815,7 @@ ALTER TABLE ONLY public.contract
 
 
 --
--- Name: contract contract_user_account_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: contract contract_user_account_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: zkhattab
 --
 
 ALTER TABLE ONLY public.contract
@@ -5356,7 +5823,7 @@ ALTER TABLE ONLY public.contract
 
 
 --
--- Name: invoice invoice_bill_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: invoice invoice_bill_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: zkhattab
 --
 
 ALTER TABLE ONLY public.invoice
@@ -5364,7 +5831,7 @@ ALTER TABLE ONLY public.invoice
 
 
 --
--- Name: rateplan_service_package rateplan_service_package_rateplan_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: rateplan_service_package rateplan_service_package_rateplan_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: zkhattab
 --
 
 ALTER TABLE ONLY public.rateplan_service_package
@@ -5372,7 +5839,7 @@ ALTER TABLE ONLY public.rateplan_service_package
 
 
 --
--- Name: rateplan_service_package rateplan_service_package_service_package_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: rateplan_service_package rateplan_service_package_service_package_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: zkhattab
 --
 
 ALTER TABLE ONLY public.rateplan_service_package
@@ -5380,15 +5847,7 @@ ALTER TABLE ONLY public.rateplan_service_package
 
 
 --
--- Name: ror_contract ror_contract_bill_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.ror_contract
-    ADD CONSTRAINT ror_contract_bill_id_fkey FOREIGN KEY (bill_id) REFERENCES public.bill(id);
-
-
---
--- Name: ror_contract ror_contract_contract_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: ror_contract ror_contract_contract_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: zkhattab
 --
 
 ALTER TABLE ONLY public.ror_contract
@@ -5396,7 +5855,7 @@ ALTER TABLE ONLY public.ror_contract
 
 
 --
--- Name: ror_contract ror_contract_rateplan_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: ror_contract ror_contract_rateplan_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: zkhattab
 --
 
 ALTER TABLE ONLY public.ror_contract
@@ -5407,5 +5866,5 @@ ALTER TABLE ONLY public.ror_contract
 -- PostgreSQL database dump complete
 --
 
-\unrestrict RwFaKbTXk7nYR5bL27HUW2WoLPEKeB2FMh47bNOgy8dDkNtB0Sdofnsrg61hotk
+\unrestrict nCQtnlw3KbRt5p5DQAOzkHaVCTWYZBzfPnj8E1eWGfoqfMgfbij0BJfuaJ2c1qC
 

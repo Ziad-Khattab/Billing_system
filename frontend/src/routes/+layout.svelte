@@ -28,7 +28,7 @@
 	<nav class="navbar">
 		<div class="nav-inner container">
 			<a href="/" class="nav-brand" aria-label="Home">
-				<img src="/eand_logo.svg" alt="e&" class="nav-logo" style="height: 40px;" />
+				<img src="/logo.png" alt="FMRZ" class="nav-logo" style="height: 40px;" />
 			</a>
 
 			<button
@@ -79,7 +79,7 @@
 					<a
 						href="/profile"
 						class="nav-link"
-						class:active={$page.url.pathname === '/profile'}
+						class:active={$page.url.pathname === '/profile' || ($page.url.pathname.startsWith('/profile') && !$page.url.pathname.includes('/invoices'))}
 					>Profile</a>
 
 					<a

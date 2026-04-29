@@ -12,16 +12,16 @@ import java.sql.PreparedStatement;
 import java.sql.Statement;
 import java.util.HashMap;
 import java.util.Map;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * BillAutomationWorker listens for PostgreSQL notifications and automatically
  * generates JasperReport PDFs for new bills.
- * 
- * Integrated from R0qiia's logic with production path fixes.
  */
 public class BillAutomationWorker implements Runnable {
+    private static final Logger logger = LoggerFactory.getLogger(BillAutomationWorker.class);
 
-    // Use environment variable for output path, default to /app/processed/invoices
     private static final String OUTPUT_FOLDER = System.getenv("CDR_PROCESSED_PATH") != null 
             ? System.getenv("CDR_PROCESSED_PATH") + "/invoices" 
             : "processed/invoices";
@@ -30,44 +30,33 @@ public class BillAutomationWorker implements Runnable {
 
     @Override
     public void run() {
-        System.out.println("🚀 [Automation] Starting BillAutomationWorker...");
+        logger.info("Starting BillAutomationWorker...");
         
-        // Ensure output directory exists
-        new File(OUTPUT_FOLDER).mkdirs();
-
-        // For LISTEN/NOTIFY, we should ideally use a dedicated non-pooled connection.
-        // We'll fetch the credentials from the environment.
-        // Use the same logic as DB.java for robustness
-        String url = System.getenv("DB_URL");
-        if (url == null || url.isEmpty()) url = System.getProperty("DB_URL");
-        
-        if (url != null && url.contains("-pooler")) {
-            url = url.replace("-pooler", "");
-            System.out.println("ℹ [Automation] Using direct connection (no-pooler) for LISTEN/NOTIFY.");
+        File outDir = new File(OUTPUT_FOLDER);
+        if (!outDir.exists()) {
+            if (!outDir.mkdirs()) {
+                logger.warn("Could not create output folder: {}", OUTPUT_FOLDER);
+            }
         }
-        
-        String user = System.getenv("DB_USER");
-        if (user == null || user.isEmpty()) user = System.getProperty("DB_USER");
-        
-        String pass = System.getenv("DB_PASSWORD");
-        if (pass == null || pass.isEmpty()) pass = System.getProperty("DB_PASSWORD");
+
+        String url = DB.getEnvOrProp("DB_URL", "db.url");
+        String user = DB.getEnvOrProp("DB_USER", "db.user");
+        String pass = DB.getEnvOrProp("DB_PASSWORD", "db.password");
 
         try (Connection conn = java.sql.DriverManager.getConnection(url, user, pass)) {
-            // Unwrap PostgreSQL connection to access LISTEN/NOTIFY features
             PGConnection pgConn = conn.unwrap(PGConnection.class);
 
             try (Statement stmt = conn.createStatement()) {
                 stmt.execute("LISTEN generate_bill_event");
-                System.out.println("✔ [Automation] Listening for 'generate_bill_event' (Direct Connection)...");
+                logger.info("Listening for 'generate_bill_event' (Direct Connection)...");
             }
 
             int heartbeatCount = 0;
             while (!Thread.currentThread().isInterrupted()) {
-                // Poll for notifications every 5 seconds
                 PGNotification[] notifications = pgConn.getNotifications(5000);
 
-                if (heartbeatCount++ % 12 == 0) { // Every minute
-                    System.out.println("💓 [Automation] Heartbeat: Worker is still listening...");
+                if (heartbeatCount++ % 12 == 0) {
+                    logger.debug("Heartbeat: Worker is still listening...");
                 }
 
                 if (notifications != null) {
@@ -77,89 +66,63 @@ public class BillAutomationWorker implements Runnable {
                 }
             }
         } catch (Exception e) {
-            System.err.println("❌ [Automation] Worker crashed: " + e.getMessage());
-            e.printStackTrace();
+            logger.error("Worker crashed: {}", e.getMessage(), e);
         }
     }
 
     private void handleNotification(PGNotification notification, Connection conn) {
         try {
             int billId = Integer.parseInt(notification.getParameter());
-            System.out.println("📩 [Automation] New Bill Event: ID " + billId);
-            
+            logger.info("New Bill Event: ID {}", billId);
             generatePdf(billId, conn);
-            
-        } catch (NumberFormatException e) {
-            System.err.println("⚠️ [Automation] Invalid notification parameter: " + notification.getParameter());
         } catch (Exception e) {
-            System.err.println("❌ [Automation] Error handling notification: " + e.getMessage());
+            logger.error("Error handling notification: {}", e.getMessage());
         }
     }
 
     private void generatePdf(int billId, Connection conn) {
+        // FIX: TCCL Wrapping for JasperReports extension discovery in containerized environments
+        ClassLoader originalClassLoader = Thread.currentThread().getContextClassLoader();
         try {
+            Thread.currentThread().setContextClassLoader(com.billing.util.JasperLoader.class.getClassLoader());
+            
             String pdfPath = OUTPUT_FOLDER + "/Bill_" + billId + ".pdf";
             
-            // Load template (Try classpath first, then filesystem)
-            InputStream reportStream = BillAutomationWorker.class.getResourceAsStream("/" + REPORT_TEMPLATE);
-            if (reportStream == null) {
-                // Fallback to filesystem for standalone execution
-                File f = new File(REPORT_TEMPLATE);
-                if (f.exists()) {
-                    reportStream = new java.io.FileInputStream(f);
-                } else {
-                    f = new File("target/classes/" + REPORT_TEMPLATE);
-                    if (f.exists()) {
-                        reportStream = new java.io.FileInputStream(f);
-                    }
-                }
-            }
+            JasperReport jasperReport = com.billing.util.JasperLoader.getReport(REPORT_TEMPLATE);
             
-            if (reportStream == null) {
-                throw new RuntimeException("Report template " + REPORT_TEMPLATE + " not found in classpath or filesystem!");
-            }
-            
-            // JasperReports 7: Use JacksonUtil for strict schema validation
-            JasperReportsContext context = DefaultJasperReportsContext.getInstance();
-            net.sf.jasperreports.jackson.util.JacksonUtil jacksonUtil = net.sf.jasperreports.jackson.util.JacksonUtil.getInstance(context);
-            
-            // Load and compile
-            net.sf.jasperreports.engine.design.JasperDesign design = jacksonUtil.loadXml(reportStream, net.sf.jasperreports.engine.design.JasperDesign.class);
-            JasperReport jasperReport = JasperCompileManager.compileReport(design);
-
-            // Set parameters
             Map<String, Object> params = new HashMap<>();
             params.put("BILL_ID", billId);
             
-            // Pass Logo as a Stream (Works in JAR/Railway/Podman)
-            InputStream logoStream = BillAutomationWorker.class.getResourceAsStream("/logo.svg");
+            InputStream logoStream = com.billing.util.JasperLoader.getResourceStream("logo.svg");
             params.put("LOGO_PATH", logoStream);
             
             params.put("GROUP_NAME", "FMRZ Telecom Group");
             params.put("COMPANY_CARE", "111 (Free from FMRZ)");
             params.put("COMPANY_WEB", "www.fmrz-telecom.com");
             params.put("COMPANY_EMAIL", "support@fmrz-telecom.com");
+            params.put("BILLING_DATE", new java.util.Date());
 
-            // Fill report
+            // Load Icons
+            params.put("VOICE_ICON", com.billing.util.JasperLoader.getResourceStream("Pictures/voice.svg"));
+            params.put("DATA_ICON", com.billing.util.JasperLoader.getResourceStream("Pictures/data.svg"));
+            params.put("SMS_ICON", com.billing.util.JasperLoader.getResourceStream("Pictures/sms.svg"));
+
             JasperPrint print = JasperFillManager.fillReport(jasperReport, params, conn);
-
-            // Export to PDF
             JasperExportManager.exportReportToPdfFile(print, pdfPath);
-            System.out.println("✅ [Automation] PDF generated: " + pdfPath);
+            logger.info("PDF generated: {}", pdfPath);
 
-            // Register the generated file path in the 'invoice' table
             try (PreparedStatement pstmt = conn.prepareStatement(
                     "INSERT INTO invoice (bill_id, pdf_path) VALUES (?, ?) " +
                     "ON CONFLICT (bill_id) DO UPDATE SET pdf_path = EXCLUDED.pdf_path")) {
                 pstmt.setInt(1, billId);
                 pstmt.setString(2, pdfPath);
                 pstmt.executeUpdate();
-                System.out.println("💾 [Automation] Invoice table updated for Bill " + billId);
+                logger.info("Invoice table updated for Bill {}", billId);
             }
-
         } catch (Exception e) {
-            System.err.println("❌ [Automation] Jasper generation failed for Bill " + billId + ": " + e.getMessage());
-            e.printStackTrace();
+            logger.error("Jasper generation failed for Bill {}: {}", billId, e.getMessage(), e);
+        } finally {
+            Thread.currentThread().setContextClassLoader(originalClassLoader);
         }
     }
 }

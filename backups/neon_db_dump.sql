@@ -2,7 +2,7 @@
 -- PostgreSQL database dump
 --
 
-\restrict hDrA9KLAeL6NJDDhSN5hnKMn9gdlF9LDTfyzMztteaQ5cYCV8m0C0Flap7AgpWo
+\restrict HcGcXkWQptEe0DUcudafmSW3CafkVbBTq1m6MhFyxMivTUiDQPv5cBwjAgLkgka
 
 -- Dumped from database version 17.8 (130b160)
 -- Dumped by pg_dump version 18.3
@@ -20,7 +20,7 @@ SET client_min_messages = warning;
 SET row_security = off;
 
 --
--- Name: bill_status; Type: TYPE; Schema: public; Owner: -
+-- Name: bill_status; Type: TYPE; Schema: public; Owner: neondb_owner
 --
 
 CREATE TYPE public.bill_status AS ENUM (
@@ -32,8 +32,10 @@ CREATE TYPE public.bill_status AS ENUM (
 );
 
 
+ALTER TYPE public.bill_status OWNER TO neondb_owner;
+
 --
--- Name: contract_recurring_status; Type: TYPE; Schema: public; Owner: -
+-- Name: contract_recurring_status; Type: TYPE; Schema: public; Owner: neondb_owner
 --
 
 CREATE TYPE public.contract_recurring_status AS ENUM (
@@ -44,8 +46,10 @@ CREATE TYPE public.contract_recurring_status AS ENUM (
 );
 
 
+ALTER TYPE public.contract_recurring_status OWNER TO neondb_owner;
+
 --
--- Name: contract_status; Type: TYPE; Schema: public; Owner: -
+-- Name: contract_status; Type: TYPE; Schema: public; Owner: neondb_owner
 --
 
 CREATE TYPE public.contract_status AS ENUM (
@@ -55,8 +59,10 @@ CREATE TYPE public.contract_status AS ENUM (
 );
 
 
+ALTER TYPE public.contract_status OWNER TO neondb_owner;
+
 --
--- Name: contract_status_enum; Type: TYPE; Schema: public; Owner: -
+-- Name: contract_status_enum; Type: TYPE; Schema: public; Owner: neondb_owner
 --
 
 CREATE TYPE public.contract_status_enum AS ENUM (
@@ -67,8 +73,10 @@ CREATE TYPE public.contract_status_enum AS ENUM (
 );
 
 
+ALTER TYPE public.contract_status_enum OWNER TO neondb_owner;
+
 --
--- Name: cot_status_enum; Type: TYPE; Schema: public; Owner: -
+-- Name: cot_status_enum; Type: TYPE; Schema: public; Owner: neondb_owner
 --
 
 CREATE TYPE public.cot_status_enum AS ENUM (
@@ -78,8 +86,10 @@ CREATE TYPE public.cot_status_enum AS ENUM (
 );
 
 
+ALTER TYPE public.cot_status_enum OWNER TO neondb_owner;
+
 --
--- Name: cr_status_enum; Type: TYPE; Schema: public; Owner: -
+-- Name: cr_status_enum; Type: TYPE; Schema: public; Owner: neondb_owner
 --
 
 CREATE TYPE public.cr_status_enum AS ENUM (
@@ -90,8 +100,10 @@ CREATE TYPE public.cr_status_enum AS ENUM (
 );
 
 
+ALTER TYPE public.cr_status_enum OWNER TO neondb_owner;
+
 --
--- Name: customer_type; Type: TYPE; Schema: public; Owner: -
+-- Name: customer_type; Type: TYPE; Schema: public; Owner: neondb_owner
 --
 
 CREATE TYPE public.customer_type AS ENUM (
@@ -100,8 +112,10 @@ CREATE TYPE public.customer_type AS ENUM (
 );
 
 
+ALTER TYPE public.customer_type OWNER TO neondb_owner;
+
 --
--- Name: one_time_status; Type: TYPE; Schema: public; Owner: -
+-- Name: one_time_status; Type: TYPE; Schema: public; Owner: neondb_owner
 --
 
 CREATE TYPE public.one_time_status AS ENUM (
@@ -111,8 +125,10 @@ CREATE TYPE public.one_time_status AS ENUM (
 );
 
 
+ALTER TYPE public.one_time_status OWNER TO neondb_owner;
+
 --
--- Name: rateplan_status; Type: TYPE; Schema: public; Owner: -
+-- Name: rateplan_status; Type: TYPE; Schema: public; Owner: neondb_owner
 --
 
 CREATE TYPE public.rateplan_status AS ENUM (
@@ -121,8 +137,10 @@ CREATE TYPE public.rateplan_status AS ENUM (
 );
 
 
+ALTER TYPE public.rateplan_status OWNER TO neondb_owner;
+
 --
--- Name: rateplan_status_enum; Type: TYPE; Schema: public; Owner: -
+-- Name: rateplan_status_enum; Type: TYPE; Schema: public; Owner: neondb_owner
 --
 
 CREATE TYPE public.rateplan_status_enum AS ENUM (
@@ -131,8 +149,10 @@ CREATE TYPE public.rateplan_status_enum AS ENUM (
 );
 
 
+ALTER TYPE public.rateplan_status_enum OWNER TO neondb_owner;
+
 --
--- Name: service_type; Type: TYPE; Schema: public; Owner: -
+-- Name: service_type; Type: TYPE; Schema: public; Owner: neondb_owner
 --
 
 CREATE TYPE public.service_type AS ENUM (
@@ -143,8 +163,10 @@ CREATE TYPE public.service_type AS ENUM (
 );
 
 
+ALTER TYPE public.service_type OWNER TO neondb_owner;
+
 --
--- Name: service_type_enum; Type: TYPE; Schema: public; Owner: -
+-- Name: service_type_enum; Type: TYPE; Schema: public; Owner: neondb_owner
 --
 
 CREATE TYPE public.service_type_enum AS ENUM (
@@ -157,8 +179,10 @@ CREATE TYPE public.service_type_enum AS ENUM (
 );
 
 
+ALTER TYPE public.service_type_enum OWNER TO neondb_owner;
+
 --
--- Name: service_uom; Type: TYPE; Schema: public; Owner: -
+-- Name: service_uom; Type: TYPE; Schema: public; Owner: neondb_owner
 --
 
 CREATE TYPE public.service_uom AS ENUM (
@@ -170,8 +194,10 @@ CREATE TYPE public.service_uom AS ENUM (
 );
 
 
+ALTER TYPE public.service_uom OWNER TO neondb_owner;
+
 --
--- Name: service_uom_enum; Type: TYPE; Schema: public; Owner: -
+-- Name: service_uom_enum; Type: TYPE; Schema: public; Owner: neondb_owner
 --
 
 CREATE TYPE public.service_uom_enum AS ENUM (
@@ -183,8 +209,10 @@ CREATE TYPE public.service_uom_enum AS ENUM (
 );
 
 
+ALTER TYPE public.service_uom_enum OWNER TO neondb_owner;
+
 --
--- Name: user_role; Type: TYPE; Schema: public; Owner: -
+-- Name: user_role; Type: TYPE; Schema: public; Owner: neondb_owner
 --
 
 CREATE TYPE public.user_role AS ENUM (
@@ -193,8 +221,10 @@ CREATE TYPE public.user_role AS ENUM (
 );
 
 
+ALTER TYPE public.user_role OWNER TO neondb_owner;
+
 --
--- Name: add_new_service_package(character varying, public.service_type, numeric, integer, numeric, text, boolean); Type: FUNCTION; Schema: public; Owner: -
+-- Name: add_new_service_package(character varying, public.service_type, numeric, integer, numeric, text, boolean); Type: FUNCTION; Schema: public; Owner: neondb_owner
 --
 
 CREATE FUNCTION public.add_new_service_package(p_name character varying, p_type public.service_type, p_amount numeric, p_priority integer, p_price numeric, p_description text DEFAULT NULL::text, p_is_roaming boolean DEFAULT false) RETURNS integer
@@ -216,8 +246,10 @@ END;
 $$;
 
 
+ALTER FUNCTION public.add_new_service_package(p_name character varying, p_type public.service_type, p_amount numeric, p_priority integer, p_price numeric, p_description text, p_is_roaming boolean) OWNER TO neondb_owner;
+
 --
--- Name: auto_initialize_consumption(); Type: FUNCTION; Schema: public; Owner: -
+-- Name: auto_initialize_consumption(); Type: FUNCTION; Schema: public; Owner: neondb_owner
 --
 
 CREATE FUNCTION public.auto_initialize_consumption() RETURNS trigger
@@ -232,8 +264,10 @@ END;
 $$;
 
 
+ALTER FUNCTION public.auto_initialize_consumption() OWNER TO neondb_owner;
+
 --
--- Name: auto_rate_cdr(); Type: FUNCTION; Schema: public; Owner: -
+-- Name: auto_rate_cdr(); Type: FUNCTION; Schema: public; Owner: neondb_owner
 --
 
 CREATE FUNCTION public.auto_rate_cdr() RETURNS trigger
@@ -248,8 +282,10 @@ END;
 $$;
 
 
+ALTER FUNCTION public.auto_rate_cdr() OWNER TO neondb_owner;
+
 --
--- Name: cancel_addon(integer); Type: FUNCTION; Schema: public; Owner: -
+-- Name: cancel_addon(integer); Type: FUNCTION; Schema: public; Owner: neondb_owner
 --
 
 CREATE FUNCTION public.cancel_addon(p_addon_id integer) RETURNS void
@@ -270,8 +306,10 @@ END;
 $$;
 
 
+ALTER FUNCTION public.cancel_addon(p_addon_id integer) OWNER TO neondb_owner;
+
 --
--- Name: change_contract_rateplan(integer, integer); Type: FUNCTION; Schema: public; Owner: -
+-- Name: change_contract_rateplan(integer, integer); Type: FUNCTION; Schema: public; Owner: neondb_owner
 --
 
 CREATE FUNCTION public.change_contract_rateplan(p_contract_id integer, p_new_rateplan_id integer) RETURNS void
@@ -530,8 +568,10 @@ END;
 $$;
 
 
+ALTER FUNCTION public.change_contract_rateplan(p_contract_id integer, p_new_rateplan_id integer) OWNER TO neondb_owner;
+
 --
--- Name: change_contract_status(integer, public.contract_status); Type: FUNCTION; Schema: public; Owner: -
+-- Name: change_contract_status(integer, public.contract_status); Type: FUNCTION; Schema: public; Owner: neondb_owner
 --
 
 CREATE FUNCTION public.change_contract_status(p_contract_id integer, p_status public.contract_status) RETURNS void
@@ -558,8 +598,10 @@ END;
 $$;
 
 
+ALTER FUNCTION public.change_contract_status(p_contract_id integer, p_status public.contract_status) OWNER TO neondb_owner;
+
 --
--- Name: create_admin(character varying, character varying, character varying, character varying); Type: FUNCTION; Schema: public; Owner: -
+-- Name: create_admin(character varying, character varying, character varying, character varying); Type: FUNCTION; Schema: public; Owner: neondb_owner
 --
 
 CREATE FUNCTION public.create_admin(p_username character varying, p_password character varying, p_name character varying, p_email character varying) RETURNS integer
@@ -583,8 +625,10 @@ END;
 $$;
 
 
+ALTER FUNCTION public.create_admin(p_username character varying, p_password character varying, p_name character varying, p_email character varying) OWNER TO neondb_owner;
+
 --
--- Name: create_admin(character varying, character varying, character varying, character varying, text, date); Type: FUNCTION; Schema: public; Owner: -
+-- Name: create_admin(character varying, character varying, character varying, character varying, text, date); Type: FUNCTION; Schema: public; Owner: neondb_owner
 --
 
 CREATE FUNCTION public.create_admin(p_username character varying, p_password character varying, p_name character varying, p_email character varying, p_address text, p_birthdate date) RETURNS integer
@@ -606,8 +650,10 @@ END;
 $$;
 
 
+ALTER FUNCTION public.create_admin(p_username character varying, p_password character varying, p_name character varying, p_email character varying, p_address text, p_birthdate date) OWNER TO neondb_owner;
+
 --
--- Name: create_contract(integer, integer, character varying, double precision); Type: FUNCTION; Schema: public; Owner: -
+-- Name: create_contract(integer, integer, character varying, double precision); Type: FUNCTION; Schema: public; Owner: neondb_owner
 --
 
 CREATE FUNCTION public.create_contract(p_user_account_id integer, p_rateplan_id integer, p_msisdn character varying, p_credit_limit double precision) RETURNS integer
@@ -674,8 +720,10 @@ END;
 $$;
 
 
+ALTER FUNCTION public.create_contract(p_user_account_id integer, p_rateplan_id integer, p_msisdn character varying, p_credit_limit double precision) OWNER TO neondb_owner;
+
 --
--- Name: create_customer(character varying, character varying, character varying, character varying, text, date); Type: FUNCTION; Schema: public; Owner: -
+-- Name: create_customer(character varying, character varying, character varying, character varying, text, date); Type: FUNCTION; Schema: public; Owner: neondb_owner
 --
 
 CREATE FUNCTION public.create_customer(p_username character varying, p_password character varying, p_name character varying, p_email character varying, p_address text, p_birthdate date) RETURNS integer
@@ -697,8 +745,10 @@ END;
 $$;
 
 
+ALTER FUNCTION public.create_customer(p_username character varying, p_password character varying, p_name character varying, p_email character varying, p_address text, p_birthdate date) OWNER TO neondb_owner;
+
 --
--- Name: create_file_record(text); Type: FUNCTION; Schema: public; Owner: -
+-- Name: create_file_record(text); Type: FUNCTION; Schema: public; Owner: neondb_owner
 --
 
 CREATE FUNCTION public.create_file_record(p_file_path text) RETURNS integer
@@ -716,8 +766,10 @@ END;
 $$;
 
 
+ALTER FUNCTION public.create_file_record(p_file_path text) OWNER TO neondb_owner;
+
 --
--- Name: create_rateplan_with_packages(character varying, numeric, numeric, numeric, numeric, integer[]); Type: FUNCTION; Schema: public; Owner: -
+-- Name: create_rateplan_with_packages(character varying, numeric, numeric, numeric, numeric, integer[]); Type: FUNCTION; Schema: public; Owner: neondb_owner
 --
 
 CREATE FUNCTION public.create_rateplan_with_packages(p_name character varying, p_ror_voice numeric, p_ror_data numeric, p_ror_sms numeric, p_price numeric, p_service_package_ids integer[]) RETURNS integer
@@ -752,8 +804,10 @@ END;
 $$;
 
 
+ALTER FUNCTION public.create_rateplan_with_packages(p_name character varying, p_ror_voice numeric, p_ror_data numeric, p_ror_sms numeric, p_price numeric, p_service_package_ids integer[]) OWNER TO neondb_owner;
+
 --
--- Name: create_service_package(character varying, public.service_type, numeric, integer, numeric, text, boolean); Type: FUNCTION; Schema: public; Owner: -
+-- Name: create_service_package(character varying, public.service_type, numeric, integer, numeric, text, boolean); Type: FUNCTION; Schema: public; Owner: neondb_owner
 --
 
 CREATE FUNCTION public.create_service_package(p_name character varying, p_type public.service_type, p_amount numeric, p_priority integer, p_price numeric, p_description text, p_is_roaming boolean DEFAULT false) RETURNS TABLE(id integer, name character varying, type public.service_type, amount numeric, priority integer, price numeric, description text, is_roaming boolean)
@@ -776,8 +830,10 @@ END;
 $$;
 
 
+ALTER FUNCTION public.create_service_package(p_name character varying, p_type public.service_type, p_amount numeric, p_priority integer, p_price numeric, p_description text, p_is_roaming boolean) OWNER TO neondb_owner;
+
 --
--- Name: delete_service_package(integer); Type: FUNCTION; Schema: public; Owner: -
+-- Name: delete_service_package(integer); Type: FUNCTION; Schema: public; Owner: neondb_owner
 --
 
 CREATE FUNCTION public.delete_service_package(p_id integer) RETURNS void
@@ -808,8 +864,10 @@ END;
 $$;
 
 
+ALTER FUNCTION public.delete_service_package(p_id integer) OWNER TO neondb_owner;
+
 --
--- Name: expire_addons(); Type: FUNCTION; Schema: public; Owner: -
+-- Name: expire_addons(); Type: FUNCTION; Schema: public; Owner: neondb_owner
 --
 
 CREATE FUNCTION public.expire_addons() RETURNS void
@@ -824,8 +882,10 @@ END;
 $$;
 
 
+ALTER FUNCTION public.expire_addons() OWNER TO neondb_owner;
+
 --
--- Name: generate_all_bills(date); Type: FUNCTION; Schema: public; Owner: -
+-- Name: generate_all_bills(date); Type: FUNCTION; Schema: public; Owner: neondb_owner
 --
 
 CREATE FUNCTION public.generate_all_bills(p_period_start date) RETURNS void
@@ -855,8 +915,10 @@ END;
 $$;
 
 
+ALTER FUNCTION public.generate_all_bills(p_period_start date) OWNER TO neondb_owner;
+
 --
--- Name: generate_bill(integer, date); Type: FUNCTION; Schema: public; Owner: -
+-- Name: generate_bill(integer, date); Type: FUNCTION; Schema: public; Owner: neondb_owner
 --
 
 CREATE FUNCTION public.generate_bill(p_contract_id integer, p_billing_period_start date) RETURNS void
@@ -940,8 +1002,10 @@ END;
 $$;
 
 
+ALTER FUNCTION public.generate_bill(p_contract_id integer, p_billing_period_start date) OWNER TO neondb_owner;
+
 --
--- Name: generate_invoice(integer, text); Type: FUNCTION; Schema: public; Owner: -
+-- Name: generate_invoice(integer, text); Type: FUNCTION; Schema: public; Owner: neondb_owner
 --
 
 CREATE FUNCTION public.generate_invoice(p_bill_id integer, p_pdf_path text) RETURNS void
@@ -957,8 +1021,10 @@ END;
 $$;
 
 
+ALTER FUNCTION public.generate_invoice(p_bill_id integer, p_pdf_path text) OWNER TO neondb_owner;
+
 --
--- Name: get_admin_stats(); Type: FUNCTION; Schema: public; Owner: -
+-- Name: get_admin_stats(); Type: FUNCTION; Schema: public; Owner: neondb_owner
 --
 
 CREATE FUNCTION public.get_admin_stats() RETURNS TABLE(customers bigint, contracts bigint, cdrs bigint, revenue numeric, pending_bills bigint)
@@ -975,8 +1041,10 @@ END;
 $$;
 
 
+ALTER FUNCTION public.get_admin_stats() OWNER TO neondb_owner;
+
 --
--- Name: get_all_contracts(); Type: FUNCTION; Schema: public; Owner: -
+-- Name: get_all_contracts(); Type: FUNCTION; Schema: public; Owner: neondb_owner
 --
 
 CREATE FUNCTION public.get_all_contracts() RETURNS TABLE(id integer, msisdn character varying, status public.contract_status, available_credit numeric, customer_name character varying, rateplan_name character varying)
@@ -999,8 +1067,10 @@ END;
 $$;
 
 
+ALTER FUNCTION public.get_all_contracts() OWNER TO neondb_owner;
+
 --
--- Name: get_all_customers(); Type: FUNCTION; Schema: public; Owner: -
+-- Name: get_all_customers(); Type: FUNCTION; Schema: public; Owner: neondb_owner
 --
 
 CREATE FUNCTION public.get_all_customers() RETURNS TABLE(id integer, username character varying, name character varying, email character varying, role public.user_role, address text, birthdate date, msisdn character varying)
@@ -1019,8 +1089,10 @@ END;
 $$;
 
 
+ALTER FUNCTION public.get_all_customers() OWNER TO neondb_owner;
+
 --
--- Name: get_all_rateplans(); Type: FUNCTION; Schema: public; Owner: -
+-- Name: get_all_rateplans(); Type: FUNCTION; Schema: public; Owner: neondb_owner
 --
 
 CREATE FUNCTION public.get_all_rateplans() RETURNS TABLE(id integer, name character varying, price numeric, ror_voice numeric, ror_data numeric, ror_sms numeric)
@@ -1041,8 +1113,10 @@ END;
 $$;
 
 
+ALTER FUNCTION public.get_all_rateplans() OWNER TO neondb_owner;
+
 --
--- Name: get_all_service_packages(); Type: FUNCTION; Schema: public; Owner: -
+-- Name: get_all_service_packages(); Type: FUNCTION; Schema: public; Owner: neondb_owner
 --
 
 CREATE FUNCTION public.get_all_service_packages() RETURNS TABLE(id integer, name character varying, type public.service_type, amount numeric, priority integer, price numeric, description text, is_roaming boolean)
@@ -1065,8 +1139,10 @@ END;
 $$;
 
 
+ALTER FUNCTION public.get_all_service_packages() OWNER TO neondb_owner;
+
 --
--- Name: get_available_msisdns(); Type: FUNCTION; Schema: public; Owner: -
+-- Name: get_available_msisdns(); Type: FUNCTION; Schema: public; Owner: neondb_owner
 --
 
 CREATE FUNCTION public.get_available_msisdns() RETURNS TABLE(id integer, msisdn character varying)
@@ -1082,8 +1158,10 @@ END;
 $$;
 
 
+ALTER FUNCTION public.get_available_msisdns() OWNER TO neondb_owner;
+
 --
--- Name: get_bill(integer); Type: FUNCTION; Schema: public; Owner: -
+-- Name: get_bill(integer); Type: FUNCTION; Schema: public; Owner: neondb_owner
 --
 
 CREATE FUNCTION public.get_bill(p_bill_id integer) RETURNS TABLE(contract_id integer, billing_period_start date, billing_period_end date, billing_date date, recurring_fees numeric, one_time_fees numeric, voice_usage integer, data_usage integer, sms_usage integer, ror_charge numeric, taxes numeric, total_amount numeric, status public.bill_status, is_paid boolean)
@@ -1112,8 +1190,10 @@ END;
 $$;
 
 
+ALTER FUNCTION public.get_bill(p_bill_id integer) OWNER TO neondb_owner;
+
 --
--- Name: get_bill_usage_breakdown(integer); Type: FUNCTION; Schema: public; Owner: -
+-- Name: get_bill_usage_breakdown(integer); Type: FUNCTION; Schema: public; Owner: neondb_owner
 --
 
 CREATE FUNCTION public.get_bill_usage_breakdown(p_bill_id integer) RETURNS TABLE(service_type text, category_label text, quota integer, consumed integer, unit_rate numeric, line_total numeric, is_roaming boolean, is_promotional boolean, notes text)
@@ -1242,8 +1322,10 @@ END;
 $$;
 
 
+ALTER FUNCTION public.get_bill_usage_breakdown(p_bill_id integer) OWNER TO neondb_owner;
+
 --
--- Name: get_bills_by_contract(integer); Type: FUNCTION; Schema: public; Owner: -
+-- Name: get_bills_by_contract(integer); Type: FUNCTION; Schema: public; Owner: neondb_owner
 --
 
 CREATE FUNCTION public.get_bills_by_contract(p_contract_id integer) RETURNS TABLE(id integer, billing_period_start date, billing_period_end date, billing_date date, total_amount numeric, status public.bill_status)
@@ -1258,8 +1340,10 @@ END;
 $$;
 
 
+ALTER FUNCTION public.get_bills_by_contract(p_contract_id integer) OWNER TO neondb_owner;
+
 --
--- Name: get_cdr_usage_amount(integer, public.service_type); Type: FUNCTION; Schema: public; Owner: -
+-- Name: get_cdr_usage_amount(integer, public.service_type); Type: FUNCTION; Schema: public; Owner: neondb_owner
 --
 
 CREATE FUNCTION public.get_cdr_usage_amount(p_duration integer, p_service_type public.service_type) RETURNS numeric
@@ -1276,8 +1360,10 @@ END;
 $$;
 
 
+ALTER FUNCTION public.get_cdr_usage_amount(p_duration integer, p_service_type public.service_type) OWNER TO neondb_owner;
+
 --
--- Name: get_cdrs(integer, integer); Type: FUNCTION; Schema: public; Owner: -
+-- Name: get_cdrs(integer, integer); Type: FUNCTION; Schema: public; Owner: neondb_owner
 --
 
 CREATE FUNCTION public.get_cdrs(p_limit integer DEFAULT 50, p_offset integer DEFAULT 0) RETURNS TABLE(id integer, msisdn character varying, destination character varying, duration integer, "timestamp" timestamp without time zone, type integer, rated boolean)
@@ -1300,8 +1386,10 @@ END;
 $$;
 
 
+ALTER FUNCTION public.get_cdrs(p_limit integer, p_offset integer) OWNER TO neondb_owner;
+
 --
--- Name: get_contract_addons(integer); Type: FUNCTION; Schema: public; Owner: -
+-- Name: get_contract_addons(integer); Type: FUNCTION; Schema: public; Owner: neondb_owner
 --
 
 CREATE FUNCTION public.get_contract_addons(p_contract_id integer) RETURNS TABLE(id integer, service_package_id integer, package_name character varying, type public.service_type, amount numeric, purchased_date date, expiry_date date, price_paid numeric, is_active boolean)
@@ -1327,8 +1415,10 @@ END;
 $$;
 
 
+ALTER FUNCTION public.get_contract_addons(p_contract_id integer) OWNER TO neondb_owner;
+
 --
--- Name: get_contract_by_id(integer); Type: FUNCTION; Schema: public; Owner: -
+-- Name: get_contract_by_id(integer); Type: FUNCTION; Schema: public; Owner: neondb_owner
 --
 
 CREATE FUNCTION public.get_contract_by_id(p_id integer) RETURNS TABLE(id integer, user_account_id integer, rateplan_id integer, msisdn character varying, status public.contract_status, credit_limit numeric, available_credit numeric, customer_name character varying, rateplan_name character varying)
@@ -1354,8 +1444,10 @@ END;
 $$;
 
 
+ALTER FUNCTION public.get_contract_by_id(p_id integer) OWNER TO neondb_owner;
+
 --
--- Name: get_contract_consumption(integer, date); Type: FUNCTION; Schema: public; Owner: -
+-- Name: get_contract_consumption(integer, date); Type: FUNCTION; Schema: public; Owner: neondb_owner
 --
 
 CREATE FUNCTION public.get_contract_consumption(p_contract_id integer, p_period_start date) RETURNS TABLE(service_package_id integer, consumed integer)
@@ -1372,8 +1464,10 @@ END;
 $$;
 
 
+ALTER FUNCTION public.get_contract_consumption(p_contract_id integer, p_period_start date) OWNER TO neondb_owner;
+
 --
--- Name: get_customer_by_id(integer); Type: FUNCTION; Schema: public; Owner: -
+-- Name: get_customer_by_id(integer); Type: FUNCTION; Schema: public; Owner: neondb_owner
 --
 
 CREATE FUNCTION public.get_customer_by_id(p_id integer) RETURNS TABLE(id integer, username character varying, name character varying, email character varying, role public.user_role, address text, birthdate date)
@@ -1395,8 +1489,10 @@ END;
 $$;
 
 
+ALTER FUNCTION public.get_customer_by_id(p_id integer) OWNER TO neondb_owner;
+
 --
--- Name: get_dashboard_stats(); Type: FUNCTION; Schema: public; Owner: -
+-- Name: get_dashboard_stats(); Type: FUNCTION; Schema: public; Owner: neondb_owner
 --
 
 CREATE FUNCTION public.get_dashboard_stats() RETURNS TABLE(total_customers bigint, total_contracts bigint, active_contracts bigint, total_cdrs bigint, total_revenue numeric, pending_bills bigint)
@@ -1415,8 +1511,10 @@ END;
 $$;
 
 
+ALTER FUNCTION public.get_dashboard_stats() OWNER TO neondb_owner;
+
 --
--- Name: get_missing_bills(); Type: FUNCTION; Schema: public; Owner: -
+-- Name: get_missing_bills(); Type: FUNCTION; Schema: public; Owner: neondb_owner
 --
 
 CREATE FUNCTION public.get_missing_bills() RETURNS TABLE(contract_id integer, msisdn character varying, customer_name character varying, rateplan_name character varying)
@@ -1445,8 +1543,10 @@ END;
 $$;
 
 
+ALTER FUNCTION public.get_missing_bills() OWNER TO neondb_owner;
+
 --
--- Name: get_rateplan_by_id(integer); Type: FUNCTION; Schema: public; Owner: -
+-- Name: get_rateplan_by_id(integer); Type: FUNCTION; Schema: public; Owner: neondb_owner
 --
 
 CREATE FUNCTION public.get_rateplan_by_id(p_id integer) RETURNS TABLE(id integer, name character varying, ror_voice numeric, ror_data numeric, ror_sms numeric, price numeric)
@@ -1467,8 +1567,10 @@ END;
 $$;
 
 
+ALTER FUNCTION public.get_rateplan_by_id(p_id integer) OWNER TO neondb_owner;
+
 --
--- Name: get_rateplan_data(integer); Type: FUNCTION; Schema: public; Owner: -
+-- Name: get_rateplan_data(integer); Type: FUNCTION; Schema: public; Owner: neondb_owner
 --
 
 CREATE FUNCTION public.get_rateplan_data(p_rateplan_id integer) RETURNS TABLE(id integer, name character varying, ror_data numeric, ror_voice numeric, ror_sms numeric, price numeric)
@@ -1491,8 +1593,10 @@ END;
 $$;
 
 
+ALTER FUNCTION public.get_rateplan_data(p_rateplan_id integer) OWNER TO neondb_owner;
+
 --
--- Name: get_service_package_by_id(integer); Type: FUNCTION; Schema: public; Owner: -
+-- Name: get_service_package_by_id(integer); Type: FUNCTION; Schema: public; Owner: neondb_owner
 --
 
 CREATE FUNCTION public.get_service_package_by_id(p_id integer) RETURNS TABLE(id integer, name character varying, type public.service_type, amount numeric, priority integer, price numeric, description text, is_roaming boolean)
@@ -1515,8 +1619,10 @@ END;
 $$;
 
 
+ALTER FUNCTION public.get_service_package_by_id(p_id integer) OWNER TO neondb_owner;
+
 --
--- Name: get_user_contracts(integer); Type: FUNCTION; Schema: public; Owner: -
+-- Name: get_user_contracts(integer); Type: FUNCTION; Schema: public; Owner: neondb_owner
 --
 
 CREATE FUNCTION public.get_user_contracts(p_user_id integer) RETURNS TABLE(id integer, msisdn character varying, status public.contract_status, available_credit numeric, credit_limit numeric, rateplan_name character varying)
@@ -1538,8 +1644,10 @@ END;
 $$;
 
 
+ALTER FUNCTION public.get_user_contracts(p_user_id integer) OWNER TO neondb_owner;
+
 --
--- Name: get_user_data(integer); Type: FUNCTION; Schema: public; Owner: -
+-- Name: get_user_data(integer); Type: FUNCTION; Schema: public; Owner: neondb_owner
 --
 
 CREATE FUNCTION public.get_user_data(p_user_account_id integer) RETURNS TABLE(username character varying, role character varying, name character varying, email character varying, address text, birthdate date)
@@ -1560,8 +1668,10 @@ END;
 $$;
 
 
+ALTER FUNCTION public.get_user_data(p_user_account_id integer) OWNER TO neondb_owner;
+
 --
--- Name: get_user_invoices(integer); Type: FUNCTION; Schema: public; Owner: -
+-- Name: get_user_invoices(integer); Type: FUNCTION; Schema: public; Owner: neondb_owner
 --
 
 CREATE FUNCTION public.get_user_invoices(p_user_id integer) RETURNS TABLE(id integer, contract_id integer, billing_period_start date, billing_period_end date, billing_date date, recurring_fees numeric, one_time_fees numeric, voice_usage integer, data_usage integer, sms_usage integer, ror_charge numeric, taxes numeric, total_amount numeric, status public.bill_status, is_paid boolean, pdf_path text)
@@ -1595,8 +1705,10 @@ END;
 $$;
 
 
+ALTER FUNCTION public.get_user_invoices(p_user_id integer) OWNER TO neondb_owner;
+
 --
--- Name: get_user_msisdn_bill(integer); Type: FUNCTION; Schema: public; Owner: -
+-- Name: get_user_msisdn_bill(integer); Type: FUNCTION; Schema: public; Owner: neondb_owner
 --
 
 CREATE FUNCTION public.get_user_msisdn_bill(p_contract_id integer) RETURNS TABLE(user_account_id integer, msisdn character varying, bill_id integer)
@@ -1619,8 +1731,10 @@ END;
 $$;
 
 
+ALTER FUNCTION public.get_user_msisdn_bill(p_contract_id integer) OWNER TO neondb_owner;
+
 --
--- Name: initialize_consumption_period(date); Type: FUNCTION; Schema: public; Owner: -
+-- Name: initialize_consumption_period(date); Type: FUNCTION; Schema: public; Owner: neondb_owner
 --
 
 CREATE FUNCTION public.initialize_consumption_period(p_period_start date) RETURNS void
@@ -1660,8 +1774,10 @@ END;
 $$;
 
 
+ALTER FUNCTION public.initialize_consumption_period(p_period_start date) OWNER TO neondb_owner;
+
 --
--- Name: insert_cdr(integer, character varying, character varying, timestamp without time zone, integer, integer, character varying, character varying, numeric); Type: FUNCTION; Schema: public; Owner: -
+-- Name: insert_cdr(integer, character varying, character varying, timestamp without time zone, integer, integer, character varying, character varying, numeric); Type: FUNCTION; Schema: public; Owner: neondb_owner
 --
 
 CREATE FUNCTION public.insert_cdr(p_file_id integer, p_dial_a character varying, p_dial_b character varying, p_start_time timestamp without time zone, p_duration integer, p_service_id integer, p_hplmn character varying, p_vplmn character varying, p_external_charges numeric) RETURNS integer
@@ -1727,8 +1843,10 @@ END;
 $$;
 
 
+ALTER FUNCTION public.insert_cdr(p_file_id integer, p_dial_a character varying, p_dial_b character varying, p_start_time timestamp without time zone, p_duration integer, p_service_id integer, p_hplmn character varying, p_vplmn character varying, p_external_charges numeric) OWNER TO neondb_owner;
+
 --
--- Name: login(character varying, character varying); Type: FUNCTION; Schema: public; Owner: -
+-- Name: login(character varying, character varying); Type: FUNCTION; Schema: public; Owner: neondb_owner
 --
 
 CREATE FUNCTION public.login(p_username character varying, p_password character varying) RETURNS TABLE(id integer, username character varying, name character varying, email character varying, role public.user_role)
@@ -1749,8 +1867,10 @@ END;
 $$;
 
 
+ALTER FUNCTION public.login(p_username character varying, p_password character varying) OWNER TO neondb_owner;
+
 --
--- Name: mark_bill_paid(integer); Type: FUNCTION; Schema: public; Owner: -
+-- Name: mark_bill_paid(integer); Type: FUNCTION; Schema: public; Owner: neondb_owner
 --
 
 CREATE FUNCTION public.mark_bill_paid(p_bill_id integer) RETURNS void
@@ -1767,8 +1887,10 @@ END;
 $$;
 
 
+ALTER FUNCTION public.mark_bill_paid(p_bill_id integer) OWNER TO neondb_owner;
+
 --
--- Name: mark_msisdn_taken(character varying); Type: FUNCTION; Schema: public; Owner: -
+-- Name: mark_msisdn_taken(character varying); Type: FUNCTION; Schema: public; Owner: neondb_owner
 --
 
 CREATE FUNCTION public.mark_msisdn_taken(p_msisdn character varying) RETURNS void
@@ -1786,8 +1908,10 @@ END;
 $$;
 
 
+ALTER FUNCTION public.mark_msisdn_taken(p_msisdn character varying) OWNER TO neondb_owner;
+
 --
--- Name: notify_bill_generation(); Type: FUNCTION; Schema: public; Owner: -
+-- Name: notify_bill_generation(); Type: FUNCTION; Schema: public; Owner: neondb_owner
 --
 
 CREATE FUNCTION public.notify_bill_generation() RETURNS trigger
@@ -1800,8 +1924,10 @@ END;
 $$;
 
 
+ALTER FUNCTION public.notify_bill_generation() OWNER TO neondb_owner;
+
 --
--- Name: pay_bill(integer, text); Type: FUNCTION; Schema: public; Owner: -
+-- Name: pay_bill(integer, text); Type: FUNCTION; Schema: public; Owner: neondb_owner
 --
 
 CREATE FUNCTION public.pay_bill(p_bill_id integer, p_pdf_path text) RETURNS void
@@ -1819,8 +1945,10 @@ END;
 $$;
 
 
+ALTER FUNCTION public.pay_bill(p_bill_id integer, p_pdf_path text) OWNER TO neondb_owner;
+
 --
--- Name: purchase_addon(integer, integer); Type: FUNCTION; Schema: public; Owner: -
+-- Name: purchase_addon(integer, integer); Type: FUNCTION; Schema: public; Owner: neondb_owner
 --
 
 CREATE FUNCTION public.purchase_addon(p_contract_id integer, p_service_package_id integer) RETURNS integer
@@ -1921,8 +2049,10 @@ END;
 $$;
 
 
+ALTER FUNCTION public.purchase_addon(p_contract_id integer, p_service_package_id integer) OWNER TO neondb_owner;
+
 --
--- Name: rate_cdr(integer); Type: FUNCTION; Schema: public; Owner: -
+-- Name: rate_cdr(integer); Type: FUNCTION; Schema: public; Owner: neondb_owner
 --
 
 CREATE FUNCTION public.rate_cdr(p_cdr_id integer) RETURNS void
@@ -2050,8 +2180,10 @@ END;
 $$;
 
 
+ALTER FUNCTION public.rate_cdr(p_cdr_id integer) OWNER TO neondb_owner;
+
 --
--- Name: release_msisdn(character varying); Type: FUNCTION; Schema: public; Owner: -
+-- Name: release_msisdn(character varying); Type: FUNCTION; Schema: public; Owner: neondb_owner
 --
 
 CREATE FUNCTION public.release_msisdn(p_msisdn character varying) RETURNS void
@@ -2065,8 +2197,10 @@ END;
 $$;
 
 
+ALTER FUNCTION public.release_msisdn(p_msisdn character varying) OWNER TO neondb_owner;
+
 --
--- Name: set_file_parsed(integer); Type: FUNCTION; Schema: public; Owner: -
+-- Name: set_file_parsed(integer); Type: FUNCTION; Schema: public; Owner: neondb_owner
 --
 
 CREATE FUNCTION public.set_file_parsed(p_file_id integer) RETURNS void
@@ -2083,8 +2217,10 @@ END;
 $$;
 
 
+ALTER FUNCTION public.set_file_parsed(p_file_id integer) OWNER TO neondb_owner;
+
 --
--- Name: trg_restore_credit_on_payment(); Type: FUNCTION; Schema: public; Owner: -
+-- Name: trg_restore_credit_on_payment(); Type: FUNCTION; Schema: public; Owner: neondb_owner
 --
 
 CREATE FUNCTION public.trg_restore_credit_on_payment() RETURNS trigger
@@ -2101,8 +2237,10 @@ END;
 $$;
 
 
+ALTER FUNCTION public.trg_restore_credit_on_payment() OWNER TO neondb_owner;
+
 --
--- Name: validate_cdr_contract(); Type: FUNCTION; Schema: public; Owner: -
+-- Name: validate_cdr_contract(); Type: FUNCTION; Schema: public; Owner: neondb_owner
 --
 
 CREATE FUNCTION public.validate_cdr_contract() RETURNS trigger
@@ -2123,12 +2261,14 @@ END;
 $$;
 
 
+ALTER FUNCTION public.validate_cdr_contract() OWNER TO neondb_owner;
+
 SET default_tablespace = '';
 
 SET default_table_access_method = heap;
 
 --
--- Name: bill; Type: TABLE; Schema: public; Owner: -
+-- Name: bill; Type: TABLE; Schema: public; Owner: neondb_owner
 --
 
 CREATE TABLE public.bill (
@@ -2150,8 +2290,10 @@ CREATE TABLE public.bill (
 );
 
 
+ALTER TABLE public.bill OWNER TO neondb_owner;
+
 --
--- Name: bill_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: bill_id_seq; Type: SEQUENCE; Schema: public; Owner: neondb_owner
 --
 
 CREATE SEQUENCE public.bill_id_seq
@@ -2163,15 +2305,17 @@ CREATE SEQUENCE public.bill_id_seq
     CACHE 1;
 
 
+ALTER SEQUENCE public.bill_id_seq OWNER TO neondb_owner;
+
 --
--- Name: bill_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+-- Name: bill_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: neondb_owner
 --
 
 ALTER SEQUENCE public.bill_id_seq OWNED BY public.bill.id;
 
 
 --
--- Name: cdr; Type: TABLE; Schema: public; Owner: -
+-- Name: cdr; Type: TABLE; Schema: public; Owner: neondb_owner
 --
 
 CREATE TABLE public.cdr (
@@ -2189,8 +2333,10 @@ CREATE TABLE public.cdr (
 );
 
 
+ALTER TABLE public.cdr OWNER TO neondb_owner;
+
 --
--- Name: cdr_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: cdr_id_seq; Type: SEQUENCE; Schema: public; Owner: neondb_owner
 --
 
 CREATE SEQUENCE public.cdr_id_seq
@@ -2202,15 +2348,17 @@ CREATE SEQUENCE public.cdr_id_seq
     CACHE 1;
 
 
+ALTER SEQUENCE public.cdr_id_seq OWNER TO neondb_owner;
+
 --
--- Name: cdr_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+-- Name: cdr_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: neondb_owner
 --
 
 ALTER SEQUENCE public.cdr_id_seq OWNED BY public.cdr.id;
 
 
 --
--- Name: contract; Type: TABLE; Schema: public; Owner: -
+-- Name: contract; Type: TABLE; Schema: public; Owner: neondb_owner
 --
 
 CREATE TABLE public.contract (
@@ -2224,8 +2372,10 @@ CREATE TABLE public.contract (
 );
 
 
+ALTER TABLE public.contract OWNER TO neondb_owner;
+
 --
--- Name: contract_addon; Type: TABLE; Schema: public; Owner: -
+-- Name: contract_addon; Type: TABLE; Schema: public; Owner: neondb_owner
 --
 
 CREATE TABLE public.contract_addon (
@@ -2239,8 +2389,10 @@ CREATE TABLE public.contract_addon (
 );
 
 
+ALTER TABLE public.contract_addon OWNER TO neondb_owner;
+
 --
--- Name: contract_addon_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: contract_addon_id_seq; Type: SEQUENCE; Schema: public; Owner: neondb_owner
 --
 
 CREATE SEQUENCE public.contract_addon_id_seq
@@ -2252,15 +2404,17 @@ CREATE SEQUENCE public.contract_addon_id_seq
     CACHE 1;
 
 
+ALTER SEQUENCE public.contract_addon_id_seq OWNER TO neondb_owner;
+
 --
--- Name: contract_addon_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+-- Name: contract_addon_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: neondb_owner
 --
 
 ALTER SEQUENCE public.contract_addon_id_seq OWNED BY public.contract_addon.id;
 
 
 --
--- Name: contract_consumption; Type: TABLE; Schema: public; Owner: -
+-- Name: contract_consumption; Type: TABLE; Schema: public; Owner: neondb_owner
 --
 
 CREATE TABLE public.contract_consumption (
@@ -2276,8 +2430,10 @@ CREATE TABLE public.contract_consumption (
 );
 
 
+ALTER TABLE public.contract_consumption OWNER TO neondb_owner;
+
 --
--- Name: contract_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: contract_id_seq; Type: SEQUENCE; Schema: public; Owner: neondb_owner
 --
 
 CREATE SEQUENCE public.contract_id_seq
@@ -2289,15 +2445,17 @@ CREATE SEQUENCE public.contract_id_seq
     CACHE 1;
 
 
+ALTER SEQUENCE public.contract_id_seq OWNER TO neondb_owner;
+
 --
--- Name: contract_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+-- Name: contract_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: neondb_owner
 --
 
 ALTER SEQUENCE public.contract_id_seq OWNED BY public.contract.id;
 
 
 --
--- Name: file; Type: TABLE; Schema: public; Owner: -
+-- Name: file; Type: TABLE; Schema: public; Owner: neondb_owner
 --
 
 CREATE TABLE public.file (
@@ -2307,8 +2465,10 @@ CREATE TABLE public.file (
 );
 
 
+ALTER TABLE public.file OWNER TO neondb_owner;
+
 --
--- Name: file_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: file_id_seq; Type: SEQUENCE; Schema: public; Owner: neondb_owner
 --
 
 CREATE SEQUENCE public.file_id_seq
@@ -2320,15 +2480,17 @@ CREATE SEQUENCE public.file_id_seq
     CACHE 1;
 
 
+ALTER SEQUENCE public.file_id_seq OWNER TO neondb_owner;
+
 --
--- Name: file_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+-- Name: file_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: neondb_owner
 --
 
 ALTER SEQUENCE public.file_id_seq OWNED BY public.file.id;
 
 
 --
--- Name: invoice; Type: TABLE; Schema: public; Owner: -
+-- Name: invoice; Type: TABLE; Schema: public; Owner: neondb_owner
 --
 
 CREATE TABLE public.invoice (
@@ -2339,8 +2501,10 @@ CREATE TABLE public.invoice (
 );
 
 
+ALTER TABLE public.invoice OWNER TO neondb_owner;
+
 --
--- Name: invoice_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: invoice_id_seq; Type: SEQUENCE; Schema: public; Owner: neondb_owner
 --
 
 CREATE SEQUENCE public.invoice_id_seq
@@ -2352,15 +2516,17 @@ CREATE SEQUENCE public.invoice_id_seq
     CACHE 1;
 
 
+ALTER SEQUENCE public.invoice_id_seq OWNER TO neondb_owner;
+
 --
--- Name: invoice_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+-- Name: invoice_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: neondb_owner
 --
 
 ALTER SEQUENCE public.invoice_id_seq OWNED BY public.invoice.id;
 
 
 --
--- Name: msisdn_pool; Type: TABLE; Schema: public; Owner: -
+-- Name: msisdn_pool; Type: TABLE; Schema: public; Owner: neondb_owner
 --
 
 CREATE TABLE public.msisdn_pool (
@@ -2370,8 +2536,10 @@ CREATE TABLE public.msisdn_pool (
 );
 
 
+ALTER TABLE public.msisdn_pool OWNER TO neondb_owner;
+
 --
--- Name: msisdn_pool_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: msisdn_pool_id_seq; Type: SEQUENCE; Schema: public; Owner: neondb_owner
 --
 
 CREATE SEQUENCE public.msisdn_pool_id_seq
@@ -2383,15 +2551,17 @@ CREATE SEQUENCE public.msisdn_pool_id_seq
     CACHE 1;
 
 
+ALTER SEQUENCE public.msisdn_pool_id_seq OWNER TO neondb_owner;
+
 --
--- Name: msisdn_pool_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+-- Name: msisdn_pool_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: neondb_owner
 --
 
 ALTER SEQUENCE public.msisdn_pool_id_seq OWNED BY public.msisdn_pool.id;
 
 
 --
--- Name: rateplan; Type: TABLE; Schema: public; Owner: -
+-- Name: rateplan; Type: TABLE; Schema: public; Owner: neondb_owner
 --
 
 CREATE TABLE public.rateplan (
@@ -2404,8 +2574,10 @@ CREATE TABLE public.rateplan (
 );
 
 
+ALTER TABLE public.rateplan OWNER TO neondb_owner;
+
 --
--- Name: rateplan_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: rateplan_id_seq; Type: SEQUENCE; Schema: public; Owner: neondb_owner
 --
 
 CREATE SEQUENCE public.rateplan_id_seq
@@ -2417,15 +2589,17 @@ CREATE SEQUENCE public.rateplan_id_seq
     CACHE 1;
 
 
+ALTER SEQUENCE public.rateplan_id_seq OWNER TO neondb_owner;
+
 --
--- Name: rateplan_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+-- Name: rateplan_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: neondb_owner
 --
 
 ALTER SEQUENCE public.rateplan_id_seq OWNED BY public.rateplan.id;
 
 
 --
--- Name: rateplan_service_package; Type: TABLE; Schema: public; Owner: -
+-- Name: rateplan_service_package; Type: TABLE; Schema: public; Owner: neondb_owner
 --
 
 CREATE TABLE public.rateplan_service_package (
@@ -2434,8 +2608,10 @@ CREATE TABLE public.rateplan_service_package (
 );
 
 
+ALTER TABLE public.rateplan_service_package OWNER TO neondb_owner;
+
 --
--- Name: ror_contract; Type: TABLE; Schema: public; Owner: -
+-- Name: ror_contract; Type: TABLE; Schema: public; Owner: neondb_owner
 --
 
 CREATE TABLE public.ror_contract (
@@ -2448,8 +2624,10 @@ CREATE TABLE public.ror_contract (
 );
 
 
+ALTER TABLE public.ror_contract OWNER TO neondb_owner;
+
 --
--- Name: service_package; Type: TABLE; Schema: public; Owner: -
+-- Name: service_package; Type: TABLE; Schema: public; Owner: neondb_owner
 --
 
 CREATE TABLE public.service_package (
@@ -2464,8 +2642,10 @@ CREATE TABLE public.service_package (
 );
 
 
+ALTER TABLE public.service_package OWNER TO neondb_owner;
+
 --
--- Name: service_package_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: service_package_id_seq; Type: SEQUENCE; Schema: public; Owner: neondb_owner
 --
 
 CREATE SEQUENCE public.service_package_id_seq
@@ -2477,15 +2657,17 @@ CREATE SEQUENCE public.service_package_id_seq
     CACHE 1;
 
 
+ALTER SEQUENCE public.service_package_id_seq OWNER TO neondb_owner;
+
 --
--- Name: service_package_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+-- Name: service_package_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: neondb_owner
 --
 
 ALTER SEQUENCE public.service_package_id_seq OWNED BY public.service_package.id;
 
 
 --
--- Name: user_account; Type: TABLE; Schema: public; Owner: -
+-- Name: user_account; Type: TABLE; Schema: public; Owner: neondb_owner
 --
 
 CREATE TABLE public.user_account (
@@ -2500,8 +2682,10 @@ CREATE TABLE public.user_account (
 );
 
 
+ALTER TABLE public.user_account OWNER TO neondb_owner;
+
 --
--- Name: user_account_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: user_account_id_seq; Type: SEQUENCE; Schema: public; Owner: neondb_owner
 --
 
 CREATE SEQUENCE public.user_account_id_seq
@@ -2513,15 +2697,17 @@ CREATE SEQUENCE public.user_account_id_seq
     CACHE 1;
 
 
+ALTER SEQUENCE public.user_account_id_seq OWNER TO neondb_owner;
+
 --
--- Name: user_account_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+-- Name: user_account_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: neondb_owner
 --
 
 ALTER SEQUENCE public.user_account_id_seq OWNED BY public.user_account.id;
 
 
 --
--- Name: v_msisdn; Type: TABLE; Schema: public; Owner: -
+-- Name: v_msisdn; Type: TABLE; Schema: public; Owner: neondb_owner
 --
 
 CREATE TABLE public.v_msisdn (
@@ -2529,78 +2715,80 @@ CREATE TABLE public.v_msisdn (
 );
 
 
+ALTER TABLE public.v_msisdn OWNER TO neondb_owner;
+
 --
--- Name: bill id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: bill id; Type: DEFAULT; Schema: public; Owner: neondb_owner
 --
 
 ALTER TABLE ONLY public.bill ALTER COLUMN id SET DEFAULT nextval('public.bill_id_seq'::regclass);
 
 
 --
--- Name: cdr id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: cdr id; Type: DEFAULT; Schema: public; Owner: neondb_owner
 --
 
 ALTER TABLE ONLY public.cdr ALTER COLUMN id SET DEFAULT nextval('public.cdr_id_seq'::regclass);
 
 
 --
--- Name: contract id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: contract id; Type: DEFAULT; Schema: public; Owner: neondb_owner
 --
 
 ALTER TABLE ONLY public.contract ALTER COLUMN id SET DEFAULT nextval('public.contract_id_seq'::regclass);
 
 
 --
--- Name: contract_addon id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: contract_addon id; Type: DEFAULT; Schema: public; Owner: neondb_owner
 --
 
 ALTER TABLE ONLY public.contract_addon ALTER COLUMN id SET DEFAULT nextval('public.contract_addon_id_seq'::regclass);
 
 
 --
--- Name: file id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: file id; Type: DEFAULT; Schema: public; Owner: neondb_owner
 --
 
 ALTER TABLE ONLY public.file ALTER COLUMN id SET DEFAULT nextval('public.file_id_seq'::regclass);
 
 
 --
--- Name: invoice id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: invoice id; Type: DEFAULT; Schema: public; Owner: neondb_owner
 --
 
 ALTER TABLE ONLY public.invoice ALTER COLUMN id SET DEFAULT nextval('public.invoice_id_seq'::regclass);
 
 
 --
--- Name: msisdn_pool id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: msisdn_pool id; Type: DEFAULT; Schema: public; Owner: neondb_owner
 --
 
 ALTER TABLE ONLY public.msisdn_pool ALTER COLUMN id SET DEFAULT nextval('public.msisdn_pool_id_seq'::regclass);
 
 
 --
--- Name: rateplan id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: rateplan id; Type: DEFAULT; Schema: public; Owner: neondb_owner
 --
 
 ALTER TABLE ONLY public.rateplan ALTER COLUMN id SET DEFAULT nextval('public.rateplan_id_seq'::regclass);
 
 
 --
--- Name: service_package id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: service_package id; Type: DEFAULT; Schema: public; Owner: neondb_owner
 --
 
 ALTER TABLE ONLY public.service_package ALTER COLUMN id SET DEFAULT nextval('public.service_package_id_seq'::regclass);
 
 
 --
--- Name: user_account id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: user_account id; Type: DEFAULT; Schema: public; Owner: neondb_owner
 --
 
 ALTER TABLE ONLY public.user_account ALTER COLUMN id SET DEFAULT nextval('public.user_account_id_seq'::regclass);
 
 
 --
--- Data for Name: bill; Type: TABLE DATA; Schema: public; Owner: -
+-- Data for Name: bill; Type: TABLE DATA; Schema: public; Owner: neondb_owner
 --
 
 COPY public.bill (id, contract_id, billing_period_start, billing_period_end, billing_date, recurring_fees, one_time_fees, voice_usage, data_usage, sms_usage, ror_charge, taxes, total_amount, status, is_paid) FROM stdin;
@@ -2656,7 +2844,7 @@ COPY public.bill (id, contract_id, billing_period_start, billing_period_end, bil
 
 
 --
--- Data for Name: cdr; Type: TABLE DATA; Schema: public; Owner: -
+-- Data for Name: cdr; Type: TABLE DATA; Schema: public; Owner: neondb_owner
 --
 
 COPY public.cdr (id, file_id, dial_a, dial_b, start_time, duration, service_id, hplmn, vplmn, external_charges, rated_flag) FROM stdin;
@@ -2789,11 +2977,21 @@ COPY public.cdr (id, file_id, dial_a, dial_b, start_time, duration, service_id, 
 127	2	201000000017	201000000008	2026-04-05 09:30:00	420	1	EGYVO	\N	0.00	t
 128	2	201000000017	201000000010	2026-04-07 14:00:00	750	2	EGYVO	\N	0.00	t
 129	2	201000000017	201000000002	2026-04-09 11:15:00	1	3	EGYVO	\N	0.00	t
+714	9	201000000001	201000000002	2026-04-28 09:00:00	180	1	EGYVO		0.60	t
+715	9	201000000001	201000000003	2026-04-28 09:30:00	1	3	EGYVO		0.05	t
+716	9	201000000002	201000000001	2026-04-28 10:00:00	600	2	EGYVO		30.00	t
+717	9	201000000002	201000000004	2026-04-28 10:30:00	1	3	EGYVO		0.02	t
+718	9	201000000003	201000000001	2026-04-28 11:00:00	240	1	EGYVO		0.80	t
+719	9	201000000004	201000000002	2026-04-28 11:30:00	900	2	EGYVO		45.00	t
+720	9	201000000005	201000000001	2026-04-28 12:00:00	120	1	EGYVO		0.40	t
+721	9	201000000006	201000000002	2026-04-28 12:30:00	1	3	EGYVO		0.02	t
+722	9	201000000002	201000000001	2026-04-28 13:00:00	180	5	EGYVO	DEUTS	0.30	t
+723	9	201000000015	201000000002	2026-04-28 13:30:00	300	1	EGYVO		0.25	t
 \.
 
 
 --
--- Data for Name: contract; Type: TABLE DATA; Schema: public; Owner: -
+-- Data for Name: contract; Type: TABLE DATA; Schema: public; Owner: neondb_owner
 --
 
 COPY public.contract (id, user_account_id, rateplan_id, msisdn, status, credit_limit, available_credit) FROM stdin;
@@ -2806,7 +3004,6 @@ COPY public.contract (id, user_account_id, rateplan_id, msisdn, status, credit_l
 8	9	2	201000000008	active	500.00	500.00
 9	10	1	201000000009	active	200.00	200.00
 10	11	2	201000000010	active	500.00	500.00
-11	12	1	201000000011	active	200.00	150.00
 12	13	2	201000000012	active	500.00	420.00
 13	14	1	201000000013	suspended	200.00	200.00
 15	16	3	201000000015	active	1000.00	1000.00
@@ -2815,26 +3012,53 @@ COPY public.contract (id, user_account_id, rateplan_id, msisdn, status, credit_l
 18	19	1	201000000018	terminated	200.00	200.00
 14	15	2	201000000014	active	500.00	500.00
 2	3	2	201000000002	active	500.00	500.00
+11	12	1	201000000011	active	200.00	150.00
+153	155	2	201000000098	active	1000.00	1000.00
+154	154	3	201000000059	active	1000.00	1000.00
+155	153	3	201000000092	active	1000.00	1000.00
 \.
 
 
 --
--- Data for Name: contract_addon; Type: TABLE DATA; Schema: public; Owner: -
+-- Data for Name: contract_addon; Type: TABLE DATA; Schema: public; Owner: neondb_owner
 --
 
 COPY public.contract_addon (id, contract_id, service_package_id, purchased_date, expiry_date, is_active, price_paid) FROM stdin;
 1	14	1	2026-04-27	2026-04-30	t	0.00
 2	2	1	2026-04-28	2026-04-30	t	0.00
 3	2	1	2026-04-28	2026-04-30	t	0.00
+36	11	1	2026-04-28	2026-04-30	t	0.00
 \.
 
 
 --
--- Data for Name: contract_consumption; Type: TABLE DATA; Schema: public; Owner: -
+-- Data for Name: contract_consumption; Type: TABLE DATA; Schema: public; Owner: neondb_owner
 --
 
 COPY public.contract_consumption (contract_id, service_package_id, rateplan_id, starting_date, ending_date, consumed, is_billed, bill_id, quota_limit) FROM stdin;
+154	1	3	2026-04-01	2026-04-30	0	f	\N	0.0000
 2	1	2	2026-04-01	2026-04-30	620	t	34	5000.0000
+11	1	1	2026-04-01	2026-04-30	980	t	43	3000.0000
+153	1	2	2026-04-01	2026-04-30	0	f	\N	0.0000
+153	2	2	2026-04-01	2026-04-30	0	f	\N	0.0000
+153	3	2	2026-04-01	2026-04-30	0	f	\N	0.0000
+153	4	2	2026-04-01	2026-04-30	0	f	\N	0.0000
+153	5	2	2026-04-01	2026-04-30	0	f	\N	0.0000
+153	6	2	2026-04-01	2026-04-30	0	f	\N	0.0000
+153	7	2	2026-04-01	2026-04-30	0	f	\N	0.0000
+154	2	3	2026-04-01	2026-04-30	0	f	\N	0.0000
+154	3	3	2026-04-01	2026-04-30	0	f	\N	0.0000
+154	4	3	2026-04-01	2026-04-30	0	f	\N	0.0000
+154	5	3	2026-04-01	2026-04-30	0	f	\N	0.0000
+154	6	3	2026-04-01	2026-04-30	0	f	\N	0.0000
+154	7	3	2026-04-01	2026-04-30	0	f	\N	0.0000
+155	1	3	2026-04-01	2026-04-30	0	f	\N	0.0000
+155	2	3	2026-04-01	2026-04-30	0	f	\N	0.0000
+155	3	3	2026-04-01	2026-04-30	0	f	\N	0.0000
+155	4	3	2026-04-01	2026-04-30	0	f	\N	0.0000
+155	5	3	2026-04-01	2026-04-30	0	f	\N	0.0000
+155	6	3	2026-04-01	2026-04-30	0	f	\N	0.0000
+155	7	3	2026-04-01	2026-04-30	0	f	\N	0.0000
 1	1	1	2026-04-01	2026-04-30	350	t	33	1000.0000
 1	3	1	2026-04-01	2026-04-30	45	t	33	200.0000
 2	2	2	2026-04-01	2026-04-30	2100	t	34	5000.0000
@@ -2867,7 +3091,6 @@ COPY public.contract_consumption (contract_id, service_package_id, rateplan_id, 
 10	2	2	2026-04-01	2026-04-30	2400	t	42	5000.0000
 10	3	2	2026-04-01	2026-04-30	75	t	42	200.0000
 10	4	2	2026-04-01	2026-04-30	40	t	42	50.0000
-11	1	1	2026-04-01	2026-04-30	980	t	43	1000.0000
 11	3	1	2026-04-01	2026-04-30	190	t	43	200.0000
 12	1	2	2026-04-01	2026-04-30	290	t	44	1000.0000
 12	2	2	2026-04-01	2026-04-30	900	t	44	5000.0000
@@ -2920,17 +3143,18 @@ COPY public.contract_consumption (contract_id, service_package_id, rateplan_id, 
 
 
 --
--- Data for Name: file; Type: TABLE DATA; Schema: public; Owner: -
+-- Data for Name: file; Type: TABLE DATA; Schema: public; Owner: neondb_owner
 --
 
 COPY public.file (id, parsed_flag, file_path) FROM stdin;
 1	t	/tmp/cdr_april_batch1.csv
 2	t	/tmp/cdr_april_batch2.csv
+9	f	test_cdr_import.csv
 \.
 
 
 --
--- Data for Name: invoice; Type: TABLE DATA; Schema: public; Owner: -
+-- Data for Name: invoice; Type: TABLE DATA; Schema: public; Owner: neondb_owner
 --
 
 COPY public.invoice (id, bill_id, pdf_path, generation_date) FROM stdin;
@@ -2956,7 +3180,7 @@ COPY public.invoice (id, bill_id, pdf_path, generation_date) FROM stdin;
 
 
 --
--- Data for Name: msisdn_pool; Type: TABLE DATA; Schema: public; Owner: -
+-- Data for Name: msisdn_pool; Type: TABLE DATA; Schema: public; Owner: neondb_owner
 --
 
 COPY public.msisdn_pool (id, msisdn, is_available) FROM stdin;
@@ -3000,7 +3224,6 @@ COPY public.msisdn_pool (id, msisdn, is_available) FROM stdin;
 56	201000000056	t
 57	201000000057	t
 58	201000000058	t
-59	201000000059	t
 60	201000000060	t
 61	201000000061	t
 62	201000000062	t
@@ -3033,13 +3256,11 @@ COPY public.msisdn_pool (id, msisdn, is_available) FROM stdin;
 89	201000000089	t
 90	201000000090	t
 91	201000000091	t
-92	201000000092	t
 93	201000000093	t
 94	201000000094	t
 95	201000000095	t
 96	201000000096	t
 97	201000000097	t
-98	201000000098	t
 99	201000000099	t
 1	201000000001	f
 2	201000000002	f
@@ -3059,11 +3280,15 @@ COPY public.msisdn_pool (id, msisdn, is_available) FROM stdin;
 16	201000000016	f
 17	201000000017	f
 18	201000000018	f
+200	201095626753	f
+98	201000000098	f
+59	201000000059	f
+92	201000000092	f
 \.
 
 
 --
--- Data for Name: rateplan; Type: TABLE DATA; Schema: public; Owner: -
+-- Data for Name: rateplan; Type: TABLE DATA; Schema: public; Owner: neondb_owner
 --
 
 COPY public.rateplan (id, name, ror_data, ror_voice, ror_sms, price) FROM stdin;
@@ -3074,7 +3299,7 @@ COPY public.rateplan (id, name, ror_data, ror_voice, ror_sms, price) FROM stdin;
 
 
 --
--- Data for Name: rateplan_service_package; Type: TABLE DATA; Schema: public; Owner: -
+-- Data for Name: rateplan_service_package; Type: TABLE DATA; Schema: public; Owner: neondb_owner
 --
 
 COPY public.rateplan_service_package (rateplan_id, service_package_id) FROM stdin;
@@ -3098,33 +3323,36 @@ COPY public.rateplan_service_package (rateplan_id, service_package_id) FROM stdi
 
 
 --
--- Data for Name: ror_contract; Type: TABLE DATA; Schema: public; Owner: -
+-- Data for Name: ror_contract; Type: TABLE DATA; Schema: public; Owner: neondb_owner
 --
 
 COPY public.ror_contract (contract_id, rateplan_id, data, voice, sms, bill_id) FROM stdin;
 13	1	0	0	0	\N
 18	1	0	0	0	\N
-1	1	0	0	0	33
-2	2	0	0	0	34
-3	1	0	0	0	35
-4	2	0	0	0	36
-5	1	0	0	0	37
-6	2	0	0	0	38
 7	1	0	0	0	39
 8	2	0	0	0	40
 9	1	0	0	0	41
 10	2	0	0	0	42
 11	1	0	0	0	43
 12	2	0	0	0	44
-15	3	0	0	0	45
 16	3	20	0	0	46
 17	2	0	0	0	47
 14	2	0	0	0	48
+153	2	0	0	0	\N
+1	1	0	3	1	33
+3	1	0	4	0	35
+4	2	900	0	0	36
+5	1	0	2	0	37
+6	2	0	0	1	38
+2	2	600	3	1	34
+15	3	0	5	0	45
+154	3	0	0	0	\N
+155	3	0	0	0	\N
 \.
 
 
 --
--- Data for Name: service_package; Type: TABLE DATA; Schema: public; Owner: -
+-- Data for Name: service_package; Type: TABLE DATA; Schema: public; Owner: neondb_owner
 --
 
 COPY public.service_package (id, name, type, amount, priority, price, is_roaming, description) FROM stdin;
@@ -3139,7 +3367,7 @@ COPY public.service_package (id, name, type, amount, priority, price, is_roaming
 
 
 --
--- Data for Name: user_account; Type: TABLE DATA; Schema: public; Owner: -
+-- Data for Name: user_account; Type: TABLE DATA; Schema: public; Owner: neondb_owner
 --
 
 COPY public.user_account (id, username, password, role, name, email, address, birthdate) FROM stdin;
@@ -3162,11 +3390,14 @@ COPY public.user_account (id, username, password, role, name, email, address, bi
 17	paul	password16	customer	Paul Clark	paul@gmail.com	426 Birch Ln	1982-07-04
 18	quinn	password17	customer	Quinn Lewis	quinn@gmail.com	537 Walnut Blvd	1998-11-19
 19	rachel	password18	customer	Rachel Walker	rachel@gmail.com	648 Spruce St	1981-02-27
+153	fouad_yasser	customer123	customer	fouad yasser	fouadyasser20@gmail.com	12fsdfjds.st	2006-03-31
+154	201000000099	customer123	customer	3nnnnab	enam@gmail.com	tttt.st	2010-10-10
+155	201000000097	customer123	customer	mohsenn	mohsenn@gmail.com	123 main .st	2002-07-23
 \.
 
 
 --
--- Data for Name: v_msisdn; Type: TABLE DATA; Schema: public; Owner: -
+-- Data for Name: v_msisdn; Type: TABLE DATA; Schema: public; Owner: neondb_owner
 --
 
 COPY public.v_msisdn (msisdn) FROM stdin;
@@ -3174,77 +3405,77 @@ COPY public.v_msisdn (msisdn) FROM stdin;
 
 
 --
--- Name: bill_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+-- Name: bill_id_seq; Type: SEQUENCE SET; Schema: public; Owner: neondb_owner
 --
 
 SELECT pg_catalog.setval('public.bill_id_seq', 158, true);
 
 
 --
--- Name: cdr_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+-- Name: cdr_id_seq; Type: SEQUENCE SET; Schema: public; Owner: neondb_owner
 --
 
-SELECT pg_catalog.setval('public.cdr_id_seq', 713, true);
-
-
---
--- Name: contract_addon_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
---
-
-SELECT pg_catalog.setval('public.contract_addon_id_seq', 35, true);
+SELECT pg_catalog.setval('public.cdr_id_seq', 726, true);
 
 
 --
--- Name: contract_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+-- Name: contract_addon_id_seq; Type: SEQUENCE SET; Schema: public; Owner: neondb_owner
 --
 
-SELECT pg_catalog.setval('public.contract_id_seq', 152, true);
-
-
---
--- Name: file_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
---
-
-SELECT pg_catalog.setval('public.file_id_seq', 2, true);
+SELECT pg_catalog.setval('public.contract_addon_id_seq', 36, true);
 
 
 --
--- Name: invoice_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+-- Name: contract_id_seq; Type: SEQUENCE SET; Schema: public; Owner: neondb_owner
+--
+
+SELECT pg_catalog.setval('public.contract_id_seq', 155, true);
+
+
+--
+-- Name: file_id_seq; Type: SEQUENCE SET; Schema: public; Owner: neondb_owner
+--
+
+SELECT pg_catalog.setval('public.file_id_seq', 18, true);
+
+
+--
+-- Name: invoice_id_seq; Type: SEQUENCE SET; Schema: public; Owner: neondb_owner
 --
 
 SELECT pg_catalog.setval('public.invoice_id_seq', 19, true);
 
 
 --
--- Name: msisdn_pool_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+-- Name: msisdn_pool_id_seq; Type: SEQUENCE SET; Schema: public; Owner: neondb_owner
 --
 
-SELECT pg_catalog.setval('public.msisdn_pool_id_seq', 199, true);
+SELECT pg_catalog.setval('public.msisdn_pool_id_seq', 200, true);
 
 
 --
--- Name: rateplan_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+-- Name: rateplan_id_seq; Type: SEQUENCE SET; Schema: public; Owner: neondb_owner
 --
 
 SELECT pg_catalog.setval('public.rateplan_id_seq', 3, true);
 
 
 --
--- Name: service_package_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+-- Name: service_package_id_seq; Type: SEQUENCE SET; Schema: public; Owner: neondb_owner
 --
 
 SELECT pg_catalog.setval('public.service_package_id_seq', 7, true);
 
 
 --
--- Name: user_account_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+-- Name: user_account_id_seq; Type: SEQUENCE SET; Schema: public; Owner: neondb_owner
 --
 
-SELECT pg_catalog.setval('public.user_account_id_seq', 152, true);
+SELECT pg_catalog.setval('public.user_account_id_seq', 156, true);
 
 
 --
--- Name: bill bill_contract_id_billing_period_start_key; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: bill bill_contract_id_billing_period_start_key; Type: CONSTRAINT; Schema: public; Owner: neondb_owner
 --
 
 ALTER TABLE ONLY public.bill
@@ -3252,7 +3483,7 @@ ALTER TABLE ONLY public.bill
 
 
 --
--- Name: bill bill_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: bill bill_pkey; Type: CONSTRAINT; Schema: public; Owner: neondb_owner
 --
 
 ALTER TABLE ONLY public.bill
@@ -3260,7 +3491,7 @@ ALTER TABLE ONLY public.bill
 
 
 --
--- Name: cdr cdr_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: cdr cdr_pkey; Type: CONSTRAINT; Schema: public; Owner: neondb_owner
 --
 
 ALTER TABLE ONLY public.cdr
@@ -3268,7 +3499,7 @@ ALTER TABLE ONLY public.cdr
 
 
 --
--- Name: contract_addon contract_addon_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: contract_addon contract_addon_pkey; Type: CONSTRAINT; Schema: public; Owner: neondb_owner
 --
 
 ALTER TABLE ONLY public.contract_addon
@@ -3276,7 +3507,7 @@ ALTER TABLE ONLY public.contract_addon
 
 
 --
--- Name: contract_consumption contract_consumption_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: contract_consumption contract_consumption_pkey; Type: CONSTRAINT; Schema: public; Owner: neondb_owner
 --
 
 ALTER TABLE ONLY public.contract_consumption
@@ -3284,7 +3515,7 @@ ALTER TABLE ONLY public.contract_consumption
 
 
 --
--- Name: contract contract_msisdn_key; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: contract contract_msisdn_key; Type: CONSTRAINT; Schema: public; Owner: neondb_owner
 --
 
 ALTER TABLE ONLY public.contract
@@ -3292,7 +3523,7 @@ ALTER TABLE ONLY public.contract
 
 
 --
--- Name: contract contract_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: contract contract_pkey; Type: CONSTRAINT; Schema: public; Owner: neondb_owner
 --
 
 ALTER TABLE ONLY public.contract
@@ -3300,7 +3531,7 @@ ALTER TABLE ONLY public.contract
 
 
 --
--- Name: file file_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: file file_pkey; Type: CONSTRAINT; Schema: public; Owner: neondb_owner
 --
 
 ALTER TABLE ONLY public.file
@@ -3308,7 +3539,7 @@ ALTER TABLE ONLY public.file
 
 
 --
--- Name: invoice invoice_bill_id_unique; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: invoice invoice_bill_id_unique; Type: CONSTRAINT; Schema: public; Owner: neondb_owner
 --
 
 ALTER TABLE ONLY public.invoice
@@ -3316,7 +3547,7 @@ ALTER TABLE ONLY public.invoice
 
 
 --
--- Name: invoice invoice_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: invoice invoice_pkey; Type: CONSTRAINT; Schema: public; Owner: neondb_owner
 --
 
 ALTER TABLE ONLY public.invoice
@@ -3324,7 +3555,7 @@ ALTER TABLE ONLY public.invoice
 
 
 --
--- Name: msisdn_pool msisdn_pool_msisdn_key; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: msisdn_pool msisdn_pool_msisdn_key; Type: CONSTRAINT; Schema: public; Owner: neondb_owner
 --
 
 ALTER TABLE ONLY public.msisdn_pool
@@ -3332,7 +3563,7 @@ ALTER TABLE ONLY public.msisdn_pool
 
 
 --
--- Name: msisdn_pool msisdn_pool_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: msisdn_pool msisdn_pool_pkey; Type: CONSTRAINT; Schema: public; Owner: neondb_owner
 --
 
 ALTER TABLE ONLY public.msisdn_pool
@@ -3340,7 +3571,7 @@ ALTER TABLE ONLY public.msisdn_pool
 
 
 --
--- Name: rateplan rateplan_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: rateplan rateplan_pkey; Type: CONSTRAINT; Schema: public; Owner: neondb_owner
 --
 
 ALTER TABLE ONLY public.rateplan
@@ -3348,7 +3579,7 @@ ALTER TABLE ONLY public.rateplan
 
 
 --
--- Name: rateplan_service_package rateplan_service_package_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: rateplan_service_package rateplan_service_package_pkey; Type: CONSTRAINT; Schema: public; Owner: neondb_owner
 --
 
 ALTER TABLE ONLY public.rateplan_service_package
@@ -3356,7 +3587,7 @@ ALTER TABLE ONLY public.rateplan_service_package
 
 
 --
--- Name: ror_contract ror_contract_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: ror_contract ror_contract_pkey; Type: CONSTRAINT; Schema: public; Owner: neondb_owner
 --
 
 ALTER TABLE ONLY public.ror_contract
@@ -3364,7 +3595,7 @@ ALTER TABLE ONLY public.ror_contract
 
 
 --
--- Name: service_package service_package_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: service_package service_package_pkey; Type: CONSTRAINT; Schema: public; Owner: neondb_owner
 --
 
 ALTER TABLE ONLY public.service_package
@@ -3372,7 +3603,7 @@ ALTER TABLE ONLY public.service_package
 
 
 --
--- Name: invoice unique_bill_id; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: invoice unique_bill_id; Type: CONSTRAINT; Schema: public; Owner: neondb_owner
 --
 
 ALTER TABLE ONLY public.invoice
@@ -3380,7 +3611,7 @@ ALTER TABLE ONLY public.invoice
 
 
 --
--- Name: user_account user_account_email_key; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: user_account user_account_email_key; Type: CONSTRAINT; Schema: public; Owner: neondb_owner
 --
 
 ALTER TABLE ONLY public.user_account
@@ -3388,7 +3619,7 @@ ALTER TABLE ONLY public.user_account
 
 
 --
--- Name: user_account user_account_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: user_account user_account_pkey; Type: CONSTRAINT; Schema: public; Owner: neondb_owner
 --
 
 ALTER TABLE ONLY public.user_account
@@ -3396,7 +3627,7 @@ ALTER TABLE ONLY public.user_account
 
 
 --
--- Name: user_account user_account_username_key; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: user_account user_account_username_key; Type: CONSTRAINT; Schema: public; Owner: neondb_owner
 --
 
 ALTER TABLE ONLY public.user_account
@@ -3404,119 +3635,119 @@ ALTER TABLE ONLY public.user_account
 
 
 --
--- Name: contract_msisdn_active_idx; Type: INDEX; Schema: public; Owner: -
+-- Name: contract_msisdn_active_idx; Type: INDEX; Schema: public; Owner: neondb_owner
 --
 
 CREATE UNIQUE INDEX contract_msisdn_active_idx ON public.contract USING btree (msisdn) WHERE (status <> 'terminated'::public.contract_status);
 
 
 --
--- Name: idx_addon_active; Type: INDEX; Schema: public; Owner: -
+-- Name: idx_addon_active; Type: INDEX; Schema: public; Owner: neondb_owner
 --
 
 CREATE INDEX idx_addon_active ON public.contract_addon USING btree (contract_id, is_active);
 
 
 --
--- Name: idx_addon_contract; Type: INDEX; Schema: public; Owner: -
+-- Name: idx_addon_contract; Type: INDEX; Schema: public; Owner: neondb_owner
 --
 
 CREATE INDEX idx_addon_contract ON public.contract_addon USING btree (contract_id);
 
 
 --
--- Name: idx_bill_billing_date; Type: INDEX; Schema: public; Owner: -
+-- Name: idx_bill_billing_date; Type: INDEX; Schema: public; Owner: neondb_owner
 --
 
 CREATE INDEX idx_bill_billing_date ON public.bill USING btree (billing_date);
 
 
 --
--- Name: idx_bill_contract; Type: INDEX; Schema: public; Owner: -
+-- Name: idx_bill_contract; Type: INDEX; Schema: public; Owner: neondb_owner
 --
 
 CREATE INDEX idx_bill_contract ON public.bill USING btree (contract_id);
 
 
 --
--- Name: idx_cdr_dial_a; Type: INDEX; Schema: public; Owner: -
+-- Name: idx_cdr_dial_a; Type: INDEX; Schema: public; Owner: neondb_owner
 --
 
 CREATE INDEX idx_cdr_dial_a ON public.cdr USING btree (dial_a);
 
 
 --
--- Name: idx_cdr_file_id; Type: INDEX; Schema: public; Owner: -
+-- Name: idx_cdr_file_id; Type: INDEX; Schema: public; Owner: neondb_owner
 --
 
 CREATE INDEX idx_cdr_file_id ON public.cdr USING btree (file_id);
 
 
 --
--- Name: idx_cdr_rated_flag; Type: INDEX; Schema: public; Owner: -
+-- Name: idx_cdr_rated_flag; Type: INDEX; Schema: public; Owner: neondb_owner
 --
 
 CREATE INDEX idx_cdr_rated_flag ON public.cdr USING btree (rated_flag);
 
 
 --
--- Name: idx_contract_msisdn; Type: INDEX; Schema: public; Owner: -
+-- Name: idx_contract_msisdn; Type: INDEX; Schema: public; Owner: neondb_owner
 --
 
 CREATE INDEX idx_contract_msisdn ON public.contract USING btree (msisdn);
 
 
 --
--- Name: idx_contract_user_account; Type: INDEX; Schema: public; Owner: -
+-- Name: idx_contract_user_account; Type: INDEX; Schema: public; Owner: neondb_owner
 --
 
 CREATE INDEX idx_contract_user_account ON public.contract USING btree (user_account_id);
 
 
 --
--- Name: idx_invoice_bill; Type: INDEX; Schema: public; Owner: -
+-- Name: idx_invoice_bill; Type: INDEX; Schema: public; Owner: neondb_owner
 --
 
 CREATE INDEX idx_invoice_bill ON public.invoice USING btree (bill_id);
 
 
 --
--- Name: cdr trg_auto_initialize_consumption; Type: TRIGGER; Schema: public; Owner: -
+-- Name: cdr trg_auto_initialize_consumption; Type: TRIGGER; Schema: public; Owner: neondb_owner
 --
 
 CREATE TRIGGER trg_auto_initialize_consumption BEFORE INSERT ON public.cdr FOR EACH ROW EXECUTE FUNCTION public.auto_initialize_consumption();
 
 
 --
--- Name: cdr trg_auto_rate_cdr; Type: TRIGGER; Schema: public; Owner: -
+-- Name: cdr trg_auto_rate_cdr; Type: TRIGGER; Schema: public; Owner: neondb_owner
 --
 
 CREATE TRIGGER trg_auto_rate_cdr AFTER INSERT ON public.cdr FOR EACH ROW EXECUTE FUNCTION public.auto_rate_cdr();
 
 
 --
--- Name: bill trg_bill_inserted; Type: TRIGGER; Schema: public; Owner: -
+-- Name: bill trg_bill_inserted; Type: TRIGGER; Schema: public; Owner: neondb_owner
 --
 
 CREATE TRIGGER trg_bill_inserted AFTER INSERT ON public.bill FOR EACH ROW EXECUTE FUNCTION public.notify_bill_generation();
 
 
 --
--- Name: bill trg_bill_payment; Type: TRIGGER; Schema: public; Owner: -
+-- Name: bill trg_bill_payment; Type: TRIGGER; Schema: public; Owner: neondb_owner
 --
 
 CREATE TRIGGER trg_bill_payment AFTER UPDATE ON public.bill FOR EACH ROW EXECUTE FUNCTION public.trg_restore_credit_on_payment();
 
 
 --
--- Name: cdr trg_cdr_validate_contract; Type: TRIGGER; Schema: public; Owner: -
+-- Name: cdr trg_cdr_validate_contract; Type: TRIGGER; Schema: public; Owner: neondb_owner
 --
 
 CREATE TRIGGER trg_cdr_validate_contract BEFORE INSERT ON public.cdr FOR EACH ROW EXECUTE FUNCTION public.validate_cdr_contract();
 
 
 --
--- Name: bill bill_contract_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: bill bill_contract_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: neondb_owner
 --
 
 ALTER TABLE ONLY public.bill
@@ -3524,7 +3755,7 @@ ALTER TABLE ONLY public.bill
 
 
 --
--- Name: cdr cdr_file_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: cdr cdr_file_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: neondb_owner
 --
 
 ALTER TABLE ONLY public.cdr
@@ -3532,7 +3763,7 @@ ALTER TABLE ONLY public.cdr
 
 
 --
--- Name: cdr cdr_service_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: cdr cdr_service_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: neondb_owner
 --
 
 ALTER TABLE ONLY public.cdr
@@ -3540,7 +3771,7 @@ ALTER TABLE ONLY public.cdr
 
 
 --
--- Name: contract_addon contract_addon_contract_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: contract_addon contract_addon_contract_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: neondb_owner
 --
 
 ALTER TABLE ONLY public.contract_addon
@@ -3548,7 +3779,7 @@ ALTER TABLE ONLY public.contract_addon
 
 
 --
--- Name: contract_addon contract_addon_service_package_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: contract_addon contract_addon_service_package_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: neondb_owner
 --
 
 ALTER TABLE ONLY public.contract_addon
@@ -3556,7 +3787,7 @@ ALTER TABLE ONLY public.contract_addon
 
 
 --
--- Name: contract_consumption contract_consumption_bill_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: contract_consumption contract_consumption_bill_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: neondb_owner
 --
 
 ALTER TABLE ONLY public.contract_consumption
@@ -3564,7 +3795,7 @@ ALTER TABLE ONLY public.contract_consumption
 
 
 --
--- Name: contract_consumption contract_consumption_contract_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: contract_consumption contract_consumption_contract_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: neondb_owner
 --
 
 ALTER TABLE ONLY public.contract_consumption
@@ -3572,7 +3803,7 @@ ALTER TABLE ONLY public.contract_consumption
 
 
 --
--- Name: contract_consumption contract_consumption_rateplan_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: contract_consumption contract_consumption_rateplan_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: neondb_owner
 --
 
 ALTER TABLE ONLY public.contract_consumption
@@ -3580,7 +3811,7 @@ ALTER TABLE ONLY public.contract_consumption
 
 
 --
--- Name: contract_consumption contract_consumption_service_package_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: contract_consumption contract_consumption_service_package_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: neondb_owner
 --
 
 ALTER TABLE ONLY public.contract_consumption
@@ -3588,7 +3819,7 @@ ALTER TABLE ONLY public.contract_consumption
 
 
 --
--- Name: contract contract_rateplan_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: contract contract_rateplan_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: neondb_owner
 --
 
 ALTER TABLE ONLY public.contract
@@ -3596,7 +3827,7 @@ ALTER TABLE ONLY public.contract
 
 
 --
--- Name: contract contract_user_account_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: contract contract_user_account_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: neondb_owner
 --
 
 ALTER TABLE ONLY public.contract
@@ -3604,7 +3835,7 @@ ALTER TABLE ONLY public.contract
 
 
 --
--- Name: invoice invoice_bill_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: invoice invoice_bill_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: neondb_owner
 --
 
 ALTER TABLE ONLY public.invoice
@@ -3612,7 +3843,7 @@ ALTER TABLE ONLY public.invoice
 
 
 --
--- Name: rateplan_service_package rateplan_service_package_rateplan_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: rateplan_service_package rateplan_service_package_rateplan_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: neondb_owner
 --
 
 ALTER TABLE ONLY public.rateplan_service_package
@@ -3620,7 +3851,7 @@ ALTER TABLE ONLY public.rateplan_service_package
 
 
 --
--- Name: rateplan_service_package rateplan_service_package_service_package_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: rateplan_service_package rateplan_service_package_service_package_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: neondb_owner
 --
 
 ALTER TABLE ONLY public.rateplan_service_package
@@ -3628,7 +3859,7 @@ ALTER TABLE ONLY public.rateplan_service_package
 
 
 --
--- Name: ror_contract ror_contract_bill_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: ror_contract ror_contract_bill_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: neondb_owner
 --
 
 ALTER TABLE ONLY public.ror_contract
@@ -3636,7 +3867,7 @@ ALTER TABLE ONLY public.ror_contract
 
 
 --
--- Name: ror_contract ror_contract_contract_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: ror_contract ror_contract_contract_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: neondb_owner
 --
 
 ALTER TABLE ONLY public.ror_contract
@@ -3644,7 +3875,7 @@ ALTER TABLE ONLY public.ror_contract
 
 
 --
--- Name: ror_contract ror_contract_rateplan_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: ror_contract ror_contract_rateplan_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: neondb_owner
 --
 
 ALTER TABLE ONLY public.ror_contract
@@ -3652,8 +3883,22 @@ ALTER TABLE ONLY public.ror_contract
 
 
 --
+-- Name: DEFAULT PRIVILEGES FOR SEQUENCES; Type: DEFAULT ACL; Schema: public; Owner: cloud_admin
+--
+
+ALTER DEFAULT PRIVILEGES FOR ROLE cloud_admin IN SCHEMA public GRANT ALL ON SEQUENCES TO neon_superuser WITH GRANT OPTION;
+
+
+--
+-- Name: DEFAULT PRIVILEGES FOR TABLES; Type: DEFAULT ACL; Schema: public; Owner: cloud_admin
+--
+
+ALTER DEFAULT PRIVILEGES FOR ROLE cloud_admin IN SCHEMA public GRANT ALL ON TABLES TO neon_superuser WITH GRANT OPTION;
+
+
+--
 -- PostgreSQL database dump complete
 --
 
-\unrestrict hDrA9KLAeL6NJDDhSN5hnKMn9gdlF9LDTfyzMztteaQ5cYCV8m0C0Flap7AgpWo
+\unrestrict HcGcXkWQptEe0DUcudafmSW3CafkVbBTq1m6MhFyxMivTUiDQPv5cBwjAgLkgka
 

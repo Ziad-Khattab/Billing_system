@@ -8,9 +8,12 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @WebServlet("/api/admin/cdr/*")
 public class AdminCDRServlet extends BaseServlet {
+    private static final Logger logger = LoggerFactory.getLogger(AdminCDRServlet.class);
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse res) throws IOException {
@@ -35,9 +38,8 @@ public class AdminCDRServlet extends BaseServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse res) throws IOException {
         try {
-            System.out.println("[CDR-IMPORT] Triggered via Admin Panel");
+            logger.info("CDR-IMPORT Triggered via Admin Panel");
             
-            // Best Practice: Use configured paths, with a smart fallback for local dev
             String configInput = DB.getProperty("cdr.input.path");
             String configProcessed = DB.getProperty("cdr.processed.path");
 
@@ -48,22 +50,35 @@ public class AdminCDRServlet extends BaseServlet {
                 inputDir = new File(configInput);
                 processedDir = new File(configProcessed);
             } else {
-                // Fallback: Try to find the root if we are in target/tomcat11
                 String currentDir = System.getProperty("user.dir");
                 if (currentDir.contains("target")) {
                     currentDir = currentDir.substring(0, currentDir.indexOf("target") - 1);
                 }
+                
                 inputDir = new File(currentDir, "input");
                 processedDir = new File(currentDir, "processed");
+
+                // Hardening: check parent if root 'input' not found (IDE specific)
+                if (!inputDir.exists()) {
+                    File parentDir = new File(currentDir).getParentFile();
+                    if (parentDir != null) {
+                        File altInput = new File(parentDir, "input");
+                        if (altInput.exists()) {
+                            inputDir = altInput;
+                            processedDir = new File(parentDir, "processed");
+                        }
+                    }
+                }
             }
 
-            System.out.println("[CDR-IMPORT] Scanning: " + inputDir.getAbsolutePath());
+            logger.info("Using Input Path: {}", inputDir.getAbsolutePath());
 
             if (!inputDir.exists()) {
                 throw new IOException("Input directory not found at: " + inputDir.getAbsolutePath());
             }
-
-            if (!processedDir.exists()) processedDir.mkdirs();
+            if (!processedDir.exists() && !processedDir.mkdirs()) {
+                logger.warn("Could not create processed directory: {}", processedDir.getAbsolutePath());
+            }
 
 
             // Capture file count before processing

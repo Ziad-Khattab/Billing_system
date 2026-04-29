@@ -23,11 +23,11 @@ DECLARE
 BEGIN
     RAISE NOTICE 'Starting Massive Data Injection...';
 
-    FOR v_i IN 1..100 LOOP
+    FOR v_i IN 1..150 LOOP
         -- 1. Generate Random User Data
         v_fname := v_first_names[1 + FLOOR(RANDOM() * ARRAY_LENGTH(v_first_names, 1))];
         v_lname := v_last_names[1 + FLOOR(RANDOM() * ARRAY_LENGTH(v_last_names, 1))];
-        v_uname := LOWER(v_fname) || '_' || (2000 + v_i);
+        v_uname := LOWER(v_fname) || '_' || v_i || '_' || (1000 + FLOOR(RANDOM() * 9000));
 
         INSERT INTO user_account (name, address, birthdate, role, username, password, email)
         VALUES (
@@ -36,108 +36,78 @@ BEGIN
             '1970-01-01'::DATE + (FLOOR(RANDOM() * 15000) || ' days')::INTERVAL,
             'customer',
             v_uname,
-            'password123',
+            '123456',
             v_uname || '@fmrz-telecom.com'
-        ) RETURNING id INTO v_user_id;
+        ) ON CONFLICT (username) DO NOTHING 
+        RETURNING id INTO v_user_id;
 
-        -- 2. Pick Random RatePlan (40% Basic, 40% Gold, 20% Elite)
+        IF v_user_id IS NULL THEN
+            SELECT id INTO v_user_id FROM user_account WHERE username = v_uname;
+        END IF;
+
+        -- 2. Pick Random RatePlan (30% Basic, 40% Gold, 30% Elite)
         v_rateplan_id := (CASE 
-            WHEN RANDOM() < 0.4 THEN 1 -- Basic
-            WHEN RANDOM() < 0.8 THEN 2 -- Gold
+            WHEN RANDOM() < 0.3 THEN 1 -- Basic
+            WHEN RANDOM() < 0.7 THEN 2 -- Gold
             ELSE 3                     -- Elite
         END);
 
-        -- 3. MSISDN Generation (Fresh range for this batch)
-        v_msisdn := '20101' || LPAD((v_i + 5000)::TEXT, 5, '0');
+        -- 3. MSISDN Generation (Randomized range to avoid collisions)
+        v_msisdn := '201' || (100000000 + FLOOR(RANDOM() * 900000000))::TEXT;
         INSERT INTO msisdn_pool (msisdn, is_available) VALUES (v_msisdn, FALSE)
         ON CONFLICT (msisdn) DO UPDATE SET is_available = FALSE;
 
-        -- 4. Distribute Statuses (70% Active, 10% Suspended, 10% Debt, 10% Terminated)
+        -- 4. Diverse Statuses (50% Active, 20% Suspended, 20% Debt, 10% Terminated)
         v_status := (CASE 
-            WHEN RANDOM() < 0.7 THEN 'active'::contract_status
-            WHEN RANDOM() < 0.8 THEN 'suspended'::contract_status
+            WHEN RANDOM() < 0.5 THEN 'active'::contract_status
+            WHEN RANDOM() < 0.7 THEN 'suspended'::contract_status
             WHEN RANDOM() < 0.9 THEN 'suspended_debt'::contract_status
             ELSE 'terminated'::contract_status
         END);
 
         v_credit_limit := (CASE v_rateplan_id WHEN 1 THEN 200 WHEN 2 THEN 500 ELSE 1000 END);
 
-        -- 5. Create Contract
-        INSERT INTO contract (user_account_id, rateplan_id, msisdn, status, credit_limit, available_credit)
-        VALUES (v_user_id, v_rateplan_id, v_msisdn, v_status, v_credit_limit, v_credit_limit)
-        RETURNING id INTO v_contract_id;
+        -- 5. Create Contract (Manual check because of partial index)
+        SELECT id INTO v_contract_id FROM contract WHERE msisdn = v_msisdn AND status <> 'terminated';
+        
+        IF v_contract_id IS NULL THEN
+            INSERT INTO contract (user_account_id, rateplan_id, msisdn, status, credit_limit, available_credit)
+            VALUES (v_user_id, v_rateplan_id, v_msisdn, v_status, v_credit_limit, v_credit_limit)
+            RETURNING id INTO v_contract_id;
+        END IF;
 
-        -- 6. Initialize Consumption
-        -- Note: using a sub-block to swallow errors if period already exists
-        BEGIN
-            PERFORM initialize_consumption_period('2026-04-01');
-        EXCEPTION WHEN OTHERS THEN NULL;
-        END;
-
-        -- 7. Randomly Add Welcome Gift (Only if Active)
-        IF v_status = 'active' AND RANDOM() < 0.5 THEN
-            PERFORM purchase_addon(v_contract_id, 4); -- 4 is Welcome Gift ID
+        -- 6. Randomly Add CDRs for some of these new contracts (simulating traffic)
+        IF v_status = 'active' AND RANDOM() < 0.8 THEN
+            FOR j IN 1..3 LOOP
+                INSERT INTO cdr (file_id, dial_a, dial_b, start_time, duration, service_id, hplmn, vplmn, external_charges, rated_flag)
+                VALUES (1, v_msisdn, '201090000000', '2026-04-01 10:00:00', 300, 1, 'EGYVO', NULL, 0, FALSE);
+            END LOOP;
         END IF;
     END LOOP;
 
-    RAISE NOTICE '100 Customers & Contracts created successfully.';
+    RAISE NOTICE '150 Customers & Contracts created successfully.';
 END $$;
 
--- ============================================================
--- MASSIVE CDR INJECTION & RATING
--- ============================================================
-DO $$
-DECLARE
-    v_msisdn RECORD;
-    v_i INTEGER := 0;
-    v_vplmn VARCHAR;
-    v_service_id INTEGER;
-    v_duration INTEGER;
-BEGIN
-    -- Inject 300 CDRs distributed across the new active contracts
-    FOR v_msisdn IN 
-        SELECT msisdn FROM contract WHERE status = 'active' ORDER BY id DESC LIMIT 100
-    LOOP
-        FOR j IN 1..4 LOOP
-            v_i := v_i + 1;
-            
-            -- Service Types: 1=Voice, 2=Data, 3=SMS
-            v_service_id := (CASE WHEN (v_i % 3) = 0 THEN 1 WHEN (v_i % 3) = 1 THEN 2 ELSE 3 END);
-            
-            -- Randomize Roaming (15% chance)
-            v_vplmn := (CASE WHEN RANDOM() < 0.15 THEN 'VODAFONE_UK' ELSE NULL END);
-            
-            -- Randomize Durations
-            v_duration := (CASE 
-                WHEN v_service_id = 1 THEN floor(random()*300 + 30) -- 30-330s
-                WHEN v_service_id = 2 THEN floor(random()*100 + 5) * 1024 -- 5-105MB
-                ELSE 1 -- SMS
-            END);
-
-            INSERT INTO cdr (file_id, dial_a, dial_b, start_time, duration, service_id, hplmn, vplmn, external_charges, rated_flag)
-            VALUES (
-                1, 
-                v_msisdn.msisdn, 
-                '201090000000', 
-                '2026-04-01 10:00:00'::timestamp + (v_i * interval '20 minutes'), 
-                v_duration, 
-                v_service_id, 
-                'EGYVO', 
-                v_vplmn, 
-                0, 
-                FALSE
-            );
-        END LOOP;
-    END LOOP;
-END $$;
-
--- Run Rating Engine
+-- Run Rating Engine for new CDRs
 SELECT rate_cdr(id) FROM cdr WHERE rated_flag = FALSE;
 
 -- ============================================================
--- GENERATE BILLS FOR ALL NEW ACTIVE CONTRACTS
+-- GENERATE BILLS (EXCLUDING SOME FOR AUDIT)
 -- ============================================================
-SELECT generate_all_bills('2026-04-01');
+-- We only generate bills for 80% of billable contracts to leave some for the Audit Demo
+DO $$
+DECLARE
+    v_cid INTEGER;
+BEGIN
+    FOR v_cid IN 
+        SELECT id FROM contract 
+        WHERE status IN ('active', 'suspended', 'suspended_debt') 
+          AND NOT EXISTS (SELECT 1 FROM bill WHERE contract_id = contract.id AND billing_period_start = '2026-04-01')
+          AND RANDOM() < 0.8  -- 20% will be missing
+    LOOP
+        PERFORM generate_bill(v_cid, '2026-04-01');
+    END LOOP;
+END $$;
 
 DO $$
 BEGIN

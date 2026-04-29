@@ -6,6 +6,8 @@ import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Properties;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Database Connection Manager
@@ -15,13 +17,15 @@ import java.util.Properties;
  * ready to use, significantly reducing latency.
  */
 public class DB {
+    private static final Logger logger = LoggerFactory.getLogger(DB.class);
     private static final Properties props = new Properties();
     private static final HikariDataSource dataSource;
 
     static {
         try (InputStream input = DB.class.getClassLoader().getResourceAsStream("db.properties")) {
             if (input == null) {
-                System.err.println("WARNING: db.properties not found in classpath. Relying on Environment Variables.");
+                // If db.properties is missing (e.g. production), we rely on Environment Variables.
+                logger.warn("db.properties not found in classpath. Relying on Environment Variables.");
             } else {
                 props.load(input);
             }
@@ -35,14 +39,14 @@ public class DB {
             String pass = getEnvOrProp("DB_PASSWORD", "db.password");
 
             if (url == null || url.contains("REPLACE_WITH_ENV_VAR")) {
-                System.err.println("\n" + "=".repeat(60));
-                System.err.println("❌ CRITICAL: DATABASE CREDENTIALS MISSING");
-                System.err.println("=".repeat(60));
-                System.err.println("How to fix this:");
-                System.err.println("1. Locally (IntelliJ): Edit your 'Main' Run Configuration.");
-                System.err.println("   Add Environment Variables: DB_URL, DB_USER, DB_PASSWORD");
-                System.err.println("2. Cloud (Railway): Go to the 'Variables' tab and add them.");
-                System.err.println("=".repeat(60) + "\n");
+                logger.error("\n" + "=".repeat(60) + "\n" + 
+                             "❌ CRITICAL: DATABASE CREDENTIALS MISSING\n" +
+                             "=".repeat(60) + "\n" +
+                             "How to fix this:\n" +
+                             "1. Locally (IntelliJ): Edit your 'Main' Run Configuration.\n" +
+                             "   Add Environment Variables: DB_URL, DB_USER, DB_PASSWORD\n" +
+                             "2. Cloud (Railway): Go to the 'Variables' tab and add them.\n" +
+                             "=".repeat(60));
                 throw new RuntimeException("Database URL is missing or placeholder. See logs above for help.");
             }
 
@@ -61,11 +65,14 @@ public class DB {
             config.addDataSourceProperty("cachePrepStmts", "true");
             config.addDataSourceProperty("prepStmtCacheSize", "250");
             config.addDataSourceProperty("prepStmtCacheSqlLimit", "2048");
+            
+            // FIX: Ensure 'public' schema is in the search path for every connection.
+            // This is required for Neon's pooler which defaults to an empty search path.
+            config.setConnectionInitSql("SET search_path TO public, \"$user\";");
 
             dataSource = new HikariDataSource(config);
         } catch (Exception e) {
-            System.err.println("CRITICAL: Failed to initialize HikariCP Connection Pool");
-            e.printStackTrace();
+            logger.error("CRITICAL: Failed to initialize HikariCP Connection Pool", e);
             throw new RuntimeException(e);
         }
     }
@@ -154,6 +161,15 @@ public class DB {
     }
 
     /**
+     * Helper to create a SQL Array for PostgreSQL.
+     */
+    public static java.sql.Array createSqlArray(String typeName, Object[] elements) throws SQLException {
+        try (Connection conn = getConnection()) {
+            return conn.createArrayOf(typeName, elements);
+        }
+    }
+
+    /**
      * Shut down the pool (useful for clean app shutdown).
      */
     public static void closePool() {
@@ -162,7 +178,7 @@ public class DB {
         }
     }
 
-    private static String getEnvOrProp(String envKey, String propKey) {
+    public static String getEnvOrProp(String envKey, String propKey) {
         // 1. Check Environment Variables
         String val = System.getenv(envKey);
         

@@ -36,39 +36,16 @@ public class AdminContractServlet extends BaseServlet {
             }
 
             if (path == null || "/".equals(path)) {
-                String msisdn = req.getParameter("msisdn");
                 String search = req.getParameter("search");
-
-                if (msisdn != null && !msisdn.trim().isEmpty()) {
-                    String sql = "SELECT c.id, c.msisdn, c.status, c.available_credit as \"availableCredit\", " +
-                                 "ua.name as \"customerName\", r.name as \"rateplanName\" " +
-                                 "FROM contract c " +
-                                 "JOIN user_account ua ON c.user_account_id = ua.id " +
-                                 "LEFT JOIN rateplan r ON c.rateplan_id = r.id " +
-                                 "WHERE c.msisdn = ? " +
-                                 "ORDER BY c.id DESC";
-                    return DB.executeSelect(sql, msisdn);
-                }
+                int limit = getIntParam(req, "limit", 50);
+                int offset = getIntParam(req, "offset", 0);
                 
-                if (search != null && !search.trim().isEmpty()) {
-                    String pattern = "%" + search.trim() + "%";
-                    String sql = "SELECT c.id, c.msisdn, c.status, " +
-                                 "ua.name as \"customerName\", r.name as \"rateplanName\" " +
-                                 "FROM contract c " +
-                                 "JOIN user_account ua ON c.user_account_id = ua.id " +
-                                 "LEFT JOIN rateplan r ON c.rateplan_id = r.id " +
-                                 "WHERE c.msisdn ILIKE ? OR ua.name ILIKE ? " +
-                                 "ORDER BY ua.name ASC LIMIT 20";
-                    return DB.executeSelect(sql, pattern, pattern);
+                List<Map<String, Object>> list = DB.executeSelect("SELECT * FROM get_all_contracts(?, ?, ?)", search, limit, offset);
+                long total = 0;
+                if (!list.isEmpty()) {
+                    total = ((Number) list.get(0).get("total_count")).longValue();
                 }
-                
-                String sql = "SELECT c.id, c.msisdn, c.status, c.available_credit as \"availableCredit\", " +
-                             "ua.name as \"customerName\", r.name as \"rateplanName\" " +
-                             "FROM contract c " +
-                             "JOIN user_account ua ON c.user_account_id = ua.id " +
-                             "LEFT JOIN rateplan r ON c.rateplan_id = r.id " +
-                             "ORDER BY c.id DESC";
-                return DB.executeSelect(sql);
+                return Map.of("data", list, "total", total);
             }
  else {
                 int id = Integer.parseInt(path.substring(1));

@@ -10,9 +10,15 @@ import org.apache.catalina.webresources.JarResourceSet;
 import org.apache.catalina.webresources.StandardRoot;
 
 import java.io.File;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class Main {
+    private static final Logger logger = LoggerFactory.getLogger(Main.class);
     public static void main(String[] args) throws LifecycleException {
+        // Set headless mode for document rendering
+        System.setProperty("java.awt.headless", "true");
+
         Tomcat tomcat = new Tomcat();
         
         // Use port from environment variable or default to 8080
@@ -25,7 +31,12 @@ public class Main {
         // FIX: In a hardened container, we use /tmp for Tomcat's internal files.
         // This avoids "Permission Denied" errors when running as a non-root user.
         String baseDir = System.getProperty("java.io.tmpdir") + "/tomcat-base." + webPort;
-        new File(baseDir).mkdirs();
+        File bDirFile = new File(baseDir);
+        if (!bDirFile.exists()) {
+            if (!bDirFile.mkdirs()) {
+                logger.warn("Could not create Tomcat base directory: {}", baseDir);
+            }
+        }
         tomcat.setBaseDir(baseDir);
 
         // FIX: The docBase must exist for Tomcat to start. If the source folder is missing (production),
@@ -38,7 +49,9 @@ public class Main {
         
         if (!webappFile.exists()) {
             webappFile = new File(baseDir, "docbase");
-            webappFile.mkdirs();
+            if (!webappFile.mkdirs()) {
+                logger.warn("Could not create docbase directory: {}", webappFile.getAbsolutePath());
+            }
         }
         
         StandardContext ctx = (StandardContext) tomcat.addWebapp("", webappFile.getAbsolutePath());
@@ -49,40 +62,44 @@ public class Main {
         valve.setProtocolHeader("X-Forwarded-Proto");
         ctx.getPipeline().addValve(valve);
 
+        // --- WELCOME FILES: Serve index.html for root ---
+        ctx.addWelcomeFile("index.html");
+
         // FIX: Shaded JAR Support
-        // Tomcat 11 doesn't scan inside a Fat JAR by default. We must manually map the JAR 
-        // as a JarResourceSet so that @WebServlet and @WebFilter annotations are discovered.
         File additionWebInfClasses = new File("target/classes");
-        
-        // Dynamic JAR Detection: Find the path of the currently executing JAR
         String jarPath = Main.class.getProtectionDomain().getCodeSource().getLocation().getPath();
         File jarFile = new File(jarPath);
         
         WebResourceRoot resources = new StandardRoot(ctx);
         if (additionWebInfClasses.exists()) {
-            // IDE Mode: Classes are in target/classes
             resources.addPreResources(new DirResourceSet(resources, "/WEB-INF/classes",
                     additionWebInfClasses.getAbsolutePath(), "/"));
-            
-            System.out.println("Mapping resources from IDE path: " + additionWebInfClasses.getAbsolutePath());
+            logger.info("Mapping resources from IDE path: {}", additionWebInfClasses.getAbsolutePath());
         } else if (jarFile.isFile() && jarFile.getName().endsWith(".jar")) {
-            // Production Mode: Classes are inside the JAR. We map the JAR dynamically.
             resources.addJarResources(new JarResourceSet(resources, "/WEB-INF/classes",
                     jarFile.getAbsolutePath(), "/"));
-            
-            System.out.println("Mapping resources from Dynamic JAR: " + jarFile.getAbsolutePath());
+            logger.info("Mapping resources from Dynamic JAR: {}", jarFile.getAbsolutePath());
         }
 
         // UNIVERSAL FIX: Always prioritize the filesystem 'webapp' folder if it exists
-        // This ensures Docker containers with externalized webapp folders (via COPY) work correctly.
         if (webappFile.exists() && webappFile.isDirectory()) {
             resources.addPreResources(new DirResourceSet(resources, "/",
                     webappFile.getAbsolutePath(), "/"));
-            System.out.println("✔ Prioritizing filesystem webapp: " + webappFile.getAbsolutePath());
+            logger.info("✔ Prioritizing filesystem webapp: {}", webappFile.getAbsolutePath());
         }
+        
+        // FIX: Increase cache size to avoid "insufficient free space" warnings
+        resources.setCacheMaxSize(100 * 1024); // 100MB
+        
+        // --- SPA FALLBACK: If a file isn't found, serve index.html (for client-side routing) ---
+        org.apache.tomcat.util.descriptor.web.ErrorPage spaFallback = new org.apache.tomcat.util.descriptor.web.ErrorPage();
+        spaFallback.setErrorCode(404);
+        spaFallback.setLocation("/index.html");
+        ctx.addErrorPage(spaFallback);
+
         ctx.setResources(resources);
 
-        System.out.println("Configuring app with docbase: " + webappFile.getAbsolutePath());
+        logger.info("Configuring app with docbase: {}", webappFile.getAbsolutePath());
 
         tomcat.getConnector(); // Initialize the connector
         tomcat.start();
@@ -94,25 +111,24 @@ public class Main {
         // 4. PRODUCTION: Graceful Shutdown Hook
         // Ensures the DB pool is closed and Tomcat stops cleanly.
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-            System.out.println("SHUTDOWN: Stopping FMRZ Billing System...");
+            logger.info("SHUTDOWN: Stopping FMRZ Billing System...");
             try {
                 com.billing.db.DB.closePool();
                 tomcat.stop();
-                System.out.println("SHUTDOWN: System stopped gracefully.");
+                logger.info("SHUTDOWN: System stopped gracefully.");
             } catch (Exception e) {
-                e.printStackTrace();
+                logger.error("Error during graceful shutdown", e);
             }
         }));
 
         // 5. OBSERVABILITY: Health Check Endpoint
-        // Used by Railway/Podman to monitor if the app and DB are alive.
-        Tomcat.addServlet(ctx, "HealthCheck", new jakarta.servlet.http.HttpServlet() {
+        registerServlet(ctx, "HealthCheck", new jakarta.servlet.http.HttpServlet() {
             @Override
             protected void doGet(jakarta.servlet.http.HttpServletRequest req, 
                                 jakarta.servlet.http.HttpServletResponse resp) throws java.io.IOException {
                 resp.setContentType("application/json");
                 resp.setCharacterEncoding("UTF-8");
-                try (java.sql.Connection conn = com.billing.db.DB.getConnection()) {
+                try (java.sql.Connection ignored = com.billing.db.DB.getConnection()) {
                     resp.setStatus(200);
                     resp.getWriter().write("{\"status\":\"UP\", \"database\":\"CONNECTED\"}");
                 } catch (Exception e) {
@@ -120,12 +136,34 @@ public class Main {
                     resp.getWriter().write("{\"status\":\"DOWN\", \"error\":\"" + e.getMessage() + "\"}");
                 }
             }
-        });
-        ctx.addServletMappingDecoded("/health", "HealthCheck");
-        ctx.addServletMappingDecoded("/health/*", "HealthCheck");
+        }, "/health", "/health/*");
 
-        System.out.println("FMRZ Billing System started on port " + webPort);
-        System.out.println("Health Check: http://localhost:" + webPort + "/health");
+        // 6. BULLETPROOF REGISTRATION: Manually register all servlets to bypass scanning issues in IDE
+        registerServlet(ctx, "AuthServlet", new com.billing.servlet.AuthServlet(), "/api/auth/*");
+        registerServlet(ctx, "AdminCDRServlet", new com.billing.servlet.AdminCDRServlet(), "/api/admin/cdr/*");
+        registerServlet(ctx, "AdminCDRGeneratorServlet", new com.billing.servlet.AdminCDRGeneratorServlet(), "/api/admin/cdr-generate/*");
+        registerServlet(ctx, "AdminCDRUploadServlet", new com.billing.servlet.AdminCDRUploadServlet(), "/api/admin/cdr-upload/*");
+        registerServlet(ctx, "AdminBillServlet", new com.billing.servlet.AdminBillServlet(), "/api/admin/bills/*");
+        registerServlet(ctx, "AdminAuditServlet", new com.billing.servlet.AdminAuditServlet(), "/api/admin/audit/*");
+        registerServlet(ctx, "AdminContractServlet", new com.billing.servlet.AdminContractServlet(), "/api/admin/contracts/*");
+        registerServlet(ctx, "AdminUserServlet", new com.billing.servlet.AdminUserServlet(), "/api/admin/users/*");
+        registerServlet(ctx, "AdminStatsServlet", new com.billing.servlet.AdminStatsServlet(), "/api/admin/stats/*");
+        registerServlet(ctx, "AdminRatePlanServlet", new com.billing.servlet.AdminRatePlanServlet(), "/api/admin/rateplans/*");
+        registerServlet(ctx, "AdminServicePkgServlet", new com.billing.servlet.AdminServicePkgServlet(), "/api/admin/service-packages/*");
+        registerServlet(ctx, "AdminAddonServlet", new com.billing.servlet.AdminAddonServlet(), "/api/admin/addons/*");
+        registerServlet(ctx, "PublicServlet", new com.billing.servlet.PublicServlet(), "/api/public/*");
+        registerServlet(ctx, "CustomerProfileServlet", new com.billing.servlet.CustomerProfileServlet(), "/api/customer/*");
+
+        logger.info("FMRZ Billing System started on port {}", webPort);
+        logger.info("Health Check: http://localhost:{}/health", webPort);
         tomcat.getServer().await();
+    }
+
+    private static void registerServlet(StandardContext ctx, String name, jakarta.servlet.Servlet servlet, String... mappings) {
+        Tomcat.addServlet(ctx, name, servlet);
+        for (String mapping : mappings) {
+            ctx.addServletMappingDecoded(mapping, name);
+        }
+        logger.info("Registered Servlet: {} at {}", name, java.util.Arrays.toString(mappings));
     }
 }

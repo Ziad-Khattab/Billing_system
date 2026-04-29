@@ -17,24 +17,32 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.billing.db.DB;
 
 public class CDRParser {
+    private static final Logger logger = LoggerFactory.getLogger(CDRParser.class);
     private static java.util.Map<String, Integer> serviceMap = new java.util.HashMap<>();
+    private static java.util.Map<Integer, String> typeMap = new java.util.HashMap<>();
 
     private static void loadServiceConfig() {
         try (Connection conn = DB.getConnection()) {
-            List<Map<String, Object>> services = DB.executeSelect("SELECT id, name FROM service_package");
+            List<Map<String, Object>> services = DB.executeSelect("SELECT id, name, type FROM service_package");
             for (Map<String, Object> s : services) {
-                serviceMap.put((String) s.get("name"), (Integer) s.get("id"));
+                String name = (String) s.get("name");
+                String type = (String) s.get("type");
+                Integer id = (Integer) s.get("id");
+                serviceMap.put(name, id);
+                typeMap.put(id, type);
             }
-            System.out.println("[CONFIG] Loaded " + serviceMap.size() + " services from database.");
+            logger.info("Loaded {} services from database.", serviceMap.size());
         } catch (Exception e) {
-            System.err.println("[CONFIG] Failed to load services from database. Using safe defaults.");
-            serviceMap.put("Voice Pack", 1);
-            serviceMap.put("Data Pack", 2);
-            serviceMap.put("SMS Pack", 3);
+            logger.warn("Failed to load services from database. Using safe defaults.");
+            serviceMap.put("Voice Pack", 1); typeMap.put(1, "voice");
+            serviceMap.put("Data Pack", 2);  typeMap.put(2, "data");
+            serviceMap.put("SMS Pack", 3);   typeMap.put(3, "sms");
         }
     }
 
@@ -54,7 +62,11 @@ public class CDRParser {
         File source = new File(sourceDir);
         File dest = new File(destDir);
 
-        if (!dest.exists()) dest.mkdirs();
+        if (!dest.exists()) {
+            if (!dest.mkdirs()) {
+                logger.warn("Failed to create destination directory: {}", destDir);
+            }
+        }
 
         File[] csvFiles = source.listFiles((dir, name) -> name.toLowerCase().endsWith(".csv"));
 
@@ -65,13 +77,12 @@ public class CDRParser {
 
         for (File file : csvFiles) {
             try {
-                System.out.println("Parsing CDR: " + file.getName());
+                logger.info("Parsing CDR: {}", file.getName());
                 parseAndInsert(file);
                 moveFile(file, dest);
-                System.out.println("Successfully processed: " + file.getName());
+                logger.info("Successfully processed: {}", file.getName());
             } catch (Exception e) {
-                System.err.println("Error processing " + file.getName() + ": " + e.getMessage());
-                e.printStackTrace();
+                logger.error("Error processing {}: {}", file.getName(), e.getMessage());
             }
         }
     }
@@ -88,7 +99,7 @@ public class CDRParser {
                 fileDateStr = yyyy + "-" + mm + "-" + dd;
             }
         } catch (Exception e) {
-            System.err.println("Warning: Could not parse date from filename " + fileName + ". Using fallback.");
+            logger.warn("Could not parse date from filename {}. Using fallback.", fileName);
         }
 
         Connection conn = DB.getConnection();
@@ -130,13 +141,22 @@ public class CDRParser {
 
                     if (p.length >= 9) {
                         // 9-Column Format: file_id, dial_a, dial_b, start_time, duration, service_id, hplmn, vplmn, external_charges
+                        // This is the standard format used by most network vendors.
                         dialA = p[1].trim();
                         dialB = p[2].trim();
-                        timeStr = p[3].trim(); // Full YYYY-MM-DD HH:MM:SS
-                        usage = Integer.parseInt(p[4].trim());
+                        timeStr = p[3].trim(); 
                         serviceId = Integer.parseInt(p[5].trim());
-                        externalPiasters = Double.parseDouble(p[8].trim()) * 100.0; // Assume stored in dollars/major unit
                         
+                        double rawUsage = Double.parseDouble(p[4].trim());
+                        // Convert Bytes to MB for data services in 9-column format
+                        // Network vendors often report data in bytes, but we bill in MB increments.
+                        if ("data".equals(typeMap.get(serviceId))) {
+                            usage = (int) Math.ceil(rawUsage / (1024.0 * 1024.0));
+                        } else {
+                            usage = (int) rawUsage;
+                        }
+
+                        externalPiasters = Double.parseDouble(p[8].trim()) * 100.0;
                         ts = Timestamp.valueOf(timeStr);
                     } else if (p.length >= 6) {
                         // 6-Column Format: Dial A, Dial B, Service ID, Usage, Time, External charges
@@ -190,7 +210,7 @@ public class CDRParser {
                         if (!isUrl) serviceId = smsId;
                     }
 
-                    // Insert via SQL function
+                    // Insert via SQL function (Database now handles rejections via rejected_cdr table)
                     cs.registerOutParameter(1, Types.INTEGER);
                     cs.setInt(2, fileId);
                     cs.setString(3, dialA);
@@ -203,6 +223,13 @@ public class CDRParser {
                     cs.setBigDecimal(10, BigDecimal.valueOf(externalPiasters / 100.0));
 
                     cs.execute();
+                    int resultId = cs.getInt(1);
+                    if (resultId == 0) {
+                        // REJECTION LOGIC: If resultId is 0, the database rejected the CDR (e.g. suspended).
+                        // The database function 'insert_cdr' has already inserted this into 'rejected_cdr' table
+                        // for auditing, so we don't need to throw an exception here.
+                        logger.debug("CDR Rejected by DB (Logged in Audit): MSISDN {}", dialA);
+                    }
                 }
             }
 
@@ -224,17 +251,11 @@ public class CDRParser {
 
     private static void moveFile(File file, File destPath) throws IOException {
         String originalName = file.getName();
-        String finalName = originalName;
+        String uniqueId = java.util.UUID.randomUUID().toString().substring(0, 8);
+        String finalName = uniqueId + "_" + originalName;
         Path target = destPath.toPath().resolve(finalName);
         
-        int counter = 0;
-        while (Files.exists(target)) {
-            finalName = System.currentTimeMillis() + (counter > 0 ? "_" + counter : "") + "_" + originalName;
-            target = destPath.toPath().resolve(finalName);
-            counter++;
-        }
-        
-        System.out.println("[AUDIT] Moving " + originalName + " to " + target.toAbsolutePath());
+        logger.info("Moving {} to {}", originalName, target.toAbsolutePath());
         try {
             Files.move(file.toPath(), target, StandardCopyOption.REPLACE_EXISTING);
         } catch (Exception e) {

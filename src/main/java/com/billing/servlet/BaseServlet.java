@@ -7,12 +7,15 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Map;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 // Abstract base class — all servlets extend this for shared JSON helpers.
 // "abstract" means you can't instantiate BaseServlet directly using 'new BaseServlet()'. 
 // It only serves as a parent template for AuthServlet, AdminBillServlet, etc.
 // Extending 'HttpServlet' hooks this class into Tomcat's web request engine.
 public abstract class BaseServlet extends HttpServlet {
+    protected final Logger logger = LoggerFactory.getLogger(getClass());
 
     // Gson is a Google library that converts Java Objects to JSON text, and vice versa.
     // Making it 'protected' means child classes can use it.
@@ -55,7 +58,7 @@ public abstract class BaseServlet extends HttpServlet {
             T result = logic.execute();
             sendJson(res, result);
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error("API Logic Error", e);
             try { sendError(res, 500, e.getMessage()); } catch (IOException ignored) {}
         }
     }
@@ -72,5 +75,22 @@ public abstract class BaseServlet extends HttpServlet {
         String pathInfo = req.getPathInfo();
         if (pathInfo == null || pathInfo.equals("/")) return null;
         return pathInfo.substring(1);
+    }
+
+    protected int getIntParam(HttpServletRequest req, String name, int defaultValue) {
+        String val = req.getParameter(name);
+        if (val == null || val.trim().isEmpty()) return defaultValue;
+        try {
+            return Integer.parseInt(val);
+        } catch (NumberFormatException e) {
+            return defaultValue;
+        }
+    }
+
+    protected boolean isAdmin(HttpServletRequest req) {
+        jakarta.servlet.http.HttpSession session = req.getSession(false);
+        if (session == null) return false;
+        Map<String, Object> user = (Map<String, Object>) session.getAttribute("user");
+        return user != null && "admin".equalsIgnoreCase((String) user.get("role"));
     }
 }

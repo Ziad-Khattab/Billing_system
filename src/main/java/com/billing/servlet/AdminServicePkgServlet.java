@@ -28,17 +28,74 @@ public class AdminServicePkgServlet extends BaseServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse res) throws IOException {
-        try {
+        handle(res, () -> {
             Map body = readJson(req, Map.class);
+
+            // Explicitly cast numbers because Gson parses them as Double
+            String name = (String) body.get("name");
+            String type = (String) body.get("type");
+            Number amount = (Number) body.get("amount");
+            Number priority = (Number) body.get("priority");
+            Number price = (Number) body.get("price");
+            String description = (String) body.get("description");
+            Boolean isRoaming = (Boolean) body.get("is_roaming");
+
             List<Map<String, Object>> result = DB.executeSelect(
-                "SELECT * FROM create_service_package(?, ?::service_type, ?, ?, ?, ?, ?)",
-                body.get("name"), body.get("type"), body.get("amount"), 
-                body.get("priority"), body.get("price"), body.get("description"), body.get("is_roaming")
+                "SELECT * FROM add_new_service_package(?, ?::service_type, ?::numeric, ?::integer, ?::numeric, ?, ?)",
+                name, type, 
+                amount != null ? amount.doubleValue() : 0, 
+                priority != null ? priority.intValue() : 0, 
+                price != null ? price.doubleValue() : 0, 
+                description, isRoaming != null ? isRoaming : false
             );
             res.setStatus(201);
-            sendJson(res, result.get(0));
-        } catch (Exception e) {
-            sendError(res, 500, e.getMessage());
+            return result.get(0);
+        });
+    }
+
+    @Override
+    protected void doPut(HttpServletRequest req, HttpServletResponse res) throws IOException {
+        String pathParam = getPathParam(req);
+        if (pathParam == null) {
+            sendError(res, 400, "Missing ID");
+            return;
         }
+        handle(res, () -> {
+            int id = Integer.parseInt(pathParam);
+            Map body = readJson(req, Map.class);
+
+            // Explicitly cast numbers because Gson parses them as Double
+            String name = (String) body.get("name");
+            String type = (String) body.get("type");
+            Number amount = (Number) body.get("amount");
+            Number priority = (Number) body.get("priority");
+            Number price = (Number) body.get("price");
+            String description = (String) body.get("description");
+            Boolean isRoaming = (Boolean) body.get("is_roaming");
+
+            List<Map<String, Object>> result = DB.executeSelect(
+                "SELECT * FROM update_service_package(?, ?, ?::service_type, ?::numeric, ?::integer, ?::numeric, ?, ?)",
+                id, name, type, 
+                amount != null ? amount.doubleValue() : 0, 
+                priority != null ? priority.intValue() : 0, 
+                price != null ? price.doubleValue() : 0, 
+                description, isRoaming != null ? isRoaming : false
+            );
+            return result.get(0);
+        });
+    }
+
+    @Override
+    protected void doDelete(HttpServletRequest req, HttpServletResponse res) throws IOException {
+        String pathParam = getPathParam(req);
+        if (pathParam == null) {
+            sendError(res, 400, "Missing ID");
+            return;
+        }
+        handle(res, () -> {
+            int id = Integer.parseInt(pathParam);
+            DB.executeSelect("SELECT delete_service_package(?)", id);
+            return Map.of("message", "Service package deleted successfully");
+        });
     }
 }
