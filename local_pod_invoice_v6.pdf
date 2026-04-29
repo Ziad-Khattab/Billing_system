@@ -1,0 +1,61 @@
+HTTP/1.1 500 
+Access-Control-Allow-Origin: http://localhost:5173
+Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS
+Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With
+Access-Control-Allow-Credentials: true
+Content-Disposition: attachment; filename=Invoice_1.pdf
+Content-Type: text/html;charset=utf-8
+Content-Language: en
+Content-Length: 4664
+Date: Wed, 29 Apr 2026 20:28:09 GMT
+Connection: close
+
+<!doctype html><html lang="en"><head><title>HTTP Status 500 – Internal Server Error</title><style type="text/css">body {font-family:Tahoma,Arial,sans-serif;} h1, h2, h3, b {color:white;background-color:#525D76;} h1 {font-size:22px;} h2 {font-size:16px;} h3 {font-size:14px;} p {font-size:12px;} a {color:black;} .line {height:1px;background-color:#525D76;border:none;}</style></head><body><h1>HTTP Status 500 – Internal Server Error</h1><hr class="line" /><p><b>Type</b> Exception Report</p><p><b>Message</b> Servlet execution threw an exception</p><p><b>Description</b> The server encountered an unexpected condition that prevented it from fulfilling the request.</p><p><b>Exception</b></p><pre>jakarta.servlet.ServletException: Servlet execution threw an exception
+	org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:53)
+	com.billing.servlet.CORSFilter.doFilter(CORSFilter.java:28)
+	com.billing.filter.AppFilter.handleFilterLogic(AppFilter.java:77)
+	com.billing.filter.AppFilter.doFilter(AppFilter.java:32)
+	com.billing.filter.AuthFilter.doFilter(AuthFilter.java:36)
+</pre><p><b>Root Cause</b></p><pre>java.lang.NoClassDefFoundError: Could not initialize class net.sf.jasperreports.extensions.ExtensionsEnvironment
+	net.sf.jasperreports.engine.DefaultJasperReportsContext.getExtensions(DefaultJasperReportsContext.java:273)
+	net.sf.jasperreports.engine.util.MessageUtil.getMessageProvider(MessageUtil.java:70)
+	net.sf.jasperreports.engine.JRRuntimeException.resolveMessage(JRRuntimeException.java:145)
+	net.sf.jasperreports.engine.JRRuntimeException.getMessage(JRRuntimeException.java:126)
+	net.sf.jasperreports.engine.JRRuntimeException.getMessage(JRRuntimeException.java:117)
+	ch.qos.logback.classic.spi.ThrowableProxy.&lt;init&gt;(ThrowableProxy.java:67)
+	ch.qos.logback.classic.spi.ThrowableProxy.&lt;init&gt;(ThrowableProxy.java:78)
+	ch.qos.logback.classic.spi.ThrowableProxy.&lt;init&gt;(ThrowableProxy.java:51)
+	ch.qos.logback.classic.spi.LoggingEvent.&lt;init&gt;(LoggingEvent.java:145)
+	ch.qos.logback.classic.Logger.buildLoggingEventAndAppend(Logger.java:424)
+	ch.qos.logback.classic.Logger.filterAndLog_0_Or3Plus(Logger.java:386)
+	ch.qos.logback.classic.Logger.error(Logger.java:543)
+	com.billing.servlet.CustomerProfileServlet.doGet(CustomerProfileServlet.java:127)
+	jakarta.servlet.http.HttpServlet.service(HttpServlet.java:622)
+	jakarta.servlet.http.HttpServlet.service(HttpServlet.java:710)
+	org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:53)
+	com.billing.servlet.CORSFilter.doFilter(CORSFilter.java:28)
+	com.billing.filter.AppFilter.handleFilterLogic(AppFilter.java:77)
+	com.billing.filter.AppFilter.doFilter(AppFilter.java:32)
+	com.billing.filter.AuthFilter.doFilter(AuthFilter.java:36)
+</pre><p><b>Root Cause</b></p><pre>java.lang.ExceptionInInitializerError: Exception net.sf.jasperreports.engine.JRRuntimeException: util.class.unexpected.type [in thread &quot;http-nio-8080-exec-3&quot;]
+	net.sf.jasperreports.engine.util.ClassUtils.instantiateClass(ClassUtils.java:66)
+	net.sf.jasperreports.extensions.ExtensionsEnvironment.createDefaultRegistry(ExtensionsEnvironment.java:91)
+	net.sf.jasperreports.extensions.ExtensionsEnvironment.&lt;clinit&gt;(ExtensionsEnvironment.java:78)
+	net.sf.jasperreports.engine.DefaultJasperReportsContext.getExtensions(DefaultJasperReportsContext.java:273)
+	net.sf.jasperreports.engine.xml.JRXmlLoader.loadXML(JRXmlLoader.java:161)
+	net.sf.jasperreports.engine.xml.JRXmlLoader.load(JRXmlLoader.java:149)
+	net.sf.jasperreports.engine.xml.JRXmlLoader.load(JRXmlLoader.java:136)
+	net.sf.jasperreports.engine.JasperCompileManager.compile(JasperCompileManager.java:334)
+	net.sf.jasperreports.engine.JasperCompileManager.compileReport(JasperCompileManager.java:601)
+	com.billing.util.JasperLoader.loadAndCompile(JasperLoader.java:46)
+	com.billing.util.JasperLoader.getReport(JasperLoader.java:30)
+	com.billing.servlet.CustomerProfileServlet.getCachedReport(CustomerProfileServlet.java:30)
+	com.billing.servlet.CustomerProfileServlet.doGet(CustomerProfileServlet.java:119)
+	jakarta.servlet.http.HttpServlet.service(HttpServlet.java:622)
+	jakarta.servlet.http.HttpServlet.service(HttpServlet.java:710)
+	org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:53)
+	com.billing.servlet.CORSFilter.doFilter(CORSFilter.java:28)
+	com.billing.filter.AppFilter.handleFilterLogic(AppFilter.java:77)
+	com.billing.filter.AppFilter.doFilter(AppFilter.java:32)
+	com.billing.filter.AuthFilter.doFilter(AuthFilter.java:36)
+</pre><p><b>Note</b> The full stack trace of the root cause is available in the server logs.</p><hr class="line" /><h3>Apache Tomcat/11.0.21</h3></body></html>
