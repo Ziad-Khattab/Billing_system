@@ -203,18 +203,23 @@ public class CDRParser {
                     }
 
                     // Insert via SQL function
-                    cs.registerOutParameter(1, Types.INTEGER);
-                    cs.setInt(2, fileId);
-                    cs.setString(3, dialA);
-                    cs.setString(4, dialB);
-                    cs.setTimestamp(5, ts);
-                    cs.setInt(6, usage);
-                    cs.setInt(7, serviceId);
-                    cs.setNull(8, Types.VARCHAR); // p_hplmn
-                    cs.setNull(9, Types.VARCHAR); // p_vplmn
-                    cs.setBigDecimal(10, BigDecimal.valueOf(externalPiasters / 100.0));
+                    try {
+                        cs.registerOutParameter(1, Types.INTEGER);
+                        cs.setInt(2, fileId);
+                        cs.setString(3, dialA);
+                        cs.setString(4, dialB);
+                        cs.setTimestamp(5, ts);
+                        cs.setInt(6, usage);
+                        cs.setInt(7, serviceId);
+                        cs.setNull(8, Types.VARCHAR); // p_hplmn
+                        cs.setNull(9, Types.VARCHAR); // p_vplmn
+                        cs.setBigDecimal(10, BigDecimal.valueOf(externalPiasters / 100.0));
 
-                    cs.execute();
+                        cs.execute();
+                    } catch (SQLException sqle) {
+                        System.err.println("  [SKIP] Error on line: " + line + " -> " + sqle.getMessage());
+                        // We continue to the next line instead of crashing
+                    }
                 }
             }
 
