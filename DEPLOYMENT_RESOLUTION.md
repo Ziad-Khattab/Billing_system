@@ -1,99 +1,235 @@
-# Exhaustive Integration & Hardening Audit (Post-Mortem)
+# Deployment Resolution & Hardening Audit
 
-This document explains the **Why, Where, and How** for every technical hurdle faced during the integration of Java 21, Tomcat 11, Nginx, and Podman.
-
----
-
-## 🏗️ 1. Startup Crash: The Permission Paradox
-- **Where**: `Dockerfile` and `com.billing.Main.java`
-- **Why**: Modern security requires running containers as a non-root user (`billinguser`). However, Tomcat defaults to writing its work files in the execution directory. Since `/app` was owned by root, the app crashed with `AccessDeniedException` before the first log line appeared.
-- **The Fix**: 
-    1.  **Dockerfile**: Added `chown` to give the app ownership of its own folder.
-    2.  **Main.java**: Programmatically moved the Tomcat `baseDir` to `/tmp` to follow the "Read-Only Filesystem" best practice.
-
-## 🛠️ 2. The 404 Ghost: Shaded JAR Annotation Blindness
-- **Where**: `com.billing.Main.java`
-- **Why**: In a "Shaded JAR," your classes aren't in a folder; they are inside a ZIP. Tomcat's default scanner looks for a `WEB-INF/classes` folder which doesn't exist in a JAR. This caused all `@WebServlet` and `@WebFilter` annotations to be ignored.
-- **The Fix**: Implemented **Dynamic JAR Detection**. The code now detects its own JAR filename at runtime and maps it as a `JarResourceSet`. This "tells" Tomcat: *"Everything inside this JAR should be treated as a web class."*
-
-## 📦 3. The Empty Page: Frontend/Backend Desynchronization
-- **Where**: `deploy/nginx.conf` and `Dockerfile`
-- **Why**: SvelteKit/Vite uses unique hashes for filenames (e.g., `app.A1B2.js`). Nginx was trying to serve these from your **Host's disk**, but the HTML was being served by the **Container**. Because the Host and Container builds happened at different times, the hashes didn't match. Nginx gave a 404 for the JS, and the page stayed empty.
-- **The Fix**: Disabled Nginx's filesystem `alias`. Now, Nginx proxies everything to Tomcat. Since Tomcat and the JS files are in the same container, they are always perfectly in sync.
-
-## 🛣️ 4. The SPA Router: Path Normalization
-- **Where**: `com.billing.filter.AppFilter.java`
-- **Why**: SvelteKit handles navigation in the browser. If a user refreshes `http://billing.local/dashboard`, Tomcat thinks `/dashboard` is a real folder on the server and returns a 404.
-- **The Fix**: Updated the filter to recognize "Deep Links" and forward them to `index.html`. Also fixed a JAR-specific bug where `getRealPath()` returned `null`, breaking the dynamic CSS injection.
-
-## 🔒 5. Security Hardening: The Secrets Leak
-- **Where**: `com.billing.db.DB.java` and `src/main/resources/db.properties`
-- **Why**: Storing passwords in `db.properties` is dangerous because that file is bundled into the JAR. If the JAR is shared, the database is exposed.
-- **The Fix**: Scrubbed the properties file and refactored `DB.java` to use **Environment Variable Priority**. The app now looks for `DB_URL` and `DB_PASSWORD` in the secure container environment first.
-
-## 🎨 6. Branding: Centralized Configuration
-- **Where**: `src/main/resources/config.properties` and `CustomerProfileServlet.java`
-- **Why**: Branding (Phone, Web, Email) was hardcoded in multiple places. Changing the company website required a full rebuild of the code.
-- **The Fix**: Created a central `config.properties`. The Servlet now loads this at startup and injects the values into the JasperReport as parameters.
-
-## ⚡ 7. Performance: JasperReport Compilation Lag
-- **Where**: `com.billing.servlet.CustomerProfileServlet.java`
-- **Why**: Every PDF download request was re-compiling the `.jrxml` file from scratch, adding a 2-second delay and heavy CPU load.
-- **The Fix**: Implemented **In-Memory Report Caching**. The report is compiled once and the binary object is reused for all subsequent downloads, making them nearly instant.
+This document provides an exhaustive technical audit of every technical hurdle faced during deployment - both locally with Podman/Docker and on Railway cloud platform. It explains the **Why, Where, and How** for each issue encountered.
 
 ---
 
-### 🚦 Final Operational Note
-The system is now "Hardened." This means it is no longer dependent on your local filesystem paths or hardcoded passwords. It is a self-contained "Engine" ready for any Linux server.
+## 🚂 Railway Deployment Issues
+
+### R1. Health Check Detection
+- **Where**: `Main.java`, Railway dashboard
+- **Problem**: Railway needs to know if the app is "alive" before sending traffic. Without a proper health endpoint, Railway would fail deployment or mark the service as unhealthy.
+- **Resolution**:
+  - Created `/health` endpoint that returns JSON with database connectivity check
+  - Updated `AppFilter` to whitelist `/health` so it bypasses SPA routing
+  - Added Dockerfile health check:
+    ```dockerfile
+    HEALTHCHECK --interval=30s --timeout=10s --start-period=40s --retries=3 \
+      CMD curl -f http://localhost:8080/health || exit 1
+    ```
+
+### R2. Environment Variable Loading
+- **Where**: `DB.java`
+- **Problem**: Missing environment variables on Railway cause cryptic "Driver not found" errors that waste debugging time.
+- **Resolution**: Implemented **Environment Variable Priority** with defensive checks:
+  ```java
+  String dbUrl = System.getenv("DB_URL");
+  if (dbUrl == null || dbUrl.contains("REPLACE_WITH_ENV_VAR")) {
+      // Print helpful setup guide
+  }
+  ```
+
+### R3. Database Connection Pooling
+- **Where**: `docker-compose.yml`, Railway environment
+- **Problem**: In Railway's containerized environment, HikariCP needs proper configuration. Connection timeouts and cold starts on NeonDB can cause issues.
+- **Resolution**: Configured HikariCP with:
+  ```java
+  config.setMaximumPoolSize(10);
+  config.setMinimumIdle(2);
+  config.setConnectionTimeout(30000);
+  config.setIdleTimeout(600000);
+  config.setMaxLifetime(1800000);
+  ```
+
+### R4. NeonDB Cold Start
+- **Where**: NeonDB (cloud PostgreSQL)
+- **Problem**: NeonDB has "cold start" behavior - the database can pause after inactivity, causing initial connection delays.
+- **Resolution**: Added connection retry logic and increased timeout values. The `/health` endpoint handles this gracefully.
+
+### R5. Railway Build Timeout
+- **Problem**: Default build timeout may be exceeded during Maven build.
+- **Resolution**: 
+  - Multi-stage Dockerfile optimization
+  - Dependency caching in build stage
+  - Use `mvn dependency:go-offline` for caching
 
 ---
 
-## 📄 8. Jasper 7: The Fragmented Font Fix
-- **Where**: `pom.xml` (Maven Shade Plugin)
-- **Why**: JasperReports 7 splits its configuration into multiple JARs. When shading into a Fat JAR, these configuration files were overwriting each other, causing fonts and PDF functions to vanish in the cloud.
-- **The Fix**: Implemented **`AppendingTransformer`**. This tells Maven: *"Instead of choosing one file, stitch them all together."* This ensures all fonts and Jasper functions are available in the final production JAR.
+## 🐳 Local Podman/Docker Issues
 
-## 🩺 9. Production Observability: The Health Guard
-- **Where**: `Main.java` and `AppFilter.java`
-- **Why**: Cloud platforms like Railway need to know if the app is "alive" before sending traffic. Also, the app needs to clean up its database connections when stopping.
-- **The Fix**: 
-    1.  **Health Endpoint**: Created a JSON `/health` servlet that verifies DB connectivity.
-    2.  **Graceful Shutdown**: Added a `ShutdownHook` to Tomcat to close the HikariCP pool cleanly, preventing "Zombie" database connections.
-    3.  **Routing Bypass**: Updated `AppFilter` to whitelist `/health` so it bypasses the SPA routing.
+### L1. Startup Crash: The Permission Paradox
+- **Where**: `Dockerfile` and `Main.java`
+- **Problem**: Modern security requires running containers as non-root user (`javauser`). Tomcat defaults to writing work files in execution directory. Since `/app` was owned by root, app crashed with `AccessDeniedException`.
+- **Resolution**:
+  1. Dockerfile: Added `chown` to give app ownership
+  2. Main.java: Moved Tomcat `baseDir` to `/tmp`
 
-## 🛡️ 10. Environment Parity: The Golden Image
-- **Where**: `Dockerfile`, `.dockerignore`, and `docker-compose.yml`
-- **Why**: Production images should be as small as possible and never run as root. Also, local builds shouldn't leak "garbage" files into the image.
-- **The Fix**: 
-    1.  **Slim JRE**: Switched to `eclipse-temurin:21-jre-jammy` (saving 150MB).
-    2.  **Non-Root User**: Created `javauser` to run the app, following the "Least Privilege" security principle.
-    3.  **Local-First Build**: Updated the `Dockerfile` to use local `target/` artifacts, bypassing container-specific network DNS issues during Node/Maven downloads.
+### L2. The 404 Ghost: Shaded JAR Annotation Blindness
+- **Where**: `Main.java`
+- **Problem**: In a "Shaded JAR", classes are inside a ZIP, not a folder. Tomcat looks for `WEB-INF/classes` which doesn't exist, causing `@WebServlet` annotations to be ignored.
+- **Resolution**: Implemented **Dynamic JAR Detection**:
+  ```java
+  // Detect own JAR filename and map as JarResourceSet
+  ```
 
-## 🧩 11. Safety Net: Defensive Configuration
-- **Where**: `com.billing.db.DB.java`
-- **Why**: Missing environment variables in IntelliJ or Railway lead to cryptic "Driver not found" errors that waste developer time.
-- **The Fix**: Implemented **Placeholder Awareness**. The app now checks for the literal string `REPLACE_WITH_ENV_VAR`. If found, it stops immediately and prints a clean, human-readable "How-To Fix" guide in the console.
+### L3. The Empty Page: Frontend/Backend Desync
+- **Where**: `nginx.conf` and `Dockerfile`
+- **Problem**: SvelteKit/Vite uses unique hashes (e.g., `app.A1B2.js`). Nginx served JS from host disk, but HTML from container - hashes didn't match.
+- **Resolution**: Disabled Nginx filesystem alias, now proxies everything to Tomcat.
 
-## 📊 12. JasperReports 7 Automation: Jackson Schema Bug
-- **Where**: `BillAutomationWorker.java`
-- **Why**: JasperReports 7 changed how it parses XML templates. The traditional `JasperCompileManager` failed inside the containerized environment because it couldn't resolve the new XML schemas at runtime.
-- **The Fix**: Refactored the loading logic to use **`JacksonUtil.loadXml`**. This modern Jackson-based approach bypasses the old XML validation bottlenecks and successfully loads the `.jrxml` templates directly from the JAR.
+### L4. SPA Router: Path Normalization
+- **Where**: `AppFilter.java`
+- **Problem**: Refreshing `/dashboard` returned 404 because Tomcat thought it was a real folder.
+- **Resolution**: Updated filter to recognize deep links and forward to `index.html`.
 
-## 🌐 13. Container Networking: The Localhost Barrier
+### L5. Security: The Secrets Leak
+- **Where**: `DB.java` and `db.properties`
+- **Problem**: Storing passwords in bundled properties file exposes database credentials.
+- **Resolution**: 
+  - Removed credentials from properties
+  - Use Environment Variable Priority
+
+### L6. Branding: Centralized Configuration
+- **Where**: `config.properties`
+- **Problem**: Branding hardcoded in multiple places.
+- **Resolution**: Created central `config.properties` loaded at startup.
+
+### L7. JasperReport Compilation Lag
+- **Where**: `CustomerProfileServlet.java`
+- **Problem**: Every PDF download re-compiled `.jrxml`, adding delay.
+- **Resolution**: Implemented **In-Memory Report Caching**.
+
+### L8. Jasper 7: The Fragmented Font Fix
+- **Where**: `pom.xml` (Maven Shade)
+- **Problem**: JasperReports 7 splits config into multiple JARs, fonts overwrote each other.
+- **Resolution**: Implemented **`AppendingTransformer`** in Maven Shade.
+
+### L9. Environment Parity: The Golden Image
+- **Where**: `Dockerfile`, `docker-compose.yml`
+- **Problem**: Production images should be small and never run as root.
+- **Resolution**:
+  1. Switched to `eclipse-temurin:21-jre-jammy`
+  2. Created non-root `javauser`
+  3. Local-first build using `target/` artifacts
+
+### L10. Container Networking: Localhost Barrier
 - **Where**: `docker-compose.yml`
-- **Why**: Inside a container, `localhost` refers to the container itself, not your host computer. This meant the app couldn't find the PostgreSQL database running on your machine.
-- **The Fix**: Enabled **`network_mode: host`**. This allows the container to share the host's networking stack, giving it direct access to the database on `localhost:5432` without needing complicated bridge configurations.
+- **Problem**: Container `localhost` != host `localhost`.
+- **Resolution**: Enabled `network_mode: host`.
 
-## ⚛️ 14. Frontend Logic: Missing State & Syntax
+---
+
+## ⚙️ Database & SQL Issues
+
+### D1. Billing Automation: Database Conflict
+- **Where**: `BillAutomationWorker.java`
+- **Problem**: Re-running bill generation caused duplicate key errors.
+- **Resolution**:
+  1. Added UNIQUE constraint to `invoice.bill_id`
+  2. Implemented `ON CONFLICT (bill_id) DO UPDATE`
+
+### D2. CDR Auto-Rating Trigger
+- **Where**: `whole_billing_updated.sql`
+- **Problem**: CDRs needed automatic rating on insert.
+- **Resolution**: Created `auto_rate_cdr()` trigger.
+
+### D3. Consumption Period Initialization
+- **Where**: `whole_billing_updated.sql`
+- **Problem**: First CDR of month needed consumption rows created.
+- **Resolution**: Created `auto_initialize_consumption()` trigger.
+
+---
+
+## 🎨 Frontend Issues
+
+### F1. Missing State & Syntax
 - **Where**: `admin/contracts/+page.svelte`
-- **Why**: The "Provision New Line" feature had a searchable customer dropdown that was empty because the `filteredCustomers` variable was used in the template but never defined in the script. Additionally, invalid placement of `{@const}` tags caused build failures.
-- **The Fix**: 
-    1.  **Derived State**: Implemented Svelte 5 `$derived()` to calculate filtered search results in real-time.
-    2.  **Syntax Hardening**: Corrected the placement of `{@const}` tags to ensure they are immediate children of logic blocks, resolving the SvelteKit build crash.
+- **Problem**: Searchable dropdown empty because variable never defined. Invalid `{@const}` placement caused build failures.
+- **Resolution**:
+  1. Implemented Svelte 5 `$derived()`
+  2. Corrected `{@const}` syntax
 
-## 🧱 15. Billing Automation: Database Conflict Resolution
-- **Where**: `whole_billing_updated.sql` and `BillAutomationWorker.java`
-- **Why**: Automated bill generation was failing due to duplicate key violations when re-running a bill for the same period.
-- **The Fix**: 
-    1.  **Unique Constraint**: Added a `UNIQUE` constraint to `invoice.bill_id`.
-    2.  **Atomic Upsert**: Implemented `ON CONFLICT (bill_id) DO UPDATE` in the automation worker. This ensures that the billing cycle is idempotent—if you re-run it, the system updates the existing invoice instead of crashing.
+---
+
+## 📋 Complete Resolution Checklist
+
+| # | Component | Status | Resolution |
+|---|----------|--------|------------|
+| R1 | Railway Health | ✅ | `/health` endpoint + Dockerfile healthcheck |
+| R2 | Env Variables | ✅ | Environment Variable Priority |
+| R3 | Connection Pool | ✅ | HikariCP tuning |
+| R4 | NeonDB Cold Start | ✅ | Retry logic + timeouts |
+| R5 | Build Timeout | ✅ | Multi-stage Dockerfile |
+| L1 | Permission Paradox | ✅ | Non-root user + chown |
+| L2 | JAR Annotations | ✅ | Dynamic JAR Detection |
+| L3 | Frontend Sync | ✅ | Proxy to Tomcat |
+| L4 | SPA Routing | ✅ | Deep link filter |
+| L5 | Secrets Leak | ✅ | ENV variable priority |
+| L6 | Branding | ✅ | config.properties |
+| L7 | Jasper Caching | ✅ | In-memory cache |
+| L8 | Jasper Fonts | ✅ | AppendingTransformer |
+| L9 | Docker Image | ✅ | Slim JRE |
+| L10 | Networking | ✅ | Host network mode |
+| D1 | Bill Conflicts | ✅ | Upsert |
+| D2 | CDR Auto-Rate | ✅ | Trigger |
+| D3 | Consumption | ✅ | Trigger |
+| F1 | Frontend State | ✅ | $derived() |
+
+---
+
+## 🔧 Environment Setup
+
+### Local Development (.env)
+
+```bash
+# Copy from template
+cp .env.example .env
+
+# Edit with your credentials
+DB_URL=jdbc:postgresql://localhost:5432/billing
+DB_USER=your_user
+DB_PASSWORD=your_password
+```
+
+### Railway Deployment
+
+```bash
+# 1. Create project at railway.app
+# 2. Connect GitHub repository
+# 3. Add environment variables:
+#    - DB_URL (from NeonDB dashboard)
+#    - DB_USER
+#    - DB_PASSWORD
+# 4. Deploy automatically on git push
+```
+
+### Docker Local
+
+```bash
+# Build and run
+podman-compose up -d --build
+
+# Check logs
+podman-compose logs -f
+```
+
+---
+
+## 📌 Final Notes
+
+The system is now **fully hardened** for both local and cloud deployment:
+
+- ✅ No hardcoded credentials
+- ✅ Non-root container execution
+- ✅ Health check endpoints
+- ✅ Proper connection pooling
+- ✅ SPA routing support
+- ✅ Idempotent billing operations
+
+This system is a self-contained "Engine" ready for any Linux server or cloud platform.
+
+---
+
+*Document Version: 2.0*
+*Last Updated: April 30, 2026*
+*FMRZ Telecom Group*
