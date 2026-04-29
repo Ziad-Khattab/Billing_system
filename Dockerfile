@@ -23,7 +23,7 @@ RUN apt-get update && apt-get install -y curl && rm -rf /var/lib/apt/lists/*
 # 3. Create required directories for CDR processing
 RUN mkdir -p /app/input /app/processed && chown -R javauser:javauser /app/input /app/processed
 
-# 4. Copy the Fat JAR (now used as core) and dependencies
+# 4. Copy the Thin JAR and the lib directory with all dependencies
 COPY --from=build /build/target/Telecom-Billing-Engine.jar app.jar
 COPY --from=build /build/target/lib ./lib
 

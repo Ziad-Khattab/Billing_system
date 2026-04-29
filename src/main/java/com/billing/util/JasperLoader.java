@@ -16,10 +16,6 @@ public class JasperLoader {
     private static final Map<String, JasperReport> cache = new ConcurrentHashMap<>();
     
     static {
-        // Force Jasper 7 to use the correct extensions if shading issues persist
-        DefaultJasperReportsContext context = DefaultJasperReportsContext.getInstance();
-        context.setProperty("net.sf.jasperreports.extension.registry.factory.pdf", 
-                           "net.sf.jasperreports.pdf.PdfExtensionsRegistryFactory");
         // Ensure no display is required for PDF generation
         System.setProperty("java.awt.headless", "true");
     }
@@ -27,9 +23,16 @@ public class JasperLoader {
     public static JasperReport getReport(String name) throws JRException {
         if (cache.containsKey(name)) return cache.get(name);
         
-        JasperReport report = loadAndCompile(name);
-        cache.put(name, report);
-        return report;
+        // Use Thread Context ClassLoader to ensure extensions are discovered correctly
+        ClassLoader originalClassLoader = Thread.currentThread().getContextClassLoader();
+        try {
+            Thread.currentThread().setContextClassLoader(JasperLoader.class.getClassLoader());
+            JasperReport report = loadAndCompile(name);
+            cache.put(name, report);
+            return report;
+        } finally {
+            Thread.currentThread().setContextClassLoader(originalClassLoader);
+        }
     }
 
     private static JasperReport loadAndCompile(String name) throws JRException {

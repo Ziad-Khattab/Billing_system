@@ -81,7 +81,11 @@ public class BillAutomationWorker implements Runnable {
     }
 
     private void generatePdf(int billId, Connection conn) {
+        // FIX: TCCL Wrapping for JasperReports extension discovery in containerized environments
+        ClassLoader originalClassLoader = Thread.currentThread().getContextClassLoader();
         try {
+            Thread.currentThread().setContextClassLoader(com.billing.util.JasperLoader.class.getClassLoader());
+            
             String pdfPath = OUTPUT_FOLDER + "/Bill_" + billId + ".pdf";
             
             JasperReport jasperReport = com.billing.util.JasperLoader.getReport(REPORT_TEMPLATE);
@@ -96,6 +100,7 @@ public class BillAutomationWorker implements Runnable {
             params.put("COMPANY_CARE", "111 (Free from FMRZ)");
             params.put("COMPANY_WEB", "www.fmrz-telecom.com");
             params.put("COMPANY_EMAIL", "support@fmrz-telecom.com");
+            params.put("BILLING_DATE", new java.util.Date());
 
             // Load Icons
             params.put("VOICE_ICON", com.billing.util.JasperLoader.getResourceStream("Pictures/voice.svg"));
@@ -114,9 +119,10 @@ public class BillAutomationWorker implements Runnable {
                 pstmt.executeUpdate();
                 logger.info("Invoice table updated for Bill {}", billId);
             }
-
         } catch (Exception e) {
             logger.error("Jasper generation failed for Bill {}: {}", billId, e.getMessage(), e);
+        } finally {
+            Thread.currentThread().setContextClassLoader(originalClassLoader);
         }
     }
 }

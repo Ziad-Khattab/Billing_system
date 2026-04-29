@@ -68,11 +68,6 @@
             <version>${jasper.version}</version>
         </dependency>
         <dependency>
-            <groupId>net.sf.jasperreports</groupId>
-            <artifactId>jasperreports-jdt</artifactId>
-            <version>${jasper.version}</version>
-        </dependency>
-        <dependency>
             <groupId>org.glassfish.jaxb</groupId>
             <artifactId>jaxb-runtime</artifactId>
             <version>4.0.5</version>
@@ -238,41 +233,15 @@
                         <goals><goal>shade</goal></goals>
                         <configuration>
                             <createDependencyReducedPom>false</createDependencyReducedPom>
-                            <filters>
-                                <filter>
-                                    <artifact>*:*</artifact>
-                                    <excludes>
-                                        <exclude>META-INF/*.SF</exclude>
-                                        <exclude>META-INF/*.DSA</exclude>
-                                        <exclude>META-INF/*.RSA</exclude>
-                                        <exclude>META-INF/LICENSE*</exclude>
-                                        <exclude>META-INF/NOTICE*</exclude>
-                                        <exclude>META-INF/DEPENDENCIES</exclude>
-                                        <exclude>META-INF/MANIFEST.MF</exclude>
-                                        <exclude>META-INF/web-fragment.xml</exclude>
-                                        <exclude>**/module-info.*</exclude>
-                                    </excludes>
-                                </filter>
-                            </filters>
                             <transformers>
                                 <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
                                     <mainClass>com.billing.Main</mainClass>
                                 </transformer>
-                                <transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"/>
-                                <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
-                                    <resource>jasperreports_extension.properties</resource>
-                                </transformer>
-                                <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
-                                    <resource>metadata_messages-defaults.properties</resource>
-                                </transformer>
-                                <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
-                                    <resource>properties-metadata.json</resource>
-                                </transformer>
                             </transformers>
                             <artifactSet>
-                                <excludes>
-                                    <exclude>jakarta.servlet:jakarta.servlet-api</exclude>
-                                </excludes>
+                                <includes>
+                                    <include>com.billing:Billing_system</include>
+                                </includes>
                             </artifactSet>
                         </configuration>
                     </execution>

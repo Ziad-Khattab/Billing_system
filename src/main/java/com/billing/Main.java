@@ -141,6 +141,7 @@ public class Main {
         // 6. BULLETPROOF REGISTRATION: Manually register all servlets to bypass scanning issues in IDE
         registerServlet(ctx, "AuthServlet", new com.billing.servlet.AuthServlet(), "/api/auth/*");
         registerServlet(ctx, "AdminCDRServlet", new com.billing.servlet.AdminCDRServlet(), "/api/admin/cdr/*");
+        registerServlet(ctx, "AdminCDRUploadServlet", new com.billing.servlet.AdminCDRUploadServlet(), "/api/admin/cdr-upload/*");
         registerServlet(ctx, "AdminBillServlet", new com.billing.servlet.AdminBillServlet(), "/api/admin/bills/*");
         registerServlet(ctx, "AdminAuditServlet", new com.billing.servlet.AdminAuditServlet(), "/api/admin/audit/*");
         registerServlet(ctx, "AdminContractServlet", new com.billing.servlet.AdminContractServlet(), "/api/admin/contracts/*");
