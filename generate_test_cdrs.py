@@ -40,7 +40,7 @@ def get_env_config():
 
 def get_billable_msisdns(config):
     # Use psql to get MSISDNs
-    cmd = ["psql", "-h", config["db_host"], "-U", config["db_user"], "-d", config["db_name"], "-t", "-c", "SELECT msisdn FROM contract WHERE status IN ('active', 'suspended', 'suspended_debt')"]
+    cmd = ["psql", "-h", config["db_host"], "-U", config["db_user"], "-d", config["db_name"], "-t", "-c", "SELECT msisdn FROM contract WHERE status IN ('active', 'suspended', 'suspended_debt', 'on_hold', 'terminated')"]
     env = os.environ.copy()
     env["PGPASSWORD"] = config["db_pass"]
     try:

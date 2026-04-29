@@ -90,7 +90,7 @@ CREATE TABLE rateplan_service_package (
 -- CONTRACT
 -- ties a customer to a rateplan + an MSISDN (phone number)
 -- ------------------------------------------------------------
-CREATE TYPE contract_status AS ENUM ('active', 'suspended', 'suspended_debt', 'terminated');
+CREATE TYPE contract_status AS ENUM ('active', 'suspended', 'suspended_debt', 'on_hold', 'terminated');
 CREATE TABLE contract (
                           id              SERIAL PRIMARY KEY,
                           user_account_id     INTEGER NOT NULL REFERENCES user_account(id),
@@ -363,7 +363,14 @@ BEGIN
 
     IF v_status != 'active' THEN
         INSERT INTO rejected_cdr (file_id, dial_a, dial_b, start_time, duration, service_id, rejection_reason)
-        VALUES (p_file_id, p_dial_a, p_dial_b, p_start_time, p_duration, p_service_id, 'CONTRACT_' || UPPER(v_status::TEXT));
+        VALUES (p_file_id, p_dial_a, p_dial_b, p_start_time, p_duration, p_service_id, 
+            CASE v_status
+                WHEN 'suspended' THEN 'CONTRACT_SUSPENDED'
+                WHEN 'suspended_debt' THEN 'CONTRACT_DEBT_HOLD'
+                WHEN 'on_hold' THEN 'CONTRACT_ADMIN_HOLD'
+                WHEN 'terminated' THEN 'CONTRACT_TERMINATED'
+                ELSE 'CONTRACT_' || UPPER(v_status::TEXT)
+            END);
         RETURN 0; -- Success (Graceful Rejection)
     END IF;
 

@@ -51,7 +51,14 @@ BEGIN
 
     IF v_status != 'active' THEN
         INSERT INTO rejected_cdr (file_id, dial_a, dial_b, start_time, duration, service_id, rejection_reason)
-        VALUES (p_file_id, p_dial_a, p_dial_b, p_start_time, p_duration, p_service_id, 'CONTRACT_' || UPPER(v_status::TEXT));
+        VALUES (p_file_id, p_dial_a, p_dial_b, p_start_time, p_duration, p_service_id, 
+            CASE v_status
+                WHEN 'suspended' THEN 'CONTRACT_SUSPENDED'
+                WHEN 'suspended_debt' THEN 'CONTRACT_DEBT_HOLD'
+                WHEN 'on_hold' THEN 'CONTRACT_ADMIN_HOLD'
+                WHEN 'terminated' THEN 'CONTRACT_TERMINATED'
+                ELSE 'CONTRACT_' || UPPER(v_status::TEXT)
+            END);
         RETURN 0;
     END IF;
 
@@ -118,9 +125,10 @@ BEGIN
 
         -- Diverse Statuses
         v_status := (CASE 
-            WHEN RANDOM() < 0.5 THEN 'active'::contract_status
-            WHEN RANDOM() < 0.7 THEN 'suspended'::contract_status
-            WHEN RANDOM() < 0.9 THEN 'suspended_debt'::contract_status
+            WHEN RANDOM() < 0.4 THEN 'active'::contract_status
+            WHEN RANDOM() < 0.6 THEN 'suspended'::contract_status
+            WHEN RANDOM() < 0.75 THEN 'suspended_debt'::contract_status
+            WHEN RANDOM() < 0.9 THEN 'on_hold'::contract_status
             ELSE 'terminated'::contract_status
         END);
 
