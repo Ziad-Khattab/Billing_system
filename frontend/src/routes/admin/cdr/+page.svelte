@@ -48,6 +48,9 @@
     loadCDRs();
   }
 
+  let generating = $state(false);
+  let uploading = $state(false);
+
   async function importCDRs() {
     importing = true;
     try {
@@ -60,6 +63,53 @@
       console.error(e);
     } finally {
       importing = false;
+    }
+  }
+
+  async function generateSamples() {
+    generating = true;
+    try {
+      const res = await fetch('/api/admin/cdr-generate', { method: 'POST', credentials: 'include' });
+      const data = await res.json();
+      if (res.ok) {
+        alert(data.message || 'Samples generated successfully!');
+      } else {
+        alert('Generation failed: ' + (data.error || data.message));
+      }
+    } catch (e) {
+      console.error(e);
+      alert('Error connecting to server');
+    } finally {
+      generating = false;
+    }
+  }
+
+  async function uploadCDR(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    const formData = new FormData();
+    formData.append('file', file);
+
+    uploading = true;
+    try {
+      const res = await fetch('/api/admin/cdr-upload', { 
+        method: 'POST', 
+        body: formData,
+        credentials: 'include'
+      });
+      const data = await res.json();
+      if (res.ok) {
+        alert('File uploaded successfully! You can now click "Import" to process it.');
+      } else {
+        alert('Upload failed: ' + (data.error || data.message));
+      }
+    } catch (e) {
+      console.error(e);
+      alert('Error during upload');
+    } finally {
+      uploading = false;
+      event.target.value = ''; // Reset input
     }
   }
 
@@ -144,14 +194,35 @@
   <div class="page-header">
     <div class="header-main">
       <h1>Call <span class="text-gradient">Explorer</span></h1>
-      <button class="btn-import" onclick={importCDRs} disabled={importing}>
-        {#if importing}
-          <div class="mini-spinner"></div> Processing...
-        {:else}
-          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-          Import & Rate New CDRs
-        {/if}
-      </button>
+      <div class="header-actions">
+        <label class="btn-secondary" style="cursor: pointer;">
+          <input type="file" accept=".csv" onchange={uploadCDR} style="display: none;" disabled={uploading}/>
+          {#if uploading}
+            <div class="mini-spinner color-red"></div> Uploading...
+          {:else}
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+            Upload CSV
+          {/if}
+        </label>
+
+        <button class="btn-secondary" onclick={generateSamples} disabled={generating}>
+          {#if generating}
+            <div class="mini-spinner color-red"></div> Generating...
+          {:else}
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+            Generate Samples
+          {/if}
+        </button>
+
+        <button class="btn-import" onclick={importCDRs} disabled={importing}>
+          {#if importing}
+            <div class="mini-spinner"></div> Processing...
+          {:else}
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 19 7-7 3 3-7 7-3-3Z"/><path d="m18 13-1.5-7.5L2 2l3.5 14.5L13 18l5-5Z"/><path d="m2 2 7.586 7.586"/><circle cx="11" cy="11" r="2"/></svg>
+            Import & Rate
+          {/if}
+        </button>
+      </div>
     </div>
     <p class="text-muted">Analyze and audit network usage records</p>
   </div>
@@ -257,11 +328,17 @@
   .text-gradient { background: linear-gradient(135deg, var(--red), var(--red-light)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
   .header-main { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; }
 
+  .header-actions { display: flex; gap: 0.75rem; align-items: center; }
+  .btn-secondary { display: flex; align-items: center; gap: 0.5rem; background: rgba(255, 255, 255, 0.05); color: white; border: 1px solid var(--border); padding: 0.8rem 1.2rem; border-radius: 12px; font-weight: 600; cursor: pointer; transition: all 0.3s; }
+  .btn-secondary:hover:not(:disabled) { background: rgba(255, 255, 255, 0.1); border-color: var(--red); }
+  .btn-secondary:disabled { opacity: 0.6; cursor: not-allowed; }
+
   .btn-import { display: flex; align-items: center; gap: 0.5rem; background: var(--red); color: white; border: none; padding: 0.8rem 1.5rem; border-radius: 12px; font-weight: 600; cursor: pointer; transition: all 0.3s; box-shadow: 0 4px 15px rgba(224, 8, 0, 0.3); }
   .btn-import:hover:not(:disabled) { background: var(--red-light); transform: translateY(-2px); box-shadow: 0 6px 20px rgba(224, 8, 0, 0.4); }
   .btn-import:disabled { opacity: 0.6; cursor: not-allowed; }
 
   .mini-spinner { width: 16px; height: 16px; border: 2px solid rgba(255, 255, 255, 0.3); border-top-color: white; border-radius: 50%; animation: spin 0.8s linear infinite; }
+  .mini-spinner.color-red { border-top-color: var(--red); }
 
   .search-bar { margin-bottom: 2rem; max-width: 400px; }
   .input-group { position: relative; display: flex; align-items: center; }
