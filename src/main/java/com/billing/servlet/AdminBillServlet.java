@@ -91,7 +91,7 @@ public class AdminBillServlet extends BaseServlet {
                     String sql = "UPDATE bill b SET is_paid = true, status = 'paid' " +
                                  "FROM contract c JOIN user_account ua ON c.user_account_id = ua.id " +
                                  "WHERE b.contract_id = c.id AND b.status != 'paid' " +
-                                 "AND (? IS NULL OR ? = '' OR ua.name ILIKE ? OR c.msisdn ILIKE ? OR b.status ILIKE ?)";
+                                 "AND (? IS NULL OR ? = '' OR ua.name ILIKE ? OR c.msisdn ILIKE ? OR b.status::text ILIKE ?)";
                     
                     String searchPattern = "%" + (search != null ? search : "") + "%";
                     int count = DB.executeUpdate(sql, search, search, searchPattern, searchPattern, searchPattern);

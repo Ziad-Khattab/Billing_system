@@ -119,8 +119,7 @@ public class Main {
         }));
 
         // 5. OBSERVABILITY: Health Check Endpoint
-        // Used by Railway/Podman to monitor if the app and DB are alive.
-        Tomcat.addServlet(ctx, "HealthCheck", new jakarta.servlet.http.HttpServlet() {
+        registerServlet(ctx, "HealthCheck", new jakarta.servlet.http.HttpServlet() {
             @Override
             protected void doGet(jakarta.servlet.http.HttpServletRequest req, 
                                 jakarta.servlet.http.HttpServletResponse resp) throws java.io.IOException {
@@ -134,12 +133,32 @@ public class Main {
                     resp.getWriter().write("{\"status\":\"DOWN\", \"error\":\"" + e.getMessage() + "\"}");
                 }
             }
-        });
-        ctx.addServletMappingDecoded("/health", "HealthCheck");
-        ctx.addServletMappingDecoded("/health/*", "HealthCheck");
+        }, "/health", "/health/*");
+
+        // 6. BULLETPROOF REGISTRATION: Manually register all servlets to bypass scanning issues in IDE
+        registerServlet(ctx, "AuthServlet", new com.billing.servlet.AuthServlet(), "/api/auth/*");
+        registerServlet(ctx, "AdminCDRServlet", new com.billing.servlet.AdminCDRServlet(), "/api/admin/cdr/*");
+        registerServlet(ctx, "AdminBillServlet", new com.billing.servlet.AdminBillServlet(), "/api/admin/bills/*");
+        registerServlet(ctx, "AdminAuditServlet", new com.billing.servlet.AdminAuditServlet(), "/api/admin/audit/*");
+        registerServlet(ctx, "AdminContractServlet", new com.billing.servlet.AdminContractServlet(), "/api/admin/contracts/*");
+        registerServlet(ctx, "AdminUserServlet", new com.billing.servlet.AdminUserServlet(), "/api/admin/users/*");
+        registerServlet(ctx, "AdminStatsServlet", new com.billing.servlet.AdminStatsServlet(), "/api/admin/stats/*");
+        registerServlet(ctx, "AdminRatePlanServlet", new com.billing.servlet.AdminRatePlanServlet(), "/api/admin/rateplans/*");
+        registerServlet(ctx, "AdminServicePkgServlet", new com.billing.servlet.AdminServicePkgServlet(), "/api/admin/service-packages/*");
+        registerServlet(ctx, "AdminAddonServlet", new com.billing.servlet.AdminAddonServlet(), "/api/admin/addons/*");
+        registerServlet(ctx, "PublicServlet", new com.billing.servlet.PublicServlet(), "/api/public/*");
+        registerServlet(ctx, "CustomerProfileServlet", new com.billing.servlet.CustomerProfileServlet(), "/api/customer/*");
 
         logger.info("FMRZ Billing System started on port {}", webPort);
         logger.info("Health Check: http://localhost:{}/health", webPort);
         tomcat.getServer().await();
+    }
+
+    private static void registerServlet(StandardContext ctx, String name, jakarta.servlet.Servlet servlet, String... mappings) {
+        Tomcat.addServlet(ctx, name, servlet);
+        for (String mapping : mappings) {
+            ctx.addServletMappingDecoded(mapping, name);
+        }
+        logger.info("Registered Servlet: {} at {}", name, java.util.Arrays.toString(mappings));
     }
 }
