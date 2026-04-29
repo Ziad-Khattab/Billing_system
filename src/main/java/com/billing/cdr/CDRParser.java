@@ -22,19 +22,24 @@ import com.billing.db.DB;
 
 public class CDRParser {
     private static java.util.Map<String, Integer> serviceMap = new java.util.HashMap<>();
+    private static java.util.Map<Integer, String> typeMap = new java.util.HashMap<>();
 
     private static void loadServiceConfig() {
         try (Connection conn = DB.getConnection()) {
-            List<Map<String, Object>> services = DB.executeSelect("SELECT id, name FROM service_package");
+            List<Map<String, Object>> services = DB.executeSelect("SELECT id, name, type FROM service_package");
             for (Map<String, Object> s : services) {
-                serviceMap.put((String) s.get("name"), (Integer) s.get("id"));
+                String name = (String) s.get("name");
+                String type = (String) s.get("type");
+                Integer id = (Integer) s.get("id");
+                serviceMap.put(name, id);
+                typeMap.put(id, type);
             }
             System.out.println("[CONFIG] Loaded " + serviceMap.size() + " services from database.");
         } catch (Exception e) {
             System.err.println("[CONFIG] Failed to load services from database. Using safe defaults.");
-            serviceMap.put("Voice Pack", 1);
-            serviceMap.put("Data Pack", 2);
-            serviceMap.put("SMS Pack", 3);
+            serviceMap.put("Voice Pack", 1); typeMap.put(1, "voice");
+            serviceMap.put("Data Pack", 2);  typeMap.put(2, "data");
+            serviceMap.put("SMS Pack", 3);   typeMap.put(3, "sms");
         }
     }
 
@@ -132,11 +137,18 @@ public class CDRParser {
                         // 9-Column Format: file_id, dial_a, dial_b, start_time, duration, service_id, hplmn, vplmn, external_charges
                         dialA = p[1].trim();
                         dialB = p[2].trim();
-                        timeStr = p[3].trim(); // Full YYYY-MM-DD HH:MM:SS
-                        usage = Integer.parseInt(p[4].trim());
+                        timeStr = p[3].trim(); 
                         serviceId = Integer.parseInt(p[5].trim());
-                        externalPiasters = Double.parseDouble(p[8].trim()) * 100.0; // Assume stored in dollars/major unit
                         
+                        double rawUsage = Double.parseDouble(p[4].trim());
+                        // Convert Bytes to MB for data services in 9-column format
+                        if ("data".equals(typeMap.get(serviceId))) {
+                            usage = (int) Math.ceil(rawUsage / (1024.0 * 1024.0));
+                        } else {
+                            usage = (int) rawUsage;
+                        }
+
+                        externalPiasters = Double.parseDouble(p[8].trim()) * 100.0;
                         ts = Timestamp.valueOf(timeStr);
                     } else if (p.length >= 6) {
                         // 6-Column Format: Dial A, Dial B, Service ID, Usage, Time, External charges
@@ -224,15 +236,9 @@ public class CDRParser {
 
     private static void moveFile(File file, File destPath) throws IOException {
         String originalName = file.getName();
-        String finalName = originalName;
+        String uniqueId = java.util.UUID.randomUUID().toString().substring(0, 8);
+        String finalName = uniqueId + "_" + originalName;
         Path target = destPath.toPath().resolve(finalName);
-        
-        int counter = 0;
-        while (Files.exists(target)) {
-            finalName = System.currentTimeMillis() + (counter > 0 ? "_" + counter : "") + "_" + originalName;
-            target = destPath.toPath().resolve(finalName);
-            counter++;
-        }
         
         System.out.println("[AUDIT] Moving " + originalName + " to " + target.toAbsolutePath());
         try {
