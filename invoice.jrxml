@@ -68,7 +68,7 @@
 		</element>
 		<!-- Group name under logo -->
 		<element kind="textField" x="15" y="65" width="220" height="14" forecolor="#808080" fontSize="9.0">
-			<expression><![CDATA[$P{GROUP_NAME}]]></expression>
+			<textFieldExpression><![CDATA[$P{GROUP_NAME}]]></textFieldExpression>
 		</element>
 		<!-- INVOICE large title -->
 		<element kind="staticText" x="320" y="8" width="220" height="42" forecolor="#FF0000" fontSize="30.0" bold="true" hTextAlign="Right">
