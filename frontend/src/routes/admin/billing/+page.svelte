@@ -602,9 +602,23 @@
                   <td>{r.dial_b}</td>
                   <td><span class="pill {r.service_name?.toLowerCase().includes('voice') ? 'voice' : r.service_name?.toLowerCase().includes('data') ? 'data' : 'sms'}">{r.service_name || 'Unknown'}</span></td>
                   <td>
-                    <span class="badge status-suspended" style="font-size: 0.75rem; background: rgba(239, 68, 68, 0.15); border-color: rgba(239, 68, 68, 0.3);">
-                      {r.rejection_reason.replace(/_/g, ' ')}
-                    </span>
+                    {#if r.rejection_reason === 'NO_CONTRACT_FOUND'}
+                      <span class="badge" style="font-size: 0.75rem; background: rgba(156, 163, 175, 0.15); border: 1px solid rgba(156, 163, 175, 0.3); color: #9CA3AF;">
+                        {r.rejection_reason.replace(/_/g, ' ')}
+                      </span>
+                    {:else if r.rejection_reason === 'CONTRACT_ADMIN_HOLD'}
+                      <span class="badge" style="font-size: 0.75rem; background: rgba(245, 158, 11, 0.15); border: 1px solid rgba(245, 158, 11, 0.3); color: #F59E0B;">
+                        {r.rejection_reason.replace(/_/g, ' ')}
+                      </span>
+                    {:else if r.rejection_reason === 'CONTRACT_DEBT_HOLD'}
+                      <span class="badge" style="font-size: 0.75rem; background: rgba(239, 68, 68, 0.15); border: 1px solid rgba(239, 68, 68, 0.3); color: #EF4444;">
+                        {r.rejection_reason.replace(/_/g, ' ')}
+                      </span>
+                    {:else}
+                      <span class="badge" style="font-size: 0.75rem; background: rgba(153, 27, 27, 0.2); border: 1px solid rgba(153, 27, 27, 0.4); color: #FCA5A5;">
+                        {r.rejection_reason.replace(/_/g, ' ')}
+                      </span>
+                    {/if}
                   </td>
                 </tr>
               {/each}
