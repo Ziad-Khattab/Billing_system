@@ -3,9 +3,6 @@ package com.billing;
 import org.apache.catalina.LifecycleException;
 import org.apache.catalina.WebResourceRoot;
 import org.apache.catalina.core.StandardContext;
-import net.sf.jasperreports.engine.DefaultJasperReportsContext;
-import net.sf.jasperreports.pdf.PdfExtensionsRegistryFactory;
-import net.sf.jasperreports.engine.JRPropertiesMap;
 import org.apache.catalina.startup.Tomcat;
 import org.apache.catalina.valves.RemoteIpValve;
 import org.apache.catalina.webresources.DirResourceSet;
@@ -19,29 +16,8 @@ import org.slf4j.LoggerFactory;
 public class Main {
     private static final Logger logger = LoggerFactory.getLogger(Main.class);
     public static void main(String[] args) throws LifecycleException {
-        // --- JasperReports 7 Pre-initialization ---
-        try {
-            net.sf.jasperreports.engine.DefaultJasperReportsContext context = 
-                net.sf.jasperreports.engine.DefaultJasperReportsContext.getInstance();
-            // Force PDF Extension Registry (Corrected Path for Jasper 7.0.1)
-            context.setProperty("net.sf.jasperreports.extension.registry.factory.pdf", 
-                               "net.sf.jasperreports.pdf.PdfExtensionsRegistryFactory");
-            // Set headless mode for document rendering
-            System.setProperty("java.awt.headless", "true");
-            System.out.println("✔ JasperReports 7 Environment Initialized");
-        } catch (Exception e) {
-            System.err.println("✘ JasperReports Initialization Warning: " + e.getMessage());
-        }
-
-        // Hard-register PDF extensions to bypass shading issues in Fat JAR
-        try {
-            DefaultJasperReportsContext context = DefaultJasperReportsContext.getInstance();
-            PdfExtensionsRegistryFactory pdfFactory = new PdfExtensionsRegistryFactory();
-            context.addExtensions(pdfFactory.createRegistry("pdf", new JRPropertiesMap()));
-            System.out.println("[Jasper] PDF Extensions manually registered.");
-        } catch (Exception e) {
-            System.err.println("[Jasper] Failed to manually register PDF extensions: " + e.getMessage());
-        }
+        // Set headless mode for document rendering
+        System.setProperty("java.awt.headless", "true");
 
         Tomcat tomcat = new Tomcat();
         
