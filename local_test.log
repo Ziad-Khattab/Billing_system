@@ -1,0 +1,121 @@
+✔ JasperReports 7 Environment Initialized
+22:19:24.546 [main] INFO com.billing.Main -- Mapping resources from IDE path: /home/zkhattab/Billing_system/target/classes
+22:19:24.555 [main] INFO com.billing.Main -- ✔ Prioritizing filesystem webapp: /home/zkhattab/Billing_system/src/main/webapp
+22:19:24.557 [main] INFO com.billing.Main -- Configuring app with docbase: /home/zkhattab/Billing_system/src/main/webapp
+Apr 29, 2026 10:19:25 PM org.apache.coyote.AbstractProtocol init
+INFO: Initializing ProtocolHandler ["http-nio-8080"]
+Apr 29, 2026 10:19:25 PM org.apache.catalina.core.StandardService startInternal
+INFO: Starting service [Tomcat]
+Apr 29, 2026 10:19:25 PM org.apache.catalina.core.StandardEngine startInternal
+INFO: Starting Servlet engine: [Apache Tomcat/11.0.21]
+Apr 29, 2026 10:19:25 PM org.apache.catalina.startup.ContextConfig getDefaultWebXmlFragment
+INFO: No global web.xml found
+Apr 29, 2026 10:19:27 PM org.apache.catalina.core.ApplicationContext log
+INFO: Marking servlet [jsp] as unavailable
+Apr 29, 2026 10:19:27 PM org.apache.catalina.core.StandardContext loadOnStartup
+SEVERE: Servlet [jsp] in web application [] threw load() exception
+java.lang.ClassNotFoundException: org.apache.jasper.servlet.JspServlet
+	at org.apache.catalina.loader.WebappClassLoaderBase.loadClass(WebappClassLoaderBase.java:1225)
+	at org.apache.catalina.loader.WebappClassLoaderBase.loadClass(WebappClassLoaderBase.java:1056)
+	at org.apache.catalina.core.DefaultInstanceManager.loadClass(DefaultInstanceManager.java:474)
+	at org.apache.catalina.core.DefaultInstanceManager.loadClassMaybePrivileged(DefaultInstanceManager.java:457)
+	at org.apache.catalina.core.DefaultInstanceManager.newInstance(DefaultInstanceManager.java:139)
+	at org.apache.catalina.core.StandardWrapper.loadServlet(StandardWrapper.java:753)
+	at org.apache.catalina.core.StandardWrapper.load(StandardWrapper.java:693)
+	at org.apache.catalina.core.StandardContext.loadOnStartup(StandardContext.java:4177)
+	at org.apache.catalina.core.StandardContext.startInternal(StandardContext.java:4460)
+	at org.apache.catalina.util.LifecycleBase.start(LifecycleBase.java:164)
+	at org.apache.catalina.core.ContainerBase$StartChild.call(ContainerBase.java:1162)
+	at org.apache.catalina.core.ContainerBase$StartChild.call(ContainerBase.java:1158)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:317)
+	at org.apache.tomcat.util.threads.InlineExecutorService.execute(InlineExecutorService.java:81)
+	at java.base/java.util.concurrent.AbstractExecutorService.submit(AbstractExecutorService.java:145)
+	at org.apache.catalina.core.ContainerBase.startInternal(ContainerBase.java:714)
+	at org.apache.catalina.core.StandardHost.startInternal(StandardHost.java:780)
+	at org.apache.catalina.util.LifecycleBase.start(LifecycleBase.java:164)
+	at org.apache.catalina.core.ContainerBase$StartChild.call(ContainerBase.java:1162)
+	at org.apache.catalina.core.ContainerBase$StartChild.call(ContainerBase.java:1158)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:317)
+	at org.apache.tomcat.util.threads.InlineExecutorService.execute(InlineExecutorService.java:81)
+	at java.base/java.util.concurrent.AbstractExecutorService.submit(AbstractExecutorService.java:145)
+	at org.apache.catalina.core.ContainerBase.startInternal(ContainerBase.java:714)
+	at org.apache.catalina.core.StandardEngine.startInternal(StandardEngine.java:201)
+	at org.apache.catalina.util.LifecycleBase.start(LifecycleBase.java:164)
+	at org.apache.catalina.core.StandardService.startInternal(StandardService.java:410)
+	at org.apache.catalina.util.LifecycleBase.start(LifecycleBase.java:164)
+	at org.apache.catalina.core.StandardServer.startInternal(StandardServer.java:864)
+	at org.apache.catalina.util.LifecycleBase.start(LifecycleBase.java:164)
+	at org.apache.catalina.startup.Tomcat.start(Tomcat.java:435)
+	at com.billing.Main.main(Main.java:116)
+
+Apr 29, 2026 10:19:27 PM org.apache.coyote.AbstractProtocol start
+INFO: Starting ProtocolHandler ["http-nio-8080"]
+22:19:27.128 [Thread-0] INFO com.billing.automation.BillAutomationWorker -- Starting BillAutomationWorker...
+22:19:27.134 [main] INFO com.billing.Main -- Registered Servlet: HealthCheck at [/health, /health/*]
+22:19:27.135 [Thread-0] DEBUG com.zaxxer.hikari.HikariConfig -- Class org.postgresql.Driver found in Thread context class loader jdk.internal.loader.ClassLoaders$AppClassLoader@639fee48
+22:19:27.144 [Thread-0] ERROR com.billing.db.DB -- 
+============================================================
+❌ CRITICAL: DATABASE CREDENTIALS MISSING
+============================================================
+How to fix this:
+1. Locally (IntelliJ): Edit your 'Main' Run Configuration.
+   Add Environment Variables: DB_URL, DB_USER, DB_PASSWORD
+2. Cloud (Railway): Go to the 'Variables' tab and add them.
+============================================================
+22:19:27.145 [Thread-0] ERROR com.billing.db.DB -- CRITICAL: Failed to initialize HikariCP Connection Pool
+java.lang.RuntimeException: Database URL is missing or placeholder. See logs above for help.
+	at com.billing.db.DB.<clinit>(DB.java:50)
+	at com.billing.automation.BillAutomationWorker.run(BillAutomationWorker.java:42)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+Exception in thread "Thread-0" java.lang.ExceptionInInitializerError
+	at com.billing.automation.BillAutomationWorker.run(BillAutomationWorker.java:42)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+Caused by: java.lang.RuntimeException: java.lang.RuntimeException: Database URL is missing or placeholder. See logs above for help.
+	at com.billing.db.DB.<clinit>(DB.java:76)
+	... 2 more
+Caused by: java.lang.RuntimeException: Database URL is missing or placeholder. See logs above for help.
+	at com.billing.db.DB.<clinit>(DB.java:50)
+	... 2 more
+22:19:27.180 [main] INFO com.billing.Main -- Registered Servlet: AuthServlet at [/api/auth/*]
+22:19:27.180 [main] INFO com.billing.Main -- Registered Servlet: AdminCDRServlet at [/api/admin/cdr/*]
+22:19:27.181 [main] INFO com.billing.Main -- Registered Servlet: AdminBillServlet at [/api/admin/bills/*]
+22:19:27.182 [main] INFO com.billing.Main -- Registered Servlet: AdminAuditServlet at [/api/admin/audit/*]
+22:19:27.182 [main] INFO com.billing.Main -- Registered Servlet: AdminContractServlet at [/api/admin/contracts/*]
+22:19:27.183 [main] INFO com.billing.Main -- Registered Servlet: AdminUserServlet at [/api/admin/users/*]
+22:19:27.184 [main] INFO com.billing.Main -- Registered Servlet: AdminStatsServlet at [/api/admin/stats/*]
+22:19:27.184 [main] INFO com.billing.Main -- Registered Servlet: AdminRatePlanServlet at [/api/admin/rateplans/*]
+22:19:27.185 [main] INFO com.billing.Main -- Registered Servlet: AdminServicePkgServlet at [/api/admin/service-packages/*]
+22:19:27.185 [main] INFO com.billing.Main -- Registered Servlet: AdminAddonServlet at [/api/admin/addons/*]
+22:19:27.186 [main] INFO com.billing.Main -- Registered Servlet: PublicServlet at [/api/public/*]
+22:19:27.187 [main] INFO com.billing.Main -- Registered Servlet: CustomerProfileServlet at [/api/customer/*]
+22:19:27.187 [main] INFO com.billing.Main -- FMRZ Billing System started on port 8080
+22:19:27.187 [main] INFO com.billing.Main -- Health Check: http://localhost:8080/health
+Apr 29, 2026 10:20:34 PM org.apache.catalina.core.StandardWrapperValve invoke
+SEVERE: Servlet.service() for servlet [AuthServlet] in context with path [] threw exception [Servlet execution threw an exception] with root cause
+java.lang.ExceptionInInitializerError: Exception java.lang.RuntimeException: java.lang.RuntimeException: Database URL is missing or placeholder. See logs above for help. [in thread "Thread-0"]
+	at com.billing.db.DB.<clinit>(DB.java:76)
+	at com.billing.automation.BillAutomationWorker.run(BillAutomationWorker.java:42)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+
+Apr 29, 2026 10:21:15 PM org.apache.catalina.core.StandardWrapperValve invoke
+SEVERE: Servlet.service() for servlet [AuthServlet] in context with path [] threw exception [Servlet execution threw an exception] with root cause
+java.lang.ExceptionInInitializerError: Exception java.lang.RuntimeException: java.lang.RuntimeException: Database URL is missing or placeholder. See logs above for help. [in thread "Thread-0"]
+	at com.billing.db.DB.<clinit>(DB.java:76)
+	at com.billing.automation.BillAutomationWorker.run(BillAutomationWorker.java:42)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+
+Apr 29, 2026 10:21:18 PM org.apache.catalina.core.StandardWrapperValve invoke
+SEVERE: Servlet.service() for servlet [AuthServlet] in context with path [] threw exception [Servlet execution threw an exception] with root cause
+java.lang.ExceptionInInitializerError: Exception java.lang.RuntimeException: java.lang.RuntimeException: Database URL is missing or placeholder. See logs above for help. [in thread "Thread-0"]
+	at com.billing.db.DB.<clinit>(DB.java:76)
+	at com.billing.automation.BillAutomationWorker.run(BillAutomationWorker.java:42)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+
+22:21:19.242 [Thread-1] INFO com.billing.Main -- SHUTDOWN: Stopping FMRZ Billing System...
+Exception in thread "Thread-1" java.lang.NoClassDefFoundError: Could not initialize class com.billing.db.DB
+	at com.billing.Main.lambda$main$0(Main.java:127)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+Caused by: java.lang.ExceptionInInitializerError: Exception java.lang.RuntimeException: java.lang.RuntimeException: Database URL is missing or placeholder. See logs above for help. [in thread "Thread-0"]
+	at com.billing.db.DB.<clinit>(DB.java:76)
+	at com.billing.automation.BillAutomationWorker.run(BillAutomationWorker.java:42)
+	... 1 more

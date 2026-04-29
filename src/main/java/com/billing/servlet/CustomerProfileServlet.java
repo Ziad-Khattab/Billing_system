@@ -98,10 +98,12 @@ public class CustomerProfileServlet extends BaseServlet {
                     Map<String, Object> params = new HashMap<>();
                     params.put("BILL_ID", billId);
                     
-                    // Safe Stream-based logo loading using central utility
-                    // Temporarily disable logo to isolate Batik conflict
-                    // InputStream logoStream = com.billing.util.JasperLoader.getResourceStream("logo.svg");
-                    // params.put("LOGO_PATH", logoStream);
+                    // Restored logo using stable PNG format to avoid Batik conflicts
+                    try (InputStream logoStream = com.billing.util.JasperLoader.getResourceStream("Pictures/red-logo.png")) {
+                        params.put("LOGO_PATH", logoStream);
+                    } catch (Exception e) {
+                        logger.warn("Could not load logo: {}", e.getMessage());
+                    }
                     
                     // --- HARDENING: Inject Company Info as Parameters (Loaded from config.properties) ---
                     params.put("GROUP_NAME", config.getProperty("company.name", "FMRZ Telecom Group"));
