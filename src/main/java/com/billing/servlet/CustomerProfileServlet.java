@@ -31,6 +31,7 @@ public class CustomerProfileServlet extends BaseServlet {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     protected void doGet(HttpServletRequest req, HttpServletResponse res) throws IOException {
         String path = req.getPathInfo();
         Map<String, Object> user = (Map<String, Object>) req.getSession().getAttribute("user");
@@ -43,23 +44,24 @@ public class CustomerProfileServlet extends BaseServlet {
         Integer userId = ((Number) user.get("id")).intValue();
 
         try {
-            if ("/profile".equals(path)) {
+            switch (path) {
+                case "/profile" -> {
                 List<Map<String, Object>> profile = DB.executeSelect(
                     "SELECT id, username, name, email, address " +
                     "FROM user_account " +
                     "WHERE id = ?", userId);
-                if (profile.isEmpty()) sendError(res, 404, "User not found");
-                else sendJson(res, profile.getFirst());
-            } 
-            else if ("/contracts".equals(path)) {
+                    if (profile.isEmpty()) sendError(res, 404, "User not found");
+                    else sendJson(res, profile.getFirst());
+                }
+                case "/contracts" -> {
                 List<Map<String, Object>> list = DB.executeSelect(
                     "SELECT c.msisdn, c.status, c.available_credit as \"availableCredit\", r.name as \"rateplanName\" " +
                     "FROM contract c " +
                     "LEFT JOIN rateplan r ON c.rateplan_id = r.id " +
                     "WHERE c.user_account_id = ?", userId);
-                sendJson(res, list);
-            }
-            else if ("/invoices".equals(path)) {
+                    sendJson(res, list);
+                }
+                case "/invoices" -> {
                 List<Map<String, Object>> list = DB.executeSelect(
                     "SELECT b.id, CAST(b.billing_date AS VARCHAR) as \"generationDate\", c.msisdn, " +
                     "b.taxes, b.recurring_fees as \"recurringFees\", b.one_time_fees as \"oneTimeFees\", " +
@@ -67,9 +69,9 @@ public class CustomerProfileServlet extends BaseServlet {
                     "FROM bill b " +
                     "JOIN contract c ON b.contract_id = c.id " +
                     "WHERE c.user_account_id = ? ORDER BY b.billing_date DESC", userId);
-                sendJson(res, list);
-            }
-            else if ("/invoices/download".equals(path)) {
+                    sendJson(res, list);
+                }
+                case "/invoices/download" -> {
                 String idParam = req.getParameter("id");
                 if (idParam == null) throw new RuntimeException("Invoice ID required");
                 int billId = Integer.parseInt(idParam);
@@ -82,12 +84,10 @@ public class CustomerProfileServlet extends BaseServlet {
                     "JOIN user_account ua ON c.user_account_id = ua.id " +
                     "WHERE b.id = ? AND c.user_account_id = ?", billId, userId);
 
-                if (bills.isEmpty()) {
-                    sendError(res, 403, "Access denied or invoice not found");
-                    return;
-                }
-
-                Map<String, Object> bill = bills.getFirst();
+                    if (bills.isEmpty()) {
+                        sendError(res, 403, "Access denied or invoice not found");
+                        return;
+                    }
 
                 // Generate PDF using official template and live DB connection
                 res.setContentType("application/pdf");
@@ -115,9 +115,8 @@ public class CustomerProfileServlet extends BaseServlet {
                     JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, params, conn);
                     JasperExportManager.exportReportToPdfStream(jasperPrint, res.getOutputStream());
                 }
-            }
-            else {
-                sendError(res, 404, "Unknown customer endpoint: " + path);
+                }
+                default -> sendError(res, 404, "Unknown customer endpoint: " + path);
             }
         } catch (Throwable e) {
             logger.error("API Logic Error in CustomerProfileServlet", e);
