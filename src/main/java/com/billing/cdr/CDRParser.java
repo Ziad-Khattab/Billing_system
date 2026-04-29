@@ -141,6 +141,7 @@ public class CDRParser {
 
                     if (p.length >= 9) {
                         // 9-Column Format: file_id, dial_a, dial_b, start_time, duration, service_id, hplmn, vplmn, external_charges
+                        // This is the standard format used by most network vendors.
                         dialA = p[1].trim();
                         dialB = p[2].trim();
                         timeStr = p[3].trim(); 
@@ -148,6 +149,7 @@ public class CDRParser {
                         
                         double rawUsage = Double.parseDouble(p[4].trim());
                         // Convert Bytes to MB for data services in 9-column format
+                        // Network vendors often report data in bytes, but we bill in MB increments.
                         if ("data".equals(typeMap.get(serviceId))) {
                             usage = (int) Math.ceil(rawUsage / (1024.0 * 1024.0));
                         } else {
@@ -223,8 +225,10 @@ public class CDRParser {
                     cs.execute();
                     int resultId = cs.getInt(1);
                     if (resultId == 0) {
-                        // This was a rejection, database already handled it. 
-                        // We can log it if we want, but it's optional now.
+                        // REJECTION LOGIC: If resultId is 0, the database rejected the CDR (e.g. suspended).
+                        // The database function 'insert_cdr' has already inserted this into 'rejected_cdr' table
+                        // for auditing, so we don't need to throw an exception here.
+                        logger.debug("CDR Rejected by DB (Logged in Audit): MSISDN {}", dialA);
                     }
                 }
             }
