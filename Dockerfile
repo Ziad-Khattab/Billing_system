@@ -34,7 +34,7 @@ COPY --from=build /build/target/lib ./lib
 
 # 5. Copy required resources for Jasper and UI
 COPY --from=build /build/src/main/webapp ./webapp_static
-COPY --from=build /build/src/main/resources/invoice.jrxml .
+COPY --from=build /build/src/main/resources/*.jrxml .
 COPY --from=build /build/src/main/resources/logo.svg .
 COPY --from=build /build/src/main/resources/Pictures ./Pictures
 
