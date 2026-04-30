@@ -44,3 +44,4 @@ src/main/resources/db.properties
 # --- Operating System ---
 .DS_Store
 Thumbs.db
+processed/
