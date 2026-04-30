@@ -8,7 +8,7 @@ public class DebugJasper {
     public static void main(String[] args) {
         String fileName = (args.length > 0) ? args[0] : "invoice.jrxml";
         String filePath = "/app/" + fileName;
-        System.out.println("🚀 DEBUG: Attempting to compile " + filePath);
+        System.out.println("🚀 DEBUG (v5): Attempting to compile " + filePath);
         
         File f = new File(filePath);
         if (!f.exists()) {

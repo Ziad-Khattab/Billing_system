@@ -13,7 +13,7 @@ RUN mvn generate-resources -DskipTests -B || true
 
 # 3. Copy source code and build
 COPY . .
-RUN mvn package -DskipTests -B
+RUN mvn clean package -DskipTests -B
 
 # --- STAGE 2: Run the Application (JRE Runtime) ---
 FROM eclipse-temurin:21-jre-jammy
