@@ -34,7 +34,7 @@ public class DataDetective {
                 BigDecimal billTotal = (BigDecimal) bill.get("total_amount");
 
                 System.out.println("\n--- Auditing Bill #" + billId + " (MSISDN: " + msisdn + ") ---");
-                System.out.println("Bill Overage (Header): " + billOverage + " E£");
+                System.out.println("Bill Overage (Header): " + billOverage + " EGP");
 
                 // 2. Audit Usage Breakdown (The data Jasper uses)
                 List<Map<String, Object>> breakdown = DB.executeSelect(
@@ -55,10 +55,10 @@ public class DataDetective {
                         calculatedOverage = calculatedOverage.add(lineTotal);
                     }
 
-                    System.out.printf("  - %-30s: %8.2f E£ (Rate: %s)\n", label, lineTotal, rate);
+                    System.out.printf("  - %-30s: %8.2f EGP (Rate: %s)\n", label, lineTotal, rate);
                 }
 
-                System.out.println("Calculated Overage Sum: " + calculatedOverage + " E£");
+                System.out.println("Calculated Overage Sum: " + calculatedOverage + " EGP");
 
                 // 3. Verification
                 if (billOverage.setScale(2, BigDecimal.ROUND_HALF_UP).equals(calculatedOverage.setScale(2, BigDecimal.ROUND_HALF_UP))) {

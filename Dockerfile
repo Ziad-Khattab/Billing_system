@@ -13,7 +13,7 @@ RUN mvn generate-resources -DskipTests -B || true
 
 # 3. Copy source code and build
 COPY . .
-RUN mvn clean package -DskipTests -B
+RUN mvn package -DskipTests -B
 
 # --- STAGE 2: Run the Application (JRE Runtime) ---
 FROM eclipse-temurin:21-jre-jammy
@@ -34,7 +34,7 @@ COPY --from=build /build/target/lib ./lib
 
 # 5. Copy required resources for Jasper and UI
 COPY --from=build /build/src/main/webapp ./webapp_static
-COPY --from=build /build/src/main/resources/*.jrxml .
+COPY --from=build /build/src/main/resources/invoice.jrxml .
 COPY --from=build /build/src/main/resources/logo.svg .
 COPY --from=build /build/src/main/resources/Pictures ./Pictures
 

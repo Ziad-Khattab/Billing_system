@@ -271,7 +271,7 @@
                 </td>
                 <td>
                   <span class="amount-num" style={(c.available_credit || c.availableCredit) < 0 ? 'color: #ef4444' : ''}>
-                    {c.available_credit || c.availableCredit} E£
+                    {c.available_credit || c.availableCredit} EGP
                   </span>
                 </td>
               </tr>
@@ -424,7 +424,7 @@
               <button type="button" class="dropdown-item" onclick={() => { selectedPlan = p.id; showPlanDropdown = false; }}>
                 <div style="display:flex; flex-direction:column; gap: 2px;">
                   <span class="name">{p.name}</span>
-                  <span class="msisdn text-muted" style="font-size:0.75rem">{p.price} E£ / month</span>
+                  <span class="msisdn text-muted" style="font-size:0.75rem">{p.price} EGP / month</span>
                 </div>
                 <span class="badge {badgeClass}" style="font-size:0.55rem; padding: 2px 8px; border-radius: 6px;">{p.name.split(' ')[0]}</span>
               </button>

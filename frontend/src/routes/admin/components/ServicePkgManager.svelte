@@ -132,7 +132,7 @@
               <span class="badge badge-{pkg.type}">{pkg.type}</span>
             </div>
             <div class="col font-mono">{pkg.amount}</div>
-            <div class="col font-mono">E£ {pkg.price}</div>
+            <div class="col font-mono">EGP {pkg.price}</div>
             <div class="col">{pkg.priority}</div>
             <div class="col">
               <span class="roaming-status {pkg.is_roaming ? 'is-roaming' : ''}">
@@ -180,7 +180,7 @@
     </div>
 
     <div class="form-group">
-      <label>Price (E£)</label>
+      <label>Price (EGP)</label>
       <input type="number" class="input" bind:value={currentPkg.price} />
     </div>
 

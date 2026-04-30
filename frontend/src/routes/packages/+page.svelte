@@ -283,7 +283,7 @@
                 <div class="plan-header">
                   <h3>{activePlan?.name}</h3>
                   <div class="plan-price">
-                    <span class="currency">E£</span>
+                    <span class="currency">EGP</span>
                     <span class="amount">{activePlan?.price}</span>
                     <span class="period">/mo</span>
                   </div>
@@ -321,28 +321,28 @@
                       <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--red)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="accent-icon"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l2.28-2.28a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
                       Voice Rate
                     </span>
-                    <span class="detail-value">{plans[activeIndex]?.ror_voice} <small>E£/min</small></span>
+                    <span class="detail-value">{plans[activeIndex]?.ror_voice} <small>EGP/min</small></span>
                   </div>
                   <div class="detail-row">
                     <span class="detail-label">
                       <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--red)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="accent-icon"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
                       Data Rate
                     </span>
-                    <span class="detail-value">{plans[activeIndex]?.ror_data} <small>E£/MB</small></span>
+                    <span class="detail-value">{plans[activeIndex]?.ror_data} <small>EGP/MB</small></span>
                   </div>
                   <div class="detail-row">
                     <span class="detail-label">
                       <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--red)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="accent-icon"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
                       SMS Rate
                     </span>
-                    <span class="detail-value">{plans[activeIndex]?.ror_sms} <small>E£/msg</small></span>
+                    <span class="detail-value">{plans[activeIndex]?.ror_sms} <small>EGP/msg</small></span>
                   </div>
                   <div class="detail-row">
                     <span class="detail-label">
                       <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--red)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="accent-icon"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
                       Monthly Fee
                     </span>
-                    <span class="detail-value">E£ {plans[activeIndex]?.price}</span>
+                    <span class="detail-value">EGP {plans[activeIndex]?.price}</span>
                   </div>
                 </div>
                 <div class="description-container">
@@ -386,7 +386,7 @@
             <div class="gift-visual">
               <div class="gift-price-tag">
                 <span class="val">FREE</span>
-                <span class="sub">0 E£</span>
+                <span class="sub">0 EGP</span>
               </div>
                <button 
                  onclick={() => buyBundle(welcomeGift)}
@@ -445,7 +445,7 @@
               <h4 style="font-size: 1.4rem; font-weight: 800; color: white; margin-bottom: 0.5rem; letter-spacing: -0.04em;">{pkg.name}</h4>
               <div class="plan-price" style="justify-content: flex-start; gap: 0.2rem;">
                 <span class="amount" style="font-size: 2.4rem;">{pkg.price}</span>
-                <span class="period" style="font-size: 0.8rem; color: #94a3b8;">E£ / mo</span>
+                <span class="period" style="font-size: 0.8rem; color: #94a3b8;">EGP / mo</span>
               </div>
             </div>
 

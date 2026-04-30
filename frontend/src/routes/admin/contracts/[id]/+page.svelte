@@ -112,7 +112,7 @@
           </div>
           <div class="detail-item">
             <span class="label">Available Credit</span>
-            <span class="value amount">{contract.availableCredit} E£</span>
+            <span class="value amount">{contract.availableCredit} EGP</span>
           </div>
         </div>
       </div>
@@ -133,7 +133,7 @@
                 </div>
                 <p class="addon-description">{addon.description}</p>
                 <div class="addon-info">
-                  <span>Price: <strong>{addon.price} E£</strong></span>
+                  <span>Price: <strong>{addon.price} EGP</strong></span>
                   <span>Expires: <strong>{new Date(addon.expiry_date).toLocaleDateString()}</strong></span>
                 </div>
               </div>
@@ -157,7 +157,7 @@
               >
                 <h3>{addon.name}</h3>
                 <p>{addon.description}</p>
-                <div class="addon-price">{addon.price} E£</div>
+                <div class="addon-price">{addon.price} EGP</div>
               </div>
             {/each}
           </div>

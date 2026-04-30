@@ -149,10 +149,10 @@
             <div class="col name-col">
               <strong>{plan.name}</strong>
             </div>
-            <div class="col font-mono">{plan.ror_voice} <small>E£/min</small></div>
-            <div class="col font-mono">{plan.ror_data} <small>E£/MB</small></div>
-            <div class="col font-mono">{plan.ror_sms} <small>E£/msg</small></div>
-            <div class="col font-mono">E£ {plan.price}</div>
+            <div class="col font-mono">{plan.ror_voice} <small>EGP/min</small></div>
+            <div class="col font-mono">{plan.ror_data} <small>EGP/MB</small></div>
+            <div class="col font-mono">{plan.ror_sms} <small>EGP/msg</small></div>
+            <div class="col font-mono">EGP {plan.price}</div>
             <div class="col actions">
               <button class="icon-btn edit" onclick={() => openEditModal(plan)} title="Edit">
                 <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/><path d="m15 5 4 4"/></svg>
@@ -180,22 +180,22 @@
     </div>
 
     <div class="form-group">
-      <label>Voice Overage Rate (E£/min)</label>
+      <label>Voice Overage Rate (EGP/min)</label>
       <input type="number" step="0.01" class="input" bind:value={currentPlan.ror_voice} />
     </div>
 
     <div class="form-group">
-      <label>Data Overage Rate (E£/MB)</label>
+      <label>Data Overage Rate (EGP/MB)</label>
       <input type="number" step="0.01" class="input" bind:value={currentPlan.ror_data} />
     </div>
 
     <div class="form-group">
-      <label>SMS Overage Rate (E£/msg)</label>
+      <label>SMS Overage Rate (EGP/msg)</label>
       <input type="number" step="0.01" class="input" bind:value={currentPlan.ror_sms} />
     </div>
 
     <div class="form-group">
-      <label>Monthly Subscription Price (E£)</label>
+      <label>Monthly Subscription Price (EGP)</label>
       <input type="number" class="input" bind:value={currentPlan.price} />
     </div>
 

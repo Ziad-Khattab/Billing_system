@@ -51,12 +51,12 @@
     }
 </script>
 
-<svelte:head><title>Activate My Line — FMRZ</title></svelte:head>
+<svelte:head><title>Activate My Line — e&</title></svelte:head>
 
 <div class="onboarding-page">
     <div class="onboarding-card card animate-fade">
         <div class="logo-header">
-            <img src="/logo.png" alt="FMRZ" class="eand-logo-small" />
+            <img src="/eand_logo.svg" alt="e&" class="eand-logo-small" />
             <div class="header-text">
                 <h1>Service Activation</h1>
                 <p>Follow the steps to go live on the network</p>
@@ -131,7 +131,7 @@
                                 </div>
                             </div>
                             <div class="plan-price-box">
-                                <span class="currency">E£</span>
+                                <span class="currency">EGP</span>
                                 <span class="amount">{plan.price}</span>
                                 <span class="period">/mo</span>
                             </div>
@@ -157,7 +157,7 @@
                     <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
                 </div>
                 <h2>Activation Successful!</h2>
-                <p>Your premium line <strong>{selected.msisdn}</strong> is now live on the FMRZ network.</p>
+                <p>Your premium line <strong>{selected.msisdn}</strong> is now live on the e& network.</p>
                 <div class="success-actions">
                     <a href="/profile" class="btn btn-primary full-width" style="height: 50px;">Go to My Dashboard</a>
                 </div>

@@ -130,7 +130,7 @@
                      <span class="badge badge-{c.status}">{c.status}</span>
                    </div>
                 </td>
-                <td><span class="amount-num">{c.availableCredit} E£</span></td>
+                <td><span class="amount-num">{c.availableCredit} EGP</span></td>
               </tr>
             {/each}
           </tbody>
@@ -153,7 +153,7 @@
               <tr>
                 <td><span class="id-badge">#{inv.id}</span></td>
                 <td class="text-muted">{inv.generationDate}</td>
-                <td><span class="amount-num">{inv.totalAmount} E£</span></td>
+                <td><span class="amount-num">{inv.totalAmount} EGP</span></td>
                 <td><span class="badge badge-active">{inv.status === 'paid' ? 'Paid' : 'Pending'}</span></td>
               </tr>
             {/each}
