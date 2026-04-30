@@ -17,16 +17,22 @@ def get_env_config():
     # Handle DB_URL parsing if present (common in Railway/Docker)
     db_url = os.getenv("DB_URL")
     if db_url and "://" in db_url:
-        # Simple parsing for postgresql://user:pass@host:port/db
         try:
+            # parsing for postgresql://user:pass@host:port/db or jdbc:postgresql://...
+            if db_url.startswith("jdbc:"):
+                db_url = db_url.replace("jdbc:", "", 1)
+            
             parts = db_url.split("://")[1]
             if "@" in parts:
                 creds, host_part = parts.split("@")
                 db_user = creds.split(":")[0]
                 db_pass = creds.split(":")[1]
-                host_db = host_part.split("/")
-                db_host = host_db[0].split(":")[0]
-                db_name = host_db[1].split("?")[0]
+                if "/" in host_part:
+                    host_port, db_name_part = host_part.split("/")
+                    db_host = host_port.split(":")[0]
+                    db_name = db_name_part.split("?")[0]
+                else:
+                    db_host = host_part.split(":")[0]
         except:
             pass
 
@@ -55,42 +61,50 @@ def get_msisdns_with_status(config):
         print(f"Error fetching MSISDNs: {e}")
         return []
 
-def generate_cdrs(subscribers, count=100):
+def generate_cdrs(subscribers, count=100, specific_msisdn=None):
     cdrs = []
     phone_destinations = ["201090000001", "201090000002", "201090000003", "201000000008", "201223344556"]
     url_destinations = ["google.com", "facebook.com", "youtube.com", "fmrz-telecom.net", "whatsapp.net"]
+    vplmns = ["FRA01", "UK01", "USA01", "UAE01", "GER01"]
     
     now = datetime.datetime.now()
-    
-    # Separate for weighting
     active_pool = [s["msisdn"] for s in subscribers if s["status"] == 'active']
     blocked_pool = [s["msisdn"] for s in subscribers if s["status"] != 'active']
     
     for i in range(count):
         roll = random.random()
+        is_roaming = random.random() < 0.3 # 30% Roaming
+        vplmn = random.choice(vplmns) if is_roaming else ""
         
-        if roll < 0.05: # 5% Chance of a "Ghost" (Stranger)
+        if specific_msisdn:
+            dial_a = specific_msisdn
+        elif roll < 0.05: 
             dial_a = "2019" + str(random.randint(10000000, 99999999))
-        elif roll < 0.15: # 10% Chance of a "Blocked" subscriber (Suspended/Debt)
+        elif roll < 0.15: 
             dial_a = random.choice(blocked_pool) if blocked_pool else random.choice(active_pool)
-        else: # 85% Chance of a "Healthy" active subscriber
+        else: 
             dial_a = random.choice(active_pool) if active_pool else random.choice(blocked_pool)
             
-        service_id = random.choice([1, 2, 3])
+        # Domestic IDs: 1, 2, 3; Roaming IDs: 5, 6, 7
+        service_base = random.choice([1, 2, 3])
+        service_id = service_base + 4 if is_roaming else service_base
         
-        if service_id == 1: # Voice
+        external_charges = 0
+        if service_base == 1: # Voice
             dial_b = random.choice(phone_destinations)
-            duration = random.randint(30, 3600)
-        elif service_id == 2: # Data
+            duration = random.randint(30, 7200) # Up to 2 hours
+        elif service_base == 2: # Data
             dial_b = random.choice(url_destinations)
-            duration = random.randint(1, 500)
+            # Big data for overage: 500MB to 5GB
+            duration = random.randint(524288000, 5368709120) if specific_msisdn else random.randint(1, 52428800)
         else: # SMS
             dial_b = random.choice(phone_destinations)
             duration = 1
             
         start_time = now - datetime.timedelta(days=random.randint(0, 30), hours=random.randint(0, 23), minutes=random.randint(0, 59))
         time_str = start_time.strftime("%Y-%m-%d %H:%M:%S")
-        cdrs.append(f"1,{dial_a},{dial_b},{time_str},{duration},{service_id},EGYVO,,0")
+        
+        cdrs.append(f"1,{dial_a},{dial_b},{time_str},{duration},{service_id},EGYVO,{vplmn},{external_charges}")
         
     return cdrs
 
@@ -106,8 +120,12 @@ def main():
         
     print(f"✅ Found {len(subscribers)} subscribers in database.")
     
-    count = 150 
-    cdrs = generate_cdrs(subscribers, count=count)
+    count = 100 
+    targets = ["201000000001", "201000000002"] # Alice and Bob
+    
+    cdrs = []
+    for msisdn in targets:
+        cdrs += generate_cdrs(subscribers, count=count // 2, specific_msisdn=msisdn)
     
     # Filename format: CDRYYYYMMDDHHMMSS_mmm.csv
     timestamp = datetime.datetime.now().strftime("%Y%m%d%H%M%S_%f")[:-3]

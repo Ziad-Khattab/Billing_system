@@ -135,7 +135,10 @@ public class DB {
                     for (int i = 1; i <= columns; i++) {
                         Object val = rs.getObject(i);
                         if (val != null && val.getClass().getName().contains("PGobject")) {
-                            val = val.toString();
+                            // Only convert to String if it's NOT a number (e.g. JSON, Enum)
+                            if (!(val instanceof Number)) {
+                                val = val.toString();
+                            }
                         }
                         row.put(md.getColumnLabel(i), val);
                     }

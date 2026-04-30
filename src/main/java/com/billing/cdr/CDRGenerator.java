@@ -47,9 +47,11 @@ public class CDRGenerator {
         lines.add("file_id,dial_a,dial_b,start_time,duration,service_id,hplmn,vplmn,external_charges");
 
         Calendar cal = Calendar.getInstance();
+        String[] vplmns = {"FRA01", "UK01", "USA01", "UAE01", "GER01"};
 
         for (int i = 0; i < count; i++) {
             double roll = rand.nextDouble();
+            boolean isRoaming = rand.nextDouble() < 0.2; // 20% Roaming
             String dialA;
             
             if (roll < 0.05) { // Ghost
@@ -57,19 +59,27 @@ public class CDRGenerator {
             } else if (roll < 0.15 && !blockedPool.isEmpty()) { // Blocked
                 dialA = blockedPool.get(rand.nextInt(blockedPool.size()));
             } else { // Healthy
-                dialA = activePool.isEmpty() ? blockedPool.get(rand.nextInt(blockedPool.size())) : activePool.get(rand.nextInt(activePool.size()));
+                dialA = activePool.isEmpty() ? "2010" + (10000000 + rand.nextInt(90000000)) : activePool.get(rand.nextInt(activePool.size()));
             }
 
-            int serviceId = 1 + rand.nextInt(3);
+            int serviceBase = 1 + rand.nextInt(3);
+            int serviceId = isRoaming ? serviceBase + 4 : serviceBase;
+            String vplmn = isRoaming ? vplmns[rand.nextInt(vplmns.length)] : "";
+            
             String dialB;
-            int duration;
+            long duration;
 
-            if (serviceId == 1) { // Voice
+            if (serviceBase == 1) { // Voice
                 dialB = phoneDestinations[rand.nextInt(phoneDestinations.length)];
-                duration = 30 + rand.nextInt(3570);
-            } else if (serviceId == 2) { // Data
+                duration = 30 + rand.nextInt(7200); // Up to 2 hours
+            } else if (serviceBase == 2) { // Data
                 dialB = urlDestinations[rand.nextInt(urlDestinations.length)];
-                duration = 1 + rand.nextInt(500);
+                // Mixed data: some small, some massive (up to 5GB)
+                if (rand.nextDouble() < 0.3) {
+                    duration = 524288000L + rand.nextLong(4843544576L); 
+                } else {
+                    duration = 1 + rand.nextInt(52428800);
+                }
             } else { // SMS
                 dialB = phoneDestinations[rand.nextInt(phoneDestinations.length)];
                 duration = 1;
@@ -81,7 +91,7 @@ public class CDRGenerator {
             cal.add(Calendar.MINUTE, -rand.nextInt(60));
             String timeStr = sdf.format(cal.getTime());
 
-            lines.add(String.format("1,%s,%s,%s,%d,%d,EGYVO,,0", dialA, dialB, timeStr, duration, serviceId));
+            lines.add(String.format("1,%s,%s,%s,%d,%d,EGYVO,%s,0", dialA, dialB, timeStr, duration, serviceId, vplmn));
         }
 
         // 4. Save to file

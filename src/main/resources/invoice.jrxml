@@ -12,8 +12,8 @@
 		]]></query>
 		<field name="service_type" class="java.lang.String"/>
 		<field name="category_label" class="java.lang.String"/>
-		<field name="quota" class="java.lang.Integer"/>
-		<field name="consumed" class="java.lang.Integer"/>
+		<field name="quota" class="java.lang.Long"/>
+		<field name="consumed" class="java.lang.Long"/>
 		<field name="unit_rate" class="java.math.BigDecimal"/>
 		<field name="line_total" class="java.math.BigDecimal"/>
 		<field name="is_roaming" class="java.lang.Boolean"/>
@@ -65,9 +65,9 @@
 	<field name="billing_date" class="java.sql.Date"/>
 	<field name="recurring_fees" class="java.math.BigDecimal"/>
 	<field name="one_time_fees" class="java.math.BigDecimal"/>
-	<field name="voice_usage" class="java.lang.Integer"/>
-	<field name="data_usage" class="java.lang.Integer"/>
-	<field name="sms_usage" class="java.lang.Integer"/>
+	<field name="voice_usage" class="java.lang.Long"/>
+	<field name="data_usage" class="java.lang.Long"/>
+	<field name="sms_usage" class="java.lang.Long"/>
 	<field name="overage_charge" class="java.math.BigDecimal"/>
 	<field name="roaming_charge" class="java.math.BigDecimal"/>
 	<field name="taxes" class="java.math.BigDecimal"/>
