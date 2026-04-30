@@ -326,6 +326,20 @@
     }
   }
 
+  function formatVoice(sec) {
+    if (!sec && sec !== 0) return '0m';
+    return (sec / 60.0).toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 1 }) + 'm';
+  }
+
+  function formatData(bytes) {
+    if (!bytes && bytes !== 0) return '0MB';
+    const mb = bytes / 1048576.0;
+    if (mb >= 1024) {
+      return (mb / 1024.0).toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 2 }) + 'GB';
+    }
+    return mb.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 2 }) + 'MB';
+  }
+
   $effect(() => {
     loadData();
   });
@@ -673,7 +687,24 @@
                    checked={selectedIds.size === bills.filter(b => b.status !== 'paid').length && bills.length > 0} 
                    onchange={toggleAll} />
           </th>
-          <th>Bill ID</th><th>Customer</th><th>Period</th><th>Usage (V/D/S)</th><th>Total</th><th>Status</th><th>Actions</th>
+          <th>Bill ID</th><th>Customer</th><th>Period</th>
+          <th style="min-width: 280px;">
+            <div class="usage-grid header-grid">
+              <div class="usage-slot header-slot voice" title="Voice Minutes">
+                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l2.28-2.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                <span style="font-size: 0.65rem; margin-left: 2px;">VOICE</span>
+              </div>
+              <div class="usage-slot header-slot data" title="Data Usage">
+                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.55a11 11 0 0 1 14.08 0"/><path d="M1.42 9a16 16 0 0 1 21.16 0"/><path d="M8.53 16.11a6 6 0 0 1 6.95 0"/><line x1="12" y1="20" x2="12.01" y2="20"/></svg>
+                <span style="font-size: 0.65rem; margin-left: 2px;">DATA</span>
+              </div>
+              <div class="usage-slot header-slot sms" title="SMS Count">
+                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+                <span style="font-size: 0.65rem; margin-left: 2px;">SMS</span>
+              </div>
+            </div>
+          </th>
+          <th>Total (Inc. Tax)</th><th>Status</th><th>Actions</th>
         </tr>
       </thead>
       <tbody>
@@ -695,10 +726,19 @@
           </td>
           <td class="text-muted">{b.billing_period_start}</td>
           <td>
-            <div class="usage-pills">
-              <span class="pill voice" title="Voice">{b.voice_usage}m</span>
-              <span class="pill data" title="Data">{b.data_usage}MB</span>
-              <span class="pill sms" title="SMS">{b.sms_usage}</span>
+            <div class="usage-grid">
+              <div class="usage-slot voice" title="Voice">
+                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l2.28-2.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                <span>{formatVoice(b.voice_usage)}</span>
+              </div>
+              <div class="usage-slot data" title="Data">
+                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.55a11 11 0 0 1 14.08 0"/><path d="M1.42 9a16 16 0 0 1 21.16 0"/><path d="M8.53 16.11a6 6 0 0 1 6.95 0"/><line x1="12" y1="20" x2="12.01" y2="20"/></svg>
+                <span>{formatData(b.data_usage)}</span>
+              </div>
+              <div class="usage-slot sms" title="SMS">
+                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+                <span>{b.sms_usage || 0}</span>
+              </div>
             </div>
           </td>
           <td><span class="amount-num bold">{b.total_amount} EGP</span></td>
@@ -826,18 +866,29 @@
   .mini-spinner { width: 14px; height: 14px; border: 2px solid rgba(255, 255, 255, 0.3); border-top-color: white; border-radius: 50%; animation: spin 0.8s linear infinite; display: inline-block; margin-right: 8px; }
   @keyframes spin { to { transform: rotate(360deg); } }
 
-  .usage-pills { display: flex; gap: 4px; }
-  .pill {
-    font-size: 0.75rem;
-    padding: 2px 8px;
-    border-radius: 10px;
-    font-weight: 600;
-    background: var(--bg-soft);
-    color: var(--text-secondary);
+  .usage-grid {
+    display: grid;
+    grid-template-columns: 80px 100px 70px;
+    gap: 8px;
+    align-items: center;
+    justify-content: center;
   }
-  .pill.voice { border-left: 3px solid #3B82F6; }
-  .pill.data { border-left: 3px solid #A855F7; }
-  .pill.sms { border-left: 3px solid #F59E0B; }
+  .usage-slot {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    padding: 2px 6px;
+    border-radius: 6px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+  }
+  .usage-slot.voice svg { color: #3B82F6; }
+  .usage-slot.data svg { color: #A855F7; }
+  .usage-slot.sms svg { color: #F59E0B; }
+  .usage-slot span { white-space: nowrap; }
 
   .amount-num.bold { font-size: 1rem; color: white; }
 
@@ -960,5 +1011,14 @@
     font-weight: 800;
     cursor: pointer;
     padding: 0;
+  }
+  .usage-slot.header-slot {
+    background: none;
+    border: none;
+    justify-content: center;
+    padding: 0;
+  }
+  .usage-grid.header-grid {
+    opacity: 0.6;
   }
 </style>
