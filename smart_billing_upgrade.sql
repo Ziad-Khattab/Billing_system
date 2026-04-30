@@ -7,16 +7,14 @@
 
 BEGIN;
 
--- 1. SCHEMA HARDENING (Idempotent)
--- ----------------------------------------------------------------------------
+ALTER TABLE bill ALTER COLUMN data_usage TYPE BIGINT;
+ALTER TABLE ror_contract ALTER COLUMN data TYPE BIGINT;
+ALTER TABLE ror_contract ALTER COLUMN roaming_data TYPE BIGINT;
+
 ALTER TABLE bill ADD COLUMN IF NOT EXISTS overage_charge NUMERIC(12,2) DEFAULT 0.00;
 ALTER TABLE bill ADD COLUMN IF NOT EXISTS roaming_charge NUMERIC(12,2) DEFAULT 0.00;
 ALTER TABLE bill ADD COLUMN IF NOT EXISTS promotional_discount NUMERIC(12,2) DEFAULT 0.00;
 ALTER TYPE contract_status ADD VALUE IF NOT EXISTS 'suspended_debt';
-
-ALTER TABLE ror_contract ADD COLUMN IF NOT EXISTS roaming_voice NUMERIC(12,2) DEFAULT 0.00;
-ALTER TABLE ror_contract ADD COLUMN IF NOT EXISTS roaming_data NUMERIC(12,2) DEFAULT 0.00;
-ALTER TABLE ror_contract ADD COLUMN IF NOT EXISTS roaming_sms NUMERIC(12,2) DEFAULT 0.00;
 
 ALTER TABLE cdr ADD COLUMN IF NOT EXISTS rated_service_id INTEGER;
 
@@ -214,12 +212,57 @@ AS $$
           v_recurring_fees, v_voice_usage, v_data_usage, v_sms_usage,
           v_overage_charge, v_roaming_charge, v_promo_discount, v_taxes, v_total_amount, 'issued'
       ) RETURNING id INTO v_bill_id;
-
+      
+      -- Update ror_contract to link to this bill
       UPDATE ror_contract SET bill_id = v_bill_id WHERE contract_id = p_contract_id AND bill_id IS NULL;
       UPDATE contract_consumption SET bill_id = v_bill_id, is_billed = TRUE WHERE contract_id = p_contract_id AND starting_date = p_billing_period_start;
       
       RETURN v_bill_id;
   END;
+$$ LANGUAGE plpgsql;
+
+-- 4. REPORTING (Invoice Support)
+-- ----------------------------------------------------------------------------
+CREATE OR REPLACE FUNCTION get_bill_usage_breakdown(p_bill_id INTEGER)
+RETURNS TABLE (
+    service_type      TEXT,
+    category_label    TEXT,
+    quota             INTEGER,
+    consumed          INTEGER,
+    unit_rate         NUMERIC(12,4),
+    line_total        NUMERIC(12,2),
+    is_roaming        BOOLEAN,
+    is_promotional    BOOLEAN,
+    notes             TEXT
+) AS $$
+DECLARE
+    v_contract_id INTEGER;
+BEGIN
+    SELECT contract_id INTO v_contract_id FROM bill WHERE id = p_bill_id;
+    
+    RETURN QUERY
+    -- Bundled usage
+    SELECT 
+        sp.type::TEXT, sp.name::TEXT, cc.quota_limit::INTEGER, cc.consumed::INTEGER,
+        0::NUMERIC(12,4), 0::NUMERIC(12,2), sp.is_roaming, (sp.name ~* 'Welcome|Gift|Bonus'),
+        'Bundle item'::TEXT
+    FROM contract_consumption cc JOIN service_package sp ON cc.service_package_id = sp.id
+    WHERE cc.bill_id = p_bill_id
+    
+    UNION ALL
+    -- Voice overage
+    SELECT 'voice', 'Overage - Voice', NULL, rc.voice::INTEGER, rp.ror_voice,
+           ROUND((rc.voice * rp.ror_voice)::NUMERIC, 2), FALSE, FALSE, 'Overage min'
+    FROM ror_contract rc JOIN rateplan rp ON rc.rateplan_id = rp.id
+    WHERE rc.bill_id = p_bill_id AND rc.voice > 0
+    
+    UNION ALL
+    -- Data overage (Bytes to MB in consumed, but price per GB)
+    SELECT 'data', 'Overage - Data', NULL, (rc.data / 1048576)::INTEGER, rp.ror_data,
+           ROUND((rc.data / 1073741824.0 * rp.ror_data)::NUMERIC, 2), FALSE, FALSE, 'Overage data'
+    FROM ror_contract rc JOIN rateplan rp ON rc.rateplan_id = rp.id
+    WHERE rc.bill_id = p_bill_id AND rc.data > 0;
+END;
 $$ LANGUAGE plpgsql;
 
 COMMIT;

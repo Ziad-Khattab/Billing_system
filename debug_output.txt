@@ -1,0 +1,50 @@
+🚀 DEBUG (v5): Attempting to compile /app/minimal.jrxml
+🔍 TESTING: Standard JDK DocumentBuilder parsing...
+✅ SUCCESS: Standard JDK parsing works!
+📜 FILE CONTENT LENGTH: 455
+00:26:38.213 [main] DEBUG net.sf.jasperreports.extensions.ExtensionsEnvironment -- Instantiating extensions registry class net.sf.jasperreports.extensions.DefaultExtensionsRegistry
+00:26:38.224 [main] DEBUG net.sf.jasperreports.extensions.DefaultExtensionsRegistry -- Loading registries for cache key jdk.internal.loader.ClassLoaders$AppClassLoader@1a93a7ca
+00:26:38.225 [main] DEBUG net.sf.jasperreports.engine.util.JRLoader -- Found resource jasperreports_extension.properties at jar:file:/app/lib/jasperreports-7.0.1.jar!/jasperreports_extension.properties in classloader jdk.internal.loader.ClassLoaders$AppClassLoader@1a93a7ca
+00:26:38.226 [main] DEBUG net.sf.jasperreports.engine.util.JRLoader -- Found resource jasperreports_extension.properties at jar:file:/app/lib/jasperreports-fonts-7.0.1.jar!/jasperreports_extension.properties in classloader jdk.internal.loader.ClassLoaders$AppClassLoader@1a93a7ca
+00:26:38.226 [main] DEBUG net.sf.jasperreports.engine.util.JRLoader -- Found resource jasperreports_extension.properties at jar:file:/app/lib/jasperreports-functions-7.0.1.jar!/jasperreports_extension.properties in classloader jdk.internal.loader.ClassLoaders$AppClassLoader@1a93a7ca
+00:26:38.226 [main] DEBUG net.sf.jasperreports.engine.util.JRLoader -- Found resource jasperreports_extension.properties at jar:file:/app/lib/jasperreports-pdf-7.0.1.jar!/jasperreports_extension.properties in classloader jdk.internal.loader.ClassLoaders$AppClassLoader@1a93a7ca
+00:26:38.227 [main] DEBUG net.sf.jasperreports.extensions.DefaultExtensionsRegistry -- Loading JasperReports extension properties resource jar:file:/app/lib/jasperreports-7.0.1.jar!/jasperreports_extension.properties
+00:26:38.229 [main] DEBUG net.sf.jasperreports.extensions.DefaultExtensionsRegistry -- Instantiating registry of type net.sf.jasperreports.engine.style.PropertyStyleProviderExtensionFactory for property net.sf.jasperreports.extension.registry.factory.property.style.provider
+00:26:38.229 [main] DEBUG net.sf.jasperreports.extensions.DefaultExtensionsRegistry -- Instantiating extensions registry for property.style.provider using factory class net.sf.jasperreports.engine.style.PropertyStyleProviderExtensionFactory
+00:26:38.231 [main] DEBUG net.sf.jasperreports.extensions.DefaultExtensionsRegistry -- Instantiating registry of type net.sf.jasperreports.engine.export.MatcherExportFilterMappingExtensionsRegistryFactory for property net.sf.jasperreports.extension.registry.factory.matcher.exporter.filter.mapping
+00:26:38.231 [main] DEBUG net.sf.jasperreports.extensions.DefaultExtensionsRegistry -- Instantiating extensions registry for matcher.exporter.filter.mapping using factory class net.sf.jasperreports.engine.export.MatcherExportFilterMappingExtensionsRegistryFactory
+00:26:38.232 [main] DEBUG net.sf.jasperreports.extensions.DefaultExtensionsRegistry -- Instantiating registry of type net.sf.jasperreports.governors.GovernorExtensionsRegistryFactory for property net.sf.jasperreports.extension.registry.factory.governor
+00:26:38.232 [main] DEBUG net.sf.jasperreports.extensions.DefaultExtensionsRegistry -- Instantiating extensions registry for governor using factory class net.sf.jasperreports.governors.GovernorExtensionsRegistryFactory
+00:26:38.233 [main] DEBUG net.sf.jasperreports.extensions.DefaultExtensionsRegistry -- Instantiating registry of type net.sf.jasperreports.web.util.ContentTypeMappingExtensionsRegistryFactory for property net.sf.jasperreports.extension.registry.factory.content.type.mapping
+00:26:38.233 [main] DEBUG net.sf.jasperreports.extensions.DefaultExtensionsRegistry -- Instantiating extensions registry for content.type.mapping using factory class net.sf.jasperreports.web.util.ContentTypeMappingExtensionsRegistryFactory
+00:26:38.234 [main] DEBUG net.sf.jasperreports.extensions.DefaultExtensionsRegistry -- Instantiating registry of type net.sf.jasperreports.engine.fonts.SimpleFontExtensionsRegistryFactory for property net.sf.jasperreports.extension.registry.factory.simple.font.families
+00:26:38.234 [main] DEBUG net.sf.jasperreports.extensions.DefaultExtensionsRegistry -- Instantiating extensions registry for simple.font.families using factory class net.sf.jasperreports.engine.fonts.SimpleFontExtensionsRegistryFactory
+00:26:38.235 [main] DEBUG net.sf.jasperreports.extensions.DefaultExtensionsRegistry -- Instantiating registry of type net.sf.jasperreports.parts.PartComponentsExtensionsRegistryFactory for property net.sf.jasperreports.extension.registry.factory.parts
+00:26:38.235 [main] DEBUG net.sf.jasperreports.extensions.DefaultExtensionsRegistry -- Instantiating extensions registry for parts using factory class net.sf.jasperreports.parts.PartComponentsExtensionsRegistryFactory
+00:26:38.240 [main] DEBUG net.sf.jasperreports.extensions.DefaultExtensionsRegistry -- Instantiating registry of type net.sf.jasperreports.engine.query.SQLQueryClauseFunctionsExtensions for property net.sf.jasperreports.extension.registry.factory.sql.clause.functions
+00:26:38.240 [main] DEBUG net.sf.jasperreports.extensions.DefaultExtensionsRegistry -- Instantiating extensions registry for sql.clause.functions using factory class net.sf.jasperreports.engine.query.SQLQueryClauseFunctionsExtensions
+00:26:38.246 [main] DEBUG net.sf.jasperreports.extensions.DefaultExtensionsRegistry -- Instantiating registry of type net.sf.jasperreports.components.ComponentsExtensionsRegistryFactory for property net.sf.jasperreports.extension.registry.factory.components
+00:26:38.246 [main] DEBUG net.sf.jasperreports.extensions.DefaultExtensionsRegistry -- Instantiating extensions registry for components using factory class net.sf.jasperreports.components.ComponentsExtensionsRegistryFactory
+00:26:38.254 [main] DEBUG net.sf.jasperreports.extensions.DefaultExtensionsRegistry -- Instantiating registry of type net.sf.jasperreports.extensions.DefaultExtensionsRegistryFactory for property net.sf.jasperreports.extension.registry.factory.default
+00:26:38.254 [main] DEBUG net.sf.jasperreports.extensions.DefaultExtensionsRegistry -- Instantiating extensions registry for default using factory class net.sf.jasperreports.extensions.DefaultExtensionsRegistryFactory
+00:26:38.256 [main] DEBUG net.sf.jasperreports.extensions.DefaultExtensionsRegistry -- Instantiating registry of type net.sf.jasperreports.repo.DefaultRepositoryExtensionsRegistryFactory for property net.sf.jasperreports.extension.registry.factory.repository
+00:26:38.256 [main] DEBUG net.sf.jasperreports.extensions.DefaultExtensionsRegistry -- Instantiating extensions registry for repository using factory class net.sf.jasperreports.repo.DefaultRepositoryExtensionsRegistryFactory
+00:26:38.257 [main] DEBUG net.sf.jasperreports.extensions.DefaultExtensionsRegistry -- Instantiating registry of type net.sf.jasperreports.types.date.DateRangeQueryClauseExtensions for property net.sf.jasperreports.extension.registry.factory.date.range.clause.functions
+00:26:38.257 [main] DEBUG net.sf.jasperreports.extensions.DefaultExtensionsRegistry -- Instantiating extensions registry for date.range.clause.functions using factory class net.sf.jasperreports.types.date.DateRangeQueryClauseExtensions
+00:26:38.259 [main] DEBUG net.sf.jasperreports.extensions.DefaultExtensionsRegistry -- Loading JasperReports extension properties resource jar:file:/app/lib/jasperreports-fonts-7.0.1.jar!/jasperreports_extension.properties
+00:26:38.260 [main] DEBUG net.sf.jasperreports.extensions.DefaultExtensionsRegistry -- Instantiating registry of type net.sf.jasperreports.engine.fonts.SimpleFontExtensionsRegistryFactory for property net.sf.jasperreports.extension.registry.factory.simple.font.families
+00:26:38.260 [main] DEBUG net.sf.jasperreports.extensions.DefaultExtensionsRegistry -- Instantiating extensions registry for simple.font.families using factory class net.sf.jasperreports.engine.fonts.SimpleFontExtensionsRegistryFactory
+00:26:38.260 [main] DEBUG net.sf.jasperreports.extensions.DefaultExtensionsRegistry -- Loading JasperReports extension properties resource jar:file:/app/lib/jasperreports-functions-7.0.1.jar!/jasperreports_extension.properties
+00:26:38.261 [main] DEBUG net.sf.jasperreports.extensions.DefaultExtensionsRegistry -- Instantiating registry of type net.sf.jasperreports.functions.FunctionsRegistryFactory for property net.sf.jasperreports.extension.registry.factory.functions
+00:26:38.261 [main] DEBUG net.sf.jasperreports.extensions.DefaultExtensionsRegistry -- Instantiating extensions registry for functions using factory class net.sf.jasperreports.functions.FunctionsRegistryFactory
+00:26:38.265 [main] DEBUG net.sf.jasperreports.extensions.DefaultExtensionsRegistry -- Loading JasperReports extension properties resource jar:file:/app/lib/jasperreports-pdf-7.0.1.jar!/jasperreports_extension.properties
+00:26:38.266 [main] DEBUG net.sf.jasperreports.extensions.DefaultExtensionsRegistry -- Instantiating registry of type net.sf.jasperreports.pdf.PdfExtensionsRegistryFactory for property net.sf.jasperreports.extension.registry.factory.pdf
+00:26:38.266 [main] DEBUG net.sf.jasperreports.extensions.DefaultExtensionsRegistry -- Instantiating extensions registry for pdf using factory class net.sf.jasperreports.pdf.PdfExtensionsRegistryFactory
+❌ FAILED: Compilation failed!
+net.sf.jasperreports.engine.JRException: Unable to load report
+	at net.sf.jasperreports.engine.xml.JRXmlLoader.loadXML(JRXmlLoader.java:172)
+	at net.sf.jasperreports.engine.xml.JRXmlLoader.load(JRXmlLoader.java:149)
+	at net.sf.jasperreports.engine.xml.JRXmlLoader.load(JRXmlLoader.java:136)
+	at net.sf.jasperreports.engine.JasperCompileManager.compile(JasperCompileManager.java:334)
+	at net.sf.jasperreports.engine.JasperCompileManager.compileReport(JasperCompileManager.java:601)
+	at com.billing.util.DebugJasper.main(DebugJasper.java:36)
