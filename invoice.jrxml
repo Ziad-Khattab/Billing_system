@@ -121,7 +121,7 @@
 			<element kind="rectangle" x="10" y="8" width="258" height="130" backcolor="#121212" radius="10" mode="Opaque">
 				<pen lineWidth="0.5" lineColor="#2A2A2A"/>
 			</element>
-			<element kind="staticText" x="25" y="18" width="228" height="18" forecolor="#FF0000" fontSize="11.0" bold="true">
+			<element kind="staticText" x="25" y="12" width="228" height="18" forecolor="#FF0000" fontSize="11.0" bold="true">
 				<text><![CDATA[CUSTOMER DATA]]></text>
 			</element>
 			<element kind="line" x="25" y="38" width="40" height="1" forecolor="#FF0000">
@@ -143,7 +143,7 @@
 			<element kind="rectangle" x="287" y="8" width="258" height="130" backcolor="#121212" radius="10" mode="Opaque">
 				<pen lineWidth="0.5" lineColor="#2A2A2A"/>
 			</element>
-			<element kind="staticText" x="302" y="18" width="228" height="18" forecolor="#FF0000" fontSize="11.0" bold="true">
+			<element kind="staticText" x="302" y="12" width="228" height="18" forecolor="#FF0000" fontSize="11.0" bold="true">
 				<text><![CDATA[PROFILE]]></text>
 			</element>
 			<element kind="line" x="302" y="38" width="40" height="1" forecolor="#FF0000">
@@ -363,13 +363,13 @@
 
 	<pageFooter height="35">
 		<element kind="line" x="10" y="5" width="535" height="1" forecolor="#333333"/>
-		<element kind="textField" x="10" y="18" width="170" height="20" forecolor="#808080" fontSize="9.0" blankWhenNull="true">
+		<element kind="textField" x="10" y="12" width="170" height="20" forecolor="#808080" fontSize="9.0" blankWhenNull="true">
 			<expression><![CDATA["Care: " + $P{COMPANY_CARE}]]></expression>
 		</element>
-		<element kind="textField" x="190" y="18" width="170" height="20" forecolor="#808080" fontSize="9.0" hTextAlign="Center" blankWhenNull="true">
+		<element kind="textField" x="190" y="12" width="170" height="20" forecolor="#808080" fontSize="9.0" hTextAlign="Center" blankWhenNull="true">
 			<expression><![CDATA[$P{COMPANY_WEB}]]></expression>
 		</element>
-		<element kind="textField" x="370" y="18" width="175" height="20" forecolor="#808080" fontSize="9.0" hTextAlign="Right" blankWhenNull="true">
+		<element kind="textField" x="370" y="12" width="175" height="20" forecolor="#808080" fontSize="9.0" hTextAlign="Right" blankWhenNull="true">
 			<expression><![CDATA[$P{COMPANY_EMAIL}]]></expression>
 		</element>
 	</pageFooter>
