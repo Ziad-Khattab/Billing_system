@@ -603,9 +603,9 @@ AS $$
           END IF;
           
           IF v_service_type = 'data' THEN
-              v_overage_charge := (v_remaining / 1024.0) * COALESCE(v_ror_rate, 0);
+              v_overage_charge := (v_remaining / 1073741824.0) * COALESCE(v_ror_rate, 0);
           ELSE
-              v_overage_charge := v_remaining * COALESCE(v_ror_rate, 0);
+              v_overage_charge := (v_remaining / 60.0) * COALESCE(v_ror_rate, 0);
           END IF;
 
           -- Deduct from available_credit
@@ -703,8 +703,8 @@ AS $$
 
         -- Calculate overage charges from ror_contract (units * rates)
         SELECT
-            COALESCE(SUM((voice * v_ror_rate_v) + (data / 1024.0 * v_ror_rate_d) + (sms * v_ror_rate_s)), 0),
-            COALESCE(SUM((roaming_voice * v_ror_rate_v) + (roaming_data / 1024.0 * v_ror_rate_d) + (roaming_sms * v_ror_rate_s)), 0)
+            COALESCE(SUM((voice / 60.0 * v_ror_rate_v) + (data / 1073741824.0 * v_ror_rate_d) + (sms * v_ror_rate_s)), 0),
+            COALESCE(SUM((roaming_voice / 60.0 * v_ror_rate_v) + (roaming_data / 1073741824.0 * v_ror_rate_d) + (roaming_sms * v_ror_rate_s)), 0)
         INTO v_overage_charge, v_roaming_charge
         FROM ror_contract 
         WHERE contract_id = p_contract_id 
@@ -3111,7 +3111,7 @@ BEGIN
         NULL::BIGINT AS quota,
         CEIL(rc.voice / 60.0)::BIGINT AS consumed,
         rp.ror_voice AS unit_rate,
-        ROUND((rc.voice * rp.ror_voice)::NUMERIC, 2) AS line_total,
+        ROUND((rc.voice / 60.0 * rp.ror_voice)::NUMERIC, 2) AS line_total,
         FALSE AS is_roaming,
         FALSE AS is_promotional,
         'Overage minutes beyond bundle allowance'::TEXT AS notes
@@ -3140,7 +3140,7 @@ BEGIN
         'voice'::TEXT AS service_type,
         'Roaming Overage - Voice'::TEXT AS category_label,
         NULL::BIGINT, CEIL(rc.roaming_voice / 60.0)::BIGINT, rp.ror_roaming_voice,
-        ROUND((rc.roaming_voice * rp.ror_roaming_voice)::NUMERIC, 2),
+        ROUND((rc.roaming_voice / 60.0 * rp.ror_roaming_voice)::NUMERIC, 2),
         TRUE, FALSE, 'Roaming overage minutes'::TEXT
     FROM ror_contract rc JOIN rateplan rp ON rc.rateplan_id = rp.id
     WHERE rc.contract_id = v_contract_id AND rc.bill_id = p_bill_id AND rc.roaming_voice > 0
