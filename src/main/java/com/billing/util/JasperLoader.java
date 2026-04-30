@@ -54,22 +54,13 @@ public class JasperLoader {
     }
 
     public static InputStream getResourceStream(String name) {
-        // 1. Try absolute path (container /app/ directory)
+        // Try absolute path first (container)
         java.io.File file = new java.io.File("/app/" + name);
         if (file.exists()) {
             try { return new java.io.FileInputStream(file); } catch (Exception e) {}
         }
         
-        // 2. Try ClassLoader with leading slash
-        InputStream is = JasperLoader.class.getResourceAsStream("/" + name);
-        if (is != null) return is;
-        
-        // 3. Try ClassLoader without leading slash
-        is = JasperLoader.class.getClassLoader().getResourceAsStream(name);
-        if (is != null) return is;
-
-        // 4. Try Context ClassLoader
-        is = Thread.currentThread().getContextClassLoader().getResourceAsStream(name);
-        return is;
+        // Fallback to classpath
+        return JasperLoader.class.getClassLoader().getResourceAsStream(name);
     }
 }
