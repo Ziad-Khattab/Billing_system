@@ -1,162 +1,118 @@
 <script>
+  import { onMount } from 'svelte';
+  import { fade } from 'svelte/transition';
+  import { toast } from '$lib/components/Toast.svelte';
+
   let cdrs = $state([]);
-  let total = $state(0);
-  let search = $state('');
   let loading = $state(true);
   let importing = $state(false);
-  let page = $state(0);
+  let uploading = $state(false);
+  let generating = $state(false);
+  let search = $state('');
+  
+  // Pagination
+  let page = $state(1);
   let limit = $state(50);
-  let jumpPage = $state(1);
+  let total = $state(0);
 
-  const totalPages = $derived(Math.ceil(total / limit));
-
-  async function loadCDRs() {
+  const loadCDRs = async () => {
     loading = true;
     try {
-      const offset = page * limit;
-      const res = await fetch(`/api/admin/cdr?limit=${limit}&offset=${offset}`, { credentials: 'include' });
-      if (res.ok) {
-        const result = await res.json();
-        cdrs = result.data || [];
-        total = result.total || 0;
-        jumpPage = page + 1;
-      }
-    } catch (e) {
-      console.error(e);
+      const res = await fetch(`/api/cdr?page=${page}&limit=${limit}&search=${search}`);
+      const data = await res.json();
+      cdrs = data.records;
+      total = data.total;
+    } catch (err) {
+      console.error(err);
     } finally {
       loading = false;
     }
-  }
+  };
 
-  function nextPage() { 
-    if ((page + 1) * limit < total) {
-      page++; 
-      loadCDRs(); 
-    }
-  }
-  function prevPage() { if (page > 0) { page--; loadCDRs(); } }
-
-  function goToPage() {
-    const target = Math.max(1, Math.min(jumpPage, totalPages));
-    page = target - 1;
-    loadCDRs();
-  }
-
-  function handleLimitChange(e) {
-    limit = parseInt(e.target.value);
-    page = 0;
-    loadCDRs();
-  }
-
-  let generating = $state(false);
-  let uploading = $state(false);
-
-  async function importCDRs() {
-    importing = true;
-    try {
-      const res = await fetch('/api/admin/cdr', { method: 'POST', credentials: 'include' });
-      if (res.ok) {
-        page = 0;
-        await loadCDRs();
-      }
-    } catch (e) {
-      console.error(e);
-    } finally {
-      importing = false;
-    }
-  }
-
-  async function generateSamples() {
-    generating = true;
-    try {
-      const res = await fetch('/api/admin/cdr-generate', { method: 'POST', credentials: 'include' });
-      const data = await res.json();
-      if (res.ok) {
-        alert(data.message || 'Samples generated successfully!');
-      } else {
-        alert('Generation failed: ' + (data.error || data.message));
-      }
-    } catch (e) {
-      console.error(e);
-      alert('Error connecting to server');
-    } finally {
-      generating = false;
-    }
-  }
-
-  async function uploadCDR(event) {
-    const file = event.target.files[0];
+  const uploadCDR = async (e) => {
+    const file = e.target.files[0];
     if (!file) return;
 
+    uploading = true;
     const formData = new FormData();
     formData.append('file', file);
 
-    uploading = true;
     try {
-      const res = await fetch('/api/admin/cdr-upload', { 
-        method: 'POST', 
-        body: formData,
-        credentials: 'include'
-      });
-      const data = await res.json();
+      const res = await fetch('/api/cdr/upload', { method: 'POST', body: formData });
       if (res.ok) {
-        alert('File uploaded successfully! You can now click "Import" to process it.');
+        toast.success('CDR file uploaded and parsed successfully');
+        await loadCDRs();
       } else {
-        alert('Upload failed: ' + (data.error || data.message));
+        toast.error('Failed to upload CDR file');
       }
-    } catch (e) {
-      console.error(e);
-      alert('Error during upload');
+    } catch (err) {
+      toast.error('Error uploading file');
     } finally {
       uploading = false;
-      event.target.value = ''; // Reset input
     }
-  }
+  };
 
-  let filteredCDRs = $derived(
-          search ? cdrs.filter(c => c.msisdn.includes(search) || (c.destination && c.destination.includes(search))) : cdrs
-  );
-
-  // Formatter: Logic updated because API sends MB
-  // Smart Formatter: Logic updated to handle legacy SMS records and dynamic usage
-  function formatUsage(value, serviceId, type, destination, serviceType) {
-    if (value === 0 && (serviceType === 'data' || String(destination).toLowerCase() === 'internet')) return '0 MB';
-    if (value === 0) return '0';
-    if (!value) return '—';
-
-    // Prioritize Service Type from DB
-    let effectiveType = serviceType || 'other';
-    
-    if (effectiveType === 'other') {
-      // Fallback to legacy logic if serviceType is missing
-      if (serviceId === 1) effectiveType = 'voice';
-      else if (serviceId === 2) effectiveType = 'data';
-      else if (serviceId === 3) effectiveType = 'sms';
-      else {
-        const typeStr = String(type || '').toLowerCase();
-        const destStr = String(destination || '').toLowerCase();
-        if (typeStr.includes('voice') || typeStr.includes('call')) effectiveType = 'voice';
-        else if (typeStr.includes('data') || typeStr.includes('internet') || destStr === 'internet') effectiveType = 'data';
-        else if (typeStr.includes('sms')) effectiveType = 'sms';
+  const importCDRs = async () => {
+    importing = true;
+    try {
+      const res = await fetch('/api/cdr/import', { method: 'POST' });
+      const data = await res.json();
+      if (res.ok) {
+        toast.success(`Processing complete! Rated: ${data.ratedCount}, Rejected: ${data.rejectedCount}`);
+        await loadCDRs();
+      } else {
+        toast.error(data.error || 'Import failed');
       }
+    } catch (err) {
+      toast.error('Network error during import');
+    } finally {
+      importing = false;
+    }
+  };
+
+  const generateSamples = async () => {
+    generating = true;
+    try {
+      const res = await fetch('/api/cdr/generate', { method: 'POST' });
+      if (res.ok) {
+        toast.success('100 Fresh CDR records generated in input folder');
+        await loadCDRs();
+      }
+    } catch (err) {
+      toast.error('Failed to generate samples');
+    } finally {
+      generating = false;
+    }
+  };
+
+  const formatDate = (ts) => {
+    if (!ts) return '—';
+    return new Date(ts).toLocaleString();
+  };
+
+  // Smart Formatter: Logic updated to use the "Gold Standard" (Bytes/Seconds)
+  const formatUsage = (value, type) => {
+    if (!value) return '0';
+    const t = String(type || '').toLowerCase();
+    
+    if (t === 'voice' || t.includes('call')) {
+      // Value is in Seconds
+      if (value >= 60) return (value / 60).toFixed(1) + ' min';
+      return value + ' sec';
     }
 
-    switch (effectiveType) {
-      case 'voice':
-        const mins = (value / 60).toFixed(1);
-        return `${mins} min`;
-
-      case 'data':
-        if (value >= 1024) return (value / 1024).toFixed(2) + ' GB';
-        return value.toFixed(1) + ' MB';
-
-      case 'sms':
-        return value + ' SMS';
-
-      default:
-        return value;
+    if (t === 'data' || t.includes('internet')) {
+      // Value is in Bytes
+      if (value >= 1073741824) return (value / 1073741824).toFixed(2) + ' GB';
+      if (value >= 1048576) return (value / 1048576).toFixed(1) + ' MB';
+      if (value >= 1024) return (value / 1024).toFixed(1) + ' KB';
+      return value + ' B';
     }
-  }
+
+    if (t === 'sms') return value + ' SMS';
+    
+    return value;
+  };
 
   const getTypeInfo = (serviceId, ratedType, destination, serviceType) => {
     // Standardized Mapping
@@ -166,7 +122,8 @@
       'sms': { label: 'SMS', class: 'badge-sms', icon: 'M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z' }
     };
 
-    if (mapping[serviceType]) return mapping[serviceType];
+    const t = String(serviceType || '').toLowerCase();
+    if (mapping[t]) return mapping[t];
 
     // Fallbacks
     const typeStr = String(ratedType || '').toLowerCase();
@@ -242,147 +199,121 @@
           <p>Loading records...</p>
         </div>
       {:else}
-        {#if filteredCDRs.length === 0}
+        {#if cdrs.length === 0}
           <div class="empty-state">
             <p>No records found matching your search.</p>
           </div>
         {:else}
           <table>
             <thead>
-            <tr>
-              <th>ID</th>
-              <th>MSISDN</th>
-              <th>Destination</th>
-              <th>Usage</th>
-              <th>Type</th>
-              <th>Timestamp</th>
-              <th>Status</th>
-            </tr>
+              <tr>
+                <th>ID</th>
+                <th>MSISDN</th>
+                <th>Destination</th>
+                <th>Usage</th>
+                <th>Type</th>
+                <th>Timestamp</th>
+                <th>Status</th>
+              </tr>
             </thead>
             <tbody>
-            {#each filteredCDRs as cdr}
-              {@const typeInfo = getTypeInfo(cdr.service_id, cdr.type, cdr.destination, cdr.service_type)}
-              <tr>
-                <td><span class="id-badge">#{cdr.id}</span></td>
-                <td><span class="phone-num">{cdr.msisdn}</span></td>
-                <td><span class="phone-num">{cdr.destination || '—'}</span></td>
-                <td><span class="usage-text">{formatUsage(cdr.duration, cdr.service_id, cdr.type, cdr.destination, cdr.service_type)}</span></td>
-                <td>
-                    <div style="display:flex; align-items:center; gap:8px">
-                      <div class="icon-box {typeInfo.class}">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d={typeInfo.icon}/></svg>
-                      </div>
-                      <div style="display:flex; flex-direction:column">
-                        <span class="type-label">{typeInfo.label}</span>
-                        <span class="type-subtext">{cdr.type || 'System Record'}</span>
-                      </div>
+              {#each cdrs as cdr}
+                {@const typeInfo = getTypeInfo(cdr.serviceId, cdr.ratedType, cdr.dialB, cdr.serviceType)}
+                <tr transition:fade={{duration: 200}}>
+                  <td class="font-mono text-dim">#{cdr.id}</td>
+                  <td class="font-bold">{cdr.dialA}</td>
+                  <td class="text-dim">{cdr.dialB}</td>
+                  <td class="usage-cell">
+                    <span class="usage-value">{formatUsage(cdr.duration, typeInfo.label)}</span>
+                  </td>
+                  <td>
+                    <div class="badge {typeInfo.class}">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d={typeInfo.icon}/></svg>
+                      {cdr.ratedType || typeInfo.label}
                     </div>
-                </td>
-                <td class="text-muted">{new Date(cdr.timestamp).toLocaleString()}</td>
-                <td>
-                    <span class="badge {cdr.rated ? 'badge-admin' : 'badge-customer'}">
-                      {cdr.rated ? 'Rated' : 'Pending'}
+                  </td>
+                  <td class="text-dim text-sm">{formatDate(cdr.startTime)}</td>
+                  <td>
+                    <span class="status-indicator {cdr.ratedFlag ? 'status-rated' : 'status-pending'}">
+                      {cdr.ratedFlag ? 'Rated' : 'Pending'}
                     </span>
-                </td>
-              </tr>
-            {/each}
+                  </td>
+                </tr>
+              {/each}
             </tbody>
           </table>
+          
+          <div class="pagination">
+             <button disabled={page === 1} onclick={() => {page--; loadCDRs();}}>Prev</button>
+             <span>Page {page} of {Math.ceil(total / limit)}</span>
+             <button disabled={page * limit >= total} onclick={() => {page++; loadCDRs();}}>Next</button>
+             <span class="total-count">Total: {total} records</span>
+          </div>
         {/if}
-
-        <div class="pagination">
-          <div class="pagination-controls">
-            <button class="btn-page" onclick={prevPage} disabled={page === 0}>
-              Previous
-            </button>
-            
-            <div class="page-jump">
-              <span>Page</span>
-              <input type="number" bind:value={jumpPage} min="1" max={totalPages} class="input-jump" />
-              <span>of {totalPages}</span>
-              <button class="btn-go" onclick={goToPage}>Go</button>
-            </div>
-
-            <button class="btn-page" onclick={nextPage} disabled={(page + 1) * limit >= total}>
-              Next
-            </button>
-          </div>
-
-          <div class="pagination-settings">
-            <span>Rows per page:</span>
-            <select bind:value={limit} onchange={handleLimitChange} class="select-limit">
-              <option value="10">10</option>
-              <option value="25">25</option>
-              <option value="50">50</option>
-              <option value="100">100</option>
-            </select>
-            <span class="total-info">Total: {total} records</span>
-          </div>
-        </div>
       {/if}
     </div>
   </div>
 </div>
 
 <style>
-  .text-gradient { background: linear-gradient(135deg, var(--red), var(--red-light)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+  .container { max-width: 1200px; margin: 0 auto; padding: 2rem 1rem; }
+  .page-header { margin-bottom: 2.5rem; }
   .header-main { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; }
-
-  .header-actions { display: flex; gap: 0.75rem; align-items: center; }
-  .btn-secondary { display: flex; align-items: center; gap: 0.5rem; background: rgba(255, 255, 255, 0.05); color: white; border: 1px solid var(--border); padding: 0.8rem 1.2rem; border-radius: 12px; font-weight: 600; cursor: pointer; transition: all 0.3s; }
-  .btn-secondary:hover:not(:disabled) { background: rgba(255, 255, 255, 0.1); border-color: var(--red); }
-  .btn-secondary:disabled { opacity: 0.6; cursor: not-allowed; }
-
-  .btn-import { display: flex; align-items: center; gap: 0.5rem; background: var(--red); color: white; border: none; padding: 0.8rem 1.5rem; border-radius: 12px; font-weight: 600; cursor: pointer; transition: all 0.3s; box-shadow: 0 4px 15px rgba(224, 8, 0, 0.3); }
-  .btn-import:hover:not(:disabled) { background: var(--red-light); transform: translateY(-2px); box-shadow: 0 6px 20px rgba(224, 8, 0, 0.4); }
+  h1 { font-size: 2.5rem; font-weight: 800; letter-spacing: -0.02em; }
+  .text-gradient { background: linear-gradient(135deg, #FF3E00, #FF8A00); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  
+  .header-actions { display: flex; gap: 0.75rem; }
+  .btn-secondary { display: flex; align-items: center; gap: 0.5rem; padding: 0.6rem 1.25rem; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 12px; color: white; font-weight: 600; cursor: pointer; transition: all 0.2s; }
+  .btn-secondary:hover:not(:disabled) { background: rgba(255, 255, 255, 0.1); border-color: rgba(255, 255, 255, 0.2); transform: translateY(-1px); }
+  
+  .btn-import { display: flex; align-items: center; gap: 0.5rem; padding: 0.6rem 1.5rem; background: linear-gradient(135deg, #FF3E00, #FF8A00); border: none; border-radius: 12px; color: white; font-weight: 700; cursor: pointer; transition: all 0.2s; box-shadow: 0 4px 15px rgba(255, 62, 0, 0.3); }
+  .btn-import:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(255, 62, 0, 0.4); }
   .btn-import:disabled { opacity: 0.6; cursor: not-allowed; }
 
-  .mini-spinner { width: 16px; height: 16px; border: 2px solid rgba(255, 255, 255, 0.3); border-top-color: white; border-radius: 50%; animation: spin 0.8s linear infinite; }
-  .mini-spinner.color-red { border-top-color: var(--red); }
+  .search-bar { margin-bottom: 2rem; }
+  .input-group { position: relative; max-width: 500px; }
+  .input-group svg { position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); color: #666; }
+  .input-group input { width: 100%; padding: 0.8rem 1rem 0.8rem 3rem; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 14px; color: white; font-size: 1rem; transition: all 0.2s; }
+  .input-group input:focus { outline: none; border-color: #FF3E00; background: rgba(255, 255, 255, 0.08); box-shadow: 0 0 0 4px rgba(255, 62, 0, 0.1); }
 
-  .search-bar { margin-bottom: 2rem; max-width: 400px; }
-  .input-group { position: relative; display: flex; align-items: center; }
-  .input-group svg { position: absolute; left: 1rem; color: var(--text-muted); }
-  .input-group input { width: 100%; padding: 0.8rem 1rem 0.8rem 3rem; background: rgba(255, 255, 255, 0.05); border: 1px solid var(--border); border-radius: 12px; color: white; transition: all 0.3s; }
-  .input-group input:focus { outline: none; border-color: var(--red); box-shadow: 0 0 15px rgba(224, 8, 0, 0.2); }
+  .table-wrapper { background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 20px; overflow: hidden; backdrop-filter: blur(10px); }
+  table { width: 100%; border-collapse: collapse; text-align: left; }
+  th { padding: 1.25rem 1.5rem; background: rgba(255, 255, 255, 0.02); color: #888; font-weight: 600; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.05em; border-bottom: 1px solid rgba(255, 255, 255, 0.08); }
+  td { padding: 1.25rem 1.5rem; border-bottom: 1px solid rgba(255, 255, 255, 0.04); }
+  tr:hover td { background: rgba(255, 255, 255, 0.02); }
 
-  .id-badge { background: rgba(255, 255, 255, 0.05); padding: 0.2rem 0.5rem; border-radius: 6px; font-size: 0.8rem; color: var(--text-muted); }
-  .phone-num { font-family: 'JetBrains Mono', monospace; font-weight: 600; color: #3B82F6; }
-
-  .usage-text { font-family: 'JetBrains Mono', monospace; font-weight: 700; color: #F59E0B; }
-
-  .badge-secondary { border-left-color: #9CA3AF; color: #9CA3AF; background: rgba(156, 163, 175, 0.1); }
-
-  .icon-box { width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-  .icon-box svg { width: 18px; height: 18px; }
-  .icon-box.badge-voice { background: rgba(59, 130, 246, 0.1); color: #3B82F6; }
-  .icon-box.badge-data { background: rgba(34, 197, 94, 0.1); color: #22C55E; }
-  .icon-box.badge-sms { background: rgba(245, 158, 11, 0.1); color: #F59E0B; }
-  .icon-box.badge-gift { background: rgba(168, 85, 247, 0.15); color: #A855F7; border: 1px solid rgba(168, 85, 247, 0.3); }
-  .icon-box.badge-secondary { background: rgba(156, 163, 175, 0.1); color: #9CA3AF; }
-
-  .type-label { font-weight: 700; font-size: 0.85rem; color: #FFFFFF; }
-  .type-subtext { font-size: 0.65rem; color: var(--text-muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.02em; }
-
-  .loading-state, .empty-state { padding: 4rem; text-align: center; color: var(--text-muted); }
-  .spinner { width: 40px; height: 40px; border: 4px solid rgba(224, 8, 0, 0.1); border-top-color: var(--red); border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 1rem; }
-
-  @keyframes spin { to { transform: rotate(360deg); } }
-
-  .pagination { display: flex; flex-direction: column; align-items: center; gap: 1rem; padding: 1.5rem; border-top: 1px solid var(--border); background: rgba(255, 255, 255, 0.02); }
-  .pagination-controls { display: flex; align-items: center; gap: 1.5rem; }
-  .pagination-settings { display: flex; align-items: center; gap: 1rem; font-size: 0.85rem; color: var(--text-muted); }
+  .font-mono { font-family: 'JetBrains Mono', monospace; letter-spacing: -0.02em; }
+  .text-dim { color: #888; }
+  .text-sm { font-size: 0.9rem; }
+  .usage-value { font-weight: 700; color: #fff; }
   
-  .page-jump { display: flex; align-items: center; gap: 0.5rem; font-weight: 600; color: var(--text-muted); font-size: 0.9rem; }
-  .input-jump { width: 60px; padding: 0.3rem 0.5rem; background: rgba(255, 255, 255, 0.05); border: 1px solid var(--border); border-radius: 6px; color: white; text-align: center; }
-  .btn-go { background: var(--red); color: white; border: none; padding: 0.3rem 0.8rem; border-radius: 6px; font-weight: 600; cursor: pointer; transition: 0.2s; }
-  .btn-go:hover { background: var(--red-light); }
+  .badge { display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.35rem 0.75rem; border-radius: 8px; font-size: 0.8rem; font-weight: 600; }
+  .badge-voice { background: rgba(59, 130, 246, 0.15); color: #60A5FA; }
+  .badge-data { background: rgba(168, 85, 247, 0.15); color: #C084FC; }
+  .badge-sms { background: rgba(34, 197, 94, 0.15); color: #4ADE80; }
+  .badge-gift { background: rgba(245, 158, 11, 0.15); color: #FBBF24; }
+  .badge-secondary { background: rgba(255, 255, 255, 0.1); color: #aaa; }
 
-  .select-limit { background: rgba(255, 255, 255, 0.05); color: white; border: 1px solid var(--border); border-radius: 6px; padding: 0.2rem 0.5rem; outline: none; }
-  .select-limit:focus { border-color: var(--red); }
-  .total-info { margin-left: 1rem; font-style: italic; }
+  .status-indicator { display: inline-flex; align-items: center; gap: 0.4rem; font-size: 0.8rem; font-weight: 600; }
+  .status-indicator::before { content: ''; width: 6px; height: 6px; border-radius: 50%; }
+  .status-rated { color: #22C55E; }
+  .status-rated::before { background: #22C55E; box-shadow: 0 0 8px #22C55E; }
+  .status-pending { color: #F59E0B; }
+  .status-pending::before { background: #F59E0B; }
 
-  .btn-page { background: rgba(255, 255, 255, 0.05); color: white; border: 1px solid var(--border); padding: 0.5rem 1rem; border-radius: 8px; font-weight: 600; cursor: pointer; transition: all 0.2s; }
-  .btn-page:hover:not(:disabled) { background: rgba(255, 255, 255, 0.1); border-color: var(--red); }
-  .btn-page:disabled { opacity: 0.4; cursor: not-allowed; }
+  .pagination { display: flex; align-items: center; gap: 1rem; padding: 1.5rem; background: rgba(255, 255, 255, 0.02); border-top: 1px solid rgba(255, 255, 255, 0.08); }
+  .pagination button { padding: 0.5rem 1rem; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 8px; color: white; cursor: pointer; transition: all 0.2s; }
+  .pagination button:hover:not(:disabled) { background: rgba(255, 255, 255, 0.1); border-color: #FF3E00; }
+  .pagination button:disabled { opacity: 0.5; cursor: not-allowed; }
+  .total-count { margin-left: auto; color: #666; font-size: 0.9rem; }
+
+  .loading-state, .empty-state { padding: 4rem; text-align: center; color: #888; }
+  .spinner, .mini-spinner { border: 2px solid rgba(255, 255, 255, 0.1); border-top-color: #FF3E00; border-radius: 50%; animation: spin 0.8s linear infinite; }
+  .spinner { width: 30px; height: 30px; margin: 0 auto 1rem; }
+  .mini-spinner { width: 16px; height: 16px; }
+  .mini-spinner.color-red { border-top-color: #FF3E00; }
+  
+  @keyframes spin { to { transform: rotate(360deg); } }
+  @keyframes fade { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+  .animate-fade { animation: fade 0.4s ease forwards; }
 </style>
