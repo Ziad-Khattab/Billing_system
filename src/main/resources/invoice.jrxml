@@ -356,7 +356,7 @@
 				<pen lineWidth="0.0"/>
 			</element>
 			<element kind="staticText" x="28" y="188" width="40" height="28" forecolor="#FFFFFF" fontSize="18.0" bold="true" hTextAlign="Center" vTextAlign="Middle">
-				<text><![CDATA[EGP]]></text>
+				<text><![CDATA[E£]]></text>
 			</element>
 			<element kind="staticText" x="80" y="187" width="220" height="30" forecolor="#FF0000" fontSize="18.0" bold="true" vTextAlign="Middle">
 				<text><![CDATA[TOTAL DUE]]></text>
