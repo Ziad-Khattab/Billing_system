@@ -28,7 +28,7 @@
 	<nav class="navbar">
 		<div class="nav-inner container">
 			<a href="/" class="nav-brand" aria-label="Home">
-				<img src="/logo.png" alt="FMRZ" class="nav-logo" style="height: 40px;" />
+				<img src="/red-logo.png" alt="FMRZ" class="nav-logo" style="height: 40px;" />
 			</a>
 
 			<button

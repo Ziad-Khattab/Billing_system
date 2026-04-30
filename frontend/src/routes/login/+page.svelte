@@ -53,7 +53,7 @@
 <div class="login-page">
   <div class="login-card card-glass animate-fade">
     <div class="login-header">
-      <img src="/logo.png" alt="FMRZ" class="login-logo" />
+      <img src="/red-logo.png" alt="FMRZ" class="login-logo" />
       <h1>Welcome back</h1>
       <p>Sign in to your account</p>
     </div>

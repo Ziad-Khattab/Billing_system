@@ -56,7 +56,7 @@
 <div class="onboarding-page">
     <div class="onboarding-card card animate-fade">
         <div class="logo-header">
-            <img src="/logo.png" alt="FMRZ" class="fmrz-logo-small" />
+            <img src="/red-logo.png" alt="FMRZ" class="fmrz-logo-small" />
             <div class="header-text">
                 <h1>Service Activation</h1>
                 <p>Follow the steps to go live on the network</p>
