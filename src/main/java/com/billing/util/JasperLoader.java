@@ -38,7 +38,7 @@ public class JasperLoader {
     private static JasperReport loadAndCompile(String name) throws JRException {
         System.out.println("⏳ JasperLoader: Attempting to load " + name);
         
-        InputStream is = getResourceStream(name);
+        InputStream is = getResourceStream("/" + name);
         if (is == null) throw new JRException("Report template not found: " + name);
 
         try {
