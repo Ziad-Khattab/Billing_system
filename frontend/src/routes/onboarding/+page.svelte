@@ -56,7 +56,7 @@
 <div class="onboarding-page">
     <div class="onboarding-card card animate-fade">
         <div class="logo-header">
-            <img src="/eand_logo.svg" alt="e&" class="eand-logo-small" />
+            <img src="/logo.png" alt="FMRZ" class="eand-logo-small" />
             <div class="header-text">
                 <h1>Service Activation</h1>
                 <p>Follow the steps to go live on the network</p>

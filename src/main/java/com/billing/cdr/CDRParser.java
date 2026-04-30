@@ -102,11 +102,10 @@ public class CDRParser {
             logger.warn("Could not parse date from filename {}. Using fallback.", fileName);
         }
 
-        Connection conn = DB.getConnection();
-        conn.setAutoCommit(false);
-        Integer fileId = -1;
+        try (Connection conn = DB.getConnection()) {
+            conn.setAutoCommit(false);
+            Integer fileId = -1;
 
-        try {
             // Register file in database
             String createFile = "{ ? = call create_file_record(?) }";
             try (CallableStatement cs = conn.prepareCall(createFile)) {
@@ -116,121 +115,89 @@ public class CDRParser {
                 fileId = cs.getInt(1);
             }
 
-            String sql = "{ ? = call insert_cdr(?,?,?,?,?,?,?,?,?) }";
-            try (CallableStatement cs = conn.prepareCall(sql);
+            // Using SELECT for batching (more efficient for PostgreSQL function calls without OUT params)
+            String sql = "SELECT insert_cdr(?,?,?,?,?,?,?,?,?)";
+            try (java.sql.PreparedStatement ps = conn.prepareStatement(sql);
                  BufferedReader br = new BufferedReader(new FileReader(file))) {
 
                 String line;
                 boolean isHeader = true;
+                int batchCount = 0;
+                final int BATCH_SIZE = 1000;
+
                 while ((line = br.readLine()) != null) {
                     if (line.trim().isEmpty()) continue;
-                    
                     String[] p = line.split(",", -1);
                     
-                    // Skip header if present (common in 9-column files)
-                    if (isHeader && p[0].equalsIgnoreCase("file_id")) {
+                    if (isHeader && (p[0].equalsIgnoreCase("file_id") || p[0].equalsIgnoreCase("dial_a"))) {
                         isHeader = false;
                         continue;
                     }
                     isHeader = false;
 
-                    String dialA, dialB, timeStr;
-                    int serviceId, usage;
-                    double externalPiasters = 0;
-                    Timestamp ts;
+                    try {
+                        String dialA, dialB, timeStr;
+                        int serviceId, usage;
+                        double externalPiasters = 0;
+                        Timestamp ts;
 
-                    if (p.length >= 9) {
-                        // 9-Column Format: file_id, dial_a, dial_b, start_time, duration, service_id, hplmn, vplmn, external_charges
-                        // This is the standard format used by most network vendors.
-                        dialA = p[1].trim();
-                        dialB = p[2].trim();
-                        timeStr = p[3].trim(); 
-                        serviceId = Integer.parseInt(p[5].trim());
-                        
-                        double rawUsage = Double.parseDouble(p[4].trim());
-                        // Convert Bytes to MB for data services in 9-column format
-                        // Network vendors often report data in bytes, but we bill in MB increments.
-                        if ("data".equals(typeMap.get(serviceId))) {
-                            usage = (int) Math.ceil(rawUsage / (1024.0 * 1024.0));
+                        if (p.length >= 9) {
+                            dialA = p[1].trim();
+                            dialB = p[2].trim();
+                            timeStr = p[3].trim(); 
+                            serviceId = Integer.parseInt(p[5].trim());
+                            double rawUsage = Double.parseDouble(p[4].trim());
+                            if ("data".equals(typeMap.get(serviceId))) {
+                                usage = (int) Math.ceil(rawUsage / (1024.0 * 1024.0));
+                            } else {
+                                usage = (int) rawUsage;
+                            }
+                            externalPiasters = Double.parseDouble(p[8].trim()) * 100.0;
+                            ts = Timestamp.valueOf(timeStr);
+                        } else if (p.length >= 6) {
+                            dialA = p[0].trim();
+                            dialB = p[1].trim();
+                            serviceId = Integer.parseInt(p[2].trim());
+                            double rawUsage = Double.parseDouble(p[3].trim());
+                            if (serviceId == getServiceId("Data Pack")) {
+                                usage = (int) Math.ceil(rawUsage / (1024.0 * 1024.0));
+                            } else {
+                                usage = (int) rawUsage;
+                            }
+                            timeStr = p[4].trim();
+                            externalPiasters = Double.parseDouble(p[5].trim());
+                            ts = Timestamp.valueOf(fileDateStr + " " + timeStr);
                         } else {
-                            usage = (int) rawUsage;
+                            continue;
                         }
 
-                        externalPiasters = Double.parseDouble(p[8].trim()) * 100.0;
-                        ts = Timestamp.valueOf(timeStr);
-                    } else if (p.length >= 6) {
-                        // 6-Column Format: Dial A, Dial B, Service ID, Usage, Time, External charges
-                        dialA = p[0].trim();
-                        dialB = p[1].trim();
-                        serviceId = Integer.parseInt(p[2].trim());
-                        
-                        // Detect unit: 6-column data usage is usually in Bytes
-                        int dataId = getServiceId("Data Pack");
-                        double rawUsage = Double.parseDouble(p[3].trim());
-                        if (serviceId == dataId) {
-                            usage = (int) Math.ceil(rawUsage / (1024.0 * 1024.0)); // Convert Bytes to MB
-                        } else {
-                            usage = (int) rawUsage; // Voice is usually in seconds
+                        // Normalize
+                        if (dialA.startsWith("00")) dialA = dialA.substring(2);
+                        if (dialB.startsWith("00")) dialB = dialB.substring(2);
+
+                        // Set parameters for SELECT insert_cdr(...)
+                        ps.setInt(1, fileId);
+                        ps.setString(2, dialA);
+                        ps.setString(3, dialB);
+                        ps.setTimestamp(4, ts);
+                        ps.setInt(5, usage);
+                        ps.setInt(6, serviceId);
+                        ps.setNull(7, Types.VARCHAR);
+                        ps.setNull(8, Types.VARCHAR);
+                        ps.setBigDecimal(9, BigDecimal.valueOf(externalPiasters / 100.0));
+
+                        ps.addBatch();
+                        batchCount++;
+
+                        if (batchCount % BATCH_SIZE == 0) {
+                            ps.executeBatch();
+                            batchCount = 0;
                         }
-                        
-                        timeStr = p[4].trim(); // HH:MM:SS
-                        externalPiasters = Double.parseDouble(p[5].trim());
-
-                        ts = Timestamp.valueOf(fileDateStr + " " + timeStr);
-                    } else {
-                        continue; // Invalid format
-                    }
-
-                    // Normalize MSISDNs
-                    if (dialA.startsWith("00")) dialA = dialA.substring(2);
-                    if (dialB.startsWith("00")) dialB = dialB.substring(2);
-
-                    // Fetch dynamic configuration for smart correction
-                    int voiceId = getServiceId("Voice Pack");
-                    int dataId = getServiceId("Data Pack");
-                    int smsId = getServiceId("SMS Pack");
-                    
-                    String urlMarkers = DB.getProperty("cdr.url.markers");
-                    if (urlMarkers == null) urlMarkers = "://,.com,.net,.org,.gov";
-                    String[] markers = urlMarkers.split(",");
-
-                    // SMART CORRECTION: Detect "Data Leakage" where URLs are labeled as SMS
-                    if (serviceId == smsId && usage > 100) {
-                        String lowerDest = dialB.toLowerCase();
-                        boolean matches = false;
-                        for (String m : markers) if (lowerDest.contains(m.trim())) { matches = true; break; }
-                        if (matches) serviceId = dataId;
-                    }
-
-                    // SMART CORRECTION 2: Detect "SMS Leakage" where SMS are labeled as Data
-                    if (serviceId == dataId && usage == 1) {
-                        String lowerDest = dialB.toLowerCase();
-                        boolean isUrl = false;
-                        for (String m : markers) if (lowerDest.contains(m.trim())) { isUrl = true; break; }
-                        if (!isUrl) serviceId = smsId;
-                    }
-
-                    // Insert via SQL function (Database now handles rejections via rejected_cdr table)
-                    cs.registerOutParameter(1, Types.INTEGER);
-                    cs.setInt(2, fileId);
-                    cs.setString(3, dialA);
-                    cs.setString(4, dialB);
-                    cs.setTimestamp(5, ts);
-                    cs.setInt(6, usage);
-                    cs.setInt(7, serviceId);
-                    cs.setNull(8, Types.VARCHAR); // p_hplmn
-                    cs.setNull(9, Types.VARCHAR); // p_vplmn
-                    cs.setBigDecimal(10, BigDecimal.valueOf(externalPiasters / 100.0));
-
-                    cs.execute();
-                    int resultId = cs.getInt(1);
-                    if (resultId == 0) {
-                        // REJECTION LOGIC: If resultId is 0, the database rejected the CDR (e.g. suspended).
-                        // The database function 'insert_cdr' has already inserted this into 'rejected_cdr' table
-                        // for auditing, so we don't need to throw an exception here.
-                        logger.debug("CDR Rejected by DB (Logged in Audit): MSISDN {}", dialA);
+                    } catch (Exception e) {
+                        logger.warn("Skipping malformed row in {}: {}", file.getName(), e.getMessage());
                     }
                 }
+                if (batchCount > 0) ps.executeBatch();
             }
 
             // Mark file as parsed
@@ -239,13 +206,10 @@ public class CDRParser {
                 cs.setInt(1, fileId);
                 cs.execute();
             }
-
             conn.commit();
         } catch (Exception e) {
-            conn.rollback();
+            logger.error("FATAL ERROR in parseAndInsert for {}: {}", file.getName(), e.getMessage());
             throw e;
-        } finally {
-            conn.close();
         }
     }
 
