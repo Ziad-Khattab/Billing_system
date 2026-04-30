@@ -11,17 +11,22 @@
   let search = $state('');
   
   // Pagination
-  let page = $state(1);
+  let page = $state(0);
   let limit = $state(50);
   let total = $state(0);
+
+  const totalPages = $derived(Math.ceil(total / limit));
 
   const loadCDRs = async () => {
     loading = true;
     try {
-      const res = await fetch(`/api/cdr?page=${page}&limit=${limit}&search=${search}`);
-      const data = await res.json();
-      cdrs = data.records;
-      total = data.total;
+      const offset = page * limit;
+      const res = await fetch(`/api/admin/cdr?limit=${limit}&offset=${offset}&search=${search}`, { credentials: 'include' });
+      if (res.ok) {
+        const result = await res.json();
+        cdrs = result.data || [];
+        total = result.total || 0;
+      }
     } catch (err) {
       console.error(err);
     } finally {
@@ -38,9 +43,10 @@
     formData.append('file', file);
 
     try {
-      const res = await fetch('/api/cdr/upload', { method: 'POST', body: formData });
+      const res = await fetch('/api/admin/cdr-upload', { method: 'POST', body: formData, credentials: 'include' });
       if (res.ok) {
         showToast('CDR file uploaded and parsed successfully');
+        page = 0;
         await loadCDRs();
       } else {
         showToast('Failed to upload CDR file', 'error');
@@ -55,10 +61,11 @@
   const importCDRs = async () => {
     importing = true;
     try {
-      const res = await fetch('/api/cdr/import', { method: 'POST' });
+      const res = await fetch('/api/admin/cdr', { method: 'POST', credentials: 'include' });
       const data = await res.json();
       if (res.ok) {
-        showToast(`Processing complete! Rated: ${data.ratedCount}, Rejected: ${data.rejectedCount}`);
+        showToast(`Processing complete! ${data.message || 'Records imported'}`);
+        page = 0;
         await loadCDRs();
       } else {
         showToast(data.error || 'Import failed', 'error');
@@ -73,9 +80,10 @@
   const generateSamples = async () => {
     generating = true;
     try {
-      const res = await fetch('/api/cdr/generate', { method: 'POST' });
+      const res = await fetch('/api/admin/cdr-generate', { method: 'POST', credentials: 'include' });
       if (res.ok) {
-        showToast('100 Fresh CDR records generated in input folder');
+        showToast('100 Fresh CDR records generated successfully');
+        page = 0;
         await loadCDRs();
       }
     } catch (err) {
@@ -115,7 +123,6 @@
   };
 
   const getTypeInfo = (serviceId, ratedType, destination, serviceType) => {
-    // Standardized Mapping
     const mapping = {
       'voice': { label: 'Voice', class: 'badge-voice', icon: 'M12 18.5a6.5 6.5 0 1 0-7-7 1 1 0 0 1-1-1 1 1 0 0 1 1-1 8.5 8.5 0 1 1 9 9 1 1 0 0 1-1-1 1 1 0 0 1 1-1zM5.5 10.5A2.5 2.5 0 1 0 8 13a1 1 0 0 1 1 1 1 1 0 0 1-1 1 4.5 4.5 0 1 1 5-5 1 1 0 0 1 1 1 1 1 0 0 1-1 1z' },
       'data': { label: 'Data', class: 'badge-data', icon: 'M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5' },
@@ -125,20 +132,14 @@
     const t = String(serviceType || '').toLowerCase();
     if (mapping[t]) return mapping[t];
 
-    // Fallbacks
     const typeStr = String(ratedType || '').toLowerCase();
     if (typeStr.includes('gift') || typeStr.includes('welcome')) {
-      return { 
-        label: 'Reward', 
-        class: 'badge-gift', 
-        icon: 'M20 12v10H4V12M2 7h20v5H2zM12 22V7M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7zM12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z' 
-      };
+      return { label: 'Reward', class: 'badge-gift', icon: 'M20 12v10H4V12M2 7h20v5H2zM12 22V7M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7zM12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z' };
     }
 
     if (serviceId === 1 || typeStr.includes('voice')) return mapping.voice;
     if (serviceId === 2 || typeStr.includes('data')) return mapping.data;
     if (serviceId === 3 || typeStr.includes('sms')) return mapping.sms;
-    
     return { label: 'Service', class: 'badge-secondary', icon: 'M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z' };
   };
 
@@ -187,7 +188,7 @@
   <div class="search-bar animate-fade">
     <div class="input-group">
       <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
-      <input type="text" bind:value={search} placeholder="Search MSISDN or Destination..." />
+      <input type="text" bind:value={search} oninput={() => {page=0; loadCDRs();}} placeholder="Search MSISDN or Destination..." />
     </div>
   </div>
 
@@ -244,9 +245,9 @@
           </table>
           
           <div class="pagination">
-             <button disabled={page === 1} onclick={() => {page--; loadCDRs();}}>Prev</button>
-             <span>Page {page} of {Math.ceil(total / limit)}</span>
-             <button disabled={page * limit >= total} onclick={() => {page++; loadCDRs();}}>Next</button>
+             <button disabled={page === 0} onclick={() => {page--; loadCDRs();}}>Prev</button>
+             <span>Page {page + 1} of {totalPages || 1}</span>
+             <button disabled={(page + 1) * limit >= total} onclick={() => {page++; loadCDRs();}}>Next</button>
              <span class="total-count">Total: {total} records</span>
           </div>
         {/if}
@@ -261,58 +262,47 @@
   .header-main { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; }
   h1 { font-size: 2.5rem; font-weight: 800; letter-spacing: -0.02em; }
   .text-gradient { background: linear-gradient(135deg, #FF3E00, #FF8A00); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-  
   .header-actions { display: flex; gap: 0.75rem; }
   .btn-secondary { display: flex; align-items: center; gap: 0.5rem; padding: 0.6rem 1.25rem; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 12px; color: white; font-weight: 600; cursor: pointer; transition: all 0.2s; }
   .btn-secondary:hover:not(:disabled) { background: rgba(255, 255, 255, 0.1); border-color: rgba(255, 255, 255, 0.2); transform: translateY(-1px); }
-  
   .btn-import { display: flex; align-items: center; gap: 0.5rem; padding: 0.6rem 1.5rem; background: linear-gradient(135deg, #FF3E00, #FF8A00); border: none; border-radius: 12px; color: white; font-weight: 700; cursor: pointer; transition: all 0.2s; box-shadow: 0 4px 15px rgba(255, 62, 0, 0.3); }
   .btn-import:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(255, 62, 0, 0.4); }
   .btn-import:disabled { opacity: 0.6; cursor: not-allowed; }
-
   .search-bar { margin-bottom: 2rem; }
   .input-group { position: relative; max-width: 500px; }
   .input-group svg { position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); color: #666; }
   .input-group input { width: 100%; padding: 0.8rem 1rem 0.8rem 3rem; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 14px; color: white; font-size: 1rem; transition: all 0.2s; }
   .input-group input:focus { outline: none; border-color: #FF3E00; background: rgba(255, 255, 255, 0.08); box-shadow: 0 0 0 4px rgba(255, 62, 0, 0.1); }
-
   .table-wrapper { background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 20px; overflow: hidden; backdrop-filter: blur(10px); }
   table { width: 100%; border-collapse: collapse; text-align: left; }
   th { padding: 1.25rem 1.5rem; background: rgba(255, 255, 255, 0.02); color: #888; font-weight: 600; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.05em; border-bottom: 1px solid rgba(255, 255, 255, 0.08); }
   td { padding: 1.25rem 1.5rem; border-bottom: 1px solid rgba(255, 255, 255, 0.04); }
   tr:hover td { background: rgba(255, 255, 255, 0.02); }
-
   .font-mono { font-family: 'JetBrains Mono', monospace; letter-spacing: -0.02em; }
   .text-dim { color: #888; }
   .text-sm { font-size: 0.9rem; }
   .usage-value { font-weight: 700; color: #fff; }
-  
   .badge { display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.35rem 0.75rem; border-radius: 8px; font-size: 0.8rem; font-weight: 600; }
   .badge-voice { background: rgba(59, 130, 246, 0.15); color: #60A5FA; }
   .badge-data { background: rgba(168, 85, 247, 0.15); color: #C084FC; }
   .badge-sms { background: rgba(34, 197, 94, 0.15); color: #4ADE80; }
   .badge-gift { background: rgba(245, 158, 11, 0.15); color: #FBBF24; }
   .badge-secondary { background: rgba(255, 255, 255, 0.1); color: #aaa; }
-
   .status-indicator { display: inline-flex; align-items: center; gap: 0.4rem; font-size: 0.8rem; font-weight: 600; }
   .status-indicator::before { content: ''; width: 6px; height: 6px; border-radius: 50%; }
   .status-rated { color: #22C55E; }
   .status-rated::before { background: #22C55E; box-shadow: 0 0 8px #22C55E; }
   .status-pending { color: #F59E0B; }
   .status-pending::before { background: #F59E0B; }
-
   .pagination { display: flex; align-items: center; gap: 1rem; padding: 1.5rem; background: rgba(255, 255, 255, 0.02); border-top: 1px solid rgba(255, 255, 255, 0.08); }
   .pagination button { padding: 0.5rem 1rem; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 8px; color: white; cursor: pointer; transition: all 0.2s; }
   .pagination button:hover:not(:disabled) { background: rgba(255, 255, 255, 0.1); border-color: #FF3E00; }
   .pagination button:disabled { opacity: 0.5; cursor: not-allowed; }
   .total-count { margin-left: auto; color: #666; font-size: 0.9rem; }
-
   .loading-state, .empty-state { padding: 4rem; text-align: center; color: #888; }
   .spinner, .mini-spinner { border: 2px solid rgba(255, 255, 255, 0.1); border-top-color: #FF3E00; border-radius: 50%; animation: spin 0.8s linear infinite; }
   .spinner { width: 30px; height: 30px; margin: 0 auto 1rem; }
   .mini-spinner { width: 16px; height: 16px; }
-  .mini-spinner.color-red { border-top-color: #FF3E00; }
-  
   @keyframes spin { to { transform: rotate(360deg); } }
   @keyframes fade { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
   .animate-fade { animation: fade 0.4s ease forwards; }
