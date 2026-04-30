@@ -93,23 +93,18 @@
     }
   };
 
-  const formatDate = (ts) => {
-    if (!ts) return '—';
-    return new Date(ts).toLocaleString();
-  };
-
   // Smart Formatter: Logic updated to use the "Gold Standard" (Bytes/Seconds)
   const formatUsage = (value, type) => {
     if (!value) return '0';
     const t = String(type || '').toLowerCase();
     
-    if (t === 'voice' || t.includes('call')) {
+    if (t === 'voice' || t.includes('call') || t.includes('min')) {
       // Value is in Seconds
       if (value >= 60) return (value / 60).toFixed(1) + ' min';
       return value + ' sec';
     }
 
-    if (t === 'data' || t.includes('internet')) {
+    if (t === 'data' || t.includes('internet') || t.includes('gb') || t.includes('mb')) {
       // Value is in Bytes
       if (value >= 1073741824) return (value / 1073741824).toFixed(2) + ' GB';
       if (value >= 1048576) return (value / 1048576).toFixed(1) + ' MB';
@@ -141,6 +136,11 @@
     if (serviceId === 2 || typeStr.includes('data')) return mapping.data;
     if (serviceId === 3 || typeStr.includes('sms')) return mapping.sms;
     return { label: 'Service', class: 'badge-secondary', icon: 'M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z' };
+  };
+
+  const formatDate = (ts) => {
+    if (!ts) return '—';
+    return new Date(ts).toLocaleString();
   };
 
   $effect(() => { loadCDRs(); });
@@ -219,24 +219,24 @@
             </thead>
             <tbody>
               {#each cdrs as cdr}
-                {@const typeInfo = getTypeInfo(cdr.serviceId, cdr.ratedType, cdr.dialB, cdr.serviceType)}
+                {@const typeInfo = getTypeInfo(cdr.service_id, cdr.type, cdr.destination, cdr.service_type)}
                 <tr transition:fade={{duration: 200}}>
                   <td class="font-mono text-dim">#{cdr.id}</td>
-                  <td class="font-bold">{cdr.dialA}</td>
-                  <td class="text-dim">{cdr.dialB}</td>
+                  <td class="font-bold">{cdr.msisdn}</td>
+                  <td class="text-dim">{cdr.destination}</td>
                   <td class="usage-cell">
                     <span class="usage-value">{formatUsage(cdr.duration, typeInfo.label)}</span>
                   </td>
                   <td>
                     <div class="badge {typeInfo.class}">
                       <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d={typeInfo.icon}/></svg>
-                      {cdr.ratedType || typeInfo.label}
+                      {cdr.type || typeInfo.label}
                     </div>
                   </td>
-                  <td class="text-dim text-sm">{formatDate(cdr.startTime)}</td>
+                  <td class="text-dim text-sm">{formatDate(cdr.timestamp)}</td>
                   <td>
-                    <span class="status-indicator {cdr.ratedFlag ? 'status-rated' : 'status-pending'}">
-                      {cdr.ratedFlag ? 'Rated' : 'Pending'}
+                    <span class="status-indicator {cdr.rated ? 'status-rated' : 'status-pending'}">
+                      {cdr.rated ? 'Rated' : 'Pending'}
                     </span>
                   </td>
                 </tr>
