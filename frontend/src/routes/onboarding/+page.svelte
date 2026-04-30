@@ -56,7 +56,7 @@
 <div class="onboarding-page">
     <div class="onboarding-card card animate-fade">
         <div class="logo-header">
-            <img src="/logo.png" alt="FMRZ" class="eand-logo-small" />
+            <img src="/logo.png" alt="FMRZ" class="fmrz-logo-small" />
             <div class="header-text">
                 <h1>Service Activation</h1>
                 <p>Follow the steps to go live on the network</p>
@@ -179,7 +179,7 @@
     }
 
     .logo-header { display: flex; align-items: center; gap: 1.5rem; margin-bottom: 2.5rem; }
-    .eand-logo-small { height: 44px; width: auto; opacity: 1; filter: drop-shadow(0 0 8px rgba(255,255,255,0.1)); }
+    .fmrz-logo-small { height: 44px; width: auto; opacity: 1; filter: drop-shadow(0 0 8px rgba(255,255,255,0.1)); }
     .header-text h1 { font-size: 1.5rem; font-weight: 800; margin: 0; letter-spacing: -0.02em; }
     .header-text p { font-size: 0.9rem; color: var(--text-muted); margin: 0; }
 
