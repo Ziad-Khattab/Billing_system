@@ -17,8 +17,14 @@ public class DebugJasper {
         }
         
         try (FileInputStream is = new FileInputStream(f)) {
-            JasperCompileManager.compileReport(is);
-            System.out.println("✅ SUCCESS: Report compiled successfully!");
+            byte[] bytes = is.readAllBytes();
+            String content = new String(bytes, java.nio.charset.StandardCharsets.UTF_8);
+            System.out.println("📜 FILE CONTENT START:\n" + content + "\n📜 FILE CONTENT END");
+            
+            try (java.io.ByteArrayInputStream bais = new java.io.ByteArrayInputStream(bytes)) {
+                JasperCompileManager.compileReport(bais);
+                System.out.println("✅ SUCCESS: Report compiled successfully!");
+            }
         } catch (Exception e) {
             System.err.println("❌ FAILED: Compilation failed!");
             e.printStackTrace();
