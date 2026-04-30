@@ -94,9 +94,9 @@
   };
 
   // Smart Formatter: Logic updated to use the "Gold Standard" (Bytes/Seconds)
-  const formatUsage = (value, type) => {
+  const formatUsage = (value, serviceType) => {
     if (!value) return '0';
-    const t = String(type || '').toLowerCase();
+    const t = String(serviceType || '').toLowerCase();
     
     if (t === 'voice' || t.includes('call') || t.includes('min')) {
       // Value is in Seconds
@@ -225,12 +225,15 @@
                   <td class="font-bold">{cdr.msisdn}</td>
                   <td class="text-dim">{cdr.destination}</td>
                   <td class="usage-cell">
-                    <span class="usage-value">{formatUsage(cdr.duration, typeInfo.label)}</span>
+                    <span class="usage-value">{formatUsage(cdr.duration, cdr.service_type)}</span>
                   </td>
                   <td>
                     <div class="badge {typeInfo.class}">
                       <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d={typeInfo.icon}/></svg>
                       {cdr.type || typeInfo.label}
+                      {#if (cdr.type || '').toLowerCase().includes('gift') || (cdr.type || '').toLowerCase().includes('welcome')}
+                        <small style="opacity: 0.7; margin-left: 4px;">({cdr.service_type})</small>
+                      {/if}
                     </div>
                   </td>
                   <td class="text-dim text-sm">{formatDate(cdr.timestamp)}</td>

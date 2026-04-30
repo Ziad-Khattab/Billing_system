@@ -269,7 +269,7 @@ CREATE OR REPLACE FUNCTION get_cdr_usage_amount(
 RETURNS BIGINT AS $$
 BEGIN
 RETURN CASE p_service_type
-           WHEN 'voice' THEN CEIL(p_duration / 60.0)  -- convert seconds to minutes, round up
+           WHEN 'voice' THEN p_duration
            WHEN 'data'  THEN p_duration
            WHEN 'sms'   THEN 1
            WHEN 'free_units' THEN p_duration
@@ -2483,16 +2483,16 @@ VALUES
 INSERT INTO service_package (name, type, amount, priority, price, is_roaming, description)
 VALUES
     -- Group 1: Domestic Standard Packs
-    ('Voice Pack',         'voice',      2000, 2,  75,   FALSE, '2000 local minutes per month'),
-    ('Data Pack',          'data',      10000, 2,  150,  FALSE, '10GB data per month'),
+    ('Voice Pack',         'voice',      120000, 2,  75,   FALSE, '2000 local minutes per month'),
+    ('Data Pack',          'data',      10737418240, 2,  150,  FALSE, '10GB data per month'),
     ('SMS Pack',           'sms',         500, 2,  25,   FALSE, '500 SMS per month'),
     
     -- Group 2: The Welcome Experience (High Priority)
-    ('🎁 Welcome Gift',    'free_units', 10000, 1,  0,    FALSE, '10GB free data for new customers'),
+    ('🎁 Welcome Gift',    'free_units', 10737418240, 1,  0,    FALSE, '10GB free data for new customers'),
     
     -- Group 3: Global Roaming Addons
-    ('Roaming Voice Pack', 'voice',       100, 2, 250,   TRUE,  '100 roaming minutes'),
-    ('Roaming Data Pack',  'data',       2000, 2, 500,   TRUE,  '2GB roaming data'),
+    ('Roaming Voice Pack', 'voice',       6000, 2, 250,   TRUE,  '100 roaming minutes'),
+    ('Roaming Data Pack',  'data',       2147483648, 2, 500,   TRUE,  '2GB roaming data'),
     ('Roaming SMS Pack',   'sms',         100, 2, 100,   TRUE,  '100 roaming SMS');
 
 ------------------------------------------------------------
