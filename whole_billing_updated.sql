@@ -72,7 +72,7 @@ CREATE TABLE service_package (
                                  id       SERIAL PRIMARY KEY,
                                  name     VARCHAR(255) NOT NULL,
                                  type     service_type  NOT NULL,  -- 'voice', 'data', 'sms', etc.
-                                 amount   NUMERIC(12,4) NOT NULL, -- quota amount (minutes / MB / count)
+                                 amount   BIGINT NOT NULL, -- quota amount (seconds / bytes / count)
                                  priority INTEGER NOT NULL DEFAULT 1, -- for consumption order (lower = consumed first)
                                  price    NUMERIC(12,2),
                                  is_roaming BOOLEAN NOT NULL DEFAULT FALSE,
@@ -114,8 +114,8 @@ CREATE TABLE contract_consumption (
                                       starting_date       DATE NOT NULL,
                                       ending_date         DATE NOT NULL,
 
-                                      consumed            NUMERIC(12,4) NOT NULL DEFAULT 0,
-                                      quota_limit         NUMERIC(12,4) NOT NULL DEFAULT 0,
+                                      consumed            BIGINT NOT NULL DEFAULT 0,
+                                      quota_limit         BIGINT NOT NULL DEFAULT 0,
                                       is_billed           BOOLEAN NOT NULL DEFAULT FALSE,
 
                                       PRIMARY KEY (contract_id, service_package_id, rateplan_id, starting_date, ending_date)
@@ -129,10 +129,9 @@ CREATE TABLE ror_contract (
                               contract_id INTEGER NOT NULL REFERENCES contract(id),
                               rateplan_id INTEGER NOT NULL REFERENCES rateplan(id),
                               starting_date DATE NOT NULL DEFAULT DATE_TRUNC('month', CURRENT_DATE)::DATE,
-                              data        BIGINT DEFAULT 0,
-                              voice       NUMERIC(12,2) DEFAULT 0,
+                              voice       BIGINT DEFAULT 0,
                               sms         BIGINT DEFAULT 0,
-                              roaming_voice NUMERIC(12,2) DEFAULT 0.00,
+                              roaming_voice BIGINT DEFAULT 0,
                               roaming_data BIGINT DEFAULT 0,
                               roaming_sms  BIGINT DEFAULT 0,
                               PRIMARY KEY (contract_id, rateplan_id, starting_date)
@@ -152,9 +151,9 @@ CREATE TABLE bill (
                       billing_date         DATE NOT NULL,
                       recurring_fees       NUMERIC(12,2) NOT NULL DEFAULT 0,
                       one_time_fees        NUMERIC(12,2) NOT NULL DEFAULT 0,
-                      voice_usage          INTEGER       NOT NULL DEFAULT 0,  -- minutes
-                      data_usage           INTEGER       NOT NULL DEFAULT 0,  -- MB
-                      sms_usage            INTEGER       NOT NULL DEFAULT 0,  -- count
+                      voice_usage          BIGINT       NOT NULL DEFAULT 0,  -- seconds
+                      data_usage           BIGINT       NOT NULL DEFAULT 0,  -- bytes
+                      sms_usage            BIGINT       NOT NULL DEFAULT 0,  -- count
                       ROR_charge           NUMERIC(12,2) NOT NULL DEFAULT 0,
                       overage_charge       NUMERIC(12,2) NOT NULL DEFAULT 0,
                       roaming_charge       NUMERIC(12,2) NOT NULL DEFAULT 0,
@@ -192,7 +191,7 @@ CREATE TABLE rejected_cdr (
     dial_a           VARCHAR(20),
     dial_b           VARCHAR(20),
     start_time       TIMESTAMP,
-    duration         INTEGER,
+    duration         BIGINT,
     service_id       INTEGER,
     rejection_reason VARCHAR(255),
     rejected_at      TIMESTAMP DEFAULT CURRENT_TIMESTAMP
@@ -267,7 +266,7 @@ CREATE OR REPLACE FUNCTION get_cdr_usage_amount(
     p_duration     BIGINT,
     p_service_type service_type
 )
-RETURNS NUMERIC AS $$
+RETURNS BIGINT AS $$
 BEGIN
 RETURN CASE p_service_type
            WHEN 'voice' THEN CEIL(p_duration / 60.0)  -- convert seconds to minutes, round up
@@ -513,9 +512,9 @@ AS $$
      v_contract RECORD;
      v_service_type VARCHAR;
      v_bundle RECORD;
-     v_remaining NUMERIC;
-     v_deduct NUMERIC;
-     v_available NUMERIC;
+     v_remaining BIGINT;
+     v_deduct BIGINT;
+     v_available BIGINT;
      v_ror_rate NUMERIC;
      v_ror_rate_v NUMERIC;
      v_ror_rate_d NUMERIC;
@@ -672,9 +671,9 @@ AS $$
     DECLARE
         v_billing_period_end DATE;
         v_recurring_fees NUMERIC(12,2);
-        v_voice_usage INTEGER;
-        v_data_usage INTEGER;
-        v_sms_usage INTEGER;
+        v_voice_usage BIGINT;
+        v_data_usage BIGINT;
+        v_sms_usage BIGINT;
         v_overage_charge NUMERIC(12,2);
         v_roaming_charge NUMERIC(12,2);
         v_promo_discount NUMERIC(12,2) := 0;
@@ -1778,11 +1777,11 @@ END CASE;
 END;
 END LOOP;
 
-        -- Excess units × old ROR rates
+        -- Excess units × old ROR rates (Adjust for raw units: Seconds -> Mins, Bytes -> GB)
         v_prorated_charge :=
-            (v_voice_overage * COALESCE(v_old_ror_voice, 0)) +
-            (v_data_overage  * COALESCE(v_old_ror_data,  0)) +
-            (v_sms_overage   * COALESCE(v_old_ror_sms,   0));
+            ( (v_voice_overage / 60.0) * COALESCE(v_old_ror_voice, 0) ) +
+            ( (v_data_overage / 1073741824.0) * COALESCE(v_old_ror_data,  0) ) +
+            ( (v_sms_overage)   * COALESCE(v_old_ror_sms,   0) );
 
         v_taxes := ROUND(0.10 * (v_prorated_recurring + v_prorated_charge), 2);
         v_total := v_prorated_recurring + v_prorated_charge + v_taxes;
@@ -3066,8 +3065,8 @@ CREATE OR REPLACE FUNCTION get_bill_usage_breakdown(p_bill_id INTEGER)
 RETURNS TABLE (
     service_type      TEXT,
     category_label    TEXT,
-    quota             INTEGER,
-    consumed          INTEGER,
+    quota             BIGINT,
+    consumed          BIGINT,
     unit_rate         NUMERIC(12,4),
     line_total        NUMERIC(12,2),
     is_roaming        BOOLEAN,
@@ -3088,8 +3087,8 @@ BEGIN
     SELECT 
         sp.type::TEXT AS service_type,
         sp.name::TEXT AS category_label,
-        cc.quota_limit::INTEGER AS quota,
-        cc.consumed::INTEGER AS consumed,
+        cc.quota_limit::BIGINT AS quota,
+        cc.consumed::BIGINT AS consumed,
         0::NUMERIC(12,4) AS unit_rate,
         0::NUMERIC(12,2) AS line_total,
         sp.is_roaming,
@@ -3109,8 +3108,8 @@ BEGIN
     SELECT 
         'voice'::TEXT AS service_type,
         'Overage - Voice'::TEXT AS category_label,
-        NULL::INTEGER AS quota,
-        rc.voice::INTEGER AS consumed,
+        NULL::BIGINT AS quota,
+        CEIL(rc.voice / 60.0)::BIGINT AS consumed,
         rp.ror_voice AS unit_rate,
         ROUND((rc.voice * rp.ror_voice)::NUMERIC, 2) AS line_total,
         FALSE AS is_roaming,
@@ -3126,8 +3125,8 @@ BEGIN
     SELECT 
         'data'::TEXT AS service_type,
         'Overage - Data'::TEXT AS category_label,
-        NULL::INTEGER, 
-        (rc.data / 1024 / 1024)::INTEGER, -- Show as MB in consumed
+        NULL::BIGINT, 
+        (rc.data / 1024 / 1024)::BIGINT, -- Show as MB in consumed
         rp.ror_data,
         ROUND((rc.data / 1073741824.0 * rp.ror_data)::NUMERIC, 2), -- Convert Bytes to GB for pricing
         FALSE, FALSE,
@@ -3140,7 +3139,7 @@ BEGIN
     SELECT 
         'voice'::TEXT AS service_type,
         'Roaming Overage - Voice'::TEXT AS category_label,
-        NULL::INTEGER, rc.roaming_voice::INTEGER, rp.ror_roaming_voice,
+        NULL::BIGINT, CEIL(rc.roaming_voice / 60.0)::BIGINT, rp.ror_roaming_voice,
         ROUND((rc.roaming_voice * rp.ror_roaming_voice)::NUMERIC, 2),
         TRUE, FALSE, 'Roaming overage minutes'::TEXT
     FROM ror_contract rc JOIN rateplan rp ON rc.rateplan_id = rp.id
@@ -3150,7 +3149,7 @@ BEGIN
     SELECT 
         'data'::TEXT AS service_type,
         'Roaming Overage - Data'::TEXT AS category_label,
-        NULL::INTEGER, (rc.roaming_data / 1024 / 1024)::INTEGER, rp.ror_roaming_data,
+        NULL::BIGINT, (rc.roaming_data / 1024 / 1024)::BIGINT, rp.ror_roaming_data,
         ROUND((rc.roaming_data / 1073741824.0 * rp.ror_roaming_data)::NUMERIC, 2),
         TRUE, FALSE, 'Roaming overage data (MB)'::TEXT
     FROM ror_contract rc JOIN rateplan rp ON rc.rateplan_id = rp.id
@@ -3160,7 +3159,7 @@ BEGIN
     SELECT 
         'sms'::TEXT AS service_type,
         'Overage - SMS'::TEXT AS category_label,
-        NULL::INTEGER, rc.sms::INTEGER, rp.ror_sms,
+        NULL::BIGINT, rc.sms::BIGINT, rp.ror_sms,
         ROUND((rc.sms * rp.ror_sms)::NUMERIC, 2), FALSE, FALSE,
         'Overage SMS beyond bundle allowance'::TEXT
     FROM ror_contract rc JOIN rateplan rp ON rc.rateplan_id = rp.id
