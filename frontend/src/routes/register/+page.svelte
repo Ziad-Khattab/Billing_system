@@ -52,7 +52,7 @@
   }
 </script>
 
-<svelte:head><title>Join e& — Registration</title></svelte:head>
+<svelte:head><title>Join FMRZ — Registration</title></svelte:head>
 
 <div class="register-page">
   <div class="register-card card animate-fade">
@@ -113,7 +113,7 @@
       <button type="submit" class="btn btn-primary"
               style="width: 100%; margin-top: 1rem; height: 50px; font-size: 1.1rem;"
               disabled={loading}>
-        {loading ? 'Finalizing Profile...' : 'Create e& Account'}
+        {loading ? 'Finalizing Profile...' : 'Create FMRZ Account'}
       </button>
     </form>
 
