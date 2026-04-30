@@ -1,8 +1,11 @@
-# 📱 Telecom Billing System
+# 📱 FMRZ Telecom Billing System v2.0
 
 <p align="center">
   <a href="#">
-    <img src="https://img.shields.io/badge/Version-2.0-blueviolet?style=for-the-badge&logo=version" alt="Version">
+    <img src="https://img.shields.io/badge/Status-Production%20Ready-brightgreen?style=for-the-badge" alt="Status">
+  </a>
+  <a href="#">
+    <img src="https://img.shields.io/badge/Performance-1000_CDRs/Batch-blue?style=for-the-badge&logo=rocket" alt="Performance">
   </a>
   <a href="#">
     <img src="https://img.shields.io/badge/Java-21-ED8B00?style=for-the-badge&logo=openjdk" alt="Java">
@@ -10,68 +13,63 @@
   <a href="#">
     <img src="https://img.shields.io/badge/SvelteKit-5.x-FF3E00?style=for-the-badge&logo=svelte" alt="SvelteKit">
   </a>
-  <a href="#">
-    <img src="https://img.shields.io/badge/NeonDB-Cloud-9B59B6?style=for-the-badge&logo=cloud" alt="NeonDB">
-  </a>
-  <a href="#">
-    <img src="https://img.shields.io/badge/Status-Production%20Ready-brightgreen?style=for-the-badge" alt="Status">
-  </a>
 </p>
 
-> A modular, production-ready Telecom Billing System built with Java 21 (Jakarta EE 11) backend and SvelteKit 5.x reactive frontend. Features real-time billing, CDR processing, PDF invoicing, and comprehensive admin controls.
+> [!IMPORTANT]
+> **Carrier-Grade Billing**: A high-performance, modular telecommunications billing engine. Featuring **JDBC Batch Ingestion**, **Triple-Lane Usage Auditing**, and **Automated 14% VAT Financial Settlement**.
 
 ---
 
-## 📋 Table of Contents
+## 🚀 High-Performance Highlights
 
-- [Architecture Stack](#-architecture-stack)
-- [Deployment](#-deployment)
-- [Key Features](#-key-features)
-- [Quick Start](#-quick-start)
-- [Technical Stack](#-technical-stack)
-- [Database Schema](#-database-schema)
-- [API Reference](#-api-reference)
-- [Security](#-security)
-- [Roadmap](#-roadmap)
+### ⚡ Batch Ingestion Engine
+Our new **JDBC Batch Parser** handles high-density CDR volumes by grouping **1,000 records** per database transmission. This eliminates network latency bottlenecks and allows for near-instant rating of massive usage files.
+
+### 📊 Triple-Lane Usage Auditing
+The Admin Dashboard features a revolutionary **Triple-Lane Grid** (Voice | Data | SMS).
+*   **Visual Scannability**: Each service type has dedicated micro-icon lanes.
+*   **Total Transparency**: The "Total (Inc. Tax)" column explicitly confirms that all 14% Government VAT and overages are calculated.
+
+### 🛡️ Graceful Rejection Audit
+Usage records for suspended or invalid accounts are no longer simply "lost." The system automatically routes them to the **`rejected_cdr`** audit log, allowing administrators to track attempted usage and potential revenue leaks.
+
+### 🔄 Billing Cycle Aggregation
+The **"Run Billing Cycle Now"** button triggers the `generate_all_bills()` stored procedure which:
+1. Expires add-ons from the previous period (`expire_addons()`)
+2. Iterates through all active contracts
+3. Aggregates usage from `contract_consumption` (Voice/Data/SMS as BIGINT)
+4. Calculates overage charges from `ror_contract` table
+5. Applies **14% VAT** in the stored procedure
+6. Creates bill records with **NUMERIC(12,2)** precision
 
 ---
 
 ## 🏗️ Architecture Stack
 
-```
-┌────────────────────────────────────────────────────────────────┐
-│                    SYSTEM ARCHITECTURE                         │
-├────────────────────────────────────────────────────────────────┤
-│                                                                │
-│   ┌──────────┐     ┌──────────────┐     ┌───────────┐         │
-│   │ SvelteKit│ ←── │  Tomcat 11   │ ←── │  Java 21  │         │
-│   │   5.x    │     │ Embedded     │     │  Backend  │         │
-│   └──────────┘     └──────────────┘     └───────────┘         │
-│        ↓                                        ↓              │
-│   ┌──────────────────────────────────────────────────┐        │
-│   │             HikariCP Connection Pool              │        │
-│   └──────────────────────────────────────────────────┘        │
-│        ↓                                                     │
-│   ┌──────────────────────────────────────────────────┐        │
-│   │                  NeonDB Cloud                     │        │
-│   └──────────────────────────────────────────────────┘        │
-│                                                                │
-└────────────────────────────────────────────────────────────────┘
+```mermaid
+graph LR
+    subgraph Frontend
+    A[SvelteKit 5.x] -->|Reactive UI| B[Tailwind CSS 4]
+    end
+    subgraph Backend
+    C[Java 21 / Jakarta EE] -->|Embedded| D[Tomcat 11]
+    D -->|HikariCP| E[PostgreSQL / NeonDB]
+    end
+    subgraph Engines
+    F[CDR Batch Parser] --> E
+    G[Jasper 7 Engine] -->|PDF| H[Invoices]
+    end
 ```
 
 ### Layer Details
 
 | Layer | Technology | Version | Purpose |
 |:------:|:----------|:--------:|:--------|
-| 💻 **Backend** | Java | 21 | Core language |
-| 🌐 **Framework** | Jakarta EE | 11 | Enterprise APIs |
-| 🖥️ **Server** | Tomcat | 11.0.21 | Embedded servlet |
-| 🗄️ **Database** | NeonDB | 3.x | Cloud PostgreSQL |
-| 🔄 **Pool** | HikariCP | 6.2.1 | Connection pooling |
-| 📄 **JSON** | Jackson | 2.17.0 | JSON processing |
-| 📊 **Reports** | JasperReports | 7.0.1 | PDF invoices |
-| 🎨 **Frontend** | SvelteKit | 5.x | Reactive UI |
-| ✨ **Styling** | Tailwind CSS | 4.0.0 | Dark mode UI |
+| 💻 **Backend** | Java | 21 | High-concurrency core |
+| 🗄️ **Database** | NeonDB | Cloud | Scalable PostgreSQL storage |
+| 🔄 **Pool** | HikariCP | 6.2.1 | Ultra-fast connection management |
+| 📊 **Reports** | JasperReports | 7.0.1 | Pixel-perfect PDF invoicing |
+| 🎨 **Frontend** | SvelteKit | 5.x | Modern Reactive UI |
 
 ---
 
@@ -154,7 +152,7 @@ RUN mvn package -DskipTests -B
 FROM eclipse-temurin:21-jre-jammy
 WORKDIR /app
 
-# Security: Run as non-root user
+# Security: Run as non-root user (Container Security Law)
 RUN addgroup --system javauser && adduser --system --ingroup javauser javauser
 
 # Install curl for health checks
@@ -171,7 +169,7 @@ COPY --from=build /build/src/main/resources/invoice.jrxml .
 COPY --from=build /build/src/main/resources/logo.svg .
 COPY --from=build /build/src/main/resources/Pictures ./Pictures
 
-# Set ownership
+# Set ownership (javauser:javauser for all volumes)
 RUN chown -R javauser:javauser /app
 
 # Switch to non-root user
@@ -187,6 +185,11 @@ HEALTHCHECK --interval=30s --timeout=10s --start-period=40s --retries=3 \
 # Run command
 ENTRYPOINT ["java", "-Xmx1g", "-Djava.awt.headless=true", "-cp", "app.jar:lib/*", "com.billing.Main"]
 ```
+
+**Security & Permission Guardrails**:
+- Container volumes owned by `javauser:javauser`
+- Sensitive DB credentials read from **Environment Variables** (never hardcoded)
+- Non-root execution enforced
 
 ---
 
@@ -220,11 +223,12 @@ ENTRYPOINT ["java", "-Xmx1g", "-Djava.awt.headless=true", "-cp", "app.jar:lib/*"
 
 | Feature | Description |
 |:--------|:------------|
-| 🗂️ **CDR Engine** | Java CSV parser for call records |
+| 🗂️ **CDR Engine** | Java CSV parser with JDBC Batching (1,000/batch) |
 | 🧪 **CDR Generator** | Test data generation |
-| 📄 **Jasper 7** | PDF with element-kind schema |
-| 🤖 **Automation** | Server-side billing (14% tax) |
+| 📄 **JasperReports 7** | PDF with strict XML schema (element-kind) |
+| 🤖 **Financial Engine** | Database-first: 14% VAT in `generate_bill()` stored procedure |
 | ❤️ **Health** | Railway-compatible `/health` endpoint |
+| 📊 **Rejection Audit** | `rejected_cdr` table for failed/suspended CDRs |
 
 ---
 
@@ -419,6 +423,31 @@ SELECT get_contract_addons(1);
 | 🎨 **Frontend** | ✅ | State fixes |
 | 💳 **Billing** | ✅ | Idempotent upsert |
 | 🚂 **Railway** | ✅ | Auto-deploy ready |
+
+---
+
+## 📊 Reporting Engine
+
+### JasperReports 7 Compliance
+
+The system uses JasperReports 7.0.1 with strict XML schema requirements:
+
+- **element-kind Attributes**: All template elements must include proper `element-kind` attributes (e.g., `<image element-kind="Graphic">`, `<textField element-kind="Text">`)
+- **JasperLoader**: Custom utility class caches compiled templates in memory (JIT compilation avoided on every request)
+- **Font Merging**: Maven AppendingTransformer prevents font file overwrites
+
+### Invoice Generation Flow
+
+```
+Admin Dashboard → "Run Billing Cycle Now" → generate_all_bills()
+                                                    ↓
+                                              create bill records
+                                              (14% VAT applied)
+                                                    ↓
+                                         JasperReports PDF generation
+                                                    ↓
+                                         /profile/invoices/download
+```
 
 ---
 
