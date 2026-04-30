@@ -604,7 +604,7 @@ AS $$
           END IF;
           
           IF v_service_type = 'data' THEN
-              v_overage_charge := (v_remaining / 1073741824.0) * COALESCE(v_ror_rate, 0);
+              v_overage_charge := (v_remaining / 1024.0) * COALESCE(v_ror_rate, 0);
           ELSE
               v_overage_charge := v_remaining * COALESCE(v_ror_rate, 0);
           END IF;
@@ -704,8 +704,8 @@ AS $$
 
         -- Calculate overage charges from ror_contract (units * rates)
         SELECT
-            COALESCE(SUM((voice * v_ror_rate_v) + (data / 1073741824.0 * v_ror_rate_d) + (sms * v_ror_rate_s)), 0),
-            COALESCE(SUM((roaming_voice * v_ror_rate_v) + (roaming_data / 1073741824.0 * v_ror_rate_d) + (roaming_sms * v_ror_rate_s)), 0)
+            COALESCE(SUM((voice * v_ror_rate_v) + (data / 1024.0 * v_ror_rate_d) + (sms * v_ror_rate_s)), 0),
+            COALESCE(SUM((roaming_voice * v_ror_rate_v) + (roaming_data / 1024.0 * v_ror_rate_d) + (roaming_sms * v_ror_rate_s)), 0)
         INTO v_overage_charge, v_roaming_charge
         FROM ror_contract 
         WHERE contract_id = p_contract_id 

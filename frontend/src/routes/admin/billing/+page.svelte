@@ -240,7 +240,7 @@
     try {
       let url = '/api/admin/bills/pay-bulk';
       if (isGlobalSelection) {
-        url += `?global=truFMRZsearch=${encodeURIComponent(billsSearch)}`;
+        url += `?global=true&search=${encodeURIComponent(billsSearch)}`;
       } else {
         url += `?ids=${Array.from(selectedIds).join(',')}`;
       }
@@ -258,6 +258,12 @@
     } catch (e) {
       showToast("Network error.", 'error');
     }
+  }
+
+  function formatData(mb) {
+    if (!mb || mb === 0) return '0MB';
+    if (mb >= 1024) return (mb / 1024).toFixed(1) + 'GB';
+    return mb + 'MB';
   }
 
   function toggleSelect(id) {
@@ -697,7 +703,7 @@
           <td>
             <div class="usage-pills">
               <span class="pill voice" title="Voice">{b.voice_usage}m</span>
-              <span class="pill data" title="Data">{b.data_usage}MB</span>
+              <span class="pill data" title="Data">{formatData(b.data_usage)}</span>
               <span class="pill sms" title="SMS">{b.sms_usage}</span>
             </div>
           </td>
