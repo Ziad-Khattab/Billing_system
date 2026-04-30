@@ -243,7 +243,7 @@
 						</columnHeader>
 						<detailCell style="Table_Cell" height="15">
 							<element kind="textField" x="0" y="0" width="70" height="15" forecolor="#E0E0E0" fontSize="8.0" hTextAlign="Center" vTextAlign="Middle" blankWhenNull="true">
-								<expression><![CDATA[$F{quota} == null ? "—" : $F{quota} + " units"]]></expression>
+								<expression><![CDATA[$F{quota} == null ? "—" : ($F{service_type}.matches(".*data.*") || $F{service_type}.equals("free_units")) ? new java.text.DecimalFormat("#,##0").format($F{quota} / 1073741824.0) + " GB" : ($F{service_type}.matches(".*voice.*") ? new java.text.DecimalFormat("#,##0").format($F{quota} / 60.0) + " min" : $F{quota} + " units")]]></expression>
 							</element>
 						</detailCell>
 					</column>
@@ -255,7 +255,7 @@
 						</columnHeader>
 						<detailCell style="Table_Cell" height="15">
 							<element kind="textField" x="0" y="0" width="80" height="15" forecolor="#E0E0E0" fontSize="8.0" hTextAlign="Center" vTextAlign="Middle" blankWhenNull="true">
-								<expression><![CDATA[$F{consumed} == null ? "0" : $F{service_type}.matches(".*data.*") ? new java.text.DecimalFormat("#,##0.00").format($F{consumed} / 1024.0) + " GB" : ($F{service_type}.matches(".*voice.*") ? new java.text.DecimalFormat("#,##0.00").format($F{consumed} / 60.0) + " min" : ($F{service_type}.equals("fee") ? $F{consumed} + " unit" : $F{consumed} + " msgs")) ]]></expression>
+								<expression><![CDATA[$F{consumed} == null ? "0" : ($F{service_type}.matches(".*data.*") || $F{service_type}.equals("free_units")) ? new java.text.DecimalFormat("#,##0.00").format($F{consumed} / 1073741824.0) + " GB" : ($F{service_type}.matches(".*voice.*") ? new java.text.DecimalFormat("#,##0.00").format($F{consumed} / 60.0) + " min" : ($F{service_type}.equals("fee") ? $F{consumed} + " unit" : $F{consumed} + " msgs")) ]]></expression>
 							</element>
 						</detailCell>
 					</column>

@@ -3474,3 +3474,10 @@ BEGIN
         WHERE r.id = p_rateplan_id;
 END;
 $$;
+
+-- MIGRATION: Synchronize legacy dummy data to Raw Units
+UPDATE bill SET voice_usage = voice_usage * 60, data_usage = data_usage * 1048576 WHERE billing_period_start < '2026-04-30';
+UPDATE contract_consumption SET consumed = consumed * 60, quota_limit = (SELECT amount FROM service_package WHERE id = service_package_id) WHERE (SELECT type FROM service_package WHERE id = service_package_id) = 'voice' AND starting_date < '2026-04-30';
+UPDATE contract_consumption SET consumed = consumed * 1048576, quota_limit = (SELECT amount FROM service_package WHERE id = service_package_id) WHERE (SELECT type FROM service_package WHERE id = service_package_id) IN ('data', 'free_units') AND starting_date < '2026-04-30';
+UPDATE ror_contract SET voice = voice * 60, data = data * 1048576, roaming_voice = roaming_voice * 60, roaming_data = roaming_data * 1048576 WHERE starting_date < '2026-04-30';
+
