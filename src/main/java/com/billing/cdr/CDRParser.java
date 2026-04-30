@@ -141,7 +141,6 @@ public class CDRParser {
 
                     if (p.length >= 9) {
                         // 9-Column Format: file_id, dial_a, dial_b, start_time, duration, service_id, hplmn, vplmn, external_charges
-                        // This is the standard format used by most network vendors.
                         dialA = p[1].trim();
                         dialB = p[2].trim();
                         timeStr = p[3].trim(); 
@@ -149,7 +148,6 @@ public class CDRParser {
                         
                         double rawUsage = Double.parseDouble(p[4].trim());
                         // Convert Bytes to MB for data services in 9-column format
-                        // Network vendors often report data in bytes, but we bill in MB increments.
                         if ("data".equals(typeMap.get(serviceId))) {
                             usage = (int) Math.ceil(rawUsage / (1024.0 * 1024.0));
                         } else {
@@ -158,6 +156,22 @@ public class CDRParser {
 
                         externalPiasters = Double.parseDouble(p[8].trim()) * 100.0;
                         ts = Timestamp.valueOf(timeStr);
+                        
+                        // Extract PLMNs
+                        String hplmn = p[6].trim().isEmpty() ? null : p[6].trim();
+                        String vplmn = p[7].trim().isEmpty() ? null : p[7].trim();
+                        
+                        // Insert via SQL function
+                        cs.registerOutParameter(1, Types.INTEGER);
+                        cs.setInt(2, fileId);
+                        cs.setString(3, dialA);
+                        cs.setString(4, dialB);
+                        cs.setTimestamp(5, ts);
+                        cs.setInt(6, usage);
+                        cs.setInt(7, serviceId);
+                        if (hplmn != null) cs.setString(8, hplmn); else cs.setNull(8, Types.VARCHAR);
+                        if (vplmn != null) cs.setString(9, vplmn); else cs.setNull(9, Types.VARCHAR);
+                        cs.setBigDecimal(10, BigDecimal.valueOf(externalPiasters / 100.0));
                     } else if (p.length >= 6) {
                         // 6-Column Format: Dial A, Dial B, Service ID, Usage, Time, External charges
                         dialA = p[0].trim();
@@ -177,6 +191,18 @@ public class CDRParser {
                         externalPiasters = Double.parseDouble(p[5].trim());
 
                         ts = Timestamp.valueOf(fileDateStr + " " + timeStr);
+                        
+                        // Default PLMNs for 6-column format
+                        cs.registerOutParameter(1, Types.INTEGER);
+                        cs.setInt(2, fileId);
+                        cs.setString(3, dialA);
+                        cs.setString(4, dialB);
+                        cs.setTimestamp(5, ts);
+                        cs.setInt(6, usage);
+                        cs.setInt(7, serviceId);
+                        cs.setNull(8, Types.VARCHAR); // p_hplmn
+                        cs.setNull(9, Types.VARCHAR); // p_vplmn
+                        cs.setBigDecimal(10, BigDecimal.valueOf(externalPiasters / 100.0));
                     } else {
                         continue; // Invalid format
                     }
@@ -209,18 +235,6 @@ public class CDRParser {
                         for (String m : markers) if (lowerDest.contains(m.trim())) { isUrl = true; break; }
                         if (!isUrl) serviceId = smsId;
                     }
-
-                    // Insert via SQL function (Database now handles rejections via rejected_cdr table)
-                    cs.registerOutParameter(1, Types.INTEGER);
-                    cs.setInt(2, fileId);
-                    cs.setString(3, dialA);
-                    cs.setString(4, dialB);
-                    cs.setTimestamp(5, ts);
-                    cs.setInt(6, usage);
-                    cs.setInt(7, serviceId);
-                    cs.setNull(8, Types.VARCHAR); // p_hplmn
-                    cs.setNull(9, Types.VARCHAR); // p_vplmn
-                    cs.setBigDecimal(10, BigDecimal.valueOf(externalPiasters / 100.0));
 
                     cs.execute();
                     int resultId = cs.getInt(1);

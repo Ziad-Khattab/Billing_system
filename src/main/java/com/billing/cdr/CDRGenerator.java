@@ -14,62 +14,68 @@ public class CDRGenerator {
     private static final Logger logger = LoggerFactory.getLogger(CDRGenerator.class);
 
     public static String generateSamples(int count) throws SQLException, IOException {
-        logger.info("Generating {} sample CDRs...", count);
+        logger.info("Generating {} high-quality sample CDRs...", count);
 
-        // 1. Fetch MSISDNs from DB
+        // 1. Fetch ALL MSISDNs from DB to ensure no one is at 0
         List<Map<String, Object>> subscribers = DB.executeSelect(
-            "SELECT msisdn, status FROM contract WHERE status IN ('active', 'suspended', 'suspended_debt', 'terminated')"
+            "SELECT msisdn, status FROM contract WHERE status IN ('active', 'suspended', 'suspended_debt')"
         );
 
         if (subscribers.isEmpty()) {
-            throw new RuntimeException("No MSISDNs found in database. Create some contracts first!");
+            throw new RuntimeException("No MSISDNs found in database.");
         }
 
-        List<String> activePool = new ArrayList<>();
-        List<String> blockedPool = new ArrayList<>();
-
+        List<String> pool = new ArrayList<>();
         for (Map<String, Object> s : subscribers) {
-            String msisdn = (String) s.get("msisdn");
-            String status = (String) s.get("status");
-            if ("active".equals(status)) activePool.add(msisdn);
-            else blockedPool.add(msisdn);
+            pool.add((String) s.get("msisdn"));
         }
 
-        // 2. Setup destinations
-        String[] phoneDestinations = {"201090000001", "201090000002", "201090000003", "201000000008", "201223344556"};
-        String[] urlDestinations = {"google.com", "facebook.com", "youtube.com", "fmrz-telecom.net", "whatsapp.net"};
+        // 2. Setup realistic destinations
+        String[] phoneDestinations = {
+            "201090000001", "201090000002", "201090000003", "201000000008", 
+            "201223344556", "201556677889", "201112223334", "201288899900"
+        };
+        String[] urlDestinations = {
+            "google.com", "facebook.com", "youtube.com", "netflix.com", 
+            "whatsapp.net", "instagram.com", "github.com", "fmrz-telecom.net"
+        };
+        
+        // 3. Roaming configuration
+        String[] vplmns = {"EGYVO", "FRANC", "DEUTS"};
         
         Random rand = new Random();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         
-        // 3. Generate data
+        // 4. Generate data
         List<String> lines = new ArrayList<>();
         lines.add("file_id,dial_a,dial_b,start_time,duration,service_id,hplmn,vplmn,external_charges");
 
         Calendar cal = Calendar.getInstance();
 
         for (int i = 0; i < count; i++) {
-            double roll = rand.nextDouble();
-            String dialA;
+            String dialA = pool.get(rand.nextInt(pool.size()));
+            boolean isRoaming = rand.nextDouble() < 0.20; // 20% Roaming
+            String vplmn = isRoaming ? vplmns[1 + rand.nextInt(2)] : "EGYVO";
             
-            if (roll < 0.05) { // Ghost
-                dialA = "2019" + (10000000 + rand.nextInt(90000000));
-            } else if (roll < 0.15 && !blockedPool.isEmpty()) { // Blocked
-                dialA = blockedPool.get(rand.nextInt(blockedPool.size()));
-            } else { // Healthy
-                dialA = activePool.isEmpty() ? blockedPool.get(rand.nextInt(blockedPool.size())) : activePool.get(rand.nextInt(activePool.size()));
-            }
+            // Map service IDs based on domestic vs roaming
+            // 1=Voice, 2=Data, 3=SMS (Domestic)
+            // 5=Voice, 6=Data, 7=SMS (Roaming)
+            int baseType = rand.nextInt(3); // 0=Voice, 1=Data, 2=SMS
+            int serviceId = (baseType == 0 ? 1 : (baseType == 1 ? 2 : 3));
+            if (isRoaming) serviceId += 4; 
 
-            int serviceId = 1 + rand.nextInt(3);
             String dialB;
             int duration;
 
-            if (serviceId == 1) { // Voice
+            if (baseType == 0) { // Voice
                 dialB = phoneDestinations[rand.nextInt(phoneDestinations.length)];
-                duration = 30 + rand.nextInt(3570);
-            } else if (serviceId == 2) { // Data
+                // 1 minute to 180 minutes
+                duration = 60 + rand.nextInt(10800); 
+            } else if (baseType == 1) { // Data
                 dialB = urlDestinations[rand.nextInt(urlDestinations.length)];
-                duration = 1 + rand.nextInt(500);
+                // 10MB to 15GB (Converted to BYTES for the Parser)
+                long bytes = (10 + rand.nextInt(15360)) * 1024L * 1024L;
+                duration = (int) Math.min(bytes, Integer.MAX_VALUE); 
             } else { // SMS
                 dialB = phoneDestinations[rand.nextInt(phoneDestinations.length)];
                 duration = 1;
@@ -78,10 +84,9 @@ public class CDRGenerator {
             cal.setTime(new Date());
             cal.add(Calendar.DAY_OF_YEAR, -rand.nextInt(30));
             cal.add(Calendar.HOUR_OF_DAY, -rand.nextInt(24));
-            cal.add(Calendar.MINUTE, -rand.nextInt(60));
             String timeStr = sdf.format(cal.getTime());
 
-            lines.add(String.format("1,%s,%s,%s,%d,%d,EGYVO,,0", dialA, dialB, timeStr, duration, serviceId));
+            lines.add(String.format("1,%s,%s,%s,%d,%d,EGYVO,%s,0", dialA, dialB, timeStr, duration, serviceId, isRoaming ? vplmn : ""));
         }
 
         // 4. Save to file
