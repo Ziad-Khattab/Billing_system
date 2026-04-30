@@ -208,7 +208,7 @@ CREATE TABLE cdr (
                       dial_a           VARCHAR(20) NOT NULL,  -- calling party MSISDN
                       dial_b           VARCHAR(20) NOT NULL,  -- called party MSISDN
                       start_time       TIMESTAMP NOT NULL,
-                      duration         INTEGER NOT NULL DEFAULT 0,  -- seconds
+                      duration         BIGINT NOT NULL DEFAULT 0,  -- seconds or bytes
                       service_id       INTEGER REFERENCES service_package(id),
                       hplmn            VARCHAR(20),   -- Home PLMN code
                       vplmn            VARCHAR(20),   -- Visited PLMN code (roaming)
@@ -264,7 +264,7 @@ CREATE INDEX idx_addon_active   ON contract_addon(contract_id, is_active);
 -- free_units -> treated as 1 unit for simplicity, but could be extended with more logic
 -- ------------------------------------------------------------
 CREATE OR REPLACE FUNCTION get_cdr_usage_amount(
-    p_duration     INTEGER,
+    p_duration     BIGINT,
     p_service_type service_type
 )
 RETURNS NUMERIC AS $$
@@ -325,7 +325,7 @@ CREATE OR REPLACE FUNCTION insert_cdr(
     p_dial_a           VARCHAR(20),
     p_dial_b           VARCHAR(20),
     p_start_time       TIMESTAMP,
-    p_duration         INTEGER,
+    p_duration         BIGINT,
     p_service_id       INTEGER,
     p_hplmn            VARCHAR(20),
     p_vplmn            VARCHAR(20),
@@ -505,7 +505,7 @@ $$ LANGUAGE plpgsql;
 -- writes any overage to ror_contract,
 -- deducts overage charge from available_credit.
 -- ------------------------------------------------------------
-CREATE OR REPLACE FUNCTION rate_cdr(p_cdr_id INTEGER)
+CREATE OR REPLACE FUNCTION rate_cdr(p_cdr_id BIGINT)
  RETURNS void
 AS $$
  DECLARE

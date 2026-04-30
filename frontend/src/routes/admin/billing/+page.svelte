@@ -262,20 +262,23 @@
 
   function formatVoice(sec) {
     if (!sec && sec !== 0) return '0m';
+    // Raw database value is in Seconds. Convert to Minutes.
     return (sec / 60.0).toFixed(1) + 'm';
   }
 
-  function formatData(val) {
-    if (!val || val === 0) return '0MB';
-    // SMART DETECTION: If value > 10M, it's almost certainly raw Bytes from legacy scripts.
-    // Standard MB values for 100GB would only be 102,400.
-    let mb = val;
-    if (val > 10000000) {
-      mb = val / (1024 * 1024);
-    }
+  function formatData(bytes) {
+    if (!bytes || bytes === 0) return '0MB';
     
-    if (mb >= 1024) return (mb / 1024).toFixed(1) + 'GB';
-    return mb.toFixed(1) + 'MB';
+    // Raw database value is in Bytes.
+    // If < 1GB, show in MB. If > 1GB, show in GB.
+    const gb = bytes / 1073741824.0;
+    const mb = bytes / (1024.0 * 1024.0);
+    
+    if (gb >= 0.1) {
+      return gb.toFixed(1) + 'GB';
+    } else {
+      return mb.toFixed(0) + 'MB';
+    }
   }
 
   function toggleSelect(id) {

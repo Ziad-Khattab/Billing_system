@@ -64,8 +64,7 @@ public class CDRGenerator {
             int serviceId = (baseType == 0 ? 1 : (baseType == 1 ? 2 : 3));
             if (isRoaming) serviceId += 4; 
 
-            String dialB;
-            int duration;
+            long duration;
 
             if (baseType == 0) { // Voice
                 dialB = phoneDestinations[rand.nextInt(phoneDestinations.length)];
@@ -74,8 +73,7 @@ public class CDRGenerator {
             } else if (baseType == 1) { // Data
                 dialB = urlDestinations[rand.nextInt(urlDestinations.length)];
                 // 10MB to 15GB (Converted to BYTES for the Parser)
-                long bytes = (10 + rand.nextInt(15360)) * 1024L * 1024L;
-                duration = (int) Math.min(bytes, Integer.MAX_VALUE); 
+                duration = (10 + rand.nextInt(15360)) * 1024L * 1024L;
             } else { // SMS
                 dialB = phoneDestinations[rand.nextInt(phoneDestinations.length)];
                 duration = 1;

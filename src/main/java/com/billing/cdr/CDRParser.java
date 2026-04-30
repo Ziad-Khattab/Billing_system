@@ -135,7 +135,8 @@ public class CDRParser {
                     isHeader = false;
 
                     String dialA, dialB, timeStr;
-                    int serviceId, usage;
+                    int serviceId;
+                    long usage;
                     double externalPiasters = 0;
                     Timestamp ts;
 
@@ -144,15 +145,9 @@ public class CDRParser {
                         dialA = p[1].trim();
                         dialB = p[2].trim();
                         timeStr = p[3].trim(); 
-                        serviceId = Integer.parseInt(p[5].trim());
-                        
-                        double rawUsage = Double.parseDouble(p[4].trim());
-                        // Convert Bytes to MB for data services in 9-column format
-                        if ("data".equals(typeMap.get(serviceId))) {
-                            usage = (int) Math.ceil(rawUsage / (1024.0 * 1024.0));
-                        } else {
-                            usage = (int) rawUsage;
-                        }
+                        // Store RAW units (Seconds for Voice, Bytes for Data, Units for SMS)
+                        // The database columns are now BIGINT to handle large byte counts.
+                        usage = (long) rawUsage;
 
                         externalPiasters = Double.parseDouble(p[8].trim()) * 100.0;
                         ts = Timestamp.valueOf(timeStr);
@@ -167,7 +162,7 @@ public class CDRParser {
                         cs.setString(3, dialA);
                         cs.setString(4, dialB);
                         cs.setTimestamp(5, ts);
-                        cs.setInt(6, usage);
+                        cs.setLong(6, usage);
                         cs.setInt(7, serviceId);
                         if (hplmn != null) cs.setString(8, hplmn); else cs.setNull(8, Types.VARCHAR);
                         if (vplmn != null) cs.setString(9, vplmn); else cs.setNull(9, Types.VARCHAR);
@@ -178,14 +173,8 @@ public class CDRParser {
                         dialB = p[1].trim();
                         serviceId = Integer.parseInt(p[2].trim());
                         
-                        // Detect unit: 6-column data usage is usually in Bytes
-                        int dataId = getServiceId("Data Pack");
                         double rawUsage = Double.parseDouble(p[3].trim());
-                        if (serviceId == dataId) {
-                            usage = (int) Math.ceil(rawUsage / (1024.0 * 1024.0)); // Convert Bytes to MB
-                        } else {
-                            usage = (int) rawUsage; // Voice is usually in seconds
-                        }
+                        usage = (long) rawUsage; // Store raw units (Seconds or Bytes)
                         
                         timeStr = p[4].trim(); // HH:MM:SS
                         externalPiasters = Double.parseDouble(p[5].trim());
@@ -198,7 +187,7 @@ public class CDRParser {
                         cs.setString(3, dialA);
                         cs.setString(4, dialB);
                         cs.setTimestamp(5, ts);
-                        cs.setInt(6, usage);
+                        cs.setLong(6, usage);
                         cs.setInt(7, serviceId);
                         cs.setNull(8, Types.VARCHAR); // p_hplmn
                         cs.setNull(9, Types.VARCHAR); // p_vplmn
