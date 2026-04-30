@@ -27,9 +27,9 @@ public class TestJasper {
                 return;
             }
 
-            InputStream logoStream = TestJasper.class.getResourceAsStream("/logo.svg");
+            InputStream logoStream = TestJasper.class.getResourceAsStream("/red-logo.png");
             if (logoStream != null) {
-                System.out.println("✔ logo.svg found successfully.");
+                System.out.println("✔ red-logo.png found successfully.");
             }
 
             Map<String, Object> params = new HashMap<>();
